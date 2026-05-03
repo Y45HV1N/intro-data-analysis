@@ -8,6 +8,160 @@ title: "R, RStudio, and how they relate"
 library(webexercises)
 ```
 
-::: {.callout-note}
-This chapter is a placeholder. Content will be added in a later step.
-:::
+## Two pieces of software, one workflow
+
+A common point of confusion for new users is the difference between R and RStudio. They are two separate programs, made by two different organizations, that work together. To use R productively, you will install both, and you will use them at the same time.
+
+The simplest way to picture the relationship is the following. **R is the engine.** It is the piece of software that actually understands the R language and performs the computations: when you ask for a mean, R is what calculates it. **RStudio is the dashboard.** It does not perform any statistics on its own. What it provides is a comfortable working environment around R: a place to write scripts, a console where you can type commands, a panel showing the objects you have created, a panel for plots, a file browser, and many other conveniences.
+
+If you install RStudio without installing R first, RStudio will open but it will have nothing to talk to: clicking "Run" will produce an error. If you install R without installing RStudio, R will work, but you will be using a fairly bare interface that most users find harder to navigate. The standard practice is to install both.
+
+This division of labor has a useful consequence: you can update one without the other. The R Foundation releases new versions of R from time to time, and Posit (the company that maintains RStudio) releases new versions of RStudio on a separate schedule. Each can evolve at its own pace.
+
+## Are there alternatives to RStudio?
+
+Yes. RStudio is the most widely used environment for R, but it is not the only one. Several alternatives exist:
+
+- **Positron**, also developed by Posit, is a newer environment that supports R and Python in a single interface. It is built on the same foundations as Visual Studio Code.
+- **Visual Studio Code (VS Code)** with the official R extension provides an R working environment inside a popular general-purpose editor.
+- **Jupyter notebooks** with an R kernel provide a notebook-style interface, more common in the Python world but also usable for R.
+- **The plain R console** that ships with R itself can be used directly, without any additional environment.
+
+For this book we will use RStudio. The reasoning is practical: it is the environment with the most accessible learning materials, the most stable behavior, and the smoothest integration with the kinds of files (R scripts, R Markdown, R projects) that we will introduce in Chapter 3. If you later want to try one of the alternatives, the underlying R code you write will work in any of them.
+
+## Installing R
+
+R is distributed by the **Comprehensive R Archive Network (CRAN)**, a network of servers maintained by the R community. You can download R from any of these servers; in practice it is easiest to use the official entry point.
+
+Step by step:
+
+1. Open a web browser and go to <https://cran.r-project.org>.
+2. On the home page, find the section **"Download and Install R"** at the top. There are three links: one for Linux, one for macOS, and one for Windows. Click the link that matches your operating system.
+3. **If you are on Windows:** click the link that reads "install R for the first time," then click the large download link at the top of the next page (it will read something like "Download R-X.Y.Z for Windows," where X.Y.Z is the current version number). The file is a `.exe` installer. Double-click it and accept the default options at every step. You do not need to change any settings.
+4. **If you are on macOS:** on the macOS download page, choose the `.pkg` file that matches your processor. Apple computers built since 2020 use Apple Silicon (M1, M2, M3, M4); older Apple computers use Intel processors. If you are unsure, click the Apple menu in the top-left corner of your screen, choose "About This Mac," and look at the "Chip" or "Processor" line. Download the matching `.pkg` file, double-click it, and accept the default options.
+5. **If you are on Linux:** follow the instructions for your distribution. They differ between Ubuntu, Debian, Fedora, and others. Linux users typically have the necessary technical background; if you do not, the simplest approach is to use an Ubuntu-based distribution and follow the Ubuntu instructions on CRAN.
+
+After installation finishes, R is on your computer. You will not normally open it directly; you will reach it through RStudio, which we install next.
+
+## Installing RStudio
+
+RStudio is distributed by Posit. The free version, called **RStudio Desktop (Open Source Edition)**, is the one most users want. It has all the features you need for the work in this book.
+
+Step by step:
+
+1. Go to <https://posit.co/download/rstudio-desktop/>.
+2. The page shows two steps: "Install R" (which you have already done) and "Install RStudio." Scroll to the second step.
+3. The page typically detects your operating system and offers a single download button. Click it.
+4. **If you are on Windows:** the file is an `.exe` installer. Double-click it and accept the default options.
+5. **If you are on macOS:** the file is a `.dmg` disk image. Double-click it to open, then drag the RStudio icon into the Applications folder.
+6. **If you are on Linux:** follow the Linux instructions on the same page. RStudio is provided as a `.deb` or `.rpm` package depending on your distribution.
+
+If you are using a university computer where you cannot install software, ask your IT department to install both R and RStudio, or use the cloud version of RStudio at <https://posit.cloud>, which runs in a browser and requires no installation.
+
+## What you see when you open RStudio for the first time
+
+Open RStudio. You should see a window divided into three panels (later it will become four, once you create a script). The exact arrangement varies, but the typical default is:
+
+- A large panel on the **left** called the **Console**. This is where R receives commands and prints results. If you type `2 + 2` and press Enter here, R will print `4`.
+- A panel on the **upper right** containing several tabs. The most important tab is **Environment**. This panel will eventually list every object you have created, with its name and a brief description of its contents. When RStudio first opens it is empty.
+- A panel on the **lower right**, also with tabs. The most important ones are **Files** (a built-in file browser), **Plots** (where graphs you produce will appear), **Packages** (a list of installed packages, which we will discuss in Chapter 6), and **Help** (the R documentation system).
+
+You can verify that R and RStudio are talking to each other. Click in the Console, type the following exactly, and press Enter:
+
+```{r}
+#| eval: false
+2 + 2
+```
+
+R should print `[1] 4` on the next line. The `[1]` is a labeling convention used by R to mark the position of values in long output; for a single value you can ignore it. If you see `[1] 4`, your installation is working.
+
+Two more checks worth doing the first time:
+
+```{r}
+#| eval: false
+sessionInfo()
+```
+
+This prints information about your R version, your operating system, and the packages currently loaded. The first line of the output starts with "R version" followed by the version number; this confirms which version of R you are running.
+
+```{r}
+#| eval: false
+RStudio.Version()
+```
+
+This works only inside RStudio (not in the bare R console) and prints the RStudio version. If both commands work, you have a complete and matched installation.
+
+## A note on updates
+
+Both R and RStudio release new versions periodically. Updating R requires running the installer again; updating RStudio also requires running its installer again. There is no automatic update process built into either program. For the work in this book, any version of R from 4.2 onwards and any RStudio version from 2023 onwards will work. If you have a working installation, do not feel obliged to update it for now.
+
+## Check your understanding
+
+```{r}
+#| echo: false
+opts_q1 <- c(
+  "R is the dashboard you click on, and RStudio is the engine that performs computations.",
+  "R and RStudio are two names for the same program.",
+  answer = "R is the engine that performs computations, and RStudio is a dashboard that provides a comfortable working environment around R.",
+  "RStudio includes its own version of R and replaces the need to install R separately."
+)
+
+opts_q2 <- c(
+  "RStudio.",
+  answer = "R.",
+  "Microsoft Excel.",
+  "The web browser used to download the installer."
+)
+
+opts_q3 <- c(
+  "RStudio works without R, because RStudio comes with its own statistical engine built in.",
+  "RStudio refuses to start.",
+  answer = "RStudio opens, but it has no engine to talk to, so commands cannot be executed.",
+  "R is automatically downloaded by RStudio the first time it is launched."
+)
+
+opts_q4 <- c(
+  answer = "CRAN, the Comprehensive R Archive Network.",
+  "The Apple App Store and the Microsoft Store.",
+  "GitHub.",
+  "The RStudio website."
+)
+
+opts_q5 <- c(
+  "It is mandatory: R cannot be used without RStudio.",
+  "It is discouraged: most experienced users avoid RStudio in favor of the bare console.",
+  answer = "It is the standard practice for most users, although other environments such as Positron, VS Code, and Jupyter also exist.",
+  "It is only useful for users on Windows; macOS users should not install it."
+)
+
+opts_q6 <- c(
+  "The Help panel.",
+  "The Plots panel.",
+  answer = "The Environment panel.",
+  "The Files panel."
+)
+```
+
+**1. Which of the following best describes the relationship between R and RStudio?**
+
+`r longmcq(opts_q1)`
+
+**2. Which piece of software actually performs the statistical computations?**
+
+`r longmcq(opts_q2)`
+
+**3. What happens if you install RStudio without first installing R?**
+
+`r longmcq(opts_q3)`
+
+**4. Where does R itself come from when you install it?**
+
+`r longmcq(opts_q4)`
+
+**5. Is installing RStudio required to use R?**
+
+`r longmcq(opts_q5)`
+
+**6. Which RStudio panel will list the objects you have created during a session?**
+
+`r longmcq(opts_q6)`
