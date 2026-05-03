@@ -16,7 +16,7 @@ Each chapter contains:
 
 - explanations of concepts, written for readers with no programming background;
 - examples of R code that you can copy and run on your own machine;
-- a short set of multiple-choice questions at the end. Click an option to receive immediate feedback. A running counter of correct answers is displayed at the end of each chapter.
+- a short set of multiple-choice questions at the end. Click an option to receive immediate feedback.
 
 ## What you will need {.unnumbered}
 

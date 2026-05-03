@@ -19,3 +19,7 @@ Thumbs.db
 
 # Local-only project notes (never push)
 CLAUDE.md
+
+# Local-only working drafts (never push)
+chapters.zip
+chapters_extracted/
