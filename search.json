@@ -110,7 +110,73 @@
     "href": "02-r-vs-rstudio.html",
     "title": "2  R, RStudio, and how they relate",
     "section": "",
-    "text": "Note\n\n\n\nThis chapter is a placeholder. Content will be added in a later step.",
+    "text": "2.1 Two pieces of software, one workflow\nA common point of confusion for new users is the difference between R and RStudio. They are two separate programs, made by two different organizations, that work together. To use R productively, you will install both, and you will use them at the same time.\nThe simplest way to picture the relationship is the following. R is the engine. It is the piece of software that actually understands the R language and performs the computations: when you ask for a mean, R is what calculates it. RStudio is the dashboard. It does not perform any statistics on its own. What it provides is a comfortable working environment around R: a place to write scripts, a console where you can type commands, a panel showing the objects you have created, a panel for plots, a file browser, and many other conveniences.\nIf you install RStudio without installing R first, RStudio will open but it will have nothing to talk to: clicking “Run” will produce an error. If you install R without installing RStudio, R will work, but you will be using a fairly bare interface that most users find harder to navigate. The standard practice is to install both.\nThis division of labor has a useful consequence: you can update one without the other. The R Foundation releases new versions of R from time to time, and Posit (the company that maintains RStudio) releases new versions of RStudio on a separate schedule. Each can evolve at its own pace.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>R, RStudio, and how they relate</span>"
+    ]
+  },
+  {
+    "objectID": "02-r-vs-rstudio.html#are-there-alternatives-to-rstudio",
+    "href": "02-r-vs-rstudio.html#are-there-alternatives-to-rstudio",
+    "title": "2  R, RStudio, and how they relate",
+    "section": "2.2 Are there alternatives to RStudio?",
+    "text": "2.2 Are there alternatives to RStudio?\nYes. RStudio is the most widely used environment for R, but it is not the only one. Several alternatives exist:\n\nPositron, also developed by Posit, is a newer environment that supports R and Python in a single interface. It is built on the same foundations as Visual Studio Code.\nVisual Studio Code (VS Code) with the official R extension provides an R working environment inside a popular general-purpose editor.\nJupyter notebooks with an R kernel provide a notebook-style interface, more common in the Python world but also usable for R.\nThe plain R console that ships with R itself can be used directly, without any additional environment.\n\nFor this book we will use RStudio. The reasoning is practical: it is the environment with the most accessible learning materials, the most stable behavior, and the smoothest integration with the kinds of files (R scripts, R Markdown, R projects) that we will introduce in Chapter 3. If you later want to try one of the alternatives, the underlying R code you write will work in any of them.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>R, RStudio, and how they relate</span>"
+    ]
+  },
+  {
+    "objectID": "02-r-vs-rstudio.html#installing-r",
+    "href": "02-r-vs-rstudio.html#installing-r",
+    "title": "2  R, RStudio, and how they relate",
+    "section": "2.3 Installing R",
+    "text": "2.3 Installing R\nR is distributed by the Comprehensive R Archive Network (CRAN), a network of servers maintained by the R community. You can download R from any of these servers; in practice it is easiest to use the official entry point.\nStep by step:\n\nOpen a web browser and go to https://cran.r-project.org.\nOn the home page, find the section “Download and Install R” at the top. There are three links: one for Linux, one for macOS, and one for Windows. Click the link that matches your operating system.\nIf you are on Windows: click the link that reads “install R for the first time,” then click the large download link at the top of the next page (it will read something like “Download R-X.Y.Z for Windows,” where X.Y.Z is the current version number). The file is a .exe installer. Double-click it and accept the default options at every step. You do not need to change any settings.\nIf you are on macOS: on the macOS download page, choose the .pkg file that matches your processor. Apple computers built since 2020 use Apple Silicon (M1, M2, M3, M4); older Apple computers use Intel processors. If you are unsure, click the Apple menu in the top-left corner of your screen, choose “About This Mac,” and look at the “Chip” or “Processor” line. Download the matching .pkg file, double-click it, and accept the default options.\nIf you are on Linux: follow the instructions for your distribution. They differ between Ubuntu, Debian, Fedora, and others. Linux users typically have the necessary technical background; if you do not, the simplest approach is to use an Ubuntu-based distribution and follow the Ubuntu instructions on CRAN.\n\nAfter installation finishes, R is on your computer. You will not normally open it directly; you will reach it through RStudio, which we install next.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>R, RStudio, and how they relate</span>"
+    ]
+  },
+  {
+    "objectID": "02-r-vs-rstudio.html#installing-rstudio",
+    "href": "02-r-vs-rstudio.html#installing-rstudio",
+    "title": "2  R, RStudio, and how they relate",
+    "section": "2.4 Installing RStudio",
+    "text": "2.4 Installing RStudio\nRStudio is distributed by Posit. The free version, called RStudio Desktop (Open Source Edition), is the one most users want. It has all the features you need for the work in this book.\nStep by step:\n\nGo to https://posit.co/download/rstudio-desktop/.\nThe page shows two steps: “Install R” (which you have already done) and “Install RStudio.” Scroll to the second step.\nThe page typically detects your operating system and offers a single download button. Click it.\nIf you are on Windows: the file is an .exe installer. Double-click it and accept the default options.\nIf you are on macOS: the file is a .dmg disk image. Double-click it to open, then drag the RStudio icon into the Applications folder.\nIf you are on Linux: follow the Linux instructions on the same page. RStudio is provided as a .deb or .rpm package depending on your distribution.\n\nIf you are using a university computer where you cannot install software, ask your IT department to install both R and RStudio, or use the cloud version of RStudio at https://posit.cloud, which runs in a browser and requires no installation.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>R, RStudio, and how they relate</span>"
+    ]
+  },
+  {
+    "objectID": "02-r-vs-rstudio.html#what-you-see-when-you-open-rstudio-for-the-first-time",
+    "href": "02-r-vs-rstudio.html#what-you-see-when-you-open-rstudio-for-the-first-time",
+    "title": "2  R, RStudio, and how they relate",
+    "section": "2.5 What you see when you open RStudio for the first time",
+    "text": "2.5 What you see when you open RStudio for the first time\nOpen RStudio. You should see a window divided into three panels (later it will become four, once you create a script). The exact arrangement varies, but the typical default is:\n\nA large panel on the left called the Console. This is where R receives commands and prints results. If you type 2 + 2 and press Enter here, R will print 4.\nA panel on the upper right containing several tabs. The most important tab is Environment. This panel will eventually list every object you have created, with its name and a brief description of its contents. When RStudio first opens it is empty.\nA panel on the lower right, also with tabs. The most important ones are Files (a built-in file browser), Plots (where graphs you produce will appear), Packages (a list of installed packages, which we will discuss in Chapter 6), and Help (the R documentation system).\n\nYou can verify that R and RStudio are talking to each other. Click in the Console, type the following exactly, and press Enter:\n\n2 + 2\n\nR should print [1] 4 on the next line. The [1] is a labeling convention used by R to mark the position of values in long output; for a single value you can ignore it. If you see [1] 4, your installation is working.\nTwo more checks worth doing the first time:\n\nsessionInfo()\n\nThis prints information about your R version, your operating system, and the packages currently loaded. The first line of the output starts with “R version” followed by the version number; this confirms which version of R you are running.\n\nRStudio.Version()\n\nThis works only inside RStudio (not in the bare R console) and prints the RStudio version. If both commands work, you have a complete and matched installation.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>R, RStudio, and how they relate</span>"
+    ]
+  },
+  {
+    "objectID": "02-r-vs-rstudio.html#a-note-on-updates",
+    "href": "02-r-vs-rstudio.html#a-note-on-updates",
+    "title": "2  R, RStudio, and how they relate",
+    "section": "2.6 A note on updates",
+    "text": "2.6 A note on updates\nBoth R and RStudio release new versions periodically. Updating R requires running the installer again; updating RStudio also requires running its installer again. There is no automatic update process built into either program. For the work in this book, any version of R from 4.2 onwards and any RStudio version from 2023 onwards will work. If you have a working installation, do not feel obliged to update it for now.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>R, RStudio, and how they relate</span>"
+    ]
+  },
+  {
+    "objectID": "02-r-vs-rstudio.html#check-your-understanding",
+    "href": "02-r-vs-rstudio.html#check-your-understanding",
+    "title": "2  R, RStudio, and how they relate",
+    "section": "2.7 Check your understanding",
+    "text": "2.7 Check your understanding\n1. Which of the following best describes the relationship between R and RStudio?\n\n R is the dashboard you click on, and RStudio is the engine that performs computations. R and RStudio are two names for the same program. R is the engine that performs computations, and RStudio is a dashboard that provides a comfortable working environment around R. RStudio includes its own version of R and replaces the need to install R separately.\n\n2. Which piece of software actually performs the statistical computations?\n\n RStudio. R. Microsoft Excel. The web browser used to download the installer.\n\n3. What happens if you install RStudio without first installing R?\n\n RStudio works without R, because RStudio comes with its own statistical engine built in. RStudio refuses to start. RStudio opens, but it has no engine to talk to, so commands cannot be executed. R is automatically downloaded by RStudio the first time it is launched.\n\n4. Where does R itself come from when you install it?\n\n CRAN, the Comprehensive R Archive Network. The Apple App Store and the Microsoft Store. GitHub. The RStudio website.\n\n5. Is installing RStudio required to use R?\n\n It is mandatory: R cannot be used without RStudio. It is discouraged: most experienced users avoid RStudio in favor of the bare console. It is the standard practice for most users, although other environments such as Positron, VS Code, and Jupyter also exist. It is only useful for users on Windows; macOS users should not install it.\n\n6. Which RStudio panel will list the objects you have created during a session?\n\n The Help panel. The Plots panel. The Environment panel. The Files panel.",
     "crumbs": [
       "Section 1: Getting Started Properly",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>R, RStudio, and how they relate</span>"
