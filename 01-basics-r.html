@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -345,8 +380,19 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#what-r-is" id="toc-what-r-is" class="nav-link active" data-scroll-target="#what-r-is"><span class="header-section-number">1.1</span> What R is</a></li>
+  <li><a href="#why-use-r-rather-than-software-like-spss-or-excel" id="toc-why-use-r-rather-than-software-like-spss-or-excel" class="nav-link" data-scroll-target="#why-use-r-rather-than-software-like-spss-or-excel"><span class="header-section-number">1.2</span> Why use R rather than software like SPSS or Excel?</a></li>
+  <li><a href="#instead-if-you-use-r" id="toc-instead-if-you-use-r" class="nav-link" data-scroll-target="#instead-if-you-use-r"><span class="header-section-number">1.3</span> Instead, if you use R…</a></li>
+  <li><a href="#r-is-object-based" id="toc-r-is-object-based" class="nav-link" data-scroll-target="#r-is-object-based"><span class="header-section-number">1.4</span> R is “object-based”</a></li>
+  <li><a href="#what-this-book-will-and-will-not-teach-you" id="toc-what-this-book-will-and-will-not-teach-you" class="nav-link" data-scroll-target="#what-this-book-will-and-will-not-teach-you"><span class="header-section-number">1.5</span> What this book will and will not teach you</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">1.6</span> Check your understanding</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/01-basics-r.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -371,21 +417,82 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<section id="what-r-is" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="what-r-is"><span class="header-section-number">1.1</span> What R is</h2>
+<p>R is a programming language designed for statistics and data analysis. It is also the name of the program that runs the language: when you “use R,” you are typically running a program called R that reads instructions written in the R language and carries them out. In the next chapter we will look more carefully at the difference between the language and the program, since this distinction matters when you install things and when you read documentation.</p>
+<p>R is free and open source. Anyone can download it, and the source code is publicly available. It is maintained by a non-profit organization (the R Foundation) and developed by a large international community. Two practical consequences follow. First, your access to R does not depend on an institutional license: you can install it on any computer you have access to, including any computer you own after you leave university. Second, if a particular feature does not exist, anyone can write it, share it, and others can verify what it does. We will return to this idea in Chapter 6 when we discuss packages.</p>
+<p>R was created by statisticians, for statistics. Most general-purpose programming languages (Python, Java, JavaScript) treat statistical analysis as one application among many. R treats it as the central use case. The everyday operations of empirical research (fitting a regression, running an ANOVA, computing a correlation matrix, reshaping a dataset for repeated-measures analysis) are part of the language’s basic vocabulary.</p>
+</section>
+<section id="why-use-r-rather-than-software-like-spss-or-excel" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="why-use-r-rather-than-software-like-spss-or-excel"><span class="header-section-number">1.2</span> Why use R rather than software like SPSS or Excel?</h2>
+<p>If you have used SPSS, Excel, or similar tools, you know that most of your work happens by clicking. You select a variable, click a menu, choose a test, click “OK.” This is convenient for one-off questions, but it has three costs that grow as your work becomes more serious.</p>
+<p><strong>The first cost is reproducibility.</strong> When you click through a menu, the actions you took are not automatically recorded in a way that someone else (or you, six months later) can retrace. If a colleague asks “exactly how did you compute this number?”, you have to remember. With R, the answer is in the script: every step of the analysis is written down, and anyone with the script and the data can run it and obtain the same result. This is increasingly required by journals, funders, and pre-registration platforms.</p>
+<p><strong>The second cost is detection of errors.</strong> When you copy a column of values in Excel and paste it into a new column, the operation is invisible after the fact. You can inspect the final state of the spreadsheet, but you cannot inspect the chain of operations that produced it. When something looks wrong, you often cannot tell where the error was introduced. With R, every step is a line of code. If a result is wrong, you can read the code line by line and find the mistake.</p>
+<p><strong>The third cost is scale.</strong> Suppose you discover that 30 of your variables need the same correction. In SPSS or Excel, you have to perform the correction 30 times, once per variable. In R, you write the correction once and apply it to all 30 variables in a single line. We will see a concrete example of this in Chapter 6. This is not a small convenience: it can change which research questions are practical to ask.</p>
+<p>R has limitations as well, which it is honest to acknowledge. The learning curve at the start is steeper than for SPSS; you cannot simply open a file and click “run analysis.” Error messages can be cryptic when you are starting out. And because the language is large and the package ecosystem is even larger, you are constantly making choices about which tool to use for a given task. This book is designed to guide you through that environment with a small, well-chosen set of tools.</p>
+</section>
+<section id="instead-if-you-use-r" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="instead-if-you-use-r"><span class="header-section-number">1.3</span> Instead, if you use R…</h2>
+<p>R code is a written record of operations on data. A common first impression is that this looks like making things complicated for no reason: extra typing for no obvious benefit. The benefit shows up in three places.</p>
+<p>The first place is <em>transparency</em>. A script is a complete description of the analysis. A reviewer, a collaborator, or your future self can read the script and know what you did. Nothing is hidden inside someone’s recollection of a sequence of clicks.</p>
+<p>The second place is <em>correction</em>. With code, the whole analysis is visible in front of you, and you can read it from top to bottom to locate exactly where an error was introduced. In a click-based workflow in SPSS or Excel, the sequence of actions you performed is not recorded as a readable trace; if a result looks wrong, you have to “reverse engineer” what you did from memory or from the final state of the data, which is slow and often inconclusive. Once an error is located and fixed in code, you re-run the script and every downstream step updates automatically.</p>
+<p>The third place is <em>reuse</em>. The script you write to clean Survey 1 is largely the same script you will use to clean Survey 2. With each project, your toolkit grows, and tasks that took a week the first time take an hour the third time.</p>
+<p>For a researcher working with social and behavioral data, the cumulative effect of these three benefits is substantial. The transition is also possible: thousands of researchers have made it, including people with no prior programming background.</p>
+</section>
+<section id="r-is-object-based" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="r-is-object-based"><span class="header-section-number">1.4</span> R is “object-based”</h2>
+<p>You will sometimes hear R described as an “object-oriented” language. The phrase has a specific meaning in computer science (it refers to a design pattern involving classes, methods, and inheritance), and R does support that pattern. But for the way you will use R as a beginner, that strict definition is not the most useful one. We will use a simpler phrase: <em>object-based</em>.</p>
+<p>In R, every piece of information you work with is stored as an <em>object</em>. An object is a piece of data that has been given a name. The number 7 stored under the name <code>participants</code> is an object. A whole survey dataset stored under the name <code>data2024</code> is an object. A correlation matrix stored under the name <code>correlations</code> is also an object.</p>
+<p>When you write R code, you spend most of your time doing two things: creating objects, and feeding objects into operations to produce new objects. Here is a small example. Suppose <code>scores</code> is an object containing the test scores of 100 participants. To get the average, you write:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(scores)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="callout-title-container flex-fill">
-Note
+<p>Here, <code>mean</code> is itself a piece of R, called a <em>function</em>. You feed it the object <code>scores</code>, and it produces a new value: the average. If you want to keep that average around for later, you assign it to a name:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>average_score <span class="ot">&lt;-</span> <span class="fu">mean</span>(scores)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>Now <code>average_score</code> is its own object. You can use it elsewhere, just like you used <code>scores</code>.</p>
+<p>A few practical implications of this object-based way of working are worth flagging now, even though we will explore them in detail later.</p>
+<p>The first implication is that <em>names matter</em>. A well-chosen object name tells you what the object contains. <code>data2024_clean</code> is more useful than <code>df3</code>.</p>
+<p>The second implication is that the <em>order of operations is explicit</em>. Each line of code typically takes objects as input and produces objects as output. To understand what a script does, you can read it from top to bottom and watch how objects appear and transform.</p>
+<p>The third implication is that <em>the workspace is a collection of named objects</em>. At any given moment, R holds in memory a list of every object you have created. This list is called the <em>environment</em>. We will return to the environment in Chapter 3 and Chapter 4.</p>
+<p>You do not need to memorize any of this yet. Notice the vocabulary (object, function, environment), and we will revisit each term with concrete examples in later chapters.</p>
+</section>
+<section id="what-this-book-will-and-will-not-teach-you" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="what-this-book-will-and-will-not-teach-you"><span class="header-section-number">1.5</span> What this book will and will not teach you</h2>
+<p>This book is about understanding and analyzing social and behavioral data. The first section focuses on R itself: what it is, how to install it, how the pieces fit together, and how the basic operations work. We are not analyzing real data yet. That comes in later sections.</p>
+<p>The reason for this ordering is practical. The most common cause of frustration among new R users is not a particular statistical operation. It is confusion about how R, RStudio, scripts, projects, and the environment relate to each other. When that confusion is cleared up, learning specific analyses becomes a matter of looking up the right function, which is a much smaller problem.</p>
+<p>By the end of Section 1, you will be able to install R and RStudio, create and save the relevant kinds of files, perform basic operations, and use existing packages. You will also have a clear mental model that you can use to learn anything else about R, whether or not it is covered in this book.</p>
+</section>
+<section id="check-your-understanding" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">1.6</span> Check your understanding</h2>
+<p><strong>1. Which of the following best describes what R is?</strong></p>
+<div id="radio_BZXQFZRSKW" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_BZXQFZRSKW" value=""> <span>R is a paid statistical software package developed by IBM.</span></label><label><input type="radio" autocomplete="off" name="radio_BZXQFZRSKW" value="answer"> <span>R is a free, open-source programming language designed for statistics and data analysis.</span></label><label><input type="radio" autocomplete="off" name="radio_BZXQFZRSKW" value=""> <span>R is a graphical user interface that lets you perform statistical tests by clicking through menus.</span></label><label><input type="radio" autocomplete="off" name="radio_BZXQFZRSKW" value=""> <span>R is a cloud-based application that runs only inside a web browser.</span></label>
 </div>
-<div class="callout-body-container callout-body">
-<p>This chapter is a placeholder. Content will be added in a later step.</p>
+<p><strong>2. Which of the following best summarizes the advantages of R over click-based software for serious research work?</strong></p>
+<div id="radio_NHFEYLFZUZ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_NHFEYLFZUZ" value="answer"> <span>Reproducibility, error detection, and scaling operations to many variables.</span></label><label><input type="radio" autocomplete="off" name="radio_NHFEYLFZUZ" value=""> <span>Faster computation than SPSS for every analysis.</span></label><label><input type="radio" autocomplete="off" name="radio_NHFEYLFZUZ" value=""> <span>Built-in graphical menus for every common statistical test.</span></label><label><input type="radio" autocomplete="off" name="radio_NHFEYLFZUZ" value=""> <span>Automatic generation of APA-formatted reports without any code.</span></label>
 </div>
+<p><strong>3. In R, what is an “object”?</strong></p>
+<div id="radio_WEQATGOGZY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_WEQATGOGZY" value=""> <span>Anything that has been clicked on at least once during the session.</span></label><label><input type="radio" autocomplete="off" name="radio_WEQATGOGZY" value=""> <span>A type of file used to save analyses to disk.</span></label><label><input type="radio" autocomplete="off" name="radio_WEQATGOGZY" value="answer"> <span>A piece of information stored under a name, such as a number, a vector, or a dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_WEQATGOGZY" value=""> <span>A function that has been written by the R Foundation.</span></label>
+</div>
+<p><strong>4. Why does coding an analysis (rather than clicking through menus) help with reproducibility?</strong></p>
+<div id="radio_EEIJVJVKBJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_EEIJVJVKBJ" value=""> <span>Because R automatically records every menu click in a hidden log file.</span></label><label><input type="radio" autocomplete="off" name="radio_EEIJVJVKBJ" value=""> <span>Because R cannot save its work in any other way.</span></label><label><input type="radio" autocomplete="off" name="radio_EEIJVJVKBJ" value="answer"> <span>Because the script is a complete written record of every step of the analysis, which can be re-run, inspected, and shared.</span></label><label><input type="radio" autocomplete="off" name="radio_EEIJVJVKBJ" value=""> <span>Because R rejects analyses that have not been pre-registered.</span></label>
+</div>
+<p><strong>5. In the line <code>average_score &lt;- mean(scores)</code>, what is <code>mean</code>?</strong></p>
+<div id="radio_KXDZBZHBPB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_KXDZBZHBPB" value="answer"> <span>A function takes one or more objects as input and returns a new object as output.</span></label><label><input type="radio" autocomplete="off" name="radio_KXDZBZHBPB" value=""> <span>A function is a saved menu setting in R.</span></label><label><input type="radio" autocomplete="off" name="radio_KXDZBZHBPB" value=""> <span>A function is a way of giving a name to a single number.</span></label><label><input type="radio" autocomplete="off" name="radio_KXDZBZHBPB" value=""> <span>A function is a type of file extension used by R.</span></label>
+</div>
+<p><strong>6. In this book, what does it mean to say that R is “object-based”?</strong></p>
+<div id="radio_XYIDCZKIBL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_XYIDCZKIBL" value=""> <span>It means that R is the only language with named variables.</span></label><label><input type="radio" autocomplete="off" name="radio_XYIDCZKIBL" value="answer"> <span>It means that the information you work with is stored under names, and you create new objects by feeding existing objects into operations.</span></label><label><input type="radio" autocomplete="off" name="radio_XYIDCZKIBL" value=""> <span>It means that R can only be used to analyze datasets that have been organized into objects beforehand by SPSS.</span></label><label><input type="radio" autocomplete="off" name="radio_XYIDCZKIBL" value=""> <span>It means that R requires you to define classes and inheritance hierarchies before doing any analysis.</span></label>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script>
@@ -1024,4 +1131,4 @@ window.onload = function() {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/01-basics-r.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/01-basics-r.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

@@ -14,7 +14,7 @@
     "href": "index.html#how-to-use-this-book",
     "title": "Understanding and analyzing social and behavioral data",
     "section": "How to use this book",
-    "text": "How to use this book\nEach chapter contains:\n\nexplanations of concepts, written for readers with no programming background;\nexamples of R code that you can copy and run on your own machine;\na short set of multiple-choice questions at the end. Click an option to receive immediate feedback. A running counter of correct answers is displayed at the end of each chapter.",
+    "text": "How to use this book\nEach chapter contains:\n\nexplanations of concepts, written for readers with no programming background;\nexamples of R code that you can copy and run on your own machine;\na short set of multiple-choice questions at the end. Click an option to receive immediate feedback.",
     "crumbs": [
       "Preface"
     ]
@@ -44,7 +44,62 @@
     "href": "01-basics-r.html",
     "title": "1  What is R, and why use it?",
     "section": "",
-    "text": "Note\n\n\n\nThis chapter is a placeholder. Content will be added in a later step.",
+    "text": "1.1 What R is\nR is a programming language designed for statistics and data analysis. It is also the name of the program that runs the language: when you “use R,” you are typically running a program called R that reads instructions written in the R language and carries them out. In the next chapter we will look more carefully at the difference between the language and the program, since this distinction matters when you install things and when you read documentation.\nR is free and open source. Anyone can download it, and the source code is publicly available. It is maintained by a non-profit organization (the R Foundation) and developed by a large international community. Two practical consequences follow. First, your access to R does not depend on an institutional license: you can install it on any computer you have access to, including any computer you own after you leave university. Second, if a particular feature does not exist, anyone can write it, share it, and others can verify what it does. We will return to this idea in Chapter 6 when we discuss packages.\nR was created by statisticians, for statistics. Most general-purpose programming languages (Python, Java, JavaScript) treat statistical analysis as one application among many. R treats it as the central use case. The everyday operations of empirical research (fitting a regression, running an ANOVA, computing a correlation matrix, reshaping a dataset for repeated-measures analysis) are part of the language’s basic vocabulary.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>What is R, and why use it?</span>"
+    ]
+  },
+  {
+    "objectID": "01-basics-r.html#why-use-r-rather-than-software-like-spss-or-excel",
+    "href": "01-basics-r.html#why-use-r-rather-than-software-like-spss-or-excel",
+    "title": "1  What is R, and why use it?",
+    "section": "1.2 Why use R rather than software like SPSS or Excel?",
+    "text": "1.2 Why use R rather than software like SPSS or Excel?\nIf you have used SPSS, Excel, or similar tools, you know that most of your work happens by clicking. You select a variable, click a menu, choose a test, click “OK.” This is convenient for one-off questions, but it has three costs that grow as your work becomes more serious.\nThe first cost is reproducibility. When you click through a menu, the actions you took are not automatically recorded in a way that someone else (or you, six months later) can retrace. If a colleague asks “exactly how did you compute this number?”, you have to remember. With R, the answer is in the script: every step of the analysis is written down, and anyone with the script and the data can run it and obtain the same result. This is increasingly required by journals, funders, and pre-registration platforms.\nThe second cost is detection of errors. When you copy a column of values in Excel and paste it into a new column, the operation is invisible after the fact. You can inspect the final state of the spreadsheet, but you cannot inspect the chain of operations that produced it. When something looks wrong, you often cannot tell where the error was introduced. With R, every step is a line of code. If a result is wrong, you can read the code line by line and find the mistake.\nThe third cost is scale. Suppose you discover that 30 of your variables need the same correction. In SPSS or Excel, you have to perform the correction 30 times, once per variable. In R, you write the correction once and apply it to all 30 variables in a single line. We will see a concrete example of this in Chapter 6. This is not a small convenience: it can change which research questions are practical to ask.\nR has limitations as well, which it is honest to acknowledge. The learning curve at the start is steeper than for SPSS; you cannot simply open a file and click “run analysis.” Error messages can be cryptic when you are starting out. And because the language is large and the package ecosystem is even larger, you are constantly making choices about which tool to use for a given task. This book is designed to guide you through that environment with a small, well-chosen set of tools.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>What is R, and why use it?</span>"
+    ]
+  },
+  {
+    "objectID": "01-basics-r.html#instead-if-you-use-r",
+    "href": "01-basics-r.html#instead-if-you-use-r",
+    "title": "1  What is R, and why use it?",
+    "section": "1.3 Instead, if you use R…",
+    "text": "1.3 Instead, if you use R…\nR code is a written record of operations on data. A common first impression is that this looks like making things complicated for no reason: extra typing for no obvious benefit. The benefit shows up in three places.\nThe first place is transparency. A script is a complete description of the analysis. A reviewer, a collaborator, or your future self can read the script and know what you did. Nothing is hidden inside someone’s recollection of a sequence of clicks.\nThe second place is correction. With code, the whole analysis is visible in front of you, and you can read it from top to bottom to locate exactly where an error was introduced. In a click-based workflow in SPSS or Excel, the sequence of actions you performed is not recorded as a readable trace; if a result looks wrong, you have to “reverse engineer” what you did from memory or from the final state of the data, which is slow and often inconclusive. Once an error is located and fixed in code, you re-run the script and every downstream step updates automatically.\nThe third place is reuse. The script you write to clean Survey 1 is largely the same script you will use to clean Survey 2. With each project, your toolkit grows, and tasks that took a week the first time take an hour the third time.\nFor a researcher working with social and behavioral data, the cumulative effect of these three benefits is substantial. The transition is also possible: thousands of researchers have made it, including people with no prior programming background.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>What is R, and why use it?</span>"
+    ]
+  },
+  {
+    "objectID": "01-basics-r.html#r-is-object-based",
+    "href": "01-basics-r.html#r-is-object-based",
+    "title": "1  What is R, and why use it?",
+    "section": "1.4 R is “object-based”",
+    "text": "1.4 R is “object-based”\nYou will sometimes hear R described as an “object-oriented” language. The phrase has a specific meaning in computer science (it refers to a design pattern involving classes, methods, and inheritance), and R does support that pattern. But for the way you will use R as a beginner, that strict definition is not the most useful one. We will use a simpler phrase: object-based.\nIn R, every piece of information you work with is stored as an object. An object is a piece of data that has been given a name. The number 7 stored under the name participants is an object. A whole survey dataset stored under the name data2024 is an object. A correlation matrix stored under the name correlations is also an object.\nWhen you write R code, you spend most of your time doing two things: creating objects, and feeding objects into operations to produce new objects. Here is a small example. Suppose scores is an object containing the test scores of 100 participants. To get the average, you write:\n\nmean(scores)\n\nHere, mean is itself a piece of R, called a function. You feed it the object scores, and it produces a new value: the average. If you want to keep that average around for later, you assign it to a name:\n\naverage_score &lt;- mean(scores)\n\nNow average_score is its own object. You can use it elsewhere, just like you used scores.\nA few practical implications of this object-based way of working are worth flagging now, even though we will explore them in detail later.\nThe first implication is that names matter. A well-chosen object name tells you what the object contains. data2024_clean is more useful than df3.\nThe second implication is that the order of operations is explicit. Each line of code typically takes objects as input and produces objects as output. To understand what a script does, you can read it from top to bottom and watch how objects appear and transform.\nThe third implication is that the workspace is a collection of named objects. At any given moment, R holds in memory a list of every object you have created. This list is called the environment. We will return to the environment in Chapter 3 and Chapter 4.\nYou do not need to memorize any of this yet. Notice the vocabulary (object, function, environment), and we will revisit each term with concrete examples in later chapters.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>What is R, and why use it?</span>"
+    ]
+  },
+  {
+    "objectID": "01-basics-r.html#what-this-book-will-and-will-not-teach-you",
+    "href": "01-basics-r.html#what-this-book-will-and-will-not-teach-you",
+    "title": "1  What is R, and why use it?",
+    "section": "1.5 What this book will and will not teach you",
+    "text": "1.5 What this book will and will not teach you\nThis book is about understanding and analyzing social and behavioral data. The first section focuses on R itself: what it is, how to install it, how the pieces fit together, and how the basic operations work. We are not analyzing real data yet. That comes in later sections.\nThe reason for this ordering is practical. The most common cause of frustration among new R users is not a particular statistical operation. It is confusion about how R, RStudio, scripts, projects, and the environment relate to each other. When that confusion is cleared up, learning specific analyses becomes a matter of looking up the right function, which is a much smaller problem.\nBy the end of Section 1, you will be able to install R and RStudio, create and save the relevant kinds of files, perform basic operations, and use existing packages. You will also have a clear mental model that you can use to learn anything else about R, whether or not it is covered in this book.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>What is R, and why use it?</span>"
+    ]
+  },
+  {
+    "objectID": "01-basics-r.html#check-your-understanding",
+    "href": "01-basics-r.html#check-your-understanding",
+    "title": "1  What is R, and why use it?",
+    "section": "1.6 Check your understanding",
+    "text": "1.6 Check your understanding\n1. Which of the following best describes what R is?\n\n R is a paid statistical software package developed by IBM. R is a free, open-source programming language designed for statistics and data analysis. R is a graphical user interface that lets you perform statistical tests by clicking through menus. R is a cloud-based application that runs only inside a web browser.\n\n2. Which of the following best summarizes the advantages of R over click-based software for serious research work?\n\n Reproducibility, error detection, and scaling operations to many variables. Faster computation than SPSS for every analysis. Built-in graphical menus for every common statistical test. Automatic generation of APA-formatted reports without any code.\n\n3. In R, what is an “object”?\n\n Anything that has been clicked on at least once during the session. A type of file used to save analyses to disk. A piece of information stored under a name, such as a number, a vector, or a dataset. A function that has been written by the R Foundation.\n\n4. Why does coding an analysis (rather than clicking through menus) help with reproducibility?\n\n Because R automatically records every menu click in a hidden log file. Because R cannot save its work in any other way. Because the script is a complete written record of every step of the analysis, which can be re-run, inspected, and shared. Because R rejects analyses that have not been pre-registered.\n\n5. In the line average_score &lt;- mean(scores), what is mean?\n\n A function takes one or more objects as input and returns a new object as output. A function is a saved menu setting in R. A function is a way of giving a name to a single number. A function is a type of file extension used by R.\n\n6. In this book, what does it mean to say that R is “object-based”?\n\n It means that R is the only language with named variables. It means that the information you work with is stored under names, and you create new objects by feeding existing objects into operations. It means that R can only be used to analyze datasets that have been organized into objects beforehand by SPSS. It means that R requires you to define classes and inheritance hierarchies before doing any analysis.",
     "crumbs": [
       "Section 1: Getting Started Properly",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>What is R, and why use it?</span>"
