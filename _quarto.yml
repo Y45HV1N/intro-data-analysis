@@ -1,0 +1,41 @@
+project:
+  type: book
+  output-dir: _book
+book:
+  title: Understanding and analyzing social and behavioral data
+  author: Yashvin Seetahul
+  date: today
+  search: true
+  repo-url: https://github.com/Y45HV1N/intro-data-analysis
+  repo-actions:
+  - edit
+  - issue
+  page-navigation: true
+  chapters:
+  - index.qmd
+  - part: 'Section 1: Getting Started Properly'
+    chapters:
+    - 01-basics-r.qmd
+    - 02-r-vs-rstudio.qmd
+    - 03-files-and-environment.qmd
+    - 04-projects-and-sessions.qmd
+    - 05-objects-and-functions.qmd
+    - 06-operations-and-packages.qmd
+    - 07-recap.qmd
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: darkly
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-copy: true
+    code-overflow: wrap
+    css: include/webex.css
+    include-after-body: include/webex.js
+execute:
+  freeze: auto
+  echo: true
+  warning: false
+  message: false

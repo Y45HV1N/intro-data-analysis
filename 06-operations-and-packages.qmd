@@ -1,0 +1,13 @@
+---
+title: "Basic operations, custom functions, and packages"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(webexercises)
+```
+
+::: {.callout-note}
+This chapter is a placeholder. Content will be added in a later step.
+:::

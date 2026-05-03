@@ -1,0 +1,13 @@
+---
+title: "Working with R projects and R sessions"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(webexercises)
+```
+
+::: {.callout-note}
+This chapter is a placeholder. Content will be added in a later step.
+:::

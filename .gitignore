@@ -1,0 +1,18 @@
+# Quarto build outputs
+/_book/
+/.quarto/
+/_freeze/
+*_files/
+
+# R
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# OS
+.DS_Store
+Thumbs.db
+
+**/*.quarto_ipynb

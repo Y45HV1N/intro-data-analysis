@@ -1,0 +1,36 @@
+# Preface {.unnumbered}
+
+```{r}
+#| label: setup
+#| include: false
+library(webexercises)
+```
+
+This book is an introduction to the analysis of social and behavioral data using R. It is designed for complete beginners. No prior programming experience is assumed.
+
+The book is organized into sections, each containing several chapters. You can read the chapters in order, or jump to a specific topic using the table of contents on the left.
+
+## How to use this book {.unnumbered}
+
+Each chapter contains:
+
+- explanations of concepts, written for readers with no programming background;
+- examples of R code that you can copy and run on your own machine;
+- a short set of multiple-choice questions at the end. Click an option to receive immediate feedback. A running counter of correct answers is displayed at the end of each chapter.
+
+## What you will need {.unnumbered}
+
+To follow along you will need:
+
+- a computer running Windows, macOS, or Linux;
+- R (the language and computing engine);
+- RStudio (a working environment for R, optional but strongly recommended);
+- an internet connection to install additional R packages.
+
+The first chapters will guide you through the installation of these tools.
+
+## Section 1: Getting Started Properly {.unnumbered}
+
+Section 1 lays out the foundations: what R is, how to install it, what the different file types are, and how to perform basic operations. By the end of Section 1 you will have a solid mental model of the R ecosystem and you will be ready to start working with real data.
+
+Additional sections will be added as the book grows.
