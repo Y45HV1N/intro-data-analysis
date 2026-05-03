@@ -1,0 +1,119 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Understanding and analyzing social and behavioral data",
+    "section": "",
+    "text": "Preface\nThis book is an introduction to the analysis of social and behavioral data using R. It is designed for complete beginners. No prior programming experience is assumed.\nThe book is organized into sections, each containing several chapters. You can read the chapters in order, or jump to a specific topic using the table of contents on the left.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-use-this-book",
+    "href": "index.html#how-to-use-this-book",
+    "title": "Understanding and analyzing social and behavioral data",
+    "section": "How to use this book",
+    "text": "How to use this book\nEach chapter contains:\n\nexplanations of concepts, written for readers with no programming background;\nexamples of R code that you can copy and run on your own machine;\na short set of multiple-choice questions at the end. Click an option to receive immediate feedback. A running counter of correct answers is displayed at the end of each chapter.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "index.html#what-you-will-need",
+    "href": "index.html#what-you-will-need",
+    "title": "Understanding and analyzing social and behavioral data",
+    "section": "What you will need",
+    "text": "What you will need\nTo follow along you will need:\n\na computer running Windows, macOS, or Linux;\nR (the language and computing engine);\nRStudio (a working environment for R, optional but strongly recommended);\nan internet connection to install additional R packages.\n\nThe first chapters will guide you through the installation of these tools.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "index.html#section-1-getting-started-properly",
+    "href": "index.html#section-1-getting-started-properly",
+    "title": "Understanding and analyzing social and behavioral data",
+    "section": "Section 1: Getting Started Properly",
+    "text": "Section 1: Getting Started Properly\nSection 1 lays out the foundations: what R is, how to install it, what the different file types are, and how to perform basic operations. By the end of Section 1 you will have a solid mental model of the R ecosystem and you will be ready to start working with real data.\nAdditional sections will be added as the book grows.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "01-basics-r.html",
+    "href": "01-basics-r.html",
+    "title": "1  What is R, and why use it?",
+    "section": "",
+    "text": "Note\n\n\n\nThis chapter is a placeholder. Content will be added in a later step.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>What is R, and why use it?</span>"
+    ]
+  },
+  {
+    "objectID": "02-r-vs-rstudio.html",
+    "href": "02-r-vs-rstudio.html",
+    "title": "2  R, RStudio, and how they relate",
+    "section": "",
+    "text": "Note\n\n\n\nThis chapter is a placeholder. Content will be added in a later step.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>R, RStudio, and how they relate</span>"
+    ]
+  },
+  {
+    "objectID": "03-files-and-environment.html",
+    "href": "03-files-and-environment.html",
+    "title": "3  Scripts, RData, projects, environments, and R Markdown",
+    "section": "",
+    "text": "Note\n\n\n\nThis chapter is a placeholder. Content will be added in a later step.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Scripts, RData, projects, environments, and R Markdown</span>"
+    ]
+  },
+  {
+    "objectID": "04-projects-and-sessions.html",
+    "href": "04-projects-and-sessions.html",
+    "title": "4  Working with R projects and R sessions",
+    "section": "",
+    "text": "Note\n\n\n\nThis chapter is a placeholder. Content will be added in a later step.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Working with R projects and R sessions</span>"
+    ]
+  },
+  {
+    "objectID": "05-objects-and-functions.html",
+    "href": "05-objects-and-functions.html",
+    "title": "5  Objects and functions",
+    "section": "",
+    "text": "Note\n\n\n\nThis chapter is a placeholder. Content will be added in a later step.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Objects and functions</span>"
+    ]
+  },
+  {
+    "objectID": "06-operations-and-packages.html",
+    "href": "06-operations-and-packages.html",
+    "title": "6  Basic operations, custom functions, and packages",
+    "section": "",
+    "text": "Note\n\n\n\nThis chapter is a placeholder. Content will be added in a later step.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Basic operations, custom functions, and packages</span>"
+    ]
+  },
+  {
+    "objectID": "07-recap.html",
+    "href": "07-recap.html",
+    "title": "7  Recap of Section 1",
+    "section": "",
+    "text": "Note\n\n\n\nThis chapter is a placeholder. Content will be added in a later step.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Recap of Section 1</span>"
+    ]
+  }
+]
