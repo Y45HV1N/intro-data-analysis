@@ -16,3 +16,6 @@
 Thumbs.db
 
 **/*.quarto_ipynb
+
+# Local-only project notes (never push)
+CLAUDE.md
