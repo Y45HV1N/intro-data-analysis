@@ -187,7 +187,95 @@
     "href": "03-files-and-environment.html",
     "title": "3  Scripts, RData, projects, environments, and R Markdown",
     "section": "",
-    "text": "Note\n\n\n\nThis chapter is a placeholder. Content will be added in a later step.",
+    "text": "3.1 Why this chapter exists\nWhen you start using R, you will encounter several different “things” that all live on your computer and that all seem related to R: scripts, RData files, R projects, the environment, R Markdown files. New users frequently confuse these. The confusion is not unfounded; the names are similar, the file extensions are similar, and the documentation often assumes you already know which is which.\nThis chapter introduces each of them and clarifies what they are for. By the end, you should be able to answer the question “what kind of file should I create to do this?” for each of the situations you will encounter.\nA useful preliminary distinction: some of these things are files saved on your computer, while one of them (the environment) is a state held in memory while R is running. We will start with the in-memory thing because it underpins everything else.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Scripts, RData, projects, environments, and R Markdown</span>"
+    ]
+  },
+  {
+    "objectID": "03-files-and-environment.html#the-environment-what-r-is-holding-right-now",
+    "href": "03-files-and-environment.html#the-environment-what-r-is-holding-right-now",
+    "title": "3  Scripts, RData, projects, environments, and R Markdown",
+    "section": "3.2 The environment: what R is holding right now",
+    "text": "3.2 The environment: what R is holding right now\nWhen you run R (typically through RStudio), R holds in memory a list of all the objects you have created during the current session. This list is called the environment, or sometimes the workspace.\nFor example, suppose you open RStudio, type the following in the Console, and press Enter after each line:\n\nparticipants &lt;- 100\nmean_age &lt;- 21.4\ncondition_labels &lt;- c(\"control\", \"treatment\")\n\nYou have now created three objects: participants, mean_age, and condition_labels. They are all in the environment. The Environment panel in RStudio (upper right) will show them: their names, their types, and a short preview of their contents.\nThe environment is not a file. It exists only while R is running. When you close R, the environment is gone. If you reopen R later and want those objects back, you have to either re-create them by running the same code, or load them from a saved file.\nThis brings us to the next distinction.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Scripts, RData, projects, environments, and R Markdown</span>"
+    ]
+  },
+  {
+    "objectID": "03-files-and-environment.html#the-r-script-.r-file",
+    "href": "03-files-and-environment.html#the-r-script-.r-file",
+    "title": "3  Scripts, RData, projects, environments, and R Markdown",
+    "section": "3.3 The R script (.R file)",
+    "text": "3.3 The R script (.R file)\nAn R script is a plain-text file with the extension .R. It contains R code: the same code you would type into the Console, but saved in a file so you can re-run it later.\nTo create a script in RStudio: in the menu, click File &gt; New File &gt; R Script. A blank document opens in a new panel (typically the upper-left). You can type code there.\n\nparticipants &lt;- 100\nmean_age &lt;- 21.4\ncondition_labels &lt;- c(\"control\", \"treatment\")\n\nTo save the script, press Ctrl+S (Cmd+S on macOS) or click the disk icon at the top of the script panel. RStudio will ask you for a filename and a location. Use a meaningful name; for example, 01_setup.R.\nTo run the code in a script, you have several options:\n\nRun one line at a time. Place the cursor on a line and press Ctrl+Enter (Cmd+Enter on macOS). RStudio sends that line to the Console for execution.\nRun a selected block. Highlight several lines and press Ctrl+Enter. RStudio sends the highlighted block.\nRun the entire script. Click “Source” at the top of the script panel, or press Ctrl+Shift+Enter (Cmd+Shift+Enter on macOS).\n\nA script is the most important file type you will create. Most of your work in R will live in scripts. Once a script is saved, you can return to it any time, on any computer that has R, and reproduce exactly what you did.\nWhat a script does not contain: the results of running the code. A script is a recipe, not a meal. To get the results, the recipe has to be cooked again (i.e., run again).",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Scripts, RData, projects, environments, and R Markdown</span>"
+    ]
+  },
+  {
+    "objectID": "03-files-and-environment.html#the-rdata-file-.rdata-or-.rda",
+    "href": "03-files-and-environment.html#the-rdata-file-.rdata-or-.rda",
+    "title": "3  Scripts, RData, projects, environments, and R Markdown",
+    "section": "3.4 The RData file (.RData or .rda)",
+    "text": "3.4 The RData file (.RData or .rda)\nAn RData file is a saved snapshot of objects. It is a binary file (not human-readable when opened in a text editor) with the extension .RData or .rda. It allows you to save objects from your environment to disk, and to load them back later.\nThere are two common situations.\nSaving the entire environment. If you have several objects in your environment and want to save them all at once:\n\nsave.image(file = \"session_state.RData\")\n\nThis saves every object currently in the environment into the file session_state.RData (in the current working directory; we will revisit working directories in Chapter 4). To load it back in a future session:\n\nload(\"session_state.RData\")\n\nEvery saved object reappears in the environment under its original name.\nSaving specific objects. If you only want to save some objects, list them:\n\nsave(participants, mean_age, file = \"key_values.RData\")\n\nThis saves only participants and mean_age.\nA few comments are worth making here. First, RData files are a convenience, not a substitute for a script. The script is the authoritative record of what you did; the RData file is just a cache of intermediate results. If you ever lose the RData file, the script can recreate it. If you lose the script, the RData file is just a pile of objects with no explanation. Save scripts religiously; save RData files when it would take a long time to recreate the objects (for example, after a long simulation or a slow data import).\nSecond, RStudio sometimes asks, when you close the program, whether you want to “save the workspace.” This refers to saving the entire environment to a file called .RData in the current working directory, which would then load automatically the next time you open R. We recommend answering No to this prompt, every time. Letting the environment persist invisibly between sessions is a common source of bugs (you cannot tell which objects come from your script and which come from a leftover state). We will return to this in Chapter 4.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Scripts, RData, projects, environments, and R Markdown</span>"
+    ]
+  },
+  {
+    "objectID": "03-files-and-environment.html#the-r-project-.rproj-file",
+    "href": "03-files-and-environment.html#the-r-project-.rproj-file",
+    "title": "3  Scripts, RData, projects, environments, and R Markdown",
+    "section": "3.5 The R project (.Rproj file)",
+    "text": "3.5 The R project (.Rproj file)\nAn R project is a folder on your computer that has been formally designated as a project, by placing a small file with the .Rproj extension inside it. The .Rproj file itself is short and uninteresting; what matters is the structure it imposes on your work.\nWhen you open an R project in RStudio (by double-clicking the .Rproj file, or by going to File &gt; Open Project), four things happen.\n\nRStudio sets the working directory to the project folder. The working directory is the folder R uses as a starting point for finding and saving files. Setting it correctly removes a large class of “file not found” errors.\nRStudio loads the project’s settings (which are minimal, but include things like indentation preferences and line endings).\nRStudio remembers which scripts you had open the last time you closed the project, and re-opens them.\nRStudio starts a fresh R session specific to that project, separate from any other project you might have open in another window.\n\nThe practical effect is that a project keeps everything related to one piece of work (scripts, data files, output, notes) in one folder, and ensures that R behaves consistently every time you return to that folder. We will discuss projects again in Chapter 4 because they interact with sessions in a way that deserves its own treatment.\nTo create a project: in the RStudio menu, click File &gt; New Project. A dialog opens with three choices.\n\nNew Directory creates a new empty folder on your computer and sets it up as a project.\nExisting Directory turns a folder you already have into a project.\nVersion Control creates a project by cloning a Git or SVN repository (we will not use this for now).\n\nFor a beginner, New Directory &gt; New Project is the simplest path. Choose a name (e.g., my_first_project), choose a location on your computer, and click “Create Project.” RStudio creates the folder, places a .Rproj file inside it, and opens the new project. You will see the Files panel pointing at the new (empty) project folder.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Scripts, RData, projects, environments, and R Markdown</span>"
+    ]
+  },
+  {
+    "objectID": "03-files-and-environment.html#r-markdown-.rmd",
+    "href": "03-files-and-environment.html#r-markdown-.rmd",
+    "title": "3  Scripts, RData, projects, environments, and R Markdown",
+    "section": "3.6 R Markdown (.Rmd)",
+    "text": "3.6 R Markdown (.Rmd)\nAn R Markdown file is a plain-text file (extension .Rmd) that mixes prose with R code. The prose is written in a simple formatting language called Markdown; the code goes into “chunks” demarcated by special markers. When you “knit” the file, R runs the code, captures the output (numbers, tables, plots), and assembles a finished document (HTML, PDF, or Word) that contains the prose and the results, intermixed.\nR Markdown is what you use when you want a document that is also a complete record of an analysis: a lab report, a methods write-up, a thesis chapter, or a journal article.\nTo create one in RStudio: File &gt; New File &gt; R Markdown. RStudio will pre-fill the file with a small example. Save it with File &gt; Save, run it with the “Knit” button, and a finished document appears.\nYou will not produce R Markdown documents in Section 1 of this book. They are mentioned here so that the file extension does not surprise you, and so that the conceptual map is complete: a script is for code only, an R Markdown file is for prose plus code with results.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Scripts, RData, projects, environments, and R Markdown</span>"
+    ]
+  },
+  {
+    "objectID": "03-files-and-environment.html#putting-the-pieces-together",
+    "href": "03-files-and-environment.html#putting-the-pieces-together",
+    "title": "3  Scripts, RData, projects, environments, and R Markdown",
+    "section": "3.7 Putting the pieces together",
+    "text": "3.7 Putting the pieces together\nA useful summary:\n\nThe environment is the in-memory state. It exists only while R is running.\nA script (.R) is a saved record of code. It does not contain results.\nAn RData file (.RData) is a saved snapshot of objects. It contains values, not code.\nAn R project (.Rproj) is a folder set up to keep one piece of work organized.\nAn R Markdown file (.Rmd) is a document that mixes prose and code, producing a finished report when rendered.\n\nIn a typical research project you will use all of these together: a project folder containing scripts that produce intermediate RData files, with one or more R Markdown files writing up the analysis.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Scripts, RData, projects, environments, and R Markdown</span>"
+    ]
+  },
+  {
+    "objectID": "03-files-and-environment.html#tutorial-create-your-first-project-script-and-rdata-file",
+    "href": "03-files-and-environment.html#tutorial-create-your-first-project-script-and-rdata-file",
+    "title": "3  Scripts, RData, projects, environments, and R Markdown",
+    "section": "3.8 Tutorial: create your first project, script, and RData file",
+    "text": "3.8 Tutorial: create your first project, script, and RData file\nThe following is a short hands-on exercise. Doing it once will make the rest of the book easier to follow.\n\nOpen RStudio.\nClick File &gt; New Project &gt; New Directory &gt; New Project.\nName the directory r_book_practice and place it somewhere convenient (e.g., your Documents folder). Click Create Project.\nIn the new project, click File &gt; New File &gt; R Script. A blank script opens.\nType the following lines into the script:\n\n\nparticipants &lt;- 100\nmean_age &lt;- 21.4\ncondition_labels &lt;- c(\"control\", \"treatment\")\n\n\nSave the script with Ctrl+S (Cmd+S on macOS). Name it setup.R. The file should now appear in the Files panel of RStudio.\nRun the entire script: click “Source” at the top of the script panel. The three lines execute. Look at the Environment panel: the three objects should now be listed.\nSave those three objects to disk:\n\n\nsave.image(\"setup_state.RData\")\n\nA new file, setup_state.RData, appears in your project folder.\n\nClose RStudio entirely. When asked whether to save the workspace, answer No. (We will use the explicit save.image we just ran, not the implicit save-on-close.)\nReopen the project by going to your file browser, navigating to the r_book_practice folder, and double-clicking the .Rproj file. RStudio reopens with that project loaded.\nThe Environment panel is empty: the previous session is gone. Recover the three objects:\n\n\nload(\"setup_state.RData\")\n\nThe Environment panel now lists the three objects again.\nYou have just used a project, a script, and an RData file together, and you have seen the difference between code (preserved in the script) and state (preserved in the RData file).",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Scripts, RData, projects, environments, and R Markdown</span>"
+    ]
+  },
+  {
+    "objectID": "03-files-and-environment.html#check-your-understanding",
+    "href": "03-files-and-environment.html#check-your-understanding",
+    "title": "3  Scripts, RData, projects, environments, and R Markdown",
+    "section": "3.9 Check your understanding",
+    "text": "3.9 Check your understanding\n1. What is the “environment” in R?\n\n A folder on your computer where R is installed. A list of all R packages you have installed. The list of objects R is currently holding in memory during a session. A backup file that R creates automatically when you close it.\n\n2. What happens to the environment when you close R?\n\n It is automatically saved to the hard drive at all times. It is lost; only saved files (scripts, RData files) persist on disk. It is sent to the R Foundation for safekeeping. It is moved to the Recycle Bin or Trash.\n\n3. Which file type is the most authoritative record of what you did, and should be saved religiously?\n\n An RData file. An R project file. An R script (.R file). An R Markdown file.\n\n4. What does save.image(\"session.RData\") do?\n\n It saves all installed packages to disk. It saves the most recent plot to disk. It saves all objects currently in the environment to a single file on disk. It saves the entire R installation to disk.\n\n5. What is the practical purpose of an R project?\n\n An R project replaces the need for scripts. An R project is a folder formally designated as a project, which sets the working directory and keeps related files together. An R project is a paid subscription service from RStudio. An R project is the same thing as an RData file.\n\n6. Which best describes an R Markdown (.Rmd) file?\n\n An R Markdown file is a faster version of an R script. An R Markdown file mixes prose and code, and when rendered produces a document containing the prose and the code's output. An R Markdown file is a backup of the R installation. An R Markdown file can only be opened in Microsoft Word.\n\n7. When RStudio asks whether to “save the workspace” on closing, should you say yes?\n\n Yes, always: it ensures your work is never lost. Yes, but only when working on Windows. No: letting the environment persist invisibly between sessions is a common source of bugs, and you should re-run your script each session instead. It does not matter; the prompt has no effect.",
     "crumbs": [
       "Section 1: Getting Started Properly",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Scripts, RData, projects, environments, and R Markdown</span>"

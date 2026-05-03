@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -345,8 +380,22 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#why-this-chapter-exists" id="toc-why-this-chapter-exists" class="nav-link active" data-scroll-target="#why-this-chapter-exists"><span class="header-section-number">3.1</span> Why this chapter exists</a></li>
+  <li><a href="#the-environment-what-r-is-holding-right-now" id="toc-the-environment-what-r-is-holding-right-now" class="nav-link" data-scroll-target="#the-environment-what-r-is-holding-right-now"><span class="header-section-number">3.2</span> The environment: what R is holding right now</a></li>
+  <li><a href="#the-r-script-.r-file" id="toc-the-r-script-.r-file" class="nav-link" data-scroll-target="#the-r-script-.r-file"><span class="header-section-number">3.3</span> The R script (<code>.R</code> file)</a></li>
+  <li><a href="#the-rdata-file-.rdata-or-.rda" id="toc-the-rdata-file-.rdata-or-.rda" class="nav-link" data-scroll-target="#the-rdata-file-.rdata-or-.rda"><span class="header-section-number">3.4</span> The RData file (<code>.RData</code> or <code>.rda</code>)</a></li>
+  <li><a href="#the-r-project-.rproj-file" id="toc-the-r-project-.rproj-file" class="nav-link" data-scroll-target="#the-r-project-.rproj-file"><span class="header-section-number">3.5</span> The R project (<code>.Rproj</code> file)</a></li>
+  <li><a href="#r-markdown-.rmd" id="toc-r-markdown-.rmd" class="nav-link" data-scroll-target="#r-markdown-.rmd"><span class="header-section-number">3.6</span> R Markdown (<code>.Rmd</code>)</a></li>
+  <li><a href="#putting-the-pieces-together" id="toc-putting-the-pieces-together" class="nav-link" data-scroll-target="#putting-the-pieces-together"><span class="header-section-number">3.7</span> Putting the pieces together</a></li>
+  <li><a href="#tutorial-create-your-first-project-script-and-rdata-file" id="toc-tutorial-create-your-first-project-script-and-rdata-file" class="nav-link" data-scroll-target="#tutorial-create-your-first-project-script-and-rdata-file"><span class="header-section-number">3.8</span> Tutorial: create your first project, script, and RData file</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">3.9</span> Check your understanding</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/03-files-and-environment.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -371,21 +420,171 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<section id="why-this-chapter-exists" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="why-this-chapter-exists"><span class="header-section-number">3.1</span> Why this chapter exists</h2>
+<p>When you start using R, you will encounter several different “things” that all live on your computer and that all seem related to R: scripts, RData files, R projects, the environment, R Markdown files. New users frequently confuse these. The confusion is not unfounded; the names are similar, the file extensions are similar, and the documentation often assumes you already know which is which.</p>
+<p>This chapter introduces each of them and clarifies what they are for. By the end, you should be able to answer the question “what kind of file should I create to do <em>this</em>?” for each of the situations you will encounter.</p>
+<p>A useful preliminary distinction: some of these things are <strong>files saved on your computer</strong>, while one of them (the environment) is <strong>a state held in memory while R is running</strong>. We will start with the in-memory thing because it underpins everything else.</p>
+</section>
+<section id="the-environment-what-r-is-holding-right-now" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="the-environment-what-r-is-holding-right-now"><span class="header-section-number">3.2</span> The environment: what R is holding right now</h2>
+<p>When you run R (typically through RStudio), R holds in memory a list of all the objects you have created during the current session. This list is called the <strong>environment</strong>, or sometimes the <strong>workspace</strong>.</p>
+<p>For example, suppose you open RStudio, type the following in the Console, and press Enter after each line:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>participants <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mean_age <span class="ot">&lt;-</span> <span class="fl">21.4</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>condition_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"control"</span>, <span class="st">"treatment"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="callout-title-container flex-fill">
-Note
+<p>You have now created three objects: <code>participants</code>, <code>mean_age</code>, and <code>condition_labels</code>. They are all in the environment. The Environment panel in RStudio (upper right) will show them: their names, their types, and a short preview of their contents.</p>
+<p>The environment is not a file. It exists only while R is running. When you close R, the environment is gone. If you reopen R later and want those objects back, you have to either re-create them by running the same code, or load them from a saved file.</p>
+<p>This brings us to the next distinction.</p>
+</section>
+<section id="the-r-script-.r-file" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="the-r-script-.r-file"><span class="header-section-number">3.3</span> The R script (<code>.R</code> file)</h2>
+<p>An <strong>R script</strong> is a plain-text file with the extension <code>.R</code>. It contains R code: the same code you would type into the Console, but saved in a file so you can re-run it later.</p>
+<p>To create a script in RStudio: in the menu, click <strong>File &gt; New File &gt; R Script</strong>. A blank document opens in a new panel (typically the upper-left). You can type code there.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>participants <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>mean_age <span class="ot">&lt;-</span> <span class="fl">21.4</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>condition_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"control"</span>, <span class="st">"treatment"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>To save the script, press Ctrl+S (Cmd+S on macOS) or click the disk icon at the top of the script panel. RStudio will ask you for a filename and a location. Use a meaningful name; for example, <code>01_setup.R</code>.</p>
+<p>To run the code in a script, you have several options:</p>
+<ul>
+<li><strong>Run one line at a time.</strong> Place the cursor on a line and press Ctrl+Enter (Cmd+Enter on macOS). RStudio sends that line to the Console for execution.</li>
+<li><strong>Run a selected block.</strong> Highlight several lines and press Ctrl+Enter. RStudio sends the highlighted block.</li>
+<li><strong>Run the entire script.</strong> Click “Source” at the top of the script panel, or press Ctrl+Shift+Enter (Cmd+Shift+Enter on macOS).</li>
+</ul>
+<p>A script is the most important file type you will create. Most of your work in R will live in scripts. Once a script is saved, you can return to it any time, on any computer that has R, and reproduce exactly what you did.</p>
+<p>What a script <em>does not</em> contain: the results of running the code. A script is a recipe, not a meal. To get the results, the recipe has to be cooked again (i.e., run again).</p>
+</section>
+<section id="the-rdata-file-.rdata-or-.rda" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="the-rdata-file-.rdata-or-.rda"><span class="header-section-number">3.4</span> The RData file (<code>.RData</code> or <code>.rda</code>)</h2>
+<p>An <strong>RData file</strong> is a saved snapshot of objects. It is a binary file (not human-readable when opened in a text editor) with the extension <code>.RData</code> or <code>.rda</code>. It allows you to save objects from your environment to disk, and to load them back later.</p>
+<p>There are two common situations.</p>
+<p><strong>Saving the entire environment.</strong> If you have several objects in your environment and want to save them all at once:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save.image</span>(<span class="at">file =</span> <span class="st">"session_state.RData"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="callout-body-container callout-body">
-<p>This chapter is a placeholder. Content will be added in a later step.</p>
+<p>This saves every object currently in the environment into the file <code>session_state.RData</code> (in the current working directory; we will revisit working directories in Chapter 4). To load it back in a future session:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"session_state.RData"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>Every saved object reappears in the environment under its original name.</p>
+<p><strong>Saving specific objects.</strong> If you only want to save some objects, list them:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(participants, mean_age, <span class="at">file =</span> <span class="st">"key_values.RData"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This saves only <code>participants</code> and <code>mean_age</code>.</p>
+<p>A few comments are worth making here. First, RData files are a <em>convenience</em>, not a substitute for a script. The script is the authoritative record of what you did; the RData file is just a cache of intermediate results. If you ever lose the RData file, the script can recreate it. If you lose the script, the RData file is just a pile of objects with no explanation. Save scripts religiously; save RData files when it would take a long time to recreate the objects (for example, after a long simulation or a slow data import).</p>
+<p>Second, RStudio sometimes asks, when you close the program, whether you want to “save the workspace.” This refers to saving the entire environment to a file called <code>.RData</code> in the current working directory, which would then load automatically the next time you open R. We recommend answering <strong>No</strong> to this prompt, every time. Letting the environment persist invisibly between sessions is a common source of bugs (you cannot tell which objects come from your script and which come from a leftover state). We will return to this in Chapter 4.</p>
+</section>
+<section id="the-r-project-.rproj-file" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="the-r-project-.rproj-file"><span class="header-section-number">3.5</span> The R project (<code>.Rproj</code> file)</h2>
+<p>An <strong>R project</strong> is a folder on your computer that has been formally designated as a project, by placing a small file with the <code>.Rproj</code> extension inside it. The <code>.Rproj</code> file itself is short and uninteresting; what matters is the structure it imposes on your work.</p>
+<p>When you open an R project in RStudio (by double-clicking the <code>.Rproj</code> file, or by going to <strong>File &gt; Open Project</strong>), four things happen.</p>
+<ol type="1">
+<li>RStudio sets the <strong>working directory</strong> to the project folder. The working directory is the folder R uses as a starting point for finding and saving files. Setting it correctly removes a large class of “file not found” errors.</li>
+<li>RStudio loads the project’s settings (which are minimal, but include things like indentation preferences and line endings).</li>
+<li>RStudio remembers which scripts you had open the last time you closed the project, and re-opens them.</li>
+<li>RStudio starts a fresh R session specific to that project, separate from any other project you might have open in another window.</li>
+</ol>
+<p>The practical effect is that a project keeps everything related to one piece of work (scripts, data files, output, notes) in one folder, and ensures that R behaves consistently every time you return to that folder. We will discuss projects again in Chapter 4 because they interact with sessions in a way that deserves its own treatment.</p>
+<p>To create a project: in the RStudio menu, click <strong>File &gt; New Project</strong>. A dialog opens with three choices.</p>
+<ul>
+<li><strong>New Directory</strong> creates a new empty folder on your computer and sets it up as a project.</li>
+<li><strong>Existing Directory</strong> turns a folder you already have into a project.</li>
+<li><strong>Version Control</strong> creates a project by cloning a Git or SVN repository (we will not use this for now).</li>
+</ul>
+<p>For a beginner, <strong>New Directory &gt; New Project</strong> is the simplest path. Choose a name (e.g., <code>my_first_project</code>), choose a location on your computer, and click “Create Project.” RStudio creates the folder, places a <code>.Rproj</code> file inside it, and opens the new project. You will see the Files panel pointing at the new (empty) project folder.</p>
+</section>
+<section id="r-markdown-.rmd" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="r-markdown-.rmd"><span class="header-section-number">3.6</span> R Markdown (<code>.Rmd</code>)</h2>
+<p>An <strong>R Markdown</strong> file is a plain-text file (extension <code>.Rmd</code>) that mixes prose with R code. The prose is written in a simple formatting language called Markdown; the code goes into “chunks” demarcated by special markers. When you “knit” the file, R runs the code, captures the output (numbers, tables, plots), and assembles a finished document (HTML, PDF, or Word) that contains the prose and the results, intermixed.</p>
+<p>R Markdown is what you use when you want a document that is also a complete record of an analysis: a lab report, a methods write-up, a thesis chapter, or a journal article.</p>
+<p>To create one in RStudio: <strong>File &gt; New File &gt; R Markdown</strong>. RStudio will pre-fill the file with a small example. Save it with <strong>File &gt; Save</strong>, run it with the “Knit” button, and a finished document appears.</p>
+<p>You will not produce R Markdown documents in Section 1 of this book. They are mentioned here so that the file extension does not surprise you, and so that the conceptual map is complete: a script is for code only, an R Markdown file is for prose plus code with results.</p>
+</section>
+<section id="putting-the-pieces-together" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="putting-the-pieces-together"><span class="header-section-number">3.7</span> Putting the pieces together</h2>
+<p>A useful summary:</p>
+<ul>
+<li>The <strong>environment</strong> is the in-memory state. It exists only while R is running.</li>
+<li>A <strong>script</strong> (<code>.R</code>) is a saved record of code. It does not contain results.</li>
+<li>An <strong>RData file</strong> (<code>.RData</code>) is a saved snapshot of objects. It contains values, not code.</li>
+<li>An <strong>R project</strong> (<code>.Rproj</code>) is a folder set up to keep one piece of work organized.</li>
+<li>An <strong>R Markdown</strong> file (<code>.Rmd</code>) is a document that mixes prose and code, producing a finished report when rendered.</li>
+</ul>
+<p>In a typical research project you will use all of these together: a project folder containing scripts that produce intermediate RData files, with one or more R Markdown files writing up the analysis.</p>
+</section>
+<section id="tutorial-create-your-first-project-script-and-rdata-file" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="tutorial-create-your-first-project-script-and-rdata-file"><span class="header-section-number">3.8</span> Tutorial: create your first project, script, and RData file</h2>
+<p>The following is a short hands-on exercise. Doing it once will make the rest of the book easier to follow.</p>
+<ol type="1">
+<li>Open RStudio.</li>
+<li>Click <strong>File &gt; New Project &gt; New Directory &gt; New Project</strong>.</li>
+<li>Name the directory <code>r_book_practice</code> and place it somewhere convenient (e.g., your Documents folder). Click <strong>Create Project</strong>.</li>
+<li>In the new project, click <strong>File &gt; New File &gt; R Script</strong>. A blank script opens.</li>
+<li>Type the following lines into the script:</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>participants <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>mean_age <span class="ot">&lt;-</span> <span class="fl">21.4</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>condition_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"control"</span>, <span class="st">"treatment"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="6" type="1">
+<li>Save the script with Ctrl+S (Cmd+S on macOS). Name it <code>setup.R</code>. The file should now appear in the Files panel of RStudio.</li>
+<li>Run the entire script: click “Source” at the top of the script panel. The three lines execute. Look at the Environment panel: the three objects should now be listed.</li>
+<li>Save those three objects to disk:</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save.image</span>(<span class="st">"setup_state.RData"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>A new file, <code>setup_state.RData</code>, appears in your project folder.</p>
+<ol start="9" type="1">
+<li>Close RStudio entirely. When asked whether to save the workspace, answer <strong>No</strong>. (We will use the explicit <code>save.image</code> we just ran, not the implicit save-on-close.)</li>
+<li>Reopen the project by going to your file browser, navigating to the <code>r_book_practice</code> folder, and double-clicking the <code>.Rproj</code> file. RStudio reopens with that project loaded.</li>
+<li>The Environment panel is empty: the previous session is gone. Recover the three objects:</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"setup_state.RData"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The Environment panel now lists the three objects again.</p>
+<p>You have just used a project, a script, and an RData file together, and you have seen the difference between code (preserved in the script) and state (preserved in the RData file).</p>
+</section>
+<section id="check-your-understanding" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">3.9</span> Check your understanding</h2>
+<p><strong>1. What is the “environment” in R?</strong></p>
+<div id="radio_QTGZHPYPHS" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_QTGZHPYPHS" value=""> <span>A folder on your computer where R is installed.</span></label><label><input type="radio" autocomplete="off" name="radio_QTGZHPYPHS" value=""> <span>A list of all R packages you have installed.</span></label><label><input type="radio" autocomplete="off" name="radio_QTGZHPYPHS" value="answer"> <span>The list of objects R is currently holding in memory during a session.</span></label><label><input type="radio" autocomplete="off" name="radio_QTGZHPYPHS" value=""> <span>A backup file that R creates automatically when you close it.</span></label>
+</div>
+<p><strong>2. What happens to the environment when you close R?</strong></p>
+<div id="radio_JAKOYGSGHI" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_JAKOYGSGHI" value=""> <span>It is automatically saved to the hard drive at all times.</span></label><label><input type="radio" autocomplete="off" name="radio_JAKOYGSGHI" value="answer"> <span>It is lost; only saved files (scripts, RData files) persist on disk.</span></label><label><input type="radio" autocomplete="off" name="radio_JAKOYGSGHI" value=""> <span>It is sent to the R Foundation for safekeeping.</span></label><label><input type="radio" autocomplete="off" name="radio_JAKOYGSGHI" value=""> <span>It is moved to the Recycle Bin or Trash.</span></label>
+</div>
+<p><strong>3. Which file type is the most authoritative record of what you did, and should be saved religiously?</strong></p>
+<div id="radio_FNJWAHMOFP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_FNJWAHMOFP" value=""> <span>An RData file.</span></label><label><input type="radio" autocomplete="off" name="radio_FNJWAHMOFP" value=""> <span>An R project file.</span></label><label><input type="radio" autocomplete="off" name="radio_FNJWAHMOFP" value="answer"> <span>An R script (.R file).</span></label><label><input type="radio" autocomplete="off" name="radio_FNJWAHMOFP" value=""> <span>An R Markdown file.</span></label>
+</div>
+<p><strong>4. What does <code>save.image("session.RData")</code> do?</strong></p>
+<div id="radio_TSMCVKDRGO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_TSMCVKDRGO" value=""> <span>It saves all installed packages to disk.</span></label><label><input type="radio" autocomplete="off" name="radio_TSMCVKDRGO" value=""> <span>It saves the most recent plot to disk.</span></label><label><input type="radio" autocomplete="off" name="radio_TSMCVKDRGO" value="answer"> <span>It saves all objects currently in the environment to a single file on disk.</span></label><label><input type="radio" autocomplete="off" name="radio_TSMCVKDRGO" value=""> <span>It saves the entire R installation to disk.</span></label>
+</div>
+<p><strong>5. What is the practical purpose of an R project?</strong></p>
+<div id="radio_UYEVIAUXWU" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_UYEVIAUXWU" value=""> <span>An R project replaces the need for scripts.</span></label><label><input type="radio" autocomplete="off" name="radio_UYEVIAUXWU" value="answer"> <span>An R project is a folder formally designated as a project, which sets the working directory and keeps related files together.</span></label><label><input type="radio" autocomplete="off" name="radio_UYEVIAUXWU" value=""> <span>An R project is a paid subscription service from RStudio.</span></label><label><input type="radio" autocomplete="off" name="radio_UYEVIAUXWU" value=""> <span>An R project is the same thing as an RData file.</span></label>
+</div>
+<p><strong>6. Which best describes an R Markdown (.Rmd) file?</strong></p>
+<div id="radio_MJUTKVJQMO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MJUTKVJQMO" value=""> <span>An R Markdown file is a faster version of an R script.</span></label><label><input type="radio" autocomplete="off" name="radio_MJUTKVJQMO" value="answer"> <span>An R Markdown file mixes prose and code, and when rendered produces a document containing the prose and the code's output.</span></label><label><input type="radio" autocomplete="off" name="radio_MJUTKVJQMO" value=""> <span>An R Markdown file is a backup of the R installation.</span></label><label><input type="radio" autocomplete="off" name="radio_MJUTKVJQMO" value=""> <span>An R Markdown file can only be opened in Microsoft Word.</span></label>
+</div>
+<p><strong>7. When RStudio asks whether to “save the workspace” on closing, should you say yes?</strong></p>
+<div id="radio_MPBNQOARLF" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MPBNQOARLF" value=""> <span>Yes, always: it ensures your work is never lost.</span></label><label><input type="radio" autocomplete="off" name="radio_MPBNQOARLF" value=""> <span>Yes, but only when working on Windows.</span></label><label><input type="radio" autocomplete="off" name="radio_MPBNQOARLF" value="answer"> <span>No: letting the environment persist invisibly between sessions is a common source of bugs, and you should re-run your script each session instead.</span></label><label><input type="radio" autocomplete="off" name="radio_MPBNQOARLF" value=""> <span>It does not matter; the prompt has no effect.</span></label>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script>
@@ -1024,4 +1223,4 @@ window.onload = function() {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/03-files-and-environment.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/03-files-and-environment.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
