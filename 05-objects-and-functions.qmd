@@ -102,6 +102,8 @@ class(mixed)
 
 The first two values were converted to strings (`"1"` and `"2"`) so that all elements have a common type. This is rarely what you want; if you find yourself doing this by accident, it usually means you misclassified the data on input.
 
+In practice, at the beginner level you will rarely *create* vectors by hand with `c()`. Most of the time you will be working with vectors that came from a real data file (a CSV, a survey export, a spreadsheet). What matters at this stage is that you understand what a vector is and how to manipulate one: how to find its length, how to pull out specific elements with square brackets, and how it behaves when types are mixed. Those skills transfer directly to vectors that arrive in your environment from outside.
+
 ## Data frames
 
 A **data frame** is the structure most often used to represent a dataset: rows are observations (e.g., participants), columns are variables (e.g., age, gender, response on item 1). It is the R analogue of a spreadsheet.
@@ -179,6 +181,8 @@ participants_data[1:3, c(1, 2)]   # first three rows, first two columns
 
 Leaving one of the slots empty means "all": `[1, ]` means "row 1, all columns," and `[, 2]` means "all rows, column 2." This pattern is worth practicing; it is used frequently.
 
+As with vectors, at the beginner level you will rarely *create* data frames by hand. Most of the time you will load a data frame from a real data file (a CSV, an SPSS file, an Excel sheet) using a function like `read.csv()`. What matters at this stage is that you understand what a data frame is, how to inspect its structure, and how to pull out specific columns, rows, and individual cells. Those skills are exactly what you will use on real datasets.
+
 ## Objects composed of objects
 
 We have already seen this idea in passing, but it is worth making explicit. A vector is a sequence of single values. A data frame is a collection of vectors of equal length. A data frame, in turn, is itself an object that can be passed as input to functions like `nrow()`, `mean()`, `str()`. Larger objects are built from smaller ones.
@@ -188,6 +192,16 @@ Two more compound types are worth knowing about, even though we will not use the
 A **list** is an ordered collection of objects, like a vector, except that the elements can be of any type and any length. A list could contain a single number in the first slot, a vector of strings in the second slot, and a data frame in the third slot. Many functions that fit statistical models (regressions, ANOVAs) return their results as a list. We will revisit lists when we encounter such results in later sections.
 
 A **factor** is a vector of strings that R has been told to treat as a fixed set of categorical levels. Factors are useful for categorical predictors in models (e.g., experimental conditions). For now, what matters is to recognize the term when you see it.
+
+Whenever an object is composed of named parts, the dollar sign `$` is the operator you use to look at, or extract, one of those parts. We saw this in the previous section, where `participants_data$age` returned the `age` column of a data frame. The same operator works on lists: if `model_results` is a list with a named slot called `coefficients`, then `model_results$coefficients` returns the contents of that slot. The pattern is always the same: write the name of the outer object, a dollar sign, and the name of the inner part you want.
+
+```{r}
+#| eval: false
+participants_data$age          # the age column of a data frame
+model_results$coefficients     # the coefficients slot of a model-results list
+```
+
+You will use `$` constantly when working with real data and with the output of analysis functions. Most of those outputs are composed objects whose useful pieces have names; `$` is the way you reach them.
 
 ## Functions
 
@@ -207,8 +221,10 @@ Here is the same function, `mean`, used in three different ways:
 #| eval: false
 mean(ages)                          # used directly; result printed
 average_age <- mean(ages)           # result assigned to a name
-mean(participants_data$age)         # input pulled from a data frame
+mean(participants_data$age)         # input pulled from a data frame using $
 ```
+
+The third line uses the dollar sign `$` introduced in the previous section: `participants_data$age` extracts the `age` column from the data frame and passes it directly to `mean()`, with no intermediate object. Reading this kind of expression from the inside out is a useful habit: first `participants_data$age` produces a vector, then `mean()` takes that vector and returns a single number.
 
 Many functions accept multiple arguments. `round()`, for example, takes a number and an optional second argument specifying how many decimals to keep:
 
