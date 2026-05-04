@@ -18,8 +18,24 @@
       invisible. Override the background with a semi-transparent grey
       that works on both light and dark page backgrounds, and let the
       text color be inherited from the surrounding text (which is dark
-      in light mode and light in dark mode). */
-code:not(pre code) {
+      in light mode and light in dark mode).
+
+      We list explicit parents instead of using code:not(pre code)
+      because the descendant selector inside :not() is a newer feature
+      that some Chromium versions silently drop from the parsed rule. */
+p code,
+li code,
+td code,
+th code,
+label code,
+dt code,
+dd code,
+blockquote code,
+strong code,
+em code,
+h1 code, h2 code, h3 code, h4 code, h5 code, h6 code,
+.callout code,
+.callout-body code {
   background-color: rgba(127, 127, 127, 0.15) !important;
   color: inherit !important;
 }
