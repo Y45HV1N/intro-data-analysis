@@ -58,6 +58,22 @@ Step by step:
 
 If you are using a university computer where you cannot install software, ask your IT department to install both R and RStudio, or use the cloud version of RStudio at <https://posit.cloud>, which runs in a browser and requires no installation.
 
+### Video walkthroughs
+
+You may find the following short videos helpful as a complement to the written instructions above. They are not the most recent, and the download pages may have changed slightly in appearance, but the essentials of the installation process have not changed.
+
+**Installing R and RStudio on Windows.**
+
+{{< video https://www.youtube.com/watch?v=_2sewGCA0y4 >}}
+
+**Installing R and RStudio on macOS.**
+
+{{< video https://www.youtube.com/watch?v=UesYjMLSrbg >}}
+
+**A walkthrough of RStudio setup once both are installed.**
+
+{{< video https://www.youtube.com/watch?v=jAHJyeOqe24 >}}
+
 ## What you see when you open RStudio for the first time
 
 Open RStudio. You should see a window divided into three panels (later it will become four, once you create a script). The exact arrangement varies, but the typical default is:
