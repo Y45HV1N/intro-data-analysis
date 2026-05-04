@@ -1,0 +1,572 @@
+---
+title: "Wrangling and describing data with the tidyverse"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(webexercises)
+```
+
+## Overview
+
+Chapter 8 used base R for data wrangling: `data$column` to access a column, `data[rows, columns]` to subset, `data$new <- expression` to create a variable. Those operations work, and you should be comfortable reading them. They are also, for any analysis longer than a few lines, harder to read and write than the alternative we introduce here.
+
+This chapter introduces the **tidyverse**, a collection of R packages designed around a consistent, readable style for data manipulation. We will learn the core operations (selecting columns, filtering rows, creating variables, sorting, grouping, summarizing, reshaping). The chapter then turns to descriptive statistics, both with base R and with the `psych` package, and ends with a small but important computation that connects what you have learned so far to the linear models that will appear in the rest of the book.
+
+We continue to use `vgames_study.csv` as the running dataset. If you do not have it loaded, the line is `data <- read.csv("data/vgames_study.csv")`.
+
+## The tidyverse
+
+The **tidyverse** is a set of R packages that share a common design philosophy and work cleanly together. The most important members for our purposes are:
+
+- `dplyr`, for data manipulation (selecting, filtering, summarizing).
+- `tidyr`, for reshaping data (wide to long and back).
+- `ggplot2`, for visualization (the next chapter).
+
+When you load the tidyverse, you load all of these (and several others) at once. Install once and load every session:
+
+```{r}
+#| eval: false
+install.packages("tidyverse")    # one time, per computer
+library(tidyverse)               # every session
+```
+
+Then load the dataset:
+
+```{r}
+#| eval: false
+data <- read.csv("data/vgames_study.csv")
+```
+
+The rest of the chapter assumes both lines have run.
+
+## The pipe operator
+
+The first piece of new syntax is the **pipe operator**, written `|>`. It takes the output of one operation and passes it as the input to the next. Read it aloud as "and then."
+
+Without the pipe:
+
+```{r}
+#| eval: false
+head(data)
+```
+
+With the pipe:
+
+```{r}
+#| eval: false
+data |> head()
+```
+
+Both produce the same result: the first six rows of `data`. The pipe says "take `data`, *and then* apply `head()` to it." For a single function call the pipe saves nothing; its value appears when you chain several operations together. We will see chaining shortly.
+
+A note on syntax. You will sometimes see `%>%` in older code. It comes from a package called `magrittr` and behaves almost identically to `|>` for everyday use. The `|>` form is built into modern R (since R 4.1, 2021) and is the form we use. Either is fine; do not be surprised by `%>%` in code you read elsewhere.
+
+## `select()`: choosing columns
+
+`select()` keeps the columns you name and drops the rest:
+
+```{r}
+#| eval: false
+data |> select(participant_id, condition, aggression)
+```
+
+The result is a smaller data frame with only those three columns, in that order. To keep everything *except* a column, prefix its name with a minus sign:
+
+```{r}
+#| eval: false
+data |> select(-age)
+```
+
+`select()` returns a new data frame. It does not modify `data` unless you assign the result back. To save the result for later use:
+
+```{r}
+#| eval: false
+data_small <- data |> select(participant_id, condition, trait_hostility, aggression)
+head(data_small)
+```
+
+## `filter()`: choosing rows
+
+`filter()` keeps the rows that meet a condition. The conditions use the same comparison operators introduced in Chapter 8 (`==`, `!=`, `<`, `<=`, `>`, `>=`):
+
+```{r}
+#| eval: false
+data |> filter(condition == "violent")
+```
+
+This returns the 60 rows where `condition` equals `"violent"`. Multiple conditions separated by commas are combined with "and":
+
+```{r}
+#| eval: false
+data |> filter(condition == "violent", age > 20)
+```
+
+Returns participants who are *both* in the violent condition *and* older than 20.
+
+For an explicit "or," use the vertical bar `|`:
+
+```{r}
+#| eval: false
+data |> filter(condition == "violent" | age > 20)
+```
+
+A common idiom: `nrow()` after a filter, to count how many rows match a condition:
+
+```{r}
+#| eval: false
+data |> filter(aggression > 6) |> nrow()
+```
+
+## `mutate()`: creating or modifying variables
+
+`mutate()` adds new columns or modifies existing ones. The general form is `mutate(new_name = expression)`:
+
+```{r}
+#| eval: false
+data |> mutate(aggression_centered = aggression - mean(aggression))
+```
+
+This produces a data frame that is just like `data` except for an additional column, `aggression_centered`, containing each aggression score minus the mean.
+
+`mutate()`, like all dplyr verbs, returns a modified copy and does not change the original unless you assign the result:
+
+```{r}
+#| eval: false
+# This only prints the modified data; data itself is unchanged:
+data |> mutate(aggression_centered = aggression - mean(aggression))
+
+# This saves the modification back into data:
+data <- data |> mutate(aggression_centered = aggression - mean(aggression))
+```
+
+This distinction is the most common source of confusion for tidyverse beginners. If you compute something and the next line does not see your new column, the most likely reason is that you forgot to assign the result.
+
+You can also use `mutate()` to create logical (TRUE/FALSE) variables. The expression `trait_hostility > 4` produces a logical value for each row, which `mutate()` stores as a new column:
+
+```{r}
+#| eval: false
+data <- data |> mutate(hostility_high = trait_hostility > 4)
+```
+
+After this line, `data` has a new column `hostility_high` that is `TRUE` for participants whose trait hostility is above 4 and `FALSE` otherwise.
+
+## `rename()`: renaming variables
+
+`rename()` changes column names. The syntax is `new_name = old_name`:
+
+```{r}
+#| eval: false
+data |> rename(gaming_hours = hours_weekly)
+```
+
+Multiple renames in one call are separated by commas:
+
+```{r}
+#| eval: false
+data_renamed <- data |> rename(hostility = trait_hostility, id = participant_id)
+```
+
+## `arrange()`: sorting rows
+
+`arrange()` sorts the rows of a data frame:
+
+```{r}
+#| eval: false
+data |> arrange(aggression)        # lowest to highest
+data |> arrange(desc(aggression))  # highest to lowest
+```
+
+`desc()` (for "descending") wraps the column when you want the highest values first. Combine with `head()` to peek at the top rows:
+
+```{r}
+#| eval: false
+data |> arrange(desc(trait_hostility)) |> head(1)
+```
+
+Returns the single most hostile participant in the dataset.
+
+## `group_by()` and `summarize()`: summaries by group
+
+This is the most important combination in dplyr. `group_by()` divides the data into groups based on the values of one or more variables; `summarize()` computes a summary statistic within each group, returning one row per group.
+
+The mean and standard deviation of aggression in each condition:
+
+```{r}
+#| eval: false
+data |>
+  group_by(condition) |>
+  summarize(
+    mean_aggression = mean(aggression),
+    sd_aggression = sd(aggression),
+    n = n()
+  )
+```
+
+The output is a small table with two rows (one per condition) and four columns: the grouping variable, plus the three summaries you computed. `n()` is a dplyr helper that counts the number of rows in each group; in this dataset both groups have 60.
+
+You can group by multiple variables at once:
+
+```{r}
+#| eval: false
+data |>
+  group_by(condition, gender) |>
+  summarize(
+    mean_aggression = mean(aggression),
+    n = n()
+  )
+```
+
+Now the output has one row per combination of `condition` and `gender` (six rows in total: two conditions times three gender categories).
+
+`summarize()` accepts as many summary functions as you want, separated by commas. Common choices: `mean()`, `sd()`, `median()`, `min()`, `max()`, `n()`, and any other function that takes a vector and returns a single number.
+
+## Chaining multiple operations
+
+The full payoff of the pipe appears when you chain several verbs. Read the following aloud, replacing `|>` with "and then":
+
+```{r}
+#| eval: false
+data |>
+  filter(age >= 20) |>
+  group_by(condition) |>
+  summarize(
+    mean_aggression = mean(aggression),
+    n = n()
+  ) |>
+  arrange(desc(mean_aggression))
+```
+
+"Take `data`, *and then* keep only participants aged 20 or older, *and then* group by condition, *and then* compute the mean aggression and sample size for each group, *and then* sort the resulting table by mean aggression from highest to lowest."
+
+This is what makes the tidyverse style worth learning. The same operation in base R would require nested function calls or several intermediate variables; here, each step is a line, the data flows top to bottom, and the operations read in the order they happen. When something goes wrong, you can comment out the bottom of the chain and run the top to see the partial result.
+
+## Reshaping data: long and wide format
+
+A dataset can be in **wide format** or **long format**. Our `vgames_study.csv` is in wide format: each participant occupies a single row, and different measurements (age, aggression, empathy, and so on) are in different columns. Long format is the alternative: each measurement occupies a row, and a label column says which measurement it is. A participant with three measured variables would have three rows in long format.
+
+Many statistical operations and many plots in `ggplot2` expect data in long format. Converting between the two shapes is therefore a routine task.
+
+To go from wide to long, use `pivot_longer()`:
+
+```{r}
+#| eval: false
+data_long <- data |>
+  select(participant_id, aggression, empathy, trait_hostility) |>
+  pivot_longer(
+    cols = c(aggression, empathy, trait_hostility),
+    names_to = "measure",
+    values_to = "score"
+  )
+
+head(data_long, 9)
+```
+
+`cols` lists the columns to pivot; `names_to` is the name of the new column that will hold the original column names; `values_to` is the name of the new column that will hold the values. After the pivot, each participant has three rows (one per measure) and the table has 360 rows in total (120 participants times 3 measures).
+
+To go back, use `pivot_wider()`:
+
+```{r}
+#| eval: false
+data_wide <- data_long |>
+  pivot_wider(
+    names_from = measure,
+    values_from = score
+  )
+```
+
+For now, what matters is recognizing the two shapes and knowing the names of the two functions. We will return to long format when we get to plotting in the next chapter.
+
+## Descriptive statistics in base R: a brief recap
+
+You met most of the base R summary functions in Chapter 6. To recap, on a numeric vector:
+
+```{r}
+#| eval: false
+mean(data$aggression)       # arithmetic mean
+median(data$aggression)     # median
+sd(data$aggression)         # standard deviation
+var(data$aggression)        # variance (= sd^2)
+min(data$aggression)        # minimum
+max(data$aggression)        # maximum
+range(data$aggression)      # both, returned as a length-2 vector
+sum(data$aggression)        # sum
+length(data$aggression)     # number of values
+```
+
+For categorical variables, `table()` gives a frequency count:
+
+```{r}
+#| eval: false
+table(data$condition)
+table(data$gender)
+table(data$condition, data$gender)   # cross-tabulation
+```
+
+These are useful when you want a quick number or two and do not need a more elaborate output.
+
+## The `psych` package: `describe()` and `describeBy()`
+
+For a thorough numerical overview of every numeric variable in a data frame at once, the `psych` package's `describe()` function is fast and complete:
+
+```{r}
+#| eval: false
+library(psych)
+
+describe(data)
+```
+
+For each numeric column, the output reports the count of valid values, the mean, the standard deviation, the median, the minimum, the maximum, the range, the skewness, the kurtosis, and the standard error of the mean. For research in psychology and the social sciences, this is usually exactly the set of descriptives you want for a methods or results section.
+
+`describeBy()` is the same idea, but split by a grouping variable:
+
+```{r}
+#| eval: false
+describeBy(data$aggression, group = data$condition)
+```
+
+This returns the full describe output for each level of `condition`, one block per group.
+
+## Combining wrangling and descriptives
+
+The tidyverse approach to descriptive statistics (`group_by()` + `summarize()`) is more flexible than `describeBy()`, because you choose which statistics to include and you can chain other operations into the same pipeline. Where `describeBy()` is best for a quick canonical descriptive table, `summarize()` is best when you want a custom summary or you want to feed the result into something else.
+
+A summary table with one row per condition and exactly the columns you want:
+
+```{r}
+#| eval: false
+summary_table <- data |>
+  group_by(condition) |>
+  summarize(
+    mean_aggression = mean(aggression),
+    sd_aggression = sd(aggression),
+    mean_empathy = mean(empathy),
+    sd_empathy = sd(empathy),
+    n = n()
+  )
+
+summary_table
+```
+
+A refinement: the same summary, but only for participants 21 or older. Because we are building a pipeline, the change is one extra line:
+
+```{r}
+#| eval: false
+data |>
+  filter(age >= 21) |>
+  group_by(condition) |>
+  summarize(
+    mean_aggression = mean(aggression),
+    sd_aggression = sd(aggression),
+    n = n()
+  )
+```
+
+This is the everyday workflow: filter, then group, then summarize. A clean pipeline of three to five lines is often the entire data-preparation step of a study.
+
+## Looking deeper: residuals from the mean
+
+We end the chapter with a short computation that builds on the "mean as a model" framing introduced in Chapter 8 and previews the rest of the book.
+
+The idea is this. The simplest possible model of a dataset is a single number: the **grand mean**, which is just the mean across all observations. If you had to predict the aggression score of any one participant without knowing anything else about them, the grand mean is the prediction that minimizes the total squared error. It is not a great prediction, but it is the best you can do with no information.
+
+The error this model makes for a given participant is called a **residual**: the actual score minus the model's prediction.
+
+```{r}
+#| eval: false
+grand_mean <- mean(data$aggression)
+grand_mean
+# approximately 4.89
+
+data <- data |> mutate(residual = aggression - grand_mean)
+```
+
+Each row of `data` now has a `residual` column: positive for participants who scored above the grand mean, negative for those who scored below. The sum of all residuals is approximately zero (a property of the mean: it is the value that makes the residuals balance out).
+
+```{r}
+#| eval: false
+sum(data$residual)
+# very close to 0, e.g. 1.42e-14
+```
+
+A useful summary of the model's overall error is the **sum of squared residuals**, often written *SS*:
+
+```{r}
+#| eval: false
+SS_grand <- sum(data$residual^2)
+SS_grand
+# approximately 307
+```
+
+Squaring the residuals makes them all non-negative (so positive and negative errors do not cancel) and gives more weight to large errors than to small ones. *SS* is the total squared error of the grand-mean model.
+
+Now consider a slightly less naive model: instead of one prediction for everyone, one prediction per condition. The prediction for any participant is the mean aggression of their condition. To compute this, we use `group_by()` followed by `mutate()` (not `summarize()`, because we want to *add* the group mean as a column, not collapse the data to one row per group):
+
+```{r}
+#| eval: false
+data <- data |>
+  group_by(condition) |>
+  mutate(group_mean = mean(aggression)) |>
+  ungroup()
+```
+
+The pattern `group_by()` + `mutate()` + `ungroup()` is worth remembering: it adds a per-group statistic as a new column without changing the number of rows. `ungroup()` at the end removes the grouping so subsequent operations are not silently grouped.
+
+Now compute residuals from this richer model and the corresponding *SS*:
+
+```{r}
+#| eval: false
+data <- data |> mutate(residual_group = aggression - group_mean)
+
+SS_group <- sum(data$residual_group^2)
+SS_group
+# approximately 245
+```
+
+Compare:
+
+```{r}
+#| eval: false
+SS_grand
+# 307
+SS_group
+# 245
+SS_grand - SS_group
+# 62
+```
+
+`SS_group` is smaller. Always. Knowing which condition a participant was in is at least as good a predictor as ignoring it, and in this dataset it is meaningfully better: the total squared error is reduced by about 62.
+
+That difference (62, in our case) is the squared error *explained* by knowing the condition. It is the additional information that the group-means model captures and the grand-mean model misses. Expressed as a proportion of the original error:
+
+```{r}
+#| eval: false
+(SS_grand - SS_group) / SS_grand
+# approximately 0.20
+```
+
+About 20 percent of the variability in aggression is accounted for by knowing which condition a participant was in. The remaining 80 percent is variability *within* conditions: differences between participants who were in the same condition, which the group-mean model cannot explain.
+
+This decomposition (total error = error explained by the model + error left over) is the foundation of every linear-model analysis you will see in the rest of this book. ANOVA partitions exactly this decomposition. Regression generalizes it. *R*-squared in any of these methods is exactly the proportion you just computed. The mean is the simplest model, group means are the next step, and the rest is more sophisticated ways of using more information about each participant to make better predictions and explain more of the variance.
+
+You do not need to remember any of this in detail right now. What matters at this point is the workflow you used to get here: load data, wrangle it with dplyr, summarize it with `summarize()` or `psych::describe()`, and compute simple model quantities (means, residuals, sums of squares) using exactly the verbs you have just learned.
+
+## Check your understanding
+
+```{r}
+#| echo: false
+opts_q1 <- c(
+  "It assigns a value to a variable.",
+  answer = "It passes the output of one operation as the input to the next, so that `data |> head()` is equivalent to `head(data)`.",
+  "It joins two data frames together.",
+  "It checks whether two values are equal."
+)
+
+opts_q2 <- c(
+  "`data |> drop(age, gender)`",
+  "`data |> remove(age, gender)`",
+  answer = "`data |> select(age, gender)`",
+  "`data |> filter(age, gender)`"
+)
+
+opts_q3 <- c(
+  "`data |> select(condition == \"violent\")`",
+  "`data |> arrange(condition == \"violent\")`",
+  answer = "`data |> filter(condition == \"violent\")`",
+  "`data |> mutate(condition == \"violent\")`"
+)
+
+opts_q4 <- c(
+  "It modifies the original `data` object in place; reassignment is not needed.",
+  answer = "It returns a new data frame with the additional column; if you want the change to persist, you must assign the result back, e.g. `data <- data |> mutate(...)`.",
+  "It deletes the column `aggression` from `data`.",
+  "It throws an error if `aggression_centered` does not already exist."
+)
+
+opts_q5 <- c(
+  "It returns the original data frame with one extra row containing the mean.",
+  answer = "It returns a small table with one row per condition, containing the mean aggression and the count for each condition.",
+  "It returns a numeric vector of two means.",
+  "It modifies `data` in place by adding a column called `mean_aggression`."
+)
+
+opts_q6 <- c(
+  "Wide format puts every observation in its own row; long format puts every participant in its own row.",
+  "Long format is for plots; wide format is for analyses.",
+  answer = "In wide format, each participant is one row and different measurements occupy different columns. In long format, each measurement is one row, and a label column identifies which measurement it is.",
+  "There is no real difference; the two terms are interchangeable."
+)
+
+opts_q7 <- c(
+  "Mean and standard deviation only.",
+  answer = "A row per numeric variable with n, mean, sd, median, min, max, range, skewness, kurtosis, and standard error of the mean.",
+  "A bar chart of every variable.",
+  "Only the names of the columns."
+)
+
+opts_q8 <- c(
+  "Use `summarize()`, which always returns one row per group.",
+  answer = "Use `group_by()` followed by `mutate()` (and then `ungroup()`); `mutate()` adds a column without collapsing the data, so per-group values appear next to each row.",
+  "Use `select()` to choose the column.",
+  "It is not possible without writing a custom function."
+)
+
+opts_q9 <- c(
+  "It is undefined; the residuals can sum to anything.",
+  answer = "It is approximately zero. The mean is the value that makes the positive and negative residuals balance.",
+  "It is equal to the standard deviation of the variable.",
+  "It is equal to the sum of the original values."
+)
+
+opts_q10 <- c(
+  "It is always larger than `SS_grand`.",
+  "It depends on which random sample you took; sometimes larger, sometimes smaller.",
+  answer = "It is at least as small as `SS_grand`, and often strictly smaller. Using the group means instead of the grand mean uses more information about each participant, which reduces the total squared error.",
+  "It is exactly equal to `SS_grand` because both models predict the same average."
+)
+```
+
+**1. What does the pipe operator `|>` do?**
+
+`r longmcq(opts_q1)`
+
+**2. Which expression keeps only the columns `age` and `gender` from `data`?**
+
+`r longmcq(opts_q2)`
+
+**3. Which expression keeps only the rows where `condition` is `"violent"`?**
+
+`r longmcq(opts_q3)`
+
+**4. What does `data |> mutate(aggression_centered = aggression - mean(aggression))` do?**
+
+`r longmcq(opts_q4)`
+
+**5. What does the following pipeline return?**
+
+```r
+data |> group_by(condition) |> summarize(mean_aggression = mean(aggression), n = n())
+```
+
+`r longmcq(opts_q5)`
+
+**6. What is the difference between wide format and long format?**
+
+`r longmcq(opts_q6)`
+
+**7. What does `psych::describe(data)` return when applied to a data frame with several numeric columns?**
+
+`r longmcq(opts_q7)`
+
+**8. You want to add the mean aggression of each condition as a new column next to each participant's row, without losing any rows. Which approach is correct?**
+
+`r longmcq(opts_q8)`
+
+**9. After centering a variable on its mean (`x_centered = x - mean(x)`), what is the sum of the centered values?**
+
+`r longmcq(opts_q9)`
+
+**10. You computed `SS_grand` (sum of squared residuals from the grand mean) and `SS_group` (sum of squared residuals from the per-condition means) on the same dataset. What is the relationship between the two?**
+
+`r longmcq(opts_q10)`

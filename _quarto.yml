@@ -27,6 +27,7 @@ book:
   - part: 'Section 2: Manipulating and Visualizing Data'
     chapters:
     - 08-data-wrangling-basics.qmd
+    - 09-tidyverse-and-descriptives.qmd
 format:
   html:
     theme:
