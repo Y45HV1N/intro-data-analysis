@@ -142,6 +142,12 @@ To create a project: in the RStudio menu, click **File > New Project**. A dialog
 
 For a beginner, **New Directory > New Project** is the simplest path. Choose a name (e.g., `my_first_project`), choose a location on your computer, and click "Create Project." RStudio creates the folder, places a `.Rproj` file inside it, and opens the new project. You will see the Files panel pointing at the new (empty) project folder.
 
+### Video walkthrough
+
+You may find the following short video helpful for visualizing how to set up and use an R project.
+
+{{< video https://www.youtube.com/watch?v=1kzsAvsLQCE >}}
+
 ## R Markdown (`.Rmd`)
 
 An **R Markdown** file is a plain-text file (extension `.Rmd`) that mixes prose with R code. The prose is written in a simple formatting language called Markdown; the code goes into "chunks" demarcated by special markers. When you "knit" the file, R runs the code, captures the output (numbers, tables, plots), and assembles a finished document (HTML, PDF, or Word) that contains the prose and the results, intermixed.
