@@ -8,6 +8,195 @@ title: "Working with R projects and R sessions"
 library(webexercises)
 ```
 
-::: {.callout-note}
-This chapter is a placeholder. Content will be added in a later step.
-:::
+## Why this chapter exists
+
+Chapter 3 introduced R projects briefly. Chapter 4 returns to them, alongside a related concept (the **R session**) that often causes confusion. The two are easy to conflate but distinct, and the distinction matters in practice. The promise of this chapter is that, by the end, you will know what is happening when you "restart the session," when to do it, and how it relates to projects, scripts, and the environment.
+
+## What an R session is
+
+An **R session** is one running instance of R. When you open RStudio, R is launched in the background; that running instance is the session. The session lasts from the moment R starts until the moment R is shut down. While the session is alive, it holds the environment (your objects), it remembers which packages you have loaded, and it remembers any settings you have changed.
+
+When the session ends (because you closed RStudio, or because you explicitly restarted the session, or because R crashed), all of that in-memory state is gone. Anything saved to disk (scripts, RData files, output files) survives. Anything held only in memory (objects in the environment, loaded packages, temporary settings) does not.
+
+A session is roughly the runtime equivalent of "what R is currently doing and remembering." If we draw a chronology:
+
+- you start RStudio (a new session begins);
+- you load a package and create some objects (those changes are part of this session);
+- you stop RStudio (the session ends, the environment is destroyed);
+- you start RStudio again (a new session begins, with a clean environment).
+
+A session is not a file. Like the environment, it exists only while R is running.
+
+## How sessions and projects fit together
+
+A project is a folder; a session is a running instance of R. They are different kinds of thing.
+
+Their relationship in RStudio works as follows. Each open project has its own session. If you open a project, RStudio starts a session associated with that project. If you switch to a different project (using **File > Open Project**), RStudio shuts down the current session and starts a new one in the new project. If you have two projects open in two RStudio windows simultaneously, you have two independent sessions running.
+
+This is convenient: it ensures that the work in one project does not contaminate the work in another. Objects created while working on Project A will not appear when you switch to Project B.
+
+## Why and when to restart the session
+
+Working in an interactive console encourages a habit that, if left unchecked, leads to subtle bugs. Over the course of an hour, you create dozens of objects, load several packages, and make small changes to the code as you go. Some of those objects are stale: they were created earlier in the session and no longer reflect what your current script would produce if run from scratch.
+
+The danger is that your script can appear to work in a particular session because of an object that exists in your environment but is not actually created by the script anywhere. When you open the script tomorrow in a fresh session, the object is gone and the script fails. Worse: someone else (or future you) runs the script and gets a different result, because their session does not have the same accumulated state.
+
+The defense against this is simple: **regularly restart the session and re-run the script from the top.** A passing script in a clean session is a script that actually works. A passing script in a session you have been using for hours is a script that works in *that* session, which is a weaker claim.
+
+To restart the session in RStudio: click **Session > Restart R**, or press Ctrl+Shift+F10 (Cmd+Shift+0 on macOS). All objects disappear, all loaded packages are unloaded, and you start with a clean slate. Now run your script from the top. If it produces the expected results, you have evidence that your script is self-contained.
+
+A reasonable habit is to restart the session at the start of each work session and at any moment when something seems "off." Some people restart it many times a day; the cost is essentially zero (a fresh session takes a second to start).
+
+## Saving (and not saving) the environment
+
+In Chapter 3 we recommended answering **No** to the prompt "Save workspace image?" when closing RStudio. The reasoning is now in scope.
+
+The prompt asks whether you want to save the entire environment to a file called `.RData` in the project folder, which would automatically reload the next time you open R. If you answer Yes, what happens is this. The next time you open the project, the previous session's environment is silently restored. Your Environment panel will be full of objects from yesterday. *None* of those objects are produced by your current script; they are leftovers. Your script will appear to work, because the objects it expects are already there, regardless of whether the script actually creates them.
+
+This is precisely the failure mode described in the previous section, made worse by being invisible. You did not even notice that the objects had been preserved.
+
+The recommended setting is to disable this entirely. In RStudio:
+
+1. Open **Tools > Global Options**.
+2. Click the **General** tab.
+3. Under "Workspace," **uncheck** "Restore .RData into workspace at startup."
+4. Set "Save workspace to .RData on exit" to **Never**.
+5. Click OK.
+
+With these settings, every R session starts clean. Your script is the only source of objects in the environment. If you find that you need to preserve an expensive intermediate result, save it explicitly with `save()` (as we did in Chapter 3) and load it explicitly with `load()` at the top of the script that needs it.
+
+## Working directory: where R looks for files
+
+When you ask R to read a file, e.g. `read.csv("data.csv")`, R looks for `data.csv` in the **working directory**. The working directory is a setting of the current session: it points at one folder on your computer, and that folder is the implicit "current location" for any file operation that does not specify a full path.
+
+To find out what the working directory currently is:
+
+```{r}
+#| eval: false
+getwd()
+```
+
+When you open an R project, the working directory is set to the project folder automatically. This is one of the main practical benefits of using projects: file paths in your scripts can be relative to the project folder, which makes the scripts portable. A line like `read.csv("data/survey.csv")` will work on any computer that has the project folder, because the path is resolved relative to the project, not relative to a specific user's hard drive.
+
+If you are not using a project, the working directory defaults to a system folder (your home directory on macOS and Linux, or "Documents" on Windows). You can change it manually:
+
+```{r}
+#| eval: false
+setwd("C:/Users/yourname/Documents/r_practice")
+```
+
+We recommend not using `setwd()` in scripts. If a script contains an explicit path, the script becomes tied to that one computer. Use a project, and let the working directory be set by the project's location.
+
+## Tutorial: practice opening, restarting, and switching
+
+This tutorial assumes you completed the tutorial at the end of Chapter 3 (creating the `r_book_practice` project with a `setup.R` script and a `setup_state.RData` file).
+
+**Part A: Open a project from a file browser.**
+
+1. Close RStudio entirely.
+2. Open your operating system's file browser (Windows Explorer or macOS Finder).
+3. Navigate to the `r_book_practice` folder.
+4. Find the `.Rproj` file. Double-click it. RStudio opens, the project is loaded, and `setup.R` may already be open if you had it open last time.
+5. Look at the title bar of the RStudio window. It should display the project name. Look at the Files panel: it points at the project folder.
+
+**Part B: Confirm that the environment is empty in a new session.**
+
+1. Look at the Environment panel. If you set "Restore .RData into workspace at startup" to unchecked (as recommended above), it should be empty. If it shows the objects from your previous session, your global options still allow restoration; revisit the steps in "Saving (and not saving) the environment" above.
+
+**Part C: Restart the session deliberately.**
+
+1. Run your script: open `setup.R`, click "Source." The three objects appear in the Environment panel.
+2. Click **Session > Restart R**. The Console clears, the Environment panel empties, and a fresh session begins.
+3. Run the script again. The three objects reappear.
+4. This is the workflow you want as a default. Anything that exists in the environment exists because the script put it there.
+
+**Part D: Switch projects.**
+
+1. Click **File > New Project > New Directory > New Project**. Create a second project called `r_book_practice_two` somewhere convenient.
+2. RStudio shuts down the previous session, opens the new project, and starts a fresh session. The Environment panel is empty.
+3. Click **File > Open Project** and navigate back to the original `r_book_practice` project. RStudio shuts down the second session and reopens the first. Notice that the Environment panel is empty again, even though you previously had objects in it: each open of a project starts a brand-new session.
+4. To recover the objects from the saved RData file: `load("setup_state.RData")`. The objects reappear.
+
+This pattern (open project, run script, restart when uncertain, save expensive intermediate results explicitly) is the foundation of a clean R workflow.
+
+## Check your understanding
+
+```{r}
+#| echo: false
+opts_q1 <- c(
+  "A folder on the hard drive that R writes log files to.",
+  answer = "One running instance of R, which holds the environment, loaded packages, and current settings.",
+  "A subscription service from RStudio.",
+  "Another name for an R Markdown document."
+)
+
+opts_q2 <- c(
+  "Saved to disk in the project folder.",
+  "Compressed and emailed to you.",
+  answer = "Lost: the environment, loaded packages, and any in-memory state are all destroyed.",
+  "Backed up automatically to the cloud."
+)
+
+opts_q3 <- c(
+  "Restarting clears the working directory but keeps all objects in memory.",
+  answer = "Restarting starts a fresh session, ensuring that your script works on its own without depending on stale objects accumulated during the session.",
+  "Restarting reinstalls R, removing all packages.",
+  "Restarting is a way to upgrade RStudio."
+)
+
+opts_q4 <- c(
+  "It is recommended, because it speeds up startup.",
+  answer = "It is discouraged, because it silently restores stale objects from the previous session, which can cause bugs and obscure the source of the objects in the environment.",
+  "It is the only way to preserve your data between sessions.",
+  "It is required by reproducibility journals."
+)
+
+opts_q5 <- c(
+  "It is the folder where R itself was installed.",
+  answer = "It is the folder R uses as the implicit current location for file operations that do not specify a full path.",
+  "It is the folder where RStudio stores user account information.",
+  "It is the folder where R Markdown files are automatically rendered."
+)
+
+opts_q6 <- c(
+  "Yes, every script should begin with `setwd(\"C:/Users/...\")` to be safe.",
+  answer = "No: hard-coding paths makes the script tied to one computer; using an R project lets paths be relative to the project folder.",
+  "It is irrelevant; R does not have a working directory.",
+  "Only on Linux."
+)
+
+opts_q7 <- c(
+  "Restarting is destructive: you should restart only after a crash.",
+  answer = "Restarting is essentially free (a fresh session takes about a second), and a regular habit of restarting catches problems early.",
+  "Restarting requires re-installing all packages each time.",
+  "Restarting is reserved for emergencies."
+)
+```
+
+**1. What is an R session?**
+
+`r longmcq(opts_q1)`
+
+**2. What happens to the environment when an R session ends?**
+
+`r longmcq(opts_q2)`
+
+**3. Why do experienced R users recommend regularly restarting the session?**
+
+`r longmcq(opts_q3)`
+
+**4. Should you let RStudio automatically restore the previous workspace at startup?**
+
+`r longmcq(opts_q4)`
+
+**5. What is the working directory?**
+
+`r longmcq(opts_q5)`
+
+**6. Should you use `setwd()` to set the working directory in your scripts?**
+
+`r longmcq(opts_q6)`
+
+**7. How costly is it to restart the R session?**
+
+`r longmcq(opts_q7)`
