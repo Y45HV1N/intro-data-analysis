@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2&nbsp; R, RStudio, and how they relate – Understanding and analyzing social and behavioral data</title>
+<title>8&nbsp; Data wrangling: basics – Understanding and analyzing social and behavioral data</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -68,8 +68,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./03-files-and-environment.html" rel="next">
-<link href="./01-basics-r.html" rel="prev">
+<link href="./07-recap.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -288,7 +287,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-basics-r.html">Section 1: Getting Started Properly</a></li><li class="breadcrumb-item"><a href="./02-r-vs-rstudio.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R, RStudio, and how they relate</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08-data-wrangling-basics.html">Section 2: Manipulating and Visualizing Data</a></li><li class="breadcrumb-item"><a href="./08-data-wrangling-basics.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data wrangling: basics</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -340,7 +339,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-r-vs-rstudio.html" class="sidebar-item-text sidebar-link active">
+  <a href="./02-r-vs-rstudio.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R, RStudio, and how they relate</span></span></a>
   </div>
 </li>
@@ -387,7 +386,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./08-data-wrangling-basics.html" class="sidebar-item-text sidebar-link">
+  <a href="./08-data-wrangling-basics.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data wrangling: basics</span></span></a>
   </div>
 </li>
@@ -403,26 +402,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#two-pieces-of-software-one-workflow" id="toc-two-pieces-of-software-one-workflow" class="nav-link active" data-scroll-target="#two-pieces-of-software-one-workflow"><span class="header-section-number">2.1</span> Two pieces of software, one workflow</a></li>
-  <li><a href="#are-there-alternatives-to-rstudio" id="toc-are-there-alternatives-to-rstudio" class="nav-link" data-scroll-target="#are-there-alternatives-to-rstudio"><span class="header-section-number">2.2</span> Are there alternatives to RStudio?</a></li>
-  <li><a href="#installing-r" id="toc-installing-r" class="nav-link" data-scroll-target="#installing-r"><span class="header-section-number">2.3</span> Installing R</a></li>
-  <li><a href="#installing-rstudio" id="toc-installing-rstudio" class="nav-link" data-scroll-target="#installing-rstudio"><span class="header-section-number">2.4</span> Installing RStudio</a>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">8.1</span> Overview</a></li>
+  <li><a href="#the-example-dataset" id="toc-the-example-dataset" class="nav-link" data-scroll-target="#the-example-dataset"><span class="header-section-number">8.2</span> The example dataset</a>
   <ul class="collapse">
-  <li><a href="#video-walkthroughs" id="toc-video-walkthroughs" class="nav-link" data-scroll-target="#video-walkthroughs"><span class="header-section-number">2.4.1</span> Video walkthroughs</a></li>
+  <li><a href="#getting-the-dataset" id="toc-getting-the-dataset" class="nav-link" data-scroll-target="#getting-the-dataset"><span class="header-section-number">8.2.1</span> Getting the dataset</a></li>
   </ul></li>
-  <li><a href="#what-you-see-when-you-open-rstudio-for-the-first-time" id="toc-what-you-see-when-you-open-rstudio-for-the-first-time" class="nav-link" data-scroll-target="#what-you-see-when-you-open-rstudio-for-the-first-time"><span class="header-section-number">2.5</span> What you see when you open RStudio for the first time</a></li>
-  <li><a href="#a-note-on-updates" id="toc-a-note-on-updates" class="nav-link" data-scroll-target="#a-note-on-updates"><span class="header-section-number">2.6</span> A note on updates</a></li>
-  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">2.7</span> Check your understanding</a></li>
+  <li><a href="#loading-the-data" id="toc-loading-the-data" class="nav-link" data-scroll-target="#loading-the-data"><span class="header-section-number">8.3</span> Loading the data</a></li>
+  <li><a href="#accessing-one-variable-the-dollar-sign" id="toc-accessing-one-variable-the-dollar-sign" class="nav-link" data-scroll-target="#accessing-one-variable-the-dollar-sign"><span class="header-section-number">8.4</span> Accessing one variable: the dollar sign <code>$</code></a></li>
+  <li><a href="#creating-new-variables" id="toc-creating-new-variables" class="nav-link" data-scroll-target="#creating-new-variables"><span class="header-section-number">8.5</span> Creating new variables</a></li>
+  <li><a href="#subsetting-rows-filtering-by-a-logical-condition" id="toc-subsetting-rows-filtering-by-a-logical-condition" class="nav-link" data-scroll-target="#subsetting-rows-filtering-by-a-logical-condition"><span class="header-section-number">8.6</span> Subsetting rows: filtering by a logical condition</a></li>
+  <li><a href="#subsetting-columns-by-name" id="toc-subsetting-columns-by-name" class="nav-link" data-scroll-target="#subsetting-columns-by-name"><span class="header-section-number">8.7</span> Subsetting columns: by name</a></li>
+  <li><a href="#combining-filter-rows-and-select-columns-at-once" id="toc-combining-filter-rows-and-select-columns-at-once" class="nav-link" data-scroll-target="#combining-filter-rows-and-select-columns-at-once"><span class="header-section-number">8.8</span> Combining: filter rows and select columns at once</a></li>
+  <li><a href="#computing-summaries-by-group" id="toc-computing-summaries-by-group" class="nav-link" data-scroll-target="#computing-summaries-by-group"><span class="header-section-number">8.9</span> Computing summaries by group</a></li>
+  <li><a href="#looking-ahead-the-mean-as-a-model" id="toc-looking-ahead-the-mean-as-a-model" class="nav-link" data-scroll-target="#looking-ahead-the-mean-as-a-model"><span class="header-section-number">8.10</span> Looking ahead: the mean as a model</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">8.11</span> Check your understanding</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/02-r-vs-rstudio.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/08-data-wrangling-basics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-basics-r.html">Section 1: Getting Started Properly</a></li><li class="breadcrumb-item"><a href="./02-r-vs-rstudio.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R, RStudio, and how they relate</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08-data-wrangling-basics.html">Section 2: Manipulating and Visualizing Data</a></li><li class="breadcrumb-item"><a href="./08-data-wrangling-basics.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data wrangling: basics</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R, RStudio, and how they relate</span></h1>
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data wrangling: basics</span></h1>
 </div>
 
 
@@ -439,113 +442,228 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="two-pieces-of-software-one-workflow" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="two-pieces-of-software-one-workflow"><span class="header-section-number">2.1</span> Two pieces of software, one workflow</h2>
-<p>A common point of confusion for new users is the difference between R and RStudio. They are two separate programs, made by two different organizations, that work together. To use R productively, you will install both, and you will use them at the same time.</p>
-<p>The simplest way to picture the relationship is the following. <strong>R is the engine.</strong> It is the piece of software that actually understands the R language and performs the computations: when you ask for a mean, R is what calculates it. <strong>RStudio is the dashboard.</strong> It does not perform any statistics on its own. What it provides is a comfortable working environment around R: a place to write scripts, a console where you can type commands, a panel showing the objects you have created, a panel for plots, a file browser, and many other conveniences.</p>
-<p>If you install RStudio without installing R first, RStudio will open but it will have nothing to talk to: clicking “Run” will produce an error. If you install R without installing RStudio, R will work, but you will be using a fairly bare interface that most users find harder to navigate. The standard practice is to install both.</p>
-<p>This division of labor has a useful consequence: you can update one without the other. The R Foundation releases new versions of R from time to time, and Posit (the company that maintains RStudio) releases new versions of RStudio on a separate schedule. Each can evolve at its own pace.</p>
+<section id="overview" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">8.1</span> Overview</h2>
+<p>Section 1 ended with you loading a real data file into R with <code>read.csv()</code>. The result was a data frame, and you saw how to inspect it (<code>head</code>, <code>str</code>, <code>summary</code>, <code>nrow</code>, <code>ncol</code>). What you have not yet done is <em>manipulate</em> the data: pull out specific columns, filter rows that meet a condition, create derived variables, or compute summaries for subgroups.</p>
+<p>This chapter covers those operations. Together they are usually called <strong>data wrangling</strong>: the work of turning a raw data file into the specific subsets and summaries you need to actually answer a research question. Good data wrangling is the foundation for everything that follows. Most of the time you spend on a real analysis is spent here, not on the statistical model itself.</p>
+<p>We will work with one dataset throughout the chapter, and continue to use it in the chapters that follow.</p>
 </section>
-<section id="are-there-alternatives-to-rstudio" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="are-there-alternatives-to-rstudio"><span class="header-section-number">2.2</span> Are there alternatives to RStudio?</h2>
-<p>Yes. RStudio is the most widely used environment for R, but it is not the only one. Several alternatives exist:</p>
-<ul>
-<li><strong>Positron</strong>, also developed by Posit, is a newer environment that supports R and Python in a single interface. It is built on the same foundations as Visual Studio Code.</li>
-<li><strong>Visual Studio Code (VS Code)</strong> with the official R extension provides an R working environment inside a popular general-purpose editor.</li>
-<li><strong>Jupyter notebooks</strong> with an R kernel provide a notebook-style interface, more common in the Python world but also usable for R.</li>
-<li><strong>The plain R console</strong> that ships with R itself can be used directly, without any additional environment.</li>
-</ul>
-<p>For this book we will use RStudio. The reasoning is practical: it is the environment with the most accessible learning materials, the most stable behavior, and the smoothest integration with the kinds of files (R scripts, R Markdown, R projects) that we will introduce in Chapter 3. If you later want to try one of the alternatives, the underlying R code you write will work in any of them.</p>
+<section id="the-example-dataset" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="the-example-dataset"><span class="header-section-number">8.2</span> The example dataset</h2>
+<p>The dataset is called <code>vgames_study.csv</code>. It comes from a (fictional) study on the relationship between video-game playing habits and self-reported aggression. It has 120 participants and eight variables.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 24%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>participant_id</code></td>
+<td>integer</td>
+<td>Unique participant identifier (1 to 120)</td>
+</tr>
+<tr class="even">
+<td><code>age</code></td>
+<td>integer</td>
+<td>Participant age in years</td>
+</tr>
+<tr class="odd">
+<td><code>gender</code></td>
+<td>character</td>
+<td>Self-reported gender (<code>man</code>, <code>woman</code>, <code>non-binary</code>)</td>
+</tr>
+<tr class="even">
+<td><code>condition</code></td>
+<td>character</td>
+<td>Experimental condition (<code>violent</code> or <code>neutral</code> video game)</td>
+</tr>
+<tr class="odd">
+<td><code>hours_weekly</code></td>
+<td>numeric</td>
+<td>Self-reported hours per week spent playing video games</td>
+</tr>
+<tr class="even">
+<td><code>trait_hostility</code></td>
+<td>numeric</td>
+<td>Score on a hostility trait scale, 1 to 7</td>
+</tr>
+<tr class="odd">
+<td><code>empathy</code></td>
+<td>numeric</td>
+<td>Score on an empathy scale, 1 to 7</td>
+</tr>
+<tr class="even">
+<td><code>aggression</code></td>
+<td>numeric</td>
+<td>Self-reported aggression after the experimental session, 1 to 10</td>
+</tr>
+</tbody>
+</table>
+<p>The design is a between-participants experiment: 60 participants were randomly assigned to play a violent video game and 60 to play a neutral video game. After the session, all 120 reported their aggression. The other variables (age, gender, hours of weekly play, trait hostility, empathy) were measured before the experiment.</p>
+<p>This dataset is small and clean, which keeps the examples readable. The wrangling operations you will learn on it are exactly the same as on a real dataset of any size.</p>
+<section id="getting-the-dataset" class="level3" data-number="8.2.1">
+<h3 data-number="8.2.1" class="anchored" data-anchor-id="getting-the-dataset"><span class="header-section-number">8.2.1</span> Getting the dataset</h3>
+<p>Download the file from <a href="https://y45hv1n.github.io/intro-data-analysis/data/vgames_study.csv" class="uri">https://y45hv1n.github.io/intro-data-analysis/data/vgames_study.csv</a> and place it inside a folder called <code>data</code> in your R project. The path you will read from will then be <code>"data/vgames_study.csv"</code>.</p>
+<p>If you have not yet created an R project for this book, do that first (review Chapter 3 if you need to). For everything that follows, we assume you are inside an R project and that the file lives at <code>data/vgames_study.csv</code>.</p>
 </section>
-<section id="installing-r" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="installing-r"><span class="header-section-number">2.3</span> Installing R</h2>
-<p>R is distributed by the <strong>Comprehensive R Archive Network (CRAN)</strong>, a network of servers maintained by the R community. You can download R from any of these servers; in practice it is easiest to use the official entry point.</p>
-<p>Step by step:</p>
-<ol type="1">
-<li>Open a web browser and go to <a href="https://cran.r-project.org" class="uri">https://cran.r-project.org</a>.</li>
-<li>On the home page, find the section <strong>“Download and Install R”</strong> at the top. There are three links: one for Linux, one for macOS, and one for Windows. Click the link that matches your operating system.</li>
-<li><strong>If you are on Windows:</strong> click the link that reads “install R for the first time,” then click the large download link at the top of the next page (it will read something like “Download R-X.Y.Z for Windows,” where X.Y.Z is the current version number). The file is a <code>.exe</code> installer. Double-click it and accept the default options at every step. You do not need to change any settings.</li>
-<li><strong>If you are on macOS:</strong> on the macOS download page, choose the <code>.pkg</code> file that matches your processor. Apple computers built since 2020 use Apple Silicon (M1, M2, M3, M4); older Apple computers use Intel processors. If you are unsure, click the Apple menu in the top-left corner of your screen, choose “About This Mac,” and look at the “Chip” or “Processor” line. Download the matching <code>.pkg</code> file, double-click it, and accept the default options.</li>
-<li><strong>If you are on Linux:</strong> follow the instructions for your distribution. They differ between Ubuntu, Debian, Fedora, and others. Linux users typically have the necessary technical background; if you do not, the simplest approach is to use an Ubuntu-based distribution and follow the Ubuntu instructions on CRAN.</li>
-</ol>
-<p>After installation finishes, R is on your computer. You will not normally open it directly; you will reach it through RStudio, which we install next.</p>
 </section>
-<section id="installing-rstudio" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="installing-rstudio"><span class="header-section-number">2.4</span> Installing RStudio</h2>
-<p>RStudio is distributed by Posit. The free version, called <strong>RStudio Desktop (Open Source Edition)</strong>, is the one most users want. It has all the features you need for the work in this book.</p>
-<p>Step by step:</p>
-<ol type="1">
-<li>Go to <a href="https://posit.co/download/rstudio-desktop/" class="uri">https://posit.co/download/rstudio-desktop/</a>.</li>
-<li>The page shows two steps: “Install R” (which you have already done) and “Install RStudio.” Scroll to the second step.</li>
-<li>The page typically detects your operating system and offers a single download button. Click it.</li>
-<li><strong>If you are on Windows:</strong> the file is an <code>.exe</code> installer. Double-click it and accept the default options.</li>
-<li><strong>If you are on macOS:</strong> the file is a <code>.dmg</code> disk image. Double-click it to open, then drag the RStudio icon into the Applications folder.</li>
-<li><strong>If you are on Linux:</strong> follow the Linux instructions on the same page. RStudio is provided as a <code>.deb</code> or <code>.rpm</code> package depending on your distribution.</li>
-</ol>
-<p>If you are using a university computer where you cannot install software, ask your IT department to install both R and RStudio, or use the cloud version of RStudio at <a href="https://posit.cloud" class="uri">https://posit.cloud</a>, which runs in a browser and requires no installation.</p>
-<section id="video-walkthroughs" class="level3" data-number="2.4.1">
-<h3 data-number="2.4.1" class="anchored" data-anchor-id="video-walkthroughs"><span class="header-section-number">2.4.1</span> Video walkthroughs</h3>
-<p>You may find the following short videos helpful as a complement to the written instructions above. They are not the most recent, and the download pages may have changed slightly in appearance, but the essentials of the installation process have not changed.</p>
-<p><strong>Installing R and RStudio on Windows.</strong></p>
-<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/_2sewGCA0y4" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
-<p><strong>Installing R and RStudio on macOS.</strong></p>
-<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/UesYjMLSrbg" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
-<p><strong>A walkthrough of RStudio setup once both are installed.</strong></p>
-<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/jAHJyeOqe24" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
-</section>
-</section>
-<section id="what-you-see-when-you-open-rstudio-for-the-first-time" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="what-you-see-when-you-open-rstudio-for-the-first-time"><span class="header-section-number">2.5</span> What you see when you open RStudio for the first time</h2>
-<p>Open RStudio. You should see a window divided into three panels (later it will become four, once you create a script). The exact arrangement varies, but the typical default is:</p>
-<ul>
-<li>A large panel on the <strong>left</strong> called the <strong>Console</strong>. This is where R receives commands and prints results. If you type <code>2 + 2</code> and press Enter here, R will print <code>4</code>.</li>
-<li>A panel on the <strong>upper right</strong> containing several tabs. The most important tab is <strong>Environment</strong>. This panel will eventually list every object you have created, with its name and a brief description of its contents. When RStudio first opens it is empty.</li>
-<li>A panel on the <strong>lower right</strong>, also with tabs. The most important ones are <strong>Files</strong> (a built-in file browser), <strong>Plots</strong> (where graphs you produce will appear), <strong>Packages</strong> (a list of installed packages, which we will discuss in Chapter 6), and <strong>Help</strong> (the R documentation system).</li>
-</ul>
-<p>You can verify that R and RStudio are talking to each other. Click in the Console, type the following exactly, and press Enter:</p>
+<section id="loading-the-data" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="loading-the-data"><span class="header-section-number">8.3</span> Loading the data</h2>
+<p>Inside your R project, in a new script, load the data and take a quick look:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">+</span> <span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/vgames_study.csv"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>R should print <code>[1] 4</code> on the next line. The <code>[1]</code> is a labeling convention used by R to mark the position of values in long output; for a single value you can ignore it. If you see <code>[1] 4</code>, your installation is working.</p>
-<p>Two more checks worth doing the first time:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>This prints information about your R version, your operating system, and the packages currently loaded. The first line of the output starts with “R version” followed by the version number; this confirms which version of R you are running.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">RStudio.Version</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>This works only inside RStudio (not in the bare R console) and prints the RStudio version. If both commands work, you have a complete and matched installation.</p>
+<p><code>head(data)</code> prints the first six rows. <code>str(data)</code> prints a structural summary: 120 observations, 8 variables, the type of each variable. You should see <code>participant_id</code>, <code>age</code>, and <code>hours_weekly</code> as numeric, and <code>gender</code> and <code>condition</code> as character (text).</p>
+<p>The object <code>data</code> is now in your environment and you can refer to it by name.</p>
+<p>A note on the object name. Calling the object <code>data</code> is convenient and harmless in this chapter, but <code>data</code> is also the name of a base R function (<code>?data</code>). For larger projects, a more descriptive name is better, for example <code>vgames</code> or <code>study</code>. We use <code>data</code> here because it matches the homework conventions you may already have seen.</p>
 </section>
-<section id="a-note-on-updates" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="a-note-on-updates"><span class="header-section-number">2.6</span> A note on updates</h2>
-<p>Both R and RStudio release new versions periodically. Updating R requires running the installer again; updating RStudio also requires running its installer again. There is no automatic update process built into either program. For the work in this book, any version of R from 4.2 onwards and any RStudio version from 2023 onwards will work. If you have a working installation, do not feel obliged to update it for now.</p>
+<section id="accessing-one-variable-the-dollar-sign" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="accessing-one-variable-the-dollar-sign"><span class="header-section-number">8.4</span> Accessing one variable: the dollar sign <code>$</code></h2>
+<p>Chapter 5 introduced the dollar sign <code>$</code> as the operator that pulls one component out of a composite object. On a data frame, <code>$</code> extracts a single column. The general form is <code>dataframe$column_name</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>aggression</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>age</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>condition</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Each of these prints an entire column as a vector. <code>data$aggression</code> is a numeric vector of 120 aggression scores; <code>data$condition</code> is a character vector of 120 condition labels.</p>
+<p>Once you have a vector, you can do anything to it that you would do to any other vector. For example, the average aggression score across all 120 participants:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>aggression)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The expression is read inside-out: <code>data$aggression</code> produces a vector of 120 numbers, and <code>mean()</code> reduces that vector to a single number. The same inside-out logic applies whenever a function is called on a column.</p>
 </section>
-<section id="check-your-understanding" class="level2" data-number="2.7">
-<h2 data-number="2.7" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">2.7</span> Check your understanding</h2>
-<p><strong>1. Which of the following best describes the relationship between R and RStudio?</strong></p>
-<div id="radio_SCHOXVFJIP" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_SCHOXVFJIP" value=""> <span>R is the dashboard you click on, and RStudio is the engine that performs computations.</span></label><label><input type="radio" autocomplete="off" name="radio_SCHOXVFJIP" value=""> <span>R and RStudio are two names for the same program.</span></label><label><input type="radio" autocomplete="off" name="radio_SCHOXVFJIP" value="answer"> <span>R is the engine that performs computations, and RStudio is a dashboard that provides a comfortable working environment around R.</span></label><label><input type="radio" autocomplete="off" name="radio_SCHOXVFJIP" value=""> <span>RStudio includes its own version of R and replaces the need to install R separately.</span></label>
+<section id="creating-new-variables" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="creating-new-variables"><span class="header-section-number">8.5</span> Creating new variables</h2>
+<p>You can add a new column to a data frame by assigning into a name that does not yet exist on the right of <code>$</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>aggression_doubled <span class="ot">&lt;-</span> data<span class="sc">$</span>aggression <span class="sc">*</span> <span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>2. Which piece of software actually performs the statistical computations?</strong></p>
-<div id="radio_SFGFQFICDP" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_SFGFQFICDP" value=""> <span>RStudio.</span></label><label><input type="radio" autocomplete="off" name="radio_SFGFQFICDP" value="answer"> <span>R.</span></label><label><input type="radio" autocomplete="off" name="radio_SFGFQFICDP" value=""> <span>Microsoft Excel.</span></label><label><input type="radio" autocomplete="off" name="radio_SFGFQFICDP" value=""> <span>The web browser used to download the installer.</span></label>
+<p>After this line, <code>data</code> has nine variables instead of eight. The new column <code>aggression_doubled</code> contains every aggression score multiplied by two. Look at the Environment panel: the description of <code>data</code> should now read <code>120 obs. of 9 variables</code>.</p>
+<p>A more useful example. Compute each participant’s deviation from the mean aggression score. The mean is a single number; subtracting it from each value gives, for each participant, how far above or below the average they scored.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>aggression_deviation <span class="ot">&lt;-</span> data<span class="sc">$</span>aggression <span class="sc">-</span> <span class="fu">mean</span>(data<span class="sc">$</span>aggression)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>3. What happens if you install RStudio without first installing R?</strong></p>
-<div id="radio_NBHNTHLEVD" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_NBHNTHLEVD" value=""> <span>RStudio works without R, because RStudio comes with its own statistical engine built in.</span></label><label><input type="radio" autocomplete="off" name="radio_NBHNTHLEVD" value=""> <span>RStudio refuses to start.</span></label><label><input type="radio" autocomplete="off" name="radio_NBHNTHLEVD" value="answer"> <span>RStudio opens, but it has no engine to talk to, so commands cannot be executed.</span></label><label><input type="radio" autocomplete="off" name="radio_NBHNTHLEVD" value=""> <span>R is automatically downloaded by RStudio the first time it is launched.</span></label>
+<p>R applies the subtraction element-wise: for every row, it computes (this participant’s aggression) minus (the overall mean aggression). The result is a new column with 120 values, some positive (above the mean), some negative (below).</p>
+<p>To inspect the new column alongside the original, select both columns:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data[, <span class="fu">c</span>(<span class="st">"aggression"</span>, <span class="st">"aggression_deviation"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>4. Where does R itself come from when you install it?</strong></p>
-<div id="radio_UEMHIZMQDG" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_UEMHIZMQDG" value="answer"> <span>CRAN, the Comprehensive R Archive Network.</span></label><label><input type="radio" autocomplete="off" name="radio_UEMHIZMQDG" value=""> <span>The Apple App Store and the Microsoft Store.</span></label><label><input type="radio" autocomplete="off" name="radio_UEMHIZMQDG" value=""> <span>GitHub.</span></label><label><input type="radio" autocomplete="off" name="radio_UEMHIZMQDG" value=""> <span>The RStudio website.</span></label>
+<p>This previews the next topic: subsetting columns by name. We come back to it shortly.</p>
+<p>The general pattern is <code>dataframe$new_column &lt;- expression</code>. The expression on the right can use other columns of the same data frame, scalar values, or any R operation that produces a vector of the right length. New variables defined this way persist for the rest of the session and become part of <code>data</code>.</p>
+</section>
+<section id="subsetting-rows-filtering-by-a-logical-condition" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="subsetting-rows-filtering-by-a-logical-condition"><span class="header-section-number">8.6</span> Subsetting rows: filtering by a logical condition</h2>
+<p>You will frequently want to look at only a subset of your participants: those in the violent condition, those over 25, those with high trait hostility. The general tool for this is <strong>logical subsetting</strong>.</p>
+<p>Two-dimensional bracket indexing on a data frame uses the form <code>dataframe[rows, columns]</code>, where leaving a slot empty means “all.” Chapter 5 introduced this with positional indices (<code>data[1, ]</code> for the first row, <code>data[, 2]</code> for the second column). For real research, you will more often select rows by a <em>condition</em>.</p>
+<p>The condition uses the <strong>double-equals operator</strong> <code>==</code>, which means “is equal to.” (Single <code>=</code> is not a comparison in R; it is used inside function calls for named arguments. Confusing the two is a common early mistake.) For each row, R checks whether the condition is <code>TRUE</code> or <code>FALSE</code>, and the subsetting keeps only the rows where it is <code>TRUE</code>.</p>
+<p>To select only participants in the violent condition:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>violent_group <span class="ot">&lt;-</span> data[data<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"violent"</span>, ]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(violent_group)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># returns 60</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>5. Is installing RStudio required to use R?</strong></p>
-<div id="radio_QTKMJWVXEC" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_QTKMJWVXEC" value=""> <span>It is mandatory: R cannot be used without RStudio.</span></label><label><input type="radio" autocomplete="off" name="radio_QTKMJWVXEC" value=""> <span>It is discouraged: most experienced users avoid RStudio in favor of the bare console.</span></label><label><input type="radio" autocomplete="off" name="radio_QTKMJWVXEC" value="answer"> <span>It is the standard practice for most users, although other environments such as Positron, VS Code, and Jupyter also exist.</span></label><label><input type="radio" autocomplete="off" name="radio_QTKMJWVXEC" value=""> <span>It is only useful for users on Windows; macOS users should not install it.</span></label>
+<p>Read the bracket from left to right. The expression <code>data$condition == "violent"</code> returns a logical vector of length 120 (<code>TRUE</code> for the 60 violent-condition participants, <code>FALSE</code> for the 60 neutral-condition participants). The bracket then keeps only the rows where the logical vector is <code>TRUE</code>. The empty slot after the comma means “all columns.”</p>
+<p>The result <code>violent_group</code> is a smaller data frame with 60 rows and the same 8 (or 9, if you added new variables) columns.</p>
+<p>Other comparisons work the same way. Some you will use often:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data[data<span class="sc">$</span>age <span class="sc">&gt;</span> <span class="dv">25</span>, ]                  <span class="co"># all rows where age is greater than 25</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>data[data<span class="sc">$</span>age <span class="sc">&gt;=</span> <span class="dv">25</span>, ]                 <span class="co"># age greater than or equal to 25</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>data[data<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">"non-binary"</span>, ]    <span class="co"># only non-binary participants</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>data[data<span class="sc">$</span>gender <span class="sc">!=</span> <span class="st">"man"</span>, ]           <span class="co"># everyone except those who reported "man"</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>data[data<span class="sc">$</span>hours_weekly <span class="sc">&lt;</span> <span class="dv">5</span>, ]          <span class="co"># participants who play fewer than 5 hours weekly</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>6. Which RStudio panel will list the objects you have created during a session?</strong></p>
-<div id="radio_JDEIVKZBTV" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_JDEIVKZBTV" value=""> <span>The Help panel.</span></label><label><input type="radio" autocomplete="off" name="radio_JDEIVKZBTV" value=""> <span>The Plots panel.</span></label><label><input type="radio" autocomplete="off" name="radio_JDEIVKZBTV" value="answer"> <span>The Environment panel.</span></label><label><input type="radio" autocomplete="off" name="radio_JDEIVKZBTV" value=""> <span>The Files panel.</span></label>
+<p>The operators are the standard ones: <code>==</code> (equal to), <code>!=</code> (not equal to), <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>. The result of any of these comparisons is a logical vector of <code>TRUE</code> and <code>FALSE</code> values, the same length as the column being compared.</p>
+</section>
+<section id="subsetting-columns-by-name" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="subsetting-columns-by-name"><span class="header-section-number">8.7</span> Subsetting columns: by name</h2>
+<p>You can also select specific columns. The general form, again, is <code>dataframe[rows, columns]</code>. To keep all rows but only some columns, leave the row slot empty and pass a character vector of column names in the column slot:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data_subset <span class="ot">&lt;-</span> data[, <span class="fu">c</span>(<span class="st">"aggression"</span>, <span class="st">"condition"</span>)]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_subset)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>c("aggression", "condition")</code> is a character vector with two names, so the bracket returns a data frame with all 120 rows and just those two columns, in that order.</p>
+<p>For a single column, you could write either:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data[, <span class="st">"aggression"</span>]    <span class="co"># bracket form, returns a vector</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>aggression         <span class="co"># $ form, returns the same vector</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Both work. The <code>$</code> form is shorter and is what you will use for one-off column access. The bracket form generalizes to multiple columns, which is why it is the right tool when you want a sub-data-frame.</p>
+</section>
+<section id="combining-filter-rows-and-select-columns-at-once" class="level2" data-number="8.8">
+<h2 data-number="8.8" class="anchored" data-anchor-id="combining-filter-rows-and-select-columns-at-once"><span class="header-section-number">8.8</span> Combining: filter rows and select columns at once</h2>
+<p>Both slots of the bracket can be filled at the same time. To get only the aggression scores of the violent-condition participants:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>violent_aggression <span class="ot">&lt;-</span> data[data<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"violent"</span>, <span class="st">"aggression"</span>]</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>violent_aggression</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The first slot filters rows (only <code>violent</code> condition); the second slot selects one column (<code>aggression</code>). Because we asked for a single column, R returns a vector, not a data frame. <code>violent_aggression</code> is a numeric vector of 60 aggression scores.</p>
+<p>This single-line idiom is one of the most useful patterns in base R for inspecting subgroups. Once you know it, many small questions about your data become one-liners.</p>
+</section>
+<section id="computing-summaries-by-group" class="level2" data-number="8.9">
+<h2 data-number="8.9" class="anchored" data-anchor-id="computing-summaries-by-group"><span class="header-section-number">8.9</span> Computing summaries by group</h2>
+<p>Putting the previous two pieces together, you can now compute summary statistics separately for each subgroup of interest. The first practical question of any experiment with two conditions: do the two conditions differ on the outcome?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data[data<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"violent"</span>, <span class="st">"aggression"</span>])</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># returns 5.558333</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data[data<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"neutral"</span>, <span class="st">"aggression"</span>])</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># returns 4.213333</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Two lines. Two numbers. The participants who played the violent game reported, on average, an aggression score of about 5.56; those who played the neutral game reported about 4.21. The violent-condition mean is higher by roughly 1.35 points on the 1-to-10 scale.</p>
+<p>You can do the same with any other summary function (<code>sd</code>, <code>median</code>, <code>min</code>, <code>max</code>) and any other grouping variable. For example, the mean weekly playing hours separately by gender:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data[data<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">"man"</span>, <span class="st">"hours_weekly"</span>])</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data[data<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">"woman"</span>, <span class="st">"hours_weekly"</span>])</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data[data<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">"non-binary"</span>, <span class="st">"hours_weekly"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>If your dataset has many groups, this approach becomes repetitive and you will eventually want a function that does it for you in one line (we will introduce one in a later chapter). For two or three groups, the pattern above is short, transparent, and entirely sufficient.</p>
+</section>
+<section id="looking-ahead-the-mean-as-a-model" class="level2" data-number="8.10">
+<h2 data-number="8.10" class="anchored" data-anchor-id="looking-ahead-the-mean-as-a-model"><span class="header-section-number">8.10</span> Looking ahead: the mean as a model</h2>
+<p>Let us pause on what you just did. With two means, you summarized the responses of 120 people. Each of those participants is unique: a particular age, a particular hostility score, a particular history with video games. Those individual differences disappear into a single number. The mean tells you the typical aggression score for each condition, but it tells you nothing about the spread of scores within each condition, nothing about the shape of the distribution, and nothing about how individual participants varied.</p>
+<p>That tradeoff is general. Whenever you summarize a group of people with a single number, you compress information; whatever that number does not capture is lost (at least temporarily). The art of statistical analysis is choosing summaries that capture what you actually want to know, and being explicit about what they leave out.</p>
+<p>In the chapters that follow, we will treat the mean not as a number but as the simplest possible <strong>model</strong> of a dataset: a guess about each individual that is the same for everyone. Real models will use information about each participant (their condition, their age, their hostility) to make better, more individualized guesses. The starting point is always the mean, and the question is always: how much better can we do than the mean?</p>
+</section>
+<section id="check-your-understanding" class="level2" data-number="8.11">
+<h2 data-number="8.11" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">8.11</span> Check your understanding</h2>
+<p><strong>1. What does <code>data$aggression</code> do?</strong></p>
+<div id="radio_FAROCCYTUB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_FAROCCYTUB" value=""> <span>It is the position-based index of the column.</span></label><label><input type="radio" autocomplete="off" name="radio_FAROCCYTUB" value="answer"> <span>It extracts a single named column from the data frame as a vector.</span></label><label><input type="radio" autocomplete="off" name="radio_FAROCCYTUB" value=""> <span>It declares a new data frame.</span></label><label><input type="radio" autocomplete="off" name="radio_FAROCCYTUB" value=""> <span>It loads a column from a CSV file.</span></label>
+</div>
+<p><strong>2. What does <code>data$aggression_doubled &lt;- data$aggression * 2</code> do, assuming <code>aggression_doubled</code> did not previously exist in <code>data</code>?</strong></p>
+<div id="radio_LHDVJIHZVQ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_LHDVJIHZVQ" value=""> <span>It changes the name of the column <code>aggression</code> in place.</span></label><label><input type="radio" autocomplete="off" name="radio_LHDVJIHZVQ" value=""> <span>It produces an error because <code>aggression_doubled</code> does not exist yet.</span></label><label><input type="radio" autocomplete="off" name="radio_LHDVJIHZVQ" value="answer"> <span>It creates a new column called <code>aggression_doubled</code> in <code>data</code>, containing each aggression score multiplied by two.</span></label><label><input type="radio" autocomplete="off" name="radio_LHDVJIHZVQ" value=""> <span>It removes the original <code>aggression</code> column from <code>data</code>.</span></label>
+</div>
+<p><strong>3. Which operator do you use inside <code>[ ]</code> to test whether a value is equal to another value (e.g., to filter rows where <code>condition</code> is <code>"violent"</code>)?</strong></p>
+<div id="radio_XYVPWWVJMG" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_XYVPWWVJMG" value=""> <span><code>=</code> (single equals).</span></label><label><input type="radio" autocomplete="off" name="radio_XYVPWWVJMG" value="answer"> <span><code>==</code> (double equals).</span></label><label><input type="radio" autocomplete="off" name="radio_XYVPWWVJMG" value=""> <span><code>:=</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_XYVPWWVJMG" value=""> <span><code>equal()</code>.</span></label>
+</div>
+<p><strong>4. What does the expression <code>data[data$condition == "violent", ]</code> return?</strong></p>
+<div id="radio_OISKYDGYTN" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_OISKYDGYTN" value=""> <span>It returns the logical vector of length 120 used inside the bracket.</span></label><label><input type="radio" autocomplete="off" name="radio_OISKYDGYTN" value=""> <span>It returns the entire <code>data</code> data frame unchanged.</span></label><label><input type="radio" autocomplete="off" name="radio_OISKYDGYTN" value="answer"> <span>It returns a data frame with only the rows where the condition <code>data$condition == "violent"</code> is <code>TRUE</code>, and all columns.</span></label><label><input type="radio" autocomplete="off" name="radio_OISKYDGYTN" value=""> <span>It returns a data frame with one column called <code>"violent"</code>.</span></label>
+</div>
+<p><strong>5. What does the expression <code>data[, c("aggression", "condition")]</code> return?</strong></p>
+<div id="radio_KNLJCRWDFX" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_KNLJCRWDFX" value=""> <span>A character vector of values from the <code>aggression</code> column.</span></label><label><input type="radio" autocomplete="off" name="radio_KNLJCRWDFX" value="answer"> <span>A data frame with all 120 rows and only the two named columns, <code>aggression</code> and <code>condition</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_KNLJCRWDFX" value=""> <span>A single number summarizing both columns.</span></label><label><input type="radio" autocomplete="off" name="radio_KNLJCRWDFX" value=""> <span>An error: you cannot select two columns at once.</span></label>
+</div>
+<p><strong>6. What does the expression <code>data[data$condition == "violent", "aggression"]</code> return?</strong></p>
+<div id="radio_KCRSPEEVXQ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_KCRSPEEVXQ" value=""> <span>A data frame of 60 rows and all columns.</span></label><label><input type="radio" autocomplete="off" name="radio_KCRSPEEVXQ" value="answer"> <span>A numeric vector of length 60, containing the aggression scores of the 60 participants in the violent condition.</span></label><label><input type="radio" autocomplete="off" name="radio_KCRSPEEVXQ" value=""> <span>A single number, the mean aggression of the violent condition.</span></label><label><input type="radio" autocomplete="off" name="radio_KCRSPEEVXQ" value=""> <span>A logical vector of length 120.</span></label>
+</div>
+<p><strong>7. You computed the mean aggression score for each of the two conditions and reported the two numbers. What is the most important thing those two numbers do <em>not</em> tell you?</strong></p>
+<div id="radio_MMGYWNVHHJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MMGYWNVHHJ" value=""> <span>It saves a great deal of typing for an analysis that has only one or two groups.</span></label><label><input type="radio" autocomplete="off" name="radio_MMGYWNVHHJ" value=""> <span>It is more accurate than computing the mean of the whole dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_MMGYWNVHHJ" value="answer"> <span>It compresses 120 individual scores into a single number per group; what the number does not encode (such as spread, shape, individual differences) is lost.</span></label><label><input type="radio" autocomplete="off" name="radio_MMGYWNVHHJ" value=""> <span>It guarantees that the difference between groups is statistically significant.</span></label>
 </div>
 
 
@@ -1173,14 +1291,11 @@ window.onload = function() {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./01-basics-r.html" class="pagination-link" aria-label="What is R, and why use it?">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What is R, and why use it?</span></span>
+      <a href="./07-recap.html" class="pagination-link" aria-label="Recap and getting data into R">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Recap and getting data into R</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./03-files-and-environment.html" class="pagination-link" aria-label="Scripts, RData, projects, environments, and R Markdown">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Scripts, RData, projects, environments, and R Markdown</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -1188,4 +1303,4 @@ window.onload = function() {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/02-r-vs-rstudio.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/08-data-wrangling-basics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
