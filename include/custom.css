@@ -1,0 +1,15 @@
+/* Custom overrides loaded after webex.css. */
+
+/* Webex assigns a forced white background to unchecked MCQ options
+   (see webex.css). In dark mode this clashes with the surrounding
+   page colors and makes inline code inside the options unreadable.
+   Making the unchecked-option background transparent lets each theme
+   handle its own contrast. The dotted grey border still marks the
+   options as interactive. */
+
+.unchecked .webex-incorrect,
+.unchecked .webex-correct,
+.unchecked .webex-radiogroup label.webex-incorrect,
+.unchecked .webex-radiogroup label.webex-correct {
+  background-color: transparent !important;
+}
