@@ -60,6 +60,8 @@ A script is the most important file type you will create. Most of your work in R
 
 What a script *does not* contain: the results of running the code. A script is a recipe, not a meal. To get the results, the recipe has to be cooked again (i.e., run again).
 
+This portability is what makes reproducibility possible in practice. If you share the script together with the data file it was written for, anyone (a collaborator, a reviewer, your future self) can run the script on that data and obtain the same results you did. Exactly the same recipe applied to exactly the same ingredients produces exactly the same meal, every time.
+
 ## The RData file (`.RData` or `.rda`)
 
 An **RData file** is a saved snapshot of objects. It is a binary file (not human-readable when opened in a text editor) with the extension `.RData` or `.rda`. It allows you to save objects from your environment to disk, and to load them back later.
@@ -99,6 +101,8 @@ Second, RStudio sometimes asks, when you close the program, whether you want to 
 
 An **R project** is a folder on your computer that has been formally designated as a project, by placing a small file with the `.Rproj` extension inside it. The `.Rproj` file itself is short and uninteresting; what matters is the structure it imposes on your work.
 
+The mental model is simple: you keep one folder per analysis (or per piece of work) on your computer, and everything related to that analysis lives inside it. The folder typically holds input files (datasets, questionnaires, codebooks), the scripts that operate on those inputs, and the outputs the scripts produce (cleaned datasets, figures, tables, reports). When you turn that folder into an R project, RStudio knows that this folder is the home base for the work, and behaves accordingly.
+
 When you open an R project in RStudio (by double-clicking the `.Rproj` file, or by going to **File > Open Project**), four things happen.
 
 1. RStudio sets the **working directory** to the project folder. The working directory is the folder R uses as a starting point for finding and saving files. Setting it correctly removes a large class of "file not found" errors.
@@ -106,7 +110,29 @@ When you open an R project in RStudio (by double-clicking the `.Rproj` file, or 
 3. RStudio remembers which scripts you had open the last time you closed the project, and re-opens them.
 4. RStudio starts a fresh R session specific to that project, separate from any other project you might have open in another window.
 
-The practical effect is that a project keeps everything related to one piece of work (scripts, data files, output, notes) in one folder, and ensures that R behaves consistently every time you return to that folder. We will discuss projects again in Chapter 4 because they interact with sessions in a way that deserves its own treatment.
+The most immediately useful of these four things is the first: the working directory. Concretely, suppose your project folder is called `2024_survey` and contains a file `raw_data.csv`. Inside the project, you can read the file with nothing more than its filename:
+
+```{r}
+#| eval: false
+data <- read.csv("raw_data.csv")
+```
+
+R looks for `raw_data.csv` *relative to the project folder*, finds it, and loads it. Saving output works the same way: if your script writes a figure to `histogram.png`, the file ends up inside the project folder, alongside everything else.
+
+Without an R project, R does not know which folder you are working from, so the same line of code will either fail or load the wrong file. To make it work, you would have to spell out the full path to the file every time, something like:
+
+```{r}
+#| eval: false
+data <- read.csv("C:/Users/yourname/Documents/research/2024_survey/raw_data.csv")
+```
+
+This is brittle (the path differs between machines, between users, between operating systems) and tedious (every script and every collaborator has to update those paths to match their own setup). With an R project, the short filename `raw_data.csv` works on any machine that has the project folder.
+
+A second consequence of the project structure is that **projects are isolated from one another**. You might have one project folder for `2024_survey` and another for `pilot_study`. When you open one, R starts a fresh session, sees only the files in that project's folder, and does not carry anything over from the other project. Opening a different project starts another fresh session in the other folder. The two analyses cannot accidentally read each other's files, and changes to the environment in one project have no effect on the other.
+
+The practical effect is that a project keeps everything related to one piece of work in one folder, makes file paths short and portable, and isolates each analysis from every other one. We will discuss projects again in Chapter 4 because they interact with sessions in a way that deserves its own treatment.
+
+R projects are not mandatory. You can work with R by simply saving scripts alongside data files in any folder, without ever creating a `.Rproj` file. Many people start out that way. But projects are a substantial improvement over the ad hoc setup, and once your work grows past a couple of scripts and a single dataset, the organization that projects impose becomes hard to do without. Your future self will thank your present self for adopting projects early.
 
 To create a project: in the RStudio menu, click **File > New Project**. A dialog opens with three choices.
 
