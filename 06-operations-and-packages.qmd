@@ -270,21 +270,33 @@ But the ten repetitive lines are still present. If you discover that the correct
 
 ### Approach 3: a custom function applied to all variables at once
 
-The full benefit appears when you apply the function to all relevant variables at once. We will use one function from the apply family here, called `lapply()`; we will return to the rest of the family later.
+What follows is shown for illustration only. The code uses a few features (`lapply()`, indexing a data frame with a vector of column names, replacing several columns at once) that we will not introduce properly until later in the book. You are not expected to write code like this yourself yet. The reason for showing it now is so that you can see what becomes possible with the full toolkit, not so that you can immediately reproduce it. Read the next few paragraphs once for the comparison, then move on.
+
+The full benefit appears when you apply the function to all relevant variables at once.
 
 ```{r}
 #| eval: false
+correct_value <- function(x) {
+  x * 2 - 2
+}
+
 likert_columns <- c("item1", "item2", "item3", "item4", "item5",
                     "item6", "item7", "item8", "item9", "item10")
 
 survey[likert_columns] <- lapply(survey[likert_columns], correct_value)
 ```
 
-Two lines. The first defines which columns the correction applies to. The second applies the function to all of them in one go.
+The function definition is the same one we wrote in Approach 2. The two lines that follow do the work: the first lists the columns the correction applies to, and the second applies the function to all of them in one go. With sixty Likert variables instead of ten, only the column list grows; the line that applies the function stays exactly as it is.
 
-`lapply()` is a function that takes a list (or a data frame, which R treats as a list of columns) and a function, and applies the function to each element. `survey[likert_columns]` is a sub-data-frame containing just the ten Likert columns. `lapply(survey[likert_columns], correct_value)` applies `correct_value` to each of those ten columns, returning a list of ten corrected vectors. Assigning that list back into `survey[likert_columns]` replaces the original columns with the corrected ones.
+To make sense of the second line, three pieces of new syntax are worth unpacking.
 
-You do not need to fully understand `lapply()` yet. We will discuss it carefully later. For now, what matters is the comparison.
+**Indexing a data frame with a vector of column names.** In Chapter 5 we used `survey$item1` to pull out a single column by name, and `survey[, 2]` to pull out a single column by position. There is also a third form: when you put a *vector of names* between the square brackets, R returns a smaller data frame containing just the columns whose names appear in that vector. So `survey[likert_columns]` returns a sub-data-frame with the ten Likert columns and nothing else, in the order listed. (You can also write this as `survey[, likert_columns]` with the comma; both are equivalent for column selection.)
+
+**`lapply()`.** `lapply()` is a function that takes a list (or a data frame, which R treats internally as a list of columns) and a function, and applies that function to each element in turn. `lapply(survey[likert_columns], correct_value)` therefore calls `correct_value()` once on each of the ten Likert columns, and bundles the ten resulting vectors back into a list.
+
+**Assigning back into the data frame.** The line begins `survey[likert_columns] <-`, which says: take the ten columns named in `likert_columns`, and replace them with whatever is on the right-hand side. The right-hand side is the list of ten corrected vectors produced by `lapply()`. The assignment overwrites the original ten columns with the corrected ones, in place. The other columns of `survey` (like `id` and `age`) are not touched.
+
+You do not need to fully understand any of this yet. We will return to it carefully later. For now, what matters is the comparison.
 
 Three things have improved.
 
@@ -430,7 +442,15 @@ A reasonable convention: use `library()` for packages whose functions you will c
 
 ## Summary
 
-The chapter has covered four threads. Basic operations (assignment, arithmetic, summary functions) are the day-to-day vocabulary you will use constantly. Custom functions are introduced for illustration only; you will not write your own functions for some time, but recognizing the structure of one when you encounter it is useful. The substantive example with the distorted survey shows what coding actually buys you: a re-runnable, scalable, transparent transformation that a click-based workflow cannot match. Packages multiply the available functions by a factor of thousands and are how the R ecosystem extends itself.
+The chapter has covered four threads, each of which will recur throughout the rest of the book.
+
+**Basic operations** are the day-to-day vocabulary of working in R. You assign a value to a name with the arrow `<-`. You combine values with the standard arithmetic operators (`+`, `-`, `*`, `/`, `^`, plus modulo and integer division), and these operators work element-wise on vectors as naturally as they work on single numbers. You summarize a vector with `mean`, `sd`, `median`, `min`, `max`, `sum`, `length`, `var`, and the catch-all `summary`. You will see all of these constantly. The single non-obvious detail is that most summary functions return `NA` when the input contains any `NA`; setting `na.rm = TRUE` computes the summary over the non-missing values, and you will type that argument many times in real data analysis.
+
+**Custom functions** were introduced for illustration. You saw the basic structure (`name <- function(arguments) { body }`), a small example with `if` and `else` for input checking, and the way a custom function can be called like any other. The point at this stage is to recognize the structure when you read code written by others, not to write your own. We will return to writing functions much later in the book, once using existing functions is comfortable.
+
+**The substantive example** with the distorted survey was the centerpiece of the chapter. The same correction was applied to ten variables in three increasingly compact ways: ten manual assignments, ten function calls, and a single line that applies the function to all ten columns at once. The progression illustrates the three benefits coding has over click-based tools. The correction formula lives in one place, so a fix is one edit rather than ten. The code does not grow with the number of variables, so a sixty-variable dataset uses the same two working lines as a ten-variable one. And the intent is more legible than ten or sixty repeated lines. None of those benefits is available in SPSS or Excel. This is the most concrete answer the book offers to the question of why one would learn to code at all.
+
+**Packages** are how the R ecosystem extends itself. A package is a collection of functions, datasets, and documentation contributed by someone (the R core team, or a researcher, or a hobbyist) and made available for anyone to install and use. The two-step install-then-load distinction matters: `install.packages("name")` runs once per computer, `library(name)` runs every R session in which you want the package's functions to be available. You can read documentation through `?function_name`, through `help(package = "name")` for an overview of everything in a package, or through `vignette()` for the longer narrative tutorials some packages include. You can also avoid loading a package entirely by writing `package::function()`, which is useful for one-off calls and for disambiguating functions that have the same name in different packages.
 
 You now have the conceptual foundations of working in R. Chapter 7 is a brief recap, and after that you are ready for the rest of the book.
 
