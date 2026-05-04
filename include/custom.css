@@ -12,21 +12,14 @@
   background-color: transparent !important;
 }
 
-/* 2. Bootstrap (used by the cosmo / darkly themes) styles every inline
-      <code> element with background-color: #f8f9fa and a text color that
-      switches between themes. In dark mode, the text color becomes light
-      while the background stays light, so inline code becomes invisible.
-      Override with theme-aware colors. */
-
-/* Light mode (default): keep inline code on a slightly grey background
-   with dark text, which is the original look. */
+/* 2. Bootstrap styles every inline <code> element with a hardcoded
+      light background (#f8f9fa). In dark mode, the text color becomes
+      light while the background stays light, so inline code becomes
+      invisible. Override the background with a semi-transparent grey
+      that works on both light and dark page backgrounds, and let the
+      text color be inherited from the surrounding text (which is dark
+      in light mode and light in dark mode). */
 code:not(pre code) {
-  background-color: rgba(127, 127, 127, 0.12) !important;
-  color: var(--bs-code-color, #d63384) !important;
-}
-
-/* Dark mode: use a contrasting light text on a dark-grey background. */
-[data-bs-theme="dark"] code:not(pre code) {
-  background-color: rgba(255, 255, 255, 0.10) !important;
-  color: #ff8aa2 !important;
+  background-color: rgba(127, 127, 127, 0.15) !important;
+  color: inherit !important;
 }
