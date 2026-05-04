@@ -1,15 +1,32 @@
-/* Custom overrides loaded after webex.css. */
+/* Custom overrides loaded after webex.css and after the Bootstrap theme. */
 
-/* Webex assigns a forced white background to unchecked MCQ options
-   (see webex.css). In dark mode this clashes with the surrounding
-   page colors and makes inline code inside the options unreadable.
-   Making the unchecked-option background transparent lets each theme
-   handle its own contrast. The dotted grey border still marks the
-   options as interactive. */
-
+/* 1. Webex assigns a forced white background to unchecked MCQ options.
+      In dark mode this clashes with the surrounding page colors.
+      Make the unchecked-option background transparent so each theme
+      handles its own contrast. The dotted grey border still marks
+      the options as interactive. */
 .unchecked .webex-incorrect,
 .unchecked .webex-correct,
 .unchecked .webex-radiogroup label.webex-incorrect,
 .unchecked .webex-radiogroup label.webex-correct {
   background-color: transparent !important;
+}
+
+/* 2. Bootstrap (used by the cosmo / darkly themes) styles every inline
+      <code> element with background-color: #f8f9fa and a text color that
+      switches between themes. In dark mode, the text color becomes light
+      while the background stays light, so inline code becomes invisible.
+      Override with theme-aware colors. */
+
+/* Light mode (default): keep inline code on a slightly grey background
+   with dark text, which is the original look. */
+code:not(pre code) {
+  background-color: rgba(127, 127, 127, 0.12) !important;
+  color: var(--bs-code-color, #d63384) !important;
+}
+
+/* Dark mode: use a contrasting light text on a dark-grey background. */
+[data-bs-theme="dark"] code:not(pre code) {
+  background-color: rgba(255, 255, 255, 0.10) !important;
+  color: #ff8aa2 !important;
 }
