@@ -486,6 +486,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># returns "character"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The first two values were converted to strings (<code>"1"</code> and <code>"2"</code>) so that all elements have a common type. This is rarely what you want; if you find yourself doing this by accident, it usually means you misclassified the data on input.</p>
+<p>In practice, at the beginner level you will rarely <em>create</em> vectors by hand with <code>c()</code>. Most of the time you will be working with vectors that came from a real data file (a CSV, a survey export, a spreadsheet). What matters at this stage is that you understand what a vector is and how to manipulate one: how to find its length, how to pull out specific elements with square brackets, and how it behaves when types are mixed. Those skills transfer directly to vectors that arrive in your environment from outside.</p>
 </section>
 <section id="data-frames" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="data-frames"><span class="header-section-number">5.4</span> Data frames</h2>
@@ -537,6 +538,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>participants_data[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)]   <span class="co"># first three rows, first two columns</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Leaving one of the slots empty means “all”: <code>[1, ]</code> means “row 1, all columns,” and <code>[, 2]</code> means “all rows, column 2.” This pattern is worth practicing; it is used frequently.</p>
+<p>As with vectors, at the beginner level you will rarely <em>create</em> data frames by hand. Most of the time you will load a data frame from a real data file (a CSV, an SPSS file, an Excel sheet) using a function like <code>read.csv()</code>. What matters at this stage is that you understand what a data frame is, how to inspect its structure, and how to pull out specific columns, rows, and individual cells. Those skills are exactly what you will use on real datasets.</p>
 </section>
 <section id="objects-composed-of-objects" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="objects-composed-of-objects"><span class="header-section-number">5.5</span> Objects composed of objects</h2>
@@ -544,6 +546,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Two more compound types are worth knowing about, even though we will not use them heavily in Section 1.</p>
 <p>A <strong>list</strong> is an ordered collection of objects, like a vector, except that the elements can be of any type and any length. A list could contain a single number in the first slot, a vector of strings in the second slot, and a data frame in the third slot. Many functions that fit statistical models (regressions, ANOVAs) return their results as a list. We will revisit lists when we encounter such results in later sections.</p>
 <p>A <strong>factor</strong> is a vector of strings that R has been told to treat as a fixed set of categorical levels. Factors are useful for categorical predictors in models (e.g., experimental conditions). For now, what matters is to recognize the term when you see it.</p>
+<p>Whenever an object is composed of named parts, the dollar sign <code>$</code> is the operator you use to look at, or extract, one of those parts. We saw this in the previous section, where <code>participants_data$age</code> returned the <code>age</code> column of a data frame. The same operator works on lists: if <code>model_results</code> is a list with a named slot called <code>coefficients</code>, then <code>model_results$coefficients</code> returns the contents of that slot. The pattern is always the same: write the name of the outer object, a dollar sign, and the name of the inner part you want.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>participants_data<span class="sc">$</span>age          <span class="co"># the age column of a data frame</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>model_results<span class="sc">$</span>coefficients     <span class="co"># the coefficients slot of a model-results list</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You will use <code>$</code> constantly when working with real data and with the output of analysis functions. Most of those outputs are composed objects whose useful pieces have names; <code>$</code> is the way you reach them.</p>
 </section>
 <section id="functions" class="level2" data-number="5.6">
 <h2 data-number="5.6" class="anchored" data-anchor-id="functions"><span class="header-section-number">5.6</span> Functions</h2>
@@ -553,21 +561,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A useful mental model is a machine in a factory: ingredients go in, the machine processes them, and a product comes out. R’s functions are exactly this. The “ingredients” are the objects you pass in, the “machine” is the body of the function, and the “product” is the returned object.</p>
 <p>Here is the same function, <code>mean</code>, used in three different ways:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(ages)                          <span class="co"># used directly; result printed</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>average_age <span class="ot">&lt;-</span> <span class="fu">mean</span>(ages)           <span class="co"># result assigned to a name</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(participants_data<span class="sc">$</span>age)         <span class="co"># input pulled from a data frame</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(ages)                          <span class="co"># used directly; result printed</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>average_age <span class="ot">&lt;-</span> <span class="fu">mean</span>(ages)           <span class="co"># result assigned to a name</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(participants_data<span class="sc">$</span>age)         <span class="co"># input pulled from a data frame using $</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>The third line uses the dollar sign <code>$</code> introduced in the previous section: <code>participants_data$age</code> extracts the <code>age</code> column from the data frame and passes it directly to <code>mean()</code>, with no intermediate object. Reading this kind of expression from the inside out is a useful habit: first <code>participants_data$age</code> produces a vector, then <code>mean()</code> takes that vector and returns a single number.</p>
 <p>Many functions accept multiple arguments. <code>round()</code>, for example, takes a number and an optional second argument specifying how many decimals to keep:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fl">23.14286</span>)            <span class="co"># 23</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fl">23.14286</span>, <span class="at">digits =</span> <span class="dv">2</span>) <span class="co"># 23.14</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fl">23.14286</span>)            <span class="co"># 23</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fl">23.14286</span>, <span class="at">digits =</span> <span class="dv">2</span>) <span class="co"># 23.14</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The phrase <code>digits = 2</code> is called a <strong>named argument</strong>: you are explicitly identifying which argument you are setting. You can also pass arguments by position (<code>round(23.14286, 2)</code>), but for any argument other than the first one or two, named arguments are clearer and less error-prone.</p>
 <p>Every function has a help page. To open the help page for a function, type <code>?</code> followed by its name in the Console:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>?mean</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>?round</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>?data.frame</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>?mean</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>?round</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>?data.frame</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The help page lists the arguments, what they do, what the function returns, and usually a few examples at the bottom. Reading help pages is a skill that takes some getting used to. The examples are the most useful section for beginners; if you are unsure how to use a function, scroll directly to the bottom of its help page.</p>
 </section>
@@ -575,18 +584,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="5.7" class="anchored" data-anchor-id="looking-inside-objects"><span class="header-section-number">5.7</span> Looking inside objects</h2>
 <p>A small set of functions are constantly useful for “looking inside” objects:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(x)        <span class="co"># what type of object is x?</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(x)       <span class="co"># how long is it?</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(x)          <span class="co"># a structural overview</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(x)         <span class="co"># the first few elements (or rows)</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(x)      <span class="co"># a quick summary, type-dependent</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(x)        <span class="co"># the names of components, if any</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(x)        <span class="co"># what type of object is x?</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(x)       <span class="co"># how long is it?</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(x)          <span class="co"># a structural overview</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(x)         <span class="co"># the first few elements (or rows)</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(x)      <span class="co"># a quick summary, type-dependent</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(x)        <span class="co"># the names of components, if any</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>For data frames specifically, you will also use:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(df)        <span class="co"># number of rows</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(df)        <span class="co"># number of columns</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(df)    <span class="co"># column names</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(df)        <span class="co"># number of rows</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(df)        <span class="co"># number of columns</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(df)    <span class="co"># column names</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>When you encounter an unfamiliar object (for example, the result of a function you have not used before), running <code>class()</code> and <code>str()</code> on it is a good first move. Together they tell you what kind of object you have and what is inside it.</p>
 </section>
@@ -610,11 +619,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Exercise 4: a data frame.</strong> Create a data frame with three rows and three columns:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mini_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">id     =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">rt_ms  =</span> <span class="fu">c</span>(<span class="dv">523</span>, <span class="dv">612</span>, <span class="dv">478</span>),</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">correct =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>mini_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">id     =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">rt_ms  =</span> <span class="fu">c</span>(<span class="dv">523</span>, <span class="dv">612</span>, <span class="dv">478</span>),</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">correct =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Then:</p>
 <ul>
@@ -630,36 +639,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="check-your-understanding" class="level2" data-number="5.9">
 <h2 data-number="5.9" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">5.9</span> Check your understanding</h2>
 <p><strong>1. What is a vector in R?</strong></p>
-<div id="radio_CEBPSGYXXR" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_CEBPSGYXXR" value=""> <span>A vector with mixed types: numbers, strings, and logicals together.</span></label><label><input type="radio" autocomplete="off" name="radio_CEBPSGYXXR" value=""> <span>Another name for the working directory.</span></label><label><input type="radio" autocomplete="off" name="radio_CEBPSGYXXR" value="answer"> <span>An ordered sequence of values of the same type, created with <code>c()</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_CEBPSGYXXR" value=""> <span>A built-in plotting function.</span></label>
+<div id="radio_CLRPSZVSNC" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_CLRPSZVSNC" value=""> <span>A vector with mixed types: numbers, strings, and logicals together.</span></label><label><input type="radio" autocomplete="off" name="radio_CLRPSZVSNC" value=""> <span>Another name for the working directory.</span></label><label><input type="radio" autocomplete="off" name="radio_CLRPSZVSNC" value="answer"> <span>An ordered sequence of values of the same type, created with <code>c()</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_CLRPSZVSNC" value=""> <span>A built-in plotting function.</span></label>
 </div>
 <p><strong>2. At what index is the first element of a vector in R?</strong></p>
-<div id="radio_RIPMXMEQFB" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_RIPMXMEQFB" value=""> <span>Index 0.</span></label><label><input type="radio" autocomplete="off" name="radio_RIPMXMEQFB" value="answer"> <span>Index 1.</span></label><label><input type="radio" autocomplete="off" name="radio_RIPMXMEQFB" value=""> <span>Index -1.</span></label><label><input type="radio" autocomplete="off" name="radio_RIPMXMEQFB" value=""> <span>It depends on the operating system.</span></label>
+<div id="radio_BTEOCNFVJO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_BTEOCNFVJO" value=""> <span>Index 0.</span></label><label><input type="radio" autocomplete="off" name="radio_BTEOCNFVJO" value="answer"> <span>Index 1.</span></label><label><input type="radio" autocomplete="off" name="radio_BTEOCNFVJO" value=""> <span>Index -1.</span></label><label><input type="radio" autocomplete="off" name="radio_BTEOCNFVJO" value=""> <span>It depends on the operating system.</span></label>
 </div>
 <p><strong>3. What is a data frame?</strong></p>
-<div id="radio_FDQNOQBTKR" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_FDQNOQBTKR" value=""> <span>A spreadsheet file saved in CSV format.</span></label><label><input type="radio" autocomplete="off" name="radio_FDQNOQBTKR" value="answer"> <span>A two-dimensional structure where rows are observations and columns are variables, holding vectors of equal length.</span></label><label><input type="radio" autocomplete="off" name="radio_FDQNOQBTKR" value=""> <span>A list of installed packages.</span></label><label><input type="radio" autocomplete="off" name="radio_FDQNOQBTKR" value=""> <span>A graphical representation of a dataset.</span></label>
+<div id="radio_ERRJGPMNYC" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ERRJGPMNYC" value=""> <span>A spreadsheet file saved in CSV format.</span></label><label><input type="radio" autocomplete="off" name="radio_ERRJGPMNYC" value="answer"> <span>A two-dimensional structure where rows are observations and columns are variables, holding vectors of equal length.</span></label><label><input type="radio" autocomplete="off" name="radio_ERRJGPMNYC" value=""> <span>A list of installed packages.</span></label><label><input type="radio" autocomplete="off" name="radio_ERRJGPMNYC" value=""> <span>A graphical representation of a dataset.</span></label>
 </div>
 <p><strong>4. Which expression extracts the column <code>age</code> from a data frame called <code>participants_data</code>?</strong></p>
-<div id="radio_ABPBFMTCBB" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_ABPBFMTCBB" value=""> <span><code>participants_data[age]</code></span></label><label><input type="radio" autocomplete="off" name="radio_ABPBFMTCBB" value=""> <span><code>participants_data#age</code></span></label><label><input type="radio" autocomplete="off" name="radio_ABPBFMTCBB" value="answer"> <span><code>participants_data$age</code></span></label><label><input type="radio" autocomplete="off" name="radio_ABPBFMTCBB" value=""> <span><code>participants_data-&gt;age</code></span></label>
+<div id="radio_NKSVVDVSHY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_NKSVVDVSHY" value=""> <span><code>participants_data[age]</code></span></label><label><input type="radio" autocomplete="off" name="radio_NKSVVDVSHY" value=""> <span><code>participants_data#age</code></span></label><label><input type="radio" autocomplete="off" name="radio_NKSVVDVSHY" value="answer"> <span><code>participants_data$age</code></span></label><label><input type="radio" autocomplete="off" name="radio_NKSVVDVSHY" value=""> <span><code>participants_data-&gt;age</code></span></label>
 </div>
 <p><strong>5. What is a function?</strong></p>
-<div id="radio_WJOAVRDHWO" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_WJOAVRDHWO" value=""> <span>A type of file used to save analyses.</span></label><label><input type="radio" autocomplete="off" name="radio_WJOAVRDHWO" value=""> <span>A panel in the RStudio interface.</span></label><label><input type="radio" autocomplete="off" name="radio_WJOAVRDHWO" value="answer"> <span>A piece of R that takes objects as input and produces a new object as output.</span></label><label><input type="radio" autocomplete="off" name="radio_WJOAVRDHWO" value=""> <span>A specific kind of vector.</span></label>
+<div id="radio_NZMNTUBJXJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_NZMNTUBJXJ" value=""> <span>A type of file used to save analyses.</span></label><label><input type="radio" autocomplete="off" name="radio_NZMNTUBJXJ" value=""> <span>A panel in the RStudio interface.</span></label><label><input type="radio" autocomplete="off" name="radio_NZMNTUBJXJ" value="answer"> <span>A piece of R that takes objects as input and produces a new object as output.</span></label><label><input type="radio" autocomplete="off" name="radio_NZMNTUBJXJ" value=""> <span>A specific kind of vector.</span></label>
 </div>
 <p><strong>6. What does <code>round(23.14286, digits = 2)</code> do?</strong></p>
-<div id="radio_RNADERCTYF" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_RNADERCTYF" value=""> <span>Add a new column called <code>digits</code> to the data frame.</span></label><label><input type="radio" autocomplete="off" name="radio_RNADERCTYF" value="answer"> <span>Round 23.14286 to two decimals, returning 23.14.</span></label><label><input type="radio" autocomplete="off" name="radio_RNADERCTYF" value=""> <span>Round 23.14286 to two significant figures, returning 23.</span></label><label><input type="radio" autocomplete="off" name="radio_RNADERCTYF" value=""> <span>Multiply 23.14286 by 2.</span></label>
+<div id="radio_PXUONLIHRF" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_PXUONLIHRF" value=""> <span>Add a new column called <code>digits</code> to the data frame.</span></label><label><input type="radio" autocomplete="off" name="radio_PXUONLIHRF" value="answer"> <span>Round 23.14286 to two decimals, returning 23.14.</span></label><label><input type="radio" autocomplete="off" name="radio_PXUONLIHRF" value=""> <span>Round 23.14286 to two significant figures, returning 23.</span></label><label><input type="radio" autocomplete="off" name="radio_PXUONLIHRF" value=""> <span>Multiply 23.14286 by 2.</span></label>
 </div>
 <p><strong>7. If <code>ages</code> is a vector of length 7, what does <code>length(ages)</code> return?</strong></p>
-<div id="radio_JUSSKWUHDR" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_JUSSKWUHDR" value=""> <span>It returns 0 because R indexes from 0.</span></label><label><input type="radio" autocomplete="off" name="radio_JUSSKWUHDR" value=""> <span>It returns 1 because there is one element.</span></label><label><input type="radio" autocomplete="off" name="radio_JUSSKWUHDR" value="answer"> <span>It returns 7, the length of the original vector.</span></label><label><input type="radio" autocomplete="off" name="radio_JUSSKWUHDR" value=""> <span>It causes an error.</span></label>
+<div id="radio_YYOMVFZVNW" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_YYOMVFZVNW" value=""> <span>It returns 0 because R indexes from 0.</span></label><label><input type="radio" autocomplete="off" name="radio_YYOMVFZVNW" value=""> <span>It returns 1 because there is one element.</span></label><label><input type="radio" autocomplete="off" name="radio_YYOMVFZVNW" value="answer"> <span>It returns 7, the length of the original vector.</span></label><label><input type="radio" autocomplete="off" name="radio_YYOMVFZVNW" value=""> <span>It causes an error.</span></label>
 </div>
 <p><strong>8. What does typing <code>?mean</code> in the Console do?</strong></p>
-<div id="radio_AKVCAXRHPW" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_AKVCAXRHPW" value=""> <span>Open the documentation for the <code>mean</code> package.</span></label><label><input type="radio" autocomplete="off" name="radio_AKVCAXRHPW" value="answer"> <span>Open the help page for the <code>mean</code> function, listing its arguments and examples.</span></label><label><input type="radio" autocomplete="off" name="radio_AKVCAXRHPW" value=""> <span>Calculate the mean of all objects in the environment.</span></label><label><input type="radio" autocomplete="off" name="radio_AKVCAXRHPW" value=""> <span>Print the source code of the <code>mean</code> function.</span></label>
+<div id="radio_BSNUMNXVLJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_BSNUMNXVLJ" value=""> <span>Open the documentation for the <code>mean</code> package.</span></label><label><input type="radio" autocomplete="off" name="radio_BSNUMNXVLJ" value="answer"> <span>Open the help page for the <code>mean</code> function, listing its arguments and examples.</span></label><label><input type="radio" autocomplete="off" name="radio_BSNUMNXVLJ" value=""> <span>Calculate the mean of all objects in the environment.</span></label><label><input type="radio" autocomplete="off" name="radio_BSNUMNXVLJ" value=""> <span>Print the source code of the <code>mean</code> function.</span></label>
 </div>
 
 
