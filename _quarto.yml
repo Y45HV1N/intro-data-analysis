@@ -1,6 +1,8 @@
 project:
   type: book
   output-dir: _book
+  resources:
+    - data/
 book:
   title: Understanding and analyzing social and behavioral data
   author: Yashvin Seetahul
@@ -22,6 +24,9 @@ book:
     - 05-objects-and-functions.qmd
     - 06-operations-and-packages.qmd
     - 07-recap.qmd
+  - part: 'Section 2: Manipulating and Visualizing Data'
+    chapters:
+    - 08-data-wrangling-basics.qmd
 format:
   html:
     theme:

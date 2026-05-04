@@ -1,0 +1,299 @@
+---
+title: "Data wrangling: basics"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(webexercises)
+```
+
+## Overview
+
+Section 1 ended with you loading a real data file into R with `read.csv()`. The result was a data frame, and you saw how to inspect it (`head`, `str`, `summary`, `nrow`, `ncol`). What you have not yet done is *manipulate* the data: pull out specific columns, filter rows that meet a condition, create derived variables, or compute summaries for subgroups.
+
+This chapter covers those operations. Together they are usually called **data wrangling**: the work of turning a raw data file into the specific subsets and summaries you need to actually answer a research question. Good data wrangling is the foundation for everything that follows. Most of the time you spend on a real analysis is spent here, not on the statistical model itself.
+
+We will work with one dataset throughout the chapter, and continue to use it in the chapters that follow.
+
+## The example dataset
+
+The dataset is called `vgames_study.csv`. It comes from a (fictional) study on the relationship between video-game playing habits and self-reported aggression. It has 120 participants and eight variables.
+
+| Variable | Type | Meaning |
+|----------|------|---------|
+| `participant_id` | integer | Unique participant identifier (1 to 120) |
+| `age` | integer | Participant age in years |
+| `gender` | character | Self-reported gender (`man`, `woman`, `non-binary`) |
+| `condition` | character | Experimental condition (`violent` or `neutral` video game) |
+| `hours_weekly` | numeric | Self-reported hours per week spent playing video games |
+| `trait_hostility` | numeric | Score on a hostility trait scale, 1 to 7 |
+| `empathy` | numeric | Score on an empathy scale, 1 to 7 |
+| `aggression` | numeric | Self-reported aggression after the experimental session, 1 to 10 |
+
+The design is a between-participants experiment: 60 participants were randomly assigned to play a violent video game and 60 to play a neutral video game. After the session, all 120 reported their aggression. The other variables (age, gender, hours of weekly play, trait hostility, empathy) were measured before the experiment.
+
+This dataset is small and clean, which keeps the examples readable. The wrangling operations you will learn on it are exactly the same as on a real dataset of any size.
+
+### Getting the dataset
+
+Download the file from <https://y45hv1n.github.io/intro-data-analysis/data/vgames_study.csv> and place it inside a folder called `data` in your R project. The path you will read from will then be `"data/vgames_study.csv"`.
+
+If you have not yet created an R project for this book, do that first (review Chapter 3 if you need to). For everything that follows, we assume you are inside an R project and that the file lives at `data/vgames_study.csv`.
+
+## Loading the data
+
+Inside your R project, in a new script, load the data and take a quick look:
+
+```{r}
+#| eval: false
+data <- read.csv("data/vgames_study.csv")
+
+head(data)
+str(data)
+```
+
+`head(data)` prints the first six rows. `str(data)` prints a structural summary: 120 observations, 8 variables, the type of each variable. You should see `participant_id`, `age`, and `hours_weekly` as numeric, and `gender` and `condition` as character (text).
+
+The object `data` is now in your environment and you can refer to it by name.
+
+A note on the object name. Calling the object `data` is convenient and harmless in this chapter, but `data` is also the name of a base R function (`?data`). For larger projects, a more descriptive name is better, for example `vgames` or `study`. We use `data` here because it matches the homework conventions you may already have seen.
+
+## Accessing one variable: the dollar sign `$`
+
+Chapter 5 introduced the dollar sign `$` as the operator that pulls one component out of a composite object. On a data frame, `$` extracts a single column. The general form is `dataframe$column_name`.
+
+```{r}
+#| eval: false
+data$aggression
+data$age
+data$condition
+```
+
+Each of these prints an entire column as a vector. `data$aggression` is a numeric vector of 120 aggression scores; `data$condition` is a character vector of 120 condition labels.
+
+Once you have a vector, you can do anything to it that you would do to any other vector. For example, the average aggression score across all 120 participants:
+
+```{r}
+#| eval: false
+mean(data$aggression)
+```
+
+The expression is read inside-out: `data$aggression` produces a vector of 120 numbers, and `mean()` reduces that vector to a single number. The same inside-out logic applies whenever a function is called on a column.
+
+## Creating new variables
+
+You can add a new column to a data frame by assigning into a name that does not yet exist on the right of `$`:
+
+```{r}
+#| eval: false
+data$aggression_doubled <- data$aggression * 2
+```
+
+After this line, `data` has nine variables instead of eight. The new column `aggression_doubled` contains every aggression score multiplied by two. Look at the Environment panel: the description of `data` should now read `120 obs. of 9 variables`.
+
+A more useful example. Compute each participant's deviation from the mean aggression score. The mean is a single number; subtracting it from each value gives, for each participant, how far above or below the average they scored.
+
+```{r}
+#| eval: false
+data$aggression_deviation <- data$aggression - mean(data$aggression)
+```
+
+R applies the subtraction element-wise: for every row, it computes (this participant's aggression) minus (the overall mean aggression). The result is a new column with 120 values, some positive (above the mean), some negative (below).
+
+To inspect the new column alongside the original, select both columns:
+
+```{r}
+#| eval: false
+head(data[, c("aggression", "aggression_deviation")])
+```
+
+This previews the next topic: subsetting columns by name. We come back to it shortly.
+
+The general pattern is `dataframe$new_column <- expression`. The expression on the right can use other columns of the same data frame, scalar values, or any R operation that produces a vector of the right length. New variables defined this way persist for the rest of the session and become part of `data`.
+
+## Subsetting rows: filtering by a logical condition
+
+You will frequently want to look at only a subset of your participants: those in the violent condition, those over 25, those with high trait hostility. The general tool for this is **logical subsetting**.
+
+Two-dimensional bracket indexing on a data frame uses the form `dataframe[rows, columns]`, where leaving a slot empty means "all." Chapter 5 introduced this with positional indices (`data[1, ]` for the first row, `data[, 2]` for the second column). For real research, you will more often select rows by a *condition*.
+
+The condition uses the **double-equals operator** `==`, which means "is equal to." (Single `=` is not a comparison in R; it is used inside function calls for named arguments. Confusing the two is a common early mistake.) For each row, R checks whether the condition is `TRUE` or `FALSE`, and the subsetting keeps only the rows where it is `TRUE`.
+
+To select only participants in the violent condition:
+
+```{r}
+#| eval: false
+violent_group <- data[data$condition == "violent", ]
+nrow(violent_group)
+# returns 60
+```
+
+Read the bracket from left to right. The expression `data$condition == "violent"` returns a logical vector of length 120 (`TRUE` for the 60 violent-condition participants, `FALSE` for the 60 neutral-condition participants). The bracket then keeps only the rows where the logical vector is `TRUE`. The empty slot after the comma means "all columns."
+
+The result `violent_group` is a smaller data frame with 60 rows and the same 8 (or 9, if you added new variables) columns.
+
+Other comparisons work the same way. Some you will use often:
+
+```{r}
+#| eval: false
+data[data$age > 25, ]                  # all rows where age is greater than 25
+data[data$age >= 25, ]                 # age greater than or equal to 25
+data[data$gender == "non-binary", ]    # only non-binary participants
+data[data$gender != "man", ]           # everyone except those who reported "man"
+data[data$hours_weekly < 5, ]          # participants who play fewer than 5 hours weekly
+```
+
+The operators are the standard ones: `==` (equal to), `!=` (not equal to), `<`, `<=`, `>`, `>=`. The result of any of these comparisons is a logical vector of `TRUE` and `FALSE` values, the same length as the column being compared.
+
+## Subsetting columns: by name
+
+You can also select specific columns. The general form, again, is `dataframe[rows, columns]`. To keep all rows but only some columns, leave the row slot empty and pass a character vector of column names in the column slot:
+
+```{r}
+#| eval: false
+data_subset <- data[, c("aggression", "condition")]
+head(data_subset)
+```
+
+`c("aggression", "condition")` is a character vector with two names, so the bracket returns a data frame with all 120 rows and just those two columns, in that order.
+
+For a single column, you could write either:
+
+```{r}
+#| eval: false
+data[, "aggression"]    # bracket form, returns a vector
+data$aggression         # $ form, returns the same vector
+```
+
+Both work. The `$` form is shorter and is what you will use for one-off column access. The bracket form generalizes to multiple columns, which is why it is the right tool when you want a sub-data-frame.
+
+## Combining: filter rows and select columns at once
+
+Both slots of the bracket can be filled at the same time. To get only the aggression scores of the violent-condition participants:
+
+```{r}
+#| eval: false
+violent_aggression <- data[data$condition == "violent", "aggression"]
+violent_aggression
+```
+
+The first slot filters rows (only `violent` condition); the second slot selects one column (`aggression`). Because we asked for a single column, R returns a vector, not a data frame. `violent_aggression` is a numeric vector of 60 aggression scores.
+
+This single-line idiom is one of the most useful patterns in base R for inspecting subgroups. Once you know it, many small questions about your data become one-liners.
+
+## Computing summaries by group
+
+Putting the previous two pieces together, you can now compute summary statistics separately for each subgroup of interest. The first practical question of any experiment with two conditions: do the two conditions differ on the outcome?
+
+```{r}
+#| eval: false
+mean(data[data$condition == "violent", "aggression"])
+# returns 5.558333
+
+mean(data[data$condition == "neutral", "aggression"])
+# returns 4.213333
+```
+
+Two lines. Two numbers. The participants who played the violent game reported, on average, an aggression score of about 5.56; those who played the neutral game reported about 4.21. The violent-condition mean is higher by roughly 1.35 points on the 1-to-10 scale.
+
+You can do the same with any other summary function (`sd`, `median`, `min`, `max`) and any other grouping variable. For example, the mean weekly playing hours separately by gender:
+
+```{r}
+#| eval: false
+mean(data[data$gender == "man", "hours_weekly"])
+mean(data[data$gender == "woman", "hours_weekly"])
+mean(data[data$gender == "non-binary", "hours_weekly"])
+```
+
+If your dataset has many groups, this approach becomes repetitive and you will eventually want a function that does it for you in one line (we will introduce one in a later chapter). For two or three groups, the pattern above is short, transparent, and entirely sufficient.
+
+## Looking ahead: the mean as a model
+
+Let us pause on what you just did. With two means, you summarized the responses of 120 people. Each of those participants is unique: a particular age, a particular hostility score, a particular history with video games. Those individual differences disappear into a single number. The mean tells you the typical aggression score for each condition, but it tells you nothing about the spread of scores within each condition, nothing about the shape of the distribution, and nothing about how individual participants varied.
+
+That tradeoff is general. Whenever you summarize a group of people with a single number, you compress information; whatever that number does not capture is lost (at least temporarily). The art of statistical analysis is choosing summaries that capture what you actually want to know, and being explicit about what they leave out.
+
+In the chapters that follow, we will treat the mean not as a number but as the simplest possible **model** of a dataset: a guess about each individual that is the same for everyone. Real models will use information about each participant (their condition, their age, their hostility) to make better, more individualized guesses. The starting point is always the mean, and the question is always: how much better can we do than the mean?
+
+## Check your understanding
+
+```{r}
+#| echo: false
+opts_q1 <- c(
+  "It is the position-based index of the column.",
+  answer = "It extracts a single named column from the data frame as a vector.",
+  "It declares a new data frame.",
+  "It loads a column from a CSV file."
+)
+
+opts_q2 <- c(
+  "It changes the name of the column `aggression` in place.",
+  "It produces an error because `aggression_doubled` does not exist yet.",
+  answer = "It creates a new column called `aggression_doubled` in `data`, containing each aggression score multiplied by two.",
+  "It removes the original `aggression` column from `data`."
+)
+
+opts_q3 <- c(
+  "`=` (single equals).",
+  answer = "`==` (double equals).",
+  "`:=`.",
+  "`equal()`."
+)
+
+opts_q4 <- c(
+  "It returns the logical vector of length 120 used inside the bracket.",
+  "It returns the entire `data` data frame unchanged.",
+  answer = "It returns a data frame with only the rows where the condition `data$condition == \"violent\"` is `TRUE`, and all columns.",
+  "It returns a data frame with one column called `\"violent\"`."
+)
+
+opts_q5 <- c(
+  "A character vector of values from the `aggression` column.",
+  answer = "A data frame with all 120 rows and only the two named columns, `aggression` and `condition`.",
+  "A single number summarizing both columns.",
+  "An error: you cannot select two columns at once."
+)
+
+opts_q6 <- c(
+  "A data frame of 60 rows and all columns.",
+  answer = "A numeric vector of length 60, containing the aggression scores of the 60 participants in the violent condition.",
+  "A single number, the mean aggression of the violent condition.",
+  "A logical vector of length 120."
+)
+
+opts_q7 <- c(
+  "It saves a great deal of typing for an analysis that has only one or two groups.",
+  "It is more accurate than computing the mean of the whole dataset.",
+  answer = "It compresses 120 individual scores into a single number per group; what the number does not encode (such as spread, shape, individual differences) is lost.",
+  "It guarantees that the difference between groups is statistically significant."
+)
+```
+
+**1. What does `data$aggression` do?**
+
+`r longmcq(opts_q1)`
+
+**2. What does `data$aggression_doubled <- data$aggression * 2` do, assuming `aggression_doubled` did not previously exist in `data`?**
+
+`r longmcq(opts_q2)`
+
+**3. Which operator do you use inside `[ ]` to test whether a value is equal to another value (e.g., to filter rows where `condition` is `"violent"`)?**
+
+`r longmcq(opts_q3)`
+
+**4. What does the expression `data[data$condition == "violent", ]` return?**
+
+`r longmcq(opts_q4)`
+
+**5. What does the expression `data[, c("aggression", "condition")]` return?**
+
+`r longmcq(opts_q5)`
+
+**6. What does the expression `data[data$condition == "violent", "aggression"]` return?**
+
+`r longmcq(opts_q6)`
+
+**7. You computed the mean aggression score for each of the two conditions and reported the two numbers. What is the most important thing those two numbers do *not* tell you?**
+
+`r longmcq(opts_q7)`
