@@ -30,7 +30,7 @@ This chapter has three purposes. The first is to recap the six earlier chapters 
 
 ## What this means for the rest of the book
 
-You now have everything you need to start using R for actual data analysis. The remaining sections of the book will introduce specific kinds of analysis (descriptive statistics, linear models, ANOVA, regression, and beyond) and the corresponding R workflow for each. Where Section 1 was about setting up the environment, the remaining sections will be about doing things with it.
+You now have everything you need to start using R for actual data analysis. The remaining sections of the book will introduce specific kinds of analysis and operations relevant to the [**4 other pillars**]{style="color: red;"} ([**data visualization**]{style="color: orange;"}, [**statistical modeling**]{style="color: orange;"}, [**statistical inference**]{style="color: orange;"}, [**causal inference**]{style="color: orange;"}) in combination with R coding (i.e., the [**5th pillar**]{style="color: red;"}), and the corresponding R workflow for each. Where Section 1 was about setting up the environment, the remaining sections will be about doing things with it.
 
 Two pieces of advice for the transition.
 
