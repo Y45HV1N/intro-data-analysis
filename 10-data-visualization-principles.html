@@ -461,6 +461,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="10.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">10.1</span> Overview</h2>
 <p>Up to this point we have looked at our data through numbers: counts, means, standard deviations, residuals. Numbers compress information, which is useful when you want a single value to compare or to put in a sentence. But numbers also hide information, and what they hide can change the answer to a research question.</p>
 <p>This chapter is about the other half of looking at data: visualization. The chapter does not contain plotting code yet. The reason is deliberate: it is much easier to learn the <em>how</em> of plotting once you know the <em>what</em> and the <em>why</em>. We start with the questions a good plot answers, the conceptual framework that organizes every plot you will ever make, the principles that distinguish a good plot from a bad one, and the kinds of judgment calls you will face when reading or making one. The tools to translate these decisions into actual plots in R come in the next chapter.</p>
+<p>The plots that appear throughout this chapter are produced with <code>ggplot2</code>, the R package you will learn in the next chapter. The code for each plot is hidden for now, so you can focus on the visual outcome rather than the syntax. You will revisit these examples and reproduce them yourself once you have learned the package.</p>
 </section>
 <section id="why-visualize" class="level2" data-number="10.2">
 <h2 data-number="10.2" class="anchored" data-anchor-id="why-visualize"><span class="header-section-number">10.2</span> Why visualize?</h2>
@@ -478,7 +479,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>All four x means are 9.0 and all four y means are 7.50. The four standard deviations agree to two decimals as well, and the four correlation coefficients between x and y are all approximately 0.82. If you compute the line of best fit (the regression line) for each pair, all four lines are essentially the same.</p>
 <p>By every numerical summary you can think of at this point, the four datasets are interchangeable.</p>
-<p>When you plot them, they look completely different. Dataset 1 is a clean, roughly linear relationship: x and y increase together with mild noise around a straight line. Dataset 2 is a smooth curve: y rises with x, peaks in the middle, and falls again, so a straight line is the wrong model entirely. Dataset 3 is a near-perfect linear relationship plus one extreme outlier that pulls the regression line away from the true pattern. Dataset 4 is an x-axis that holds a constant value for ten observations and one isolated point at a very different x; the entire correlation is driven by that single point, and there is no real relationship for the other ten.</p>
+<p>When you plot them, they look completely different.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Dataset 1 is a clean, roughly linear relationship. Dataset 2 is a smooth curve where a straight line is the wrong model entirely. Dataset 3 is a near-perfect linear relationship plus one extreme outlier that pulls the regression line away from the true pattern. Dataset 4 is a vertical line of constant x with one isolated point at a very different x; that single point is what creates the apparent correlation.</p>
 <p>Four datasets, four very different stories, identical summary statistics. The lesson Anscombe drew, and the one this book takes seriously, is short: <strong>always plot your data</strong>. Numerical summaries do not protect you from misreading what is actually in the dataset.</p>
 <p>A good visualization does things that numbers alone cannot:</p>
 <ul>
@@ -487,11 +498,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>It exposes <strong>outliers</strong> and unusual observations.</li>
 <li>It communicates findings to others quickly and intuitively, in a way that a table of numbers cannot.</li>
 </ul>
-<p>You will see Anscombe’s quartet plotted in many statistics textbooks. Once you have learned <code>ggplot2</code> in the next chapter, you will be able to plot it yourself in a few lines and inspect the four panels directly.</p>
+<p>Here is a video from YouTube that explains two uses of data visualization:</p>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/K8Al2CEd_6k" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
 </section>
 <section id="the-grammar-of-graphics" class="level2" data-number="10.3">
 <h2 data-number="10.3" class="anchored" data-anchor-id="the-grammar-of-graphics"><span class="header-section-number">10.3</span> The grammar of graphics</h2>
 <p>Most modern data-visualization systems (including <code>ggplot2</code>, the R package you will learn in the next chapter) are based on a framework called the <strong>grammar of graphics</strong>, formalized by the statistician Leland Wilkinson. The core idea is that any plot is built from the same three ingredients, combined in different ways.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
 <p><strong>Data.</strong> The dataset you want to visualize. Without data there is nothing to plot. The data are usually a data frame.</p>
 <p><strong>Aesthetics.</strong> A mapping from variables in the data to visual properties of the plot. Examples: the x-axis represents <code>hours_weekly</code>; the y-axis represents <code>aggression</code>; the color of each point represents <code>condition</code>; the size of each point represents <code>age</code>. Each aesthetic mapping turns one variable into one visual channel.</p>
 <p><strong>Geometry.</strong> The visual shape used to represent each observation. Examples: points (a scatterplot), bars (a bar chart), lines (a line chart), boxes (a boxplot), tiles (a heatmap).</p>
@@ -504,6 +525,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="show-the-data-not-just-summaries" class="level3" data-number="10.4.1">
 <h3 data-number="10.4.1" class="anchored" data-anchor-id="show-the-data-not-just-summaries"><span class="header-section-number">10.4.1</span> 1. Show the data, not just summaries</h3>
 <p>A bar chart that displays only the group means is a bar chart that hides the individual observations. The reader cannot tell whether the difference between groups reflects a consistent difference across all participants or a small number of extreme participants pulling the mean in one direction. Whenever possible, show the individual data points (for example, as a scatter or jittered dots) in addition to any summary statistic, or use a geometry like a boxplot or violin plot that displays the distribution rather than collapsing it to a single number.</p>
+<p><strong>Bad example.</strong> A bar chart of group means, with no indication of within-group variability or individual scores.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Good example.</strong> The same group means, with all individual scores overlaid as jittered points. Now the reader sees the spread within each group and can judge whether the difference in means reflects a consistent shift or a few extreme scores.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="choose-the-right-geometry-for-the-data-type" class="level3" data-number="10.4.2">
 <h3 data-number="10.4.2" class="anchored" data-anchor-id="choose-the-right-geometry-for-the-data-type"><span class="header-section-number">10.4.2</span> 2. Choose the right geometry for the data type</h3>
@@ -515,38 +556,297 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>One continuous variable across one categorical variable, group comparison.</strong> Use a boxplot, a violin plot, or overlaid histograms. These show how the distribution of the continuous variable differs across groups.</li>
 </ul>
 <p>There are more advanced choices for more complicated questions, but the four above cover most of what you will plot.</p>
+<p><strong>Bad example.</strong> A bar chart used to display the relationship between two continuous variables (<code>hours_weekly</code> and <code>aggression</code>). Bar charts are designed for categorical comparisons; using one here forces a continuous variable into discrete bars and discards the relationship.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Good example.</strong> A scatterplot. Each participant is one point; the relationship (or absence of one) is visible directly.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="label-everything-clearly" class="level3" data-number="10.4.3">
 <h3 data-number="10.4.3" class="anchored" data-anchor-id="label-everything-clearly"><span class="header-section-number">10.4.3</span> 3. Label everything clearly</h3>
 <p>Every axis needs a label. The label should describe the variable in plain language (“Aggression Score (1-10)”), not the column name from the dataset (<code>aggression</code>). If you use color or shape to encode a variable, include a legend that explains what each color or shape means. Give the plot a title that states what it shows. A reader who sees the plot for the first time, with no other context, should be able to identify what is being shown.</p>
+<p><strong>Bad example.</strong> A scatterplot with no title, default axis labels (the raw column names), and no legend explanation. A reader without context cannot tell what is being shown.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Good example.</strong> Same plot with a descriptive title, plain-language axis labels, and a legend identifying the conditions.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="avoid-chart-junk" class="level3" data-number="10.4.4">
 <h3 data-number="10.4.4" class="anchored" data-anchor-id="avoid-chart-junk"><span class="header-section-number">10.4.4</span> 4. Avoid chart junk</h3>
 <p>The term <em>chart junk</em> was popularized by the statistician Edward Tufte. It refers to visual elements that do not encode information: unnecessary gridlines, 3D effects on a 2D plot, decorative images, drop shadows, gradient fills, excessive colors. Chart junk distracts the reader from the actual data and signals carelessness. Every element on a plot should serve a purpose. If you can remove an element without losing information, remove it.</p>
+<p><strong>Bad example.</strong> The same data, encrusted with chart junk: gradient bars, dark gridlines, heavy borders, oversaturated colors.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Good example.</strong> Same data, with everything that does not encode information removed. The bars are the only visual element with weight; the eye goes directly to the comparison.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="do-not-mislead-with-scales" class="level3" data-number="10.4.5">
 <h3 data-number="10.4.5" class="anchored" data-anchor-id="do-not-mislead-with-scales"><span class="header-section-number">10.4.5</span> 5. Do not mislead with scales</h3>
 <p>The scale of an axis controls how big a difference looks on the page. A small difference in y-values can be made to look enormous by truncating the y-axis to start near the data values rather than at zero. The classic example: bars that visually look twice as tall but actually differ by 0.1 on a scale of 1 to 10, because the y-axis has been truncated to range from 4.0 to 6.0 instead of 0 to 10. This is misleading and you should not do it.</p>
 <p>Two related rules. <strong>Do not use dual y-axes.</strong> A plot with two different y-axes (one on the left, one on the right) almost always misleads, because the reader cannot tell which line corresponds to which axis without effort, and the apparent relationship between the lines depends entirely on how the two axes are scaled. <strong>Use consistent scales when comparing plots.</strong> If you show two plots side by side, the reader will compare them visually; using different scales for the same variable will mislead.</p>
+<p><strong>Bad example.</strong> The y-axis is truncated to range from 4.0 to 6.0. The two bars look dramatically different in height; the visual impression is that the violent condition produced an enormous effect.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Good example.</strong> Same data, y-axis on its natural scale (1 to 10). The difference between conditions is real and interpretable, but it is not visually inflated.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="avoid-pie-charts" class="level3" data-number="10.4.6">
 <h3 data-number="10.4.6" class="anchored" data-anchor-id="avoid-pie-charts"><span class="header-section-number">10.4.6</span> 6. Avoid pie charts</h3>
 <p>Pie charts ask the reader to compare the angles of slices, and humans are demonstrably bad at comparing angles. Comparing the heights of bars is much easier and more accurate. Almost every situation in which someone reaches for a pie chart is better served by a bar chart. There are a few special cases (a pie with two or three slices when the goal is to communicate “this small slice versus everything else”), but the default should be a bar chart.</p>
+<p><strong>Bad example.</strong> A pie chart of gender counts. Comparing slices by angle is harder than reading bar heights.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Good example.</strong> Same data as a bar chart. The differences in counts are immediate.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="use-color-purposefully" class="level3" data-number="10.4.7">
 <h3 data-number="10.4.7" class="anchored" data-anchor-id="use-color-purposefully"><span class="header-section-number">10.4.7</span> 7. Use color purposefully</h3>
 <p>Color in a plot should encode information, not decorate it. Each distinct color should mean something specific (one experimental condition, one category of participants, one variable). Use a small number of colors; a plot with ten colors is a plot the reader cannot interpret.</p>
 <p>A practical detail: roughly 8 percent of men and 0.5 percent of women have some form of color-vision deficiency, most commonly red-green confusion. Plots that distinguish groups by red versus green are unreadable for those readers. Use color palettes designed to be colorblind-friendly (any modern plotting library, including <code>ggplot2</code>, provides such palettes), and where possible reinforce color with a second visual channel like shape or line type, so the plot remains interpretable even for readers who cannot distinguish the colors.</p>
+<p><strong>Bad example.</strong> Each participant has been given a different rainbow color for no reason. The colors do not encode anything; they are pure decoration. The reader gets no information from them and the plot is harder to read than the same plot in one color.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Good example.</strong> Color is used to encode the experimental condition (the variable the reader actually wants to compare), with a colorblind-safe palette (blue and orange).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="applying-the-principles" class="level2" data-number="10.5">
 <h2 data-number="10.5" class="anchored" data-anchor-id="applying-the-principles"><span class="header-section-number">10.5</span> Applying the principles</h2>
 <p>The principles are abstract; they become useful when you apply them to a specific plot. The following five short scenarios illustrate the kind of judgment a careful researcher makes when reading or designing a visualization.</p>
 <p><strong>Scenario 1.</strong> A researcher wants to show how aggression scores are distributed across all 120 participants. Two options: (a) a bar chart showing the mean aggression score as a single bar, or (b) a histogram showing the distribution of all 120 aggression scores. The histogram is more informative. A single bar tells you one number (the mean). The histogram shows the shape of the distribution, the spread, possible outliers, and any clustering. The bar discards 119 numbers; the histogram keeps them. Principle 1 in action.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
 <p><strong>Scenario 2.</strong> A researcher wants to compare aggression between the violent and neutral conditions. He produces a bar chart with two bars (one per condition) showing the group means. What is missing? At least three things. The plot does not show the spread of scores within each condition (so you cannot tell whether the difference between groups is large relative to within-group variation). It does not show the individual data points (so you cannot tell whether the difference is driven by all participants or by a few extreme ones). It does not show the shape of the within-group distributions (so you cannot tell whether either group is skewed or has outliers). Better alternatives: overlay the individual data points on the bars; use a boxplot or violin plot per condition; or show the distribution as overlaid histograms. Each of these shows the data, not just the summaries.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
 <p><strong>Scenario 3.</strong> A researcher wants to examine whether there is a relationship between weekly playing hours (a continuous variable) and aggression (a continuous variable). Which geometry is most appropriate? A scatterplot. Each participant becomes one point at the (<code>hours_weekly</code>, <code>aggression</code>) coordinates, and the relationship (positive, negative, none, linear, curved) is visible directly. A bar chart is wrong because both variables are continuous; a pie chart is wrong because the question is not about proportions; a boxplot is wrong because neither variable is categorical.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
 <p><strong>Scenario 4.</strong> Suppose you have the same data displayed two ways: option A is a boxplot with one box per condition, with individual data points overlaid; option B is a small table reporting “Violent: M = 5.56, SD = 1.66; Neutral: M = 4.21, SD = 1.24.” Both convey the same basic information. When is the plot better, and when is the table better? The plot is better when you want to communicate to a broad audience, when you want the reader to see the distribution rather than just the summary, and when you suspect the distributions might be unusual (skewed, bimodal, with outliers) and want the reader to check that for themselves. The table is better when you need exact numbers (for reporting in a paper), when the audience is technically sophisticated and prefers precision, or when you have many groups and a plot would become cluttered. In practice, good scientific communication often uses both: a plot for pattern, a table or in-text numbers for precision.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
+<table class="caption-top table">
+<caption>Option B: summary table</caption>
+<thead>
+<tr class="header">
+<th>Condition</th>
+<th>M</th>
+<th>SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Violent</td>
+<td>5.56</td>
+<td>1.66</td>
+</tr>
+<tr class="even">
+<td>Neutral</td>
+<td>4.21</td>
+<td>1.24</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Scenario 5.</strong> A researcher plots aggression on the y-axis (the variable ranges from 1 to 10) but sets the y-axis limits to 4.0 to 6.0. The bars for the two conditions now appear dramatically different in height. What is wrong with this? The truncated y-axis visually exaggerates the difference. The actual difference between the two condition means (about 1.35 points on a 1-to-10 scale) is real and worth reporting, but it is not as large as the truncated plot makes it look. The fix is to start the y-axis at the natural minimum of the scale, or at least to show enough of the range that the difference is in proper proportion. If the difference is small relative to the scale of the variable, that is itself a finding and should not be visually inflated. Principle 5 in action.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-data-visualization-principles_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="the-wrangle-describe-visualize-workflow" class="level2" data-number="10.6">
 <h2 data-number="10.6" class="anchored" data-anchor-id="the-wrangle-describe-visualize-workflow"><span class="header-section-number">10.6</span> The wrangle, describe, visualize workflow</h2>
@@ -566,44 +866,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="check-your-understanding" class="level2" data-number="10.8">
 <h2 data-number="10.8" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">10.8</span> Check your understanding</h2>
 <p><strong>1. What is the lesson of Anscombe’s quartet?</strong></p>
-<div id="radio_BYKNLDCXLP" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_BYKNLDCXLP" value=""> <span>It demonstrates that summary statistics are always more reliable than plots.</span></label><label><input type="radio" autocomplete="off" name="radio_BYKNLDCXLP" value="answer"> <span>It demonstrates that very different datasets can share nearly identical summary statistics, and that plotting the data is necessary to see what is actually there.</span></label><label><input type="radio" autocomplete="off" name="radio_BYKNLDCXLP" value=""> <span>It demonstrates that the standard deviation is a misleading statistic.</span></label><label><input type="radio" autocomplete="off" name="radio_BYKNLDCXLP" value=""> <span>It demonstrates that correlations are unrelated to scatterplots.</span></label>
+<div id="radio_DFXKHQNDYC" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_DFXKHQNDYC" value=""> <span>It demonstrates that summary statistics are always more reliable than plots.</span></label><label><input type="radio" autocomplete="off" name="radio_DFXKHQNDYC" value="answer"> <span>It demonstrates that very different datasets can share nearly identical summary statistics, and that plotting the data is necessary to see what is actually there.</span></label><label><input type="radio" autocomplete="off" name="radio_DFXKHQNDYC" value=""> <span>It demonstrates that the standard deviation is a misleading statistic.</span></label><label><input type="radio" autocomplete="off" name="radio_DFXKHQNDYC" value=""> <span>It demonstrates that correlations are unrelated to scatterplots.</span></label>
 </div>
 <p><strong>2. According to the grammar of graphics, what are the three ingredients of any plot?</strong></p>
-<div id="radio_JTOREHAZKM" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_JTOREHAZKM" value=""> <span>Color, font, and background.</span></label><label><input type="radio" autocomplete="off" name="radio_JTOREHAZKM" value="answer"> <span>Data, aesthetics (mappings from variables to visual channels), and geometry (the visual shape used to represent observations).</span></label><label><input type="radio" autocomplete="off" name="radio_JTOREHAZKM" value=""> <span>Title, x-axis label, and y-axis label.</span></label><label><input type="radio" autocomplete="off" name="radio_JTOREHAZKM" value=""> <span>The mean, the median, and the standard deviation.</span></label>
+<div id="radio_MUXIUVHMOI" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MUXIUVHMOI" value=""> <span>Color, font, and background.</span></label><label><input type="radio" autocomplete="off" name="radio_MUXIUVHMOI" value="answer"> <span>Data, aesthetics (mappings from variables to visual channels), and geometry (the visual shape used to represent observations).</span></label><label><input type="radio" autocomplete="off" name="radio_MUXIUVHMOI" value=""> <span>Title, x-axis label, and y-axis label.</span></label><label><input type="radio" autocomplete="off" name="radio_MUXIUVHMOI" value=""> <span>The mean, the median, and the standard deviation.</span></label>
 </div>
 <p><strong>3. Which geometry is most appropriate for showing the distribution of one continuous variable (e.g., the aggression scores of 120 participants)?</strong></p>
-<div id="radio_ZZECCIEPFL" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_ZZECCIEPFL" value=""> <span>A pie chart.</span></label><label><input type="radio" autocomplete="off" name="radio_ZZECCIEPFL" value=""> <span>A bar chart of the mean.</span></label><label><input type="radio" autocomplete="off" name="radio_ZZECCIEPFL" value="answer"> <span>A histogram or density plot.</span></label><label><input type="radio" autocomplete="off" name="radio_ZZECCIEPFL" value=""> <span>A scatterplot.</span></label>
+<div id="radio_BLUHZXJNZH" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_BLUHZXJNZH" value=""> <span>A pie chart.</span></label><label><input type="radio" autocomplete="off" name="radio_BLUHZXJNZH" value=""> <span>A bar chart of the mean.</span></label><label><input type="radio" autocomplete="off" name="radio_BLUHZXJNZH" value="answer"> <span>A histogram or density plot.</span></label><label><input type="radio" autocomplete="off" name="radio_BLUHZXJNZH" value=""> <span>A scatterplot.</span></label>
 </div>
 <p><strong>4. Which geometry is most appropriate for showing the relationship between two continuous variables (e.g., weekly playing hours and aggression)?</strong></p>
-<div id="radio_ZEOUQYALCM" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_ZEOUQYALCM" value=""> <span>A bar chart of the count.</span></label><label><input type="radio" autocomplete="off" name="radio_ZEOUQYALCM" value="answer"> <span>A scatterplot.</span></label><label><input type="radio" autocomplete="off" name="radio_ZEOUQYALCM" value=""> <span>A pie chart.</span></label><label><input type="radio" autocomplete="off" name="radio_ZEOUQYALCM" value=""> <span>A histogram of one of the variables.</span></label>
+<div id="radio_PRWEFCUIPW" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_PRWEFCUIPW" value=""> <span>A bar chart of the count.</span></label><label><input type="radio" autocomplete="off" name="radio_PRWEFCUIPW" value="answer"> <span>A scatterplot.</span></label><label><input type="radio" autocomplete="off" name="radio_PRWEFCUIPW" value=""> <span>A pie chart.</span></label><label><input type="radio" autocomplete="off" name="radio_PRWEFCUIPW" value=""> <span>A histogram of one of the variables.</span></label>
 </div>
 <p><strong>5. Which of the following plots violates the principle “show the data, not just summaries”?</strong></p>
-<div id="radio_ENBIVKWCGC" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_ENBIVKWCGC" value=""> <span>A boxplot or violin plot per group.</span></label><label><input type="radio" autocomplete="off" name="radio_ENBIVKWCGC" value="answer"> <span>A bar chart that shows only the group means, with no individual data points and no indication of spread.</span></label><label><input type="radio" autocomplete="off" name="radio_ENBIVKWCGC" value=""> <span>A scatterplot with the data points jittered.</span></label><label><input type="radio" autocomplete="off" name="radio_ENBIVKWCGC" value=""> <span>A histogram of the variable for each group.</span></label>
+<div id="radio_HPRRHFJMXG" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_HPRRHFJMXG" value=""> <span>A boxplot or violin plot per group.</span></label><label><input type="radio" autocomplete="off" name="radio_HPRRHFJMXG" value="answer"> <span>A bar chart that shows only the group means, with no individual data points and no indication of spread.</span></label><label><input type="radio" autocomplete="off" name="radio_HPRRHFJMXG" value=""> <span>A scatterplot with the data points jittered.</span></label><label><input type="radio" autocomplete="off" name="radio_HPRRHFJMXG" value=""> <span>A histogram of the variable for each group.</span></label>
 </div>
 <p><strong>6. What is “chart junk”?</strong></p>
-<div id="radio_EUHPDYENDT" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_EUHPDYENDT" value=""> <span>Decorative or non-informative visual elements (excessive gridlines, 3D effects, drop shadows, gradients) that distract from the data.</span></label><label><input type="radio" autocomplete="off" name="radio_EUHPDYENDT" value="answer"> <span>Decorative or non-informative visual elements that do not encode information; they distract the reader and should be removed.</span></label><label><input type="radio" autocomplete="off" name="radio_EUHPDYENDT" value=""> <span>Any plot that uses color.</span></label><label><input type="radio" autocomplete="off" name="radio_EUHPDYENDT" value=""> <span>Plots that contain too many data points.</span></label>
+<div id="radio_YYXVLFDPQK" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_YYXVLFDPQK" value=""> <span>Decorative or non-informative visual elements (excessive gridlines, 3D effects, drop shadows, gradients) that distract from the data.</span></label><label><input type="radio" autocomplete="off" name="radio_YYXVLFDPQK" value="answer"> <span>Decorative or non-informative visual elements that do not encode information; they distract the reader and should be removed.</span></label><label><input type="radio" autocomplete="off" name="radio_YYXVLFDPQK" value=""> <span>Any plot that uses color.</span></label><label><input type="radio" autocomplete="off" name="radio_YYXVLFDPQK" value=""> <span>Plots that contain too many data points.</span></label>
 </div>
 <p><strong>7. What is wrong with truncating the y-axis to a narrow range that excludes zero (e.g., showing aggression on a 4.0–6.0 scale when the variable can range from 1 to 10)?</strong></p>
-<div id="radio_CEREBRAEMC" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_CEREBRAEMC" value=""> <span>It compresses the data into too few values.</span></label><label><input type="radio" autocomplete="off" name="radio_CEREBRAEMC" value=""> <span>It is the only honest way to show small differences.</span></label><label><input type="radio" autocomplete="off" name="radio_CEREBRAEMC" value="answer"> <span>It visually exaggerates small differences. The bars (or other marks) appear much more different in size than the actual numerical difference would suggest, given the natural range of the variable.</span></label><label><input type="radio" autocomplete="off" name="radio_CEREBRAEMC" value=""> <span>It is required by most journals.</span></label>
+<div id="radio_MLWWRAQALK" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MLWWRAQALK" value=""> <span>It compresses the data into too few values.</span></label><label><input type="radio" autocomplete="off" name="radio_MLWWRAQALK" value=""> <span>It is the only honest way to show small differences.</span></label><label><input type="radio" autocomplete="off" name="radio_MLWWRAQALK" value="answer"> <span>It visually exaggerates small differences. The bars (or other marks) appear much more different in size than the actual numerical difference would suggest, given the natural range of the variable.</span></label><label><input type="radio" autocomplete="off" name="radio_MLWWRAQALK" value=""> <span>It is required by most journals.</span></label>
 </div>
 <p><strong>8. Why does this chapter recommend avoiding pie charts?</strong></p>
-<div id="radio_INEXUYPYLF" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_INEXUYPYLF" value=""> <span>Pie charts are the best way to compare three or more proportions.</span></label><label><input type="radio" autocomplete="off" name="radio_INEXUYPYLF" value="answer"> <span>Humans compare the heights of bars more accurately than the angles of pie slices, so a bar chart is almost always a better choice than a pie chart for comparing proportions.</span></label><label><input type="radio" autocomplete="off" name="radio_INEXUYPYLF" value=""> <span>Pie charts are illegal in scientific publications.</span></label><label><input type="radio" autocomplete="off" name="radio_INEXUYPYLF" value=""> <span>Pie charts are equivalent to histograms.</span></label>
+<div id="radio_PBIZQHIIVT" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_PBIZQHIIVT" value=""> <span>Pie charts are the best way to compare three or more proportions.</span></label><label><input type="radio" autocomplete="off" name="radio_PBIZQHIIVT" value="answer"> <span>Humans compare the heights of bars more accurately than the angles of pie slices, so a bar chart is almost always a better choice than a pie chart for comparing proportions.</span></label><label><input type="radio" autocomplete="off" name="radio_PBIZQHIIVT" value=""> <span>Pie charts are illegal in scientific publications.</span></label><label><input type="radio" autocomplete="off" name="radio_PBIZQHIIVT" value=""> <span>Pie charts are equivalent to histograms.</span></label>
 </div>
 <p><strong>9. How should color be used in a plot?</strong></p>
-<div id="radio_AGBQYVVDQS" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_AGBQYVVDQS" value=""> <span>It is purely decorative and should be used to make plots more attractive.</span></label><label><input type="radio" autocomplete="off" name="radio_AGBQYVVDQS" value="answer"> <span>It should encode information (such as a category or a continuous variable). Use a limited number of distinct colors, prefer colorblind-friendly palettes, and where possible reinforce color with another visual channel such as shape.</span></label><label><input type="radio" autocomplete="off" name="radio_AGBQYVVDQS" value=""> <span>Color should be avoided in scientific plots; use only black and white.</span></label><label><input type="radio" autocomplete="off" name="radio_AGBQYVVDQS" value=""> <span>Color should always be assigned in red and green to maximize contrast.</span></label>
+<div id="radio_NKXTVXHYRC" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_NKXTVXHYRC" value=""> <span>It is purely decorative and should be used to make plots more attractive.</span></label><label><input type="radio" autocomplete="off" name="radio_NKXTVXHYRC" value="answer"> <span>It should encode information (such as a category or a continuous variable). Use a limited number of distinct colors, prefer colorblind-friendly palettes, and where possible reinforce color with another visual channel such as shape.</span></label><label><input type="radio" autocomplete="off" name="radio_NKXTVXHYRC" value=""> <span>Color should be avoided in scientific plots; use only black and white.</span></label><label><input type="radio" autocomplete="off" name="radio_NKXTVXHYRC" value=""> <span>Color should always be assigned in red and green to maximize contrast.</span></label>
 </div>
 <p><strong>10. What is the recommended order of operations for a typical data-analysis workflow?</strong></p>
-<div id="radio_MEANMIVVGT" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_MEANMIVVGT" value=""> <span>First visualize, then describe, then wrangle.</span></label><label><input type="radio" autocomplete="off" name="radio_MEANMIVVGT" value=""> <span>First describe, then visualize, then wrangle.</span></label><label><input type="radio" autocomplete="off" name="radio_MEANMIVVGT" value="answer"> <span>First wrangle (clean, filter, reshape), then describe (compute summaries to sanity-check the wrangling), then visualize (plot what looks important).</span></label><label><input type="radio" autocomplete="off" name="radio_MEANMIVVGT" value=""> <span>Wrangling, describing, and visualizing should always be done simultaneously in one operation.</span></label>
+<div id="radio_RMRUKWBTBR" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_RMRUKWBTBR" value=""> <span>First visualize, then describe, then wrangle.</span></label><label><input type="radio" autocomplete="off" name="radio_RMRUKWBTBR" value=""> <span>First describe, then visualize, then wrangle.</span></label><label><input type="radio" autocomplete="off" name="radio_RMRUKWBTBR" value="answer"> <span>First wrangle (clean, filter, reshape), then describe (compute summaries to sanity-check the wrangling), then visualize (plot what looks important).</span></label><label><input type="radio" autocomplete="off" name="radio_RMRUKWBTBR" value=""> <span>Wrangling, describing, and visualizing should always be done simultaneously in one operation.</span></label>
 </div>
 
 
