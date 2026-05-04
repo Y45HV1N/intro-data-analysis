@@ -6,6 +6,9 @@ title: "First principles of data visualization"
 #| label: setup
 #| include: false
 library(webexercises)
+library(ggplot2)
+theme_set(theme_minimal(base_size = 12))
+data <- read.csv("data/vgames_study.csv")
 ```
 
 ## Overview
@@ -13,6 +16,8 @@ library(webexercises)
 Up to this point we have looked at our data through numbers: counts, means, standard deviations, residuals. Numbers compress information, which is useful when you want a single value to compare or to put in a sentence. But numbers also hide information, and what they hide can change the answer to a research question.
 
 This chapter is about the other half of looking at data: visualization. The chapter does not contain plotting code yet. The reason is deliberate: it is much easier to learn the *how* of plotting once you know the *what* and the *why*. We start with the questions a good plot answers, the conceptual framework that organizes every plot you will ever make, the principles that distinguish a good plot from a bad one, and the kinds of judgment calls you will face when reading or making one. The tools to translate these decisions into actual plots in R come in the next chapter.
+
+The plots that appear throughout this chapter are produced with `ggplot2`, the R package you will learn in the next chapter. The code for each plot is hidden for now, so you can focus on the visual outcome rather than the syntax. You will revisit these examples and reproduce them yourself once you have learned the package.
 
 ## Why visualize?
 
@@ -39,7 +44,30 @@ All four x means are 9.0 and all four y means are 7.50. The four standard deviat
 
 By every numerical summary you can think of at this point, the four datasets are interchangeable.
 
-When you plot them, they look completely different. Dataset 1 is a clean, roughly linear relationship: x and y increase together with mild noise around a straight line. Dataset 2 is a smooth curve: y rises with x, peaks in the middle, and falls again, so a straight line is the wrong model entirely. Dataset 3 is a near-perfect linear relationship plus one extreme outlier that pulls the regression line away from the true pattern. Dataset 4 is an x-axis that holds a constant value for ten observations and one isolated point at a very different x; the entire correlation is driven by that single point, and there is no real relationship for the other ten.
+When you plot them, they look completely different.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 7
+#| fig.height: 5
+data("anscombe")
+ans_long <- data.frame(
+  set = factor(rep(c("Set 1", "Set 2", "Set 3", "Set 4"), each = 11)),
+  x = c(anscombe$x1, anscombe$x2, anscombe$x3, anscombe$x4),
+  y = c(anscombe$y1, anscombe$y2, anscombe$y3, anscombe$y4)
+)
+ggplot(ans_long, aes(x = x, y = y)) +
+  geom_smooth(method = "lm", se = FALSE, color = "#3B82F6", linewidth = 0.7) +
+  geom_point(size = 2.2, color = "#1F2937") +
+  facet_wrap(~ set) +
+  labs(title = "Anscombe's quartet: same summary statistics, very different data",
+       x = "x", y = "y") +
+  theme(strip.text = element_text(face = "bold"))
+```
+
+Dataset 1 is a clean, roughly linear relationship. Dataset 2 is a smooth curve where a straight line is the wrong model entirely. Dataset 3 is a near-perfect linear relationship plus one extreme outlier that pulls the regression line away from the true pattern. Dataset 4 is a vertical line of constant x with one isolated point at a very different x; that single point is what creates the apparent correlation.
 
 Four datasets, four very different stories, identical summary statistics. The lesson Anscombe drew, and the one this book takes seriously, is short: **always plot your data**. Numerical summaries do not protect you from misreading what is actually in the dataset.
 
@@ -50,11 +78,42 @@ A good visualization does things that numbers alone cannot:
 - It exposes **outliers** and unusual observations.
 - It communicates findings to others quickly and intuitively, in a way that a table of numbers cannot.
 
-You will see Anscombe's quartet plotted in many statistics textbooks. Once you have learned `ggplot2` in the next chapter, you will be able to plot it yourself in a few lines and inspect the four panels directly.
+Here is a video from YouTube that explains two uses of data visualization:
+
+{{< video https://www.youtube.com/watch?v=K8Al2CEd_6k >}}
 
 ## The grammar of graphics
 
 Most modern data-visualization systems (including `ggplot2`, the R package you will learn in the next chapter) are based on a framework called the **grammar of graphics**, formalized by the statistician Leland Wilkinson. The core idea is that any plot is built from the same three ingredients, combined in different ways.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 6
+#| fig.height: 5
+make_circle <- function(cx, cy, r, n = 200) {
+  theta <- seq(0, 2 * pi, length.out = n)
+  data.frame(x = cx + r * cos(theta), y = cy + r * sin(theta))
+}
+r <- 1.6
+c1 <- cbind(make_circle(0, 0.9, r), grp = "Data")
+c2 <- cbind(make_circle(-1.1, -0.7, r), grp = "Aesthetics")
+c3 <- cbind(make_circle(1.1, -0.7, r), grp = "Geometry")
+circles <- rbind(c1, c2, c3)
+labels <- data.frame(
+  x = c(0, -2.0, 2.0),
+  y = c(2.4, -1.7, -1.7),
+  label = c("Data", "Aesthetics", "Geometry")
+)
+ggplot() +
+  geom_polygon(data = circles, aes(x = x, y = y, fill = grp, group = grp), alpha = 0.45) +
+  geom_text(data = labels, aes(x = x, y = y, label = label), size = 5.5, fontface = "bold") +
+  scale_fill_manual(values = c("Data" = "#3B82F6", "Aesthetics" = "#10B981", "Geometry" = "#F59E0B")) +
+  coord_fixed() +
+  theme_void() +
+  theme(legend.position = "none")
+```
 
 **Data.** The dataset you want to visualize. Without data there is nothing to plot. The data are usually a data frame.
 
@@ -74,6 +133,38 @@ Reasonable people disagree about details, but the field has converged on a small
 
 A bar chart that displays only the group means is a bar chart that hides the individual observations. The reader cannot tell whether the difference between groups reflects a consistent difference across all participants or a small number of extreme participants pulling the mean in one direction. Whenever possible, show the individual data points (for example, as a scatter or jittered dots) in addition to any summary statistic, or use a geometry like a boxplot or violin plot that displays the distribution rather than collapsing it to a single number.
 
+**Bad example.** A bar chart of group means, with no indication of within-group variability or individual scores.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3.5
+means <- aggregate(aggression ~ condition, data = data, FUN = mean)
+ggplot(means, aes(x = condition, y = aggression, fill = condition)) +
+  geom_col(width = 0.6) +
+  scale_fill_manual(values = c("neutral" = "#9CA3AF", "violent" = "#EF4444")) +
+  labs(x = "Condition", y = "Mean aggression") +
+  theme(legend.position = "none")
+```
+
+**Good example.** The same group means, with all individual scores overlaid as jittered points. Now the reader sees the spread within each group and can judge whether the difference in means reflects a consistent shift or a few extreme scores.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3.5
+ggplot(data, aes(x = condition, y = aggression, color = condition)) +
+  geom_jitter(width = 0.18, alpha = 0.55, size = 1.6) +
+  stat_summary(fun = mean, geom = "crossbar", width = 0.5, color = "black", linewidth = 0.4) +
+  scale_color_manual(values = c("neutral" = "#9CA3AF", "violent" = "#EF4444")) +
+  labs(x = "Condition", y = "Aggression") +
+  theme(legend.position = "none")
+```
+
 ### 2. Choose the right geometry for the data type
 
 The right geometry depends on what kind of variables you have:
@@ -85,13 +176,108 @@ The right geometry depends on what kind of variables you have:
 
 There are more advanced choices for more complicated questions, but the four above cover most of what you will plot.
 
+**Bad example.** A bar chart used to display the relationship between two continuous variables (`hours_weekly` and `aggression`). Bar charts are designed for categorical comparisons; using one here forces a continuous variable into discrete bars and discards the relationship.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 6
+#| fig.height: 3.5
+ggplot(data[1:25, ], aes(x = factor(round(hours_weekly)), y = aggression)) +
+  geom_col(fill = "#3B82F6") +
+  labs(x = "Weekly playing hours", y = "Aggression") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+**Good example.** A scatterplot. Each participant is one point; the relationship (or absence of one) is visible directly.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 6
+#| fig.height: 3.5
+ggplot(data, aes(x = hours_weekly, y = aggression)) +
+  geom_point(alpha = 0.5, color = "#1F2937") +
+  labs(x = "Weekly playing hours", y = "Aggression")
+```
+
 ### 3. Label everything clearly
 
 Every axis needs a label. The label should describe the variable in plain language ("Aggression Score (1-10)"), not the column name from the dataset (`aggression`). If you use color or shape to encode a variable, include a legend that explains what each color or shape means. Give the plot a title that states what it shows. A reader who sees the plot for the first time, with no other context, should be able to identify what is being shown.
 
+**Bad example.** A scatterplot with no title, default axis labels (the raw column names), and no legend explanation. A reader without context cannot tell what is being shown.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 6
+#| fig.height: 3.5
+ggplot(data, aes(x = trait_hostility, y = aggression, color = condition)) +
+  geom_point(alpha = 0.7) +
+  theme(legend.position = "none")
+```
+
+**Good example.** Same plot with a descriptive title, plain-language axis labels, and a legend identifying the conditions.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 6
+#| fig.height: 3.5
+ggplot(data, aes(x = trait_hostility, y = aggression, color = condition)) +
+  geom_point(alpha = 0.7) +
+  scale_color_manual(values = c("neutral" = "#9CA3AF", "violent" = "#EF4444"),
+                     name = "Game condition") +
+  labs(title = "Aggression by trait hostility, separated by game condition",
+       x = "Trait hostility (1-7 scale)",
+       y = "Self-reported aggression (1-10 scale)") +
+  theme(legend.position = "right")
+```
+
 ### 4. Avoid chart junk
 
 The term *chart junk* was popularized by the statistician Edward Tufte. It refers to visual elements that do not encode information: unnecessary gridlines, 3D effects on a 2D plot, decorative images, drop shadows, gradient fills, excessive colors. Chart junk distracts the reader from the actual data and signals carelessness. Every element on a plot should serve a purpose. If you can remove an element without losing information, remove it.
+
+**Bad example.** The same data, encrusted with chart junk: gradient bars, dark gridlines, heavy borders, oversaturated colors.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3.5
+means <- aggregate(aggression ~ condition, data = data, FUN = mean)
+ggplot(means, aes(x = condition, y = aggression, fill = condition)) +
+  geom_col(width = 0.7, color = "black", linewidth = 1.2) +
+  scale_fill_manual(values = c("neutral" = "#FF00FF", "violent" = "#00FFFF")) +
+  labs(x = "CONDITION", y = "MEAN AGGRESSION", title = "AGGRESSION!!!") +
+  theme_gray(base_size = 12) +
+  theme(
+    plot.background = element_rect(fill = "#FFFF99"),
+    panel.background = element_rect(fill = "#CCCCFF"),
+    panel.grid.major = element_line(color = "black", linewidth = 0.5),
+    panel.grid.minor = element_line(color = "black", linewidth = 0.3),
+    plot.title = element_text(face = "bold", color = "red", size = 18),
+    legend.position = "none"
+  )
+```
+
+**Good example.** Same data, with everything that does not encode information removed. The bars are the only visual element with weight; the eye goes directly to the comparison.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3.5
+ggplot(means, aes(x = condition, y = aggression)) +
+  geom_col(width = 0.55, fill = "#1F2937") +
+  labs(x = "Condition", y = "Mean aggression")
+```
 
 ### 5. Do not mislead with scales
 
@@ -99,9 +285,74 @@ The scale of an axis controls how big a difference looks on the page. A small di
 
 Two related rules. **Do not use dual y-axes.** A plot with two different y-axes (one on the left, one on the right) almost always misleads, because the reader cannot tell which line corresponds to which axis without effort, and the apparent relationship between the lines depends entirely on how the two axes are scaled. **Use consistent scales when comparing plots.** If you show two plots side by side, the reader will compare them visually; using different scales for the same variable will mislead.
 
+**Bad example.** The y-axis is truncated to range from 4.0 to 6.0. The two bars look dramatically different in height; the visual impression is that the violent condition produced an enormous effect.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3.5
+ggplot(means, aes(x = condition, y = aggression, fill = condition)) +
+  geom_col(width = 0.6) +
+  coord_cartesian(ylim = c(4, 6)) +
+  scale_fill_manual(values = c("neutral" = "#9CA3AF", "violent" = "#EF4444")) +
+  labs(x = "Condition", y = "Mean aggression") +
+  theme(legend.position = "none")
+```
+
+**Good example.** Same data, y-axis on its natural scale (1 to 10). The difference between conditions is real and interpretable, but it is not visually inflated.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3.5
+ggplot(means, aes(x = condition, y = aggression, fill = condition)) +
+  geom_col(width = 0.6) +
+  coord_cartesian(ylim = c(0, 10)) +
+  scale_fill_manual(values = c("neutral" = "#9CA3AF", "violent" = "#EF4444")) +
+  labs(x = "Condition", y = "Mean aggression") +
+  theme(legend.position = "none")
+```
+
 ### 6. Avoid pie charts
 
 Pie charts ask the reader to compare the angles of slices, and humans are demonstrably bad at comparing angles. Comparing the heights of bars is much easier and more accurate. Almost every situation in which someone reaches for a pie chart is better served by a bar chart. There are a few special cases (a pie with two or three slices when the goal is to communicate "this small slice versus everything else"), but the default should be a bar chart.
+
+**Bad example.** A pie chart of gender counts. Comparing slices by angle is harder than reading bar heights.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5
+#| fig.height: 4
+gender_counts <- as.data.frame(table(data$gender))
+names(gender_counts) <- c("gender", "n")
+ggplot(gender_counts, aes(x = "", y = n, fill = gender)) +
+  geom_col(width = 1, color = "white") +
+  coord_polar(theta = "y") +
+  scale_fill_manual(values = c("man" = "#3B82F6", "woman" = "#EF4444", "non-binary" = "#10B981")) +
+  labs(fill = "Gender") +
+  theme_void()
+```
+
+**Good example.** Same data as a bar chart. The differences in counts are immediate.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5
+#| fig.height: 3.5
+ggplot(gender_counts, aes(x = reorder(gender, -n), y = n, fill = gender)) +
+  geom_col(width = 0.6) +
+  scale_fill_manual(values = c("man" = "#3B82F6", "woman" = "#EF4444", "non-binary" = "#10B981")) +
+  labs(x = "Gender", y = "Number of participants") +
+  theme(legend.position = "none")
+```
 
 ### 7. Use color purposefully
 
@@ -109,19 +360,235 @@ Color in a plot should encode information, not decorate it. Each distinct color 
 
 A practical detail: roughly 8 percent of men and 0.5 percent of women have some form of color-vision deficiency, most commonly red-green confusion. Plots that distinguish groups by red versus green are unreadable for those readers. Use color palettes designed to be colorblind-friendly (any modern plotting library, including `ggplot2`, provides such palettes), and where possible reinforce color with a second visual channel like shape or line type, so the plot remains interpretable even for readers who cannot distinguish the colors.
 
+**Bad example.** Each participant has been given a different rainbow color for no reason. The colors do not encode anything; they are pure decoration. The reader gets no information from them and the plot is harder to read than the same plot in one color.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 6
+#| fig.height: 3.5
+set.seed(7)
+data_small <- data[sample(nrow(data), 30), ]
+data_small$row_id <- factor(seq_len(nrow(data_small)))
+ggplot(data_small, aes(x = hours_weekly, y = aggression, color = row_id)) +
+  geom_point(size = 3) +
+  labs(x = "Weekly playing hours", y = "Aggression") +
+  theme(legend.position = "none")
+```
+
+**Good example.** Color is used to encode the experimental condition (the variable the reader actually wants to compare), with a colorblind-safe palette (blue and orange).
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 6
+#| fig.height: 3.5
+ggplot(data, aes(x = hours_weekly, y = aggression, color = condition)) +
+  geom_point(alpha = 0.7) +
+  scale_color_manual(values = c("neutral" = "#1E88E5", "violent" = "#FFA500"),
+                     name = "Condition") +
+  labs(x = "Weekly playing hours", y = "Aggression")
+```
+
 ## Applying the principles
 
 The principles are abstract; they become useful when you apply them to a specific plot. The following five short scenarios illustrate the kind of judgment a careful researcher makes when reading or designing a visualization.
 
 **Scenario 1.** A researcher wants to show how aggression scores are distributed across all 120 participants. Two options: (a) a bar chart showing the mean aggression score as a single bar, or (b) a histogram showing the distribution of all 120 aggression scores. The histogram is more informative. A single bar tells you one number (the mean). The histogram shows the shape of the distribution, the spread, possible outliers, and any clustering. The bar discards 119 numbers; the histogram keeps them. Principle 1 in action.
 
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3
+mean_agg <- mean(data$aggression)
+ggplot(data.frame(x = "All participants", y = mean_agg),
+       aes(x = x, y = y)) +
+  geom_col(width = 0.5, fill = "#1F2937") +
+  coord_cartesian(ylim = c(0, 10)) +
+  labs(title = "(a) Single bar of the mean", x = NULL, y = "Mean aggression")
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3
+ggplot(data, aes(x = aggression)) +
+  geom_histogram(binwidth = 0.5, fill = "#1F2937", color = "white") +
+  labs(title = "(b) Histogram of all 120 scores",
+       x = "Aggression", y = "Number of participants")
+```
+
 **Scenario 2.** A researcher wants to compare aggression between the violent and neutral conditions. He produces a bar chart with two bars (one per condition) showing the group means. What is missing? At least three things. The plot does not show the spread of scores within each condition (so you cannot tell whether the difference between groups is large relative to within-group variation). It does not show the individual data points (so you cannot tell whether the difference is driven by all participants or by a few extreme ones). It does not show the shape of the within-group distributions (so you cannot tell whether either group is skewed or has outliers). Better alternatives: overlay the individual data points on the bars; use a boxplot or violin plot per condition; or show the distribution as overlaid histograms. Each of these shows the data, not just the summaries.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3
+ggplot(means, aes(x = condition, y = aggression, fill = condition)) +
+  geom_col(width = 0.55) +
+  scale_fill_manual(values = c("neutral" = "#9CA3AF", "violent" = "#EF4444")) +
+  coord_cartesian(ylim = c(0, 10)) +
+  labs(title = "Two-bar plot of means (limited)", x = "Condition", y = "Mean aggression") +
+  theme(legend.position = "none")
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3
+ggplot(data, aes(x = condition, y = aggression, color = condition)) +
+  geom_jitter(width = 0.18, alpha = 0.55, size = 1.6) +
+  stat_summary(fun = mean, geom = "crossbar", width = 0.5, color = "black", linewidth = 0.4) +
+  scale_color_manual(values = c("neutral" = "#9CA3AF", "violent" = "#EF4444")) +
+  labs(title = "Means with individual points overlaid", x = "Condition", y = "Aggression") +
+  theme(legend.position = "none")
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3
+ggplot(data, aes(x = condition, y = aggression, fill = condition)) +
+  geom_boxplot(width = 0.5, alpha = 0.7) +
+  scale_fill_manual(values = c("neutral" = "#9CA3AF", "violent" = "#EF4444")) +
+  labs(title = "Boxplot per condition", x = "Condition", y = "Aggression") +
+  theme(legend.position = "none")
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3
+ggplot(data, aes(x = condition, y = aggression, fill = condition)) +
+  geom_violin(alpha = 0.7) +
+  scale_fill_manual(values = c("neutral" = "#9CA3AF", "violent" = "#EF4444")) +
+  labs(title = "Violin plot per condition", x = "Condition", y = "Aggression") +
+  theme(legend.position = "none")
+```
 
 **Scenario 3.** A researcher wants to examine whether there is a relationship between weekly playing hours (a continuous variable) and aggression (a continuous variable). Which geometry is most appropriate? A scatterplot. Each participant becomes one point at the (`hours_weekly`, `aggression`) coordinates, and the relationship (positive, negative, none, linear, curved) is visible directly. A bar chart is wrong because both variables are continuous; a pie chart is wrong because the question is not about proportions; a boxplot is wrong because neither variable is categorical.
 
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3
+ggplot(data[1:25, ], aes(x = factor(round(hours_weekly)), y = aggression)) +
+  geom_col(fill = "#3B82F6") +
+  labs(title = "(a) Bar chart (wrong)", x = "Weekly hours (rounded)", y = "Aggression") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3
+ggplot(data, aes(x = hours_weekly, y = aggression)) +
+  geom_point(alpha = 0.55, color = "#1F2937") +
+  labs(title = "(b) Scatterplot (correct)", x = "Weekly playing hours", y = "Aggression")
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5
+#| fig.height: 3.5
+hour_bins <- cut(data$hours_weekly, breaks = 4)
+pie_df <- as.data.frame(table(hour_bins))
+ggplot(pie_df, aes(x = "", y = Freq, fill = hour_bins)) +
+  geom_col(width = 1, color = "white") +
+  coord_polar(theta = "y") +
+  labs(title = "(c) Pie chart (wrong)", fill = "Hours") +
+  theme_void()
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3
+ggplot(data, aes(x = factor(1), y = aggression)) +
+  geom_boxplot(width = 0.3, fill = "#9CA3AF") +
+  labs(title = "(d) Boxplot of aggression (does not show the relationship)",
+       x = NULL, y = "Aggression") +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+```
+
 **Scenario 4.** Suppose you have the same data displayed two ways: option A is a boxplot with one box per condition, with individual data points overlaid; option B is a small table reporting "Violent: M = 5.56, SD = 1.66; Neutral: M = 4.21, SD = 1.24." Both convey the same basic information. When is the plot better, and when is the table better? The plot is better when you want to communicate to a broad audience, when you want the reader to see the distribution rather than just the summary, and when you suspect the distributions might be unusual (skewed, bimodal, with outliers) and want the reader to check that for themselves. The table is better when you need exact numbers (for reporting in a paper), when the audience is technically sophisticated and prefers precision, or when you have many groups and a plot would become cluttered. In practice, good scientific communication often uses both: a plot for pattern, a table or in-text numbers for precision.
 
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3.5
+ggplot(data, aes(x = condition, y = aggression, fill = condition)) +
+  geom_boxplot(width = 0.5, alpha = 0.4, outlier.shape = NA) +
+  geom_jitter(width = 0.15, alpha = 0.55, size = 1.4, aes(color = condition)) +
+  scale_fill_manual(values = c("neutral" = "#9CA3AF", "violent" = "#EF4444")) +
+  scale_color_manual(values = c("neutral" = "#374151", "violent" = "#7F1D1D")) +
+  labs(title = "Option A: boxplot with overlaid individual points",
+       x = "Condition", y = "Aggression") +
+  theme(legend.position = "none")
+```
+
+| Condition | M    | SD   |
+|-----------|------|------|
+| Violent   | 5.56 | 1.66 |
+| Neutral   | 4.21 | 1.24 |
+
+: Option B: summary table
+
 **Scenario 5.** A researcher plots aggression on the y-axis (the variable ranges from 1 to 10) but sets the y-axis limits to 4.0 to 6.0. The bars for the two conditions now appear dramatically different in height. What is wrong with this? The truncated y-axis visually exaggerates the difference. The actual difference between the two condition means (about 1.35 points on a 1-to-10 scale) is real and worth reporting, but it is not as large as the truncated plot makes it look. The fix is to start the y-axis at the natural minimum of the scale, or at least to show enough of the range that the difference is in proper proportion. If the difference is small relative to the scale of the variable, that is itself a finding and should not be visually inflated. Principle 5 in action.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3
+ggplot(means, aes(x = condition, y = aggression, fill = condition)) +
+  geom_col(width = 0.6) +
+  coord_cartesian(ylim = c(4, 6)) +
+  scale_fill_manual(values = c("neutral" = "#9CA3AF", "violent" = "#EF4444")) +
+  labs(title = "Truncated y-axis (4 to 6): difference looks huge",
+       x = "Condition", y = "Mean aggression") +
+  theme(legend.position = "none")
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3
+ggplot(means, aes(x = condition, y = aggression, fill = condition)) +
+  geom_col(width = 0.6) +
+  coord_cartesian(ylim = c(0, 10)) +
+  scale_fill_manual(values = c("neutral" = "#9CA3AF", "violent" = "#EF4444")) +
+  labs(title = "Full y-axis (0 to 10): difference shown in proportion",
+       x = "Condition", y = "Mean aggression") +
+  theme(legend.position = "none")
+```
 
 ## The wrangle, describe, visualize workflow
 
