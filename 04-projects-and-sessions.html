@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -345,8 +380,21 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#why-this-chapter-exists" id="toc-why-this-chapter-exists" class="nav-link active" data-scroll-target="#why-this-chapter-exists"><span class="header-section-number">4.1</span> Why this chapter exists</a></li>
+  <li><a href="#what-an-r-session-is" id="toc-what-an-r-session-is" class="nav-link" data-scroll-target="#what-an-r-session-is"><span class="header-section-number">4.2</span> What an R session is</a></li>
+  <li><a href="#how-sessions-and-projects-fit-together" id="toc-how-sessions-and-projects-fit-together" class="nav-link" data-scroll-target="#how-sessions-and-projects-fit-together"><span class="header-section-number">4.3</span> How sessions and projects fit together</a></li>
+  <li><a href="#why-and-when-to-restart-the-session" id="toc-why-and-when-to-restart-the-session" class="nav-link" data-scroll-target="#why-and-when-to-restart-the-session"><span class="header-section-number">4.4</span> Why and when to restart the session</a></li>
+  <li><a href="#saving-and-not-saving-the-environment" id="toc-saving-and-not-saving-the-environment" class="nav-link" data-scroll-target="#saving-and-not-saving-the-environment"><span class="header-section-number">4.5</span> Saving (and not saving) the environment</a></li>
+  <li><a href="#working-directory-where-r-looks-for-files" id="toc-working-directory-where-r-looks-for-files" class="nav-link" data-scroll-target="#working-directory-where-r-looks-for-files"><span class="header-section-number">4.6</span> Working directory: where R looks for files</a></li>
+  <li><a href="#tutorial-practice-opening-restarting-and-switching" id="toc-tutorial-practice-opening-restarting-and-switching" class="nav-link" data-scroll-target="#tutorial-practice-opening-restarting-and-switching"><span class="header-section-number">4.7</span> Tutorial: practice opening, restarting, and switching</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">4.8</span> Check your understanding</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/04-projects-and-sessions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -371,21 +419,130 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<section id="why-this-chapter-exists" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="why-this-chapter-exists"><span class="header-section-number">4.1</span> Why this chapter exists</h2>
+<p>Chapter 3 introduced R projects briefly. Chapter 4 returns to them, alongside a related concept (the <strong>R session</strong>) that often causes confusion. The two are easy to conflate but distinct, and the distinction matters in practice. The promise of this chapter is that, by the end, you will know what is happening when you “restart the session,” when to do it, and how it relates to projects, scripts, and the environment.</p>
+</section>
+<section id="what-an-r-session-is" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="what-an-r-session-is"><span class="header-section-number">4.2</span> What an R session is</h2>
+<p>An <strong>R session</strong> is one running instance of R. When you open RStudio, R is launched in the background; that running instance is the session. The session lasts from the moment R starts until the moment R is shut down. While the session is alive, it holds the environment (your objects), it remembers which packages you have loaded, and it remembers any settings you have changed.</p>
+<p>When the session ends (because you closed RStudio, or because you explicitly restarted the session, or because R crashed), all of that in-memory state is gone. Anything saved to disk (scripts, RData files, output files) survives. Anything held only in memory (objects in the environment, loaded packages, temporary settings) does not.</p>
+<p>A session is roughly the runtime equivalent of “what R is currently doing and remembering.” If we draw a chronology:</p>
+<ul>
+<li>you start RStudio (a new session begins);</li>
+<li>you load a package and create some objects (those changes are part of this session);</li>
+<li>you stop RStudio (the session ends, the environment is destroyed);</li>
+<li>you start RStudio again (a new session begins, with a clean environment).</li>
+</ul>
+<p>A session is not a file. Like the environment, it exists only while R is running.</p>
+</section>
+<section id="how-sessions-and-projects-fit-together" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="how-sessions-and-projects-fit-together"><span class="header-section-number">4.3</span> How sessions and projects fit together</h2>
+<p>A project is a folder; a session is a running instance of R. They are different kinds of thing.</p>
+<p>Their relationship in RStudio works as follows. Each open project has its own session. If you open a project, RStudio starts a session associated with that project. If you switch to a different project (using <strong>File &gt; Open Project</strong>), RStudio shuts down the current session and starts a new one in the new project. If you have two projects open in two RStudio windows simultaneously, you have two independent sessions running.</p>
+<p>This is convenient: it ensures that the work in one project does not contaminate the work in another. Objects created while working on Project A will not appear when you switch to Project B.</p>
+</section>
+<section id="why-and-when-to-restart-the-session" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="why-and-when-to-restart-the-session"><span class="header-section-number">4.4</span> Why and when to restart the session</h2>
+<p>Working in an interactive console encourages a habit that, if left unchecked, leads to subtle bugs. Over the course of an hour, you create dozens of objects, load several packages, and make small changes to the code as you go. Some of those objects are stale: they were created earlier in the session and no longer reflect what your current script would produce if run from scratch.</p>
+<p>The danger is that your script can appear to work in a particular session because of an object that exists in your environment but is not actually created by the script anywhere. When you open the script tomorrow in a fresh session, the object is gone and the script fails. Worse: someone else (or future you) runs the script and gets a different result, because their session does not have the same accumulated state.</p>
+<p>The defense against this is simple: <strong>regularly restart the session and re-run the script from the top.</strong> A passing script in a clean session is a script that actually works. A passing script in a session you have been using for hours is a script that works in <em>that</em> session, which is a weaker claim.</p>
+<p>To restart the session in RStudio: click <strong>Session &gt; Restart R</strong>, or press Ctrl+Shift+F10 (Cmd+Shift+0 on macOS). All objects disappear, all loaded packages are unloaded, and you start with a clean slate. Now run your script from the top. If it produces the expected results, you have evidence that your script is self-contained.</p>
+<p>A reasonable habit is to restart the session at the start of each work session and at any moment when something seems “off.” Some people restart it many times a day; the cost is essentially zero (a fresh session takes a second to start).</p>
+</section>
+<section id="saving-and-not-saving-the-environment" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="saving-and-not-saving-the-environment"><span class="header-section-number">4.5</span> Saving (and not saving) the environment</h2>
+<p>In Chapter 3 we recommended answering <strong>No</strong> to the prompt “Save workspace image?” when closing RStudio. The reasoning is now in scope.</p>
+<p>The prompt asks whether you want to save the entire environment to a file called <code>.RData</code> in the project folder, which would automatically reload the next time you open R. If you answer Yes, what happens is this. The next time you open the project, the previous session’s environment is silently restored. Your Environment panel will be full of objects from yesterday. <em>None</em> of those objects are produced by your current script; they are leftovers. Your script will appear to work, because the objects it expects are already there, regardless of whether the script actually creates them.</p>
+<p>This is precisely the failure mode described in the previous section, made worse by being invisible. You did not even notice that the objects had been preserved.</p>
+<p>The recommended setting is to disable this entirely. In RStudio:</p>
+<ol type="1">
+<li>Open <strong>Tools &gt; Global Options</strong>.</li>
+<li>Click the <strong>General</strong> tab.</li>
+<li>Under “Workspace,” <strong>uncheck</strong> “Restore .RData into workspace at startup.”</li>
+<li>Set “Save workspace to .RData on exit” to <strong>Never</strong>.</li>
+<li>Click OK.</li>
+</ol>
+<p>With these settings, every R session starts clean. Your script is the only source of objects in the environment. If you find that you need to preserve an expensive intermediate result, save it explicitly with <code>save()</code> (as we did in Chapter 3) and load it explicitly with <code>load()</code> at the top of the script that needs it.</p>
+</section>
+<section id="working-directory-where-r-looks-for-files" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="working-directory-where-r-looks-for-files"><span class="header-section-number">4.6</span> Working directory: where R looks for files</h2>
+<p>When you ask R to read a file, e.g.&nbsp;<code>read.csv("data.csv")</code>, R looks for <code>data.csv</code> in the <strong>working directory</strong>. The working directory is a setting of the current session: it points at one folder on your computer, and that folder is the implicit “current location” for any file operation that does not specify a full path.</p>
+<p>To find out what the working directory currently is:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="callout-title-container flex-fill">
-Note
+<p>When you open an R project, the working directory is set to the project folder automatically. This is one of the main practical benefits of using projects: file paths in your scripts can be relative to the project folder, which makes the scripts portable. A line like <code>read.csv("data/survey.csv")</code> will work on any computer that has the project folder, because the path is resolved relative to the project, not relative to a specific user’s hard drive.</p>
+<p>If you are not using a project, the working directory defaults to a system folder (your home directory on macOS and Linux, or “Documents” on Windows). You can change it manually:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"C:/Users/yourname/Documents/r_practice"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>We recommend not using <code>setwd()</code> in scripts. If a script contains an explicit path, the script becomes tied to that one computer. Use a project, and let the working directory be set by the project’s location.</p>
+</section>
+<section id="tutorial-practice-opening-restarting-and-switching" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="tutorial-practice-opening-restarting-and-switching"><span class="header-section-number">4.7</span> Tutorial: practice opening, restarting, and switching</h2>
+<p>This tutorial assumes you completed the tutorial at the end of Chapter 3 (creating the <code>r_book_practice</code> project with a <code>setup.R</code> script and a <code>setup_state.RData</code> file).</p>
+<p><strong>Part A: Open a project from a file browser.</strong></p>
+<ol type="1">
+<li>Close RStudio entirely.</li>
+<li>Open your operating system’s file browser (Windows Explorer or macOS Finder).</li>
+<li>Navigate to the <code>r_book_practice</code> folder.</li>
+<li>Find the <code>.Rproj</code> file. Double-click it. RStudio opens, the project is loaded, and <code>setup.R</code> may already be open if you had it open last time.</li>
+<li>Look at the title bar of the RStudio window. It should display the project name. Look at the Files panel: it points at the project folder.</li>
+</ol>
+<p><strong>Part B: Confirm that the environment is empty in a new session.</strong></p>
+<ol type="1">
+<li>Look at the Environment panel. If you set “Restore .RData into workspace at startup” to unchecked (as recommended above), it should be empty. If it shows the objects from your previous session, your global options still allow restoration; revisit the steps in “Saving (and not saving) the environment” above.</li>
+</ol>
+<p><strong>Part C: Restart the session deliberately.</strong></p>
+<ol type="1">
+<li>Run your script: open <code>setup.R</code>, click “Source.” The three objects appear in the Environment panel.</li>
+<li>Click <strong>Session &gt; Restart R</strong>. The Console clears, the Environment panel empties, and a fresh session begins.</li>
+<li>Run the script again. The three objects reappear.</li>
+<li>This is the workflow you want as a default. Anything that exists in the environment exists because the script put it there.</li>
+</ol>
+<p><strong>Part D: Switch projects.</strong></p>
+<ol type="1">
+<li>Click <strong>File &gt; New Project &gt; New Directory &gt; New Project</strong>. Create a second project called <code>r_book_practice_two</code> somewhere convenient.</li>
+<li>RStudio shuts down the previous session, opens the new project, and starts a fresh session. The Environment panel is empty.</li>
+<li>Click <strong>File &gt; Open Project</strong> and navigate back to the original <code>r_book_practice</code> project. RStudio shuts down the second session and reopens the first. Notice that the Environment panel is empty again, even though you previously had objects in it: each open of a project starts a brand-new session.</li>
+<li>To recover the objects from the saved RData file: <code>load("setup_state.RData")</code>. The objects reappear.</li>
+</ol>
+<p>This pattern (open project, run script, restart when uncertain, save expensive intermediate results explicitly) is the foundation of a clean R workflow.</p>
+</section>
+<section id="check-your-understanding" class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">4.8</span> Check your understanding</h2>
+<p><strong>1. What is an R session?</strong></p>
+<div id="radio_NRKNXIZSBD" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_NRKNXIZSBD" value=""> <span>A folder on the hard drive that R writes log files to.</span></label><label><input type="radio" autocomplete="off" name="radio_NRKNXIZSBD" value="answer"> <span>One running instance of R, which holds the environment, loaded packages, and current settings.</span></label><label><input type="radio" autocomplete="off" name="radio_NRKNXIZSBD" value=""> <span>A subscription service from RStudio.</span></label><label><input type="radio" autocomplete="off" name="radio_NRKNXIZSBD" value=""> <span>Another name for an R Markdown document.</span></label>
 </div>
-<div class="callout-body-container callout-body">
-<p>This chapter is a placeholder. Content will be added in a later step.</p>
+<p><strong>2. What happens to the environment when an R session ends?</strong></p>
+<div id="radio_FIYPSQCLTI" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_FIYPSQCLTI" value=""> <span>Saved to disk in the project folder.</span></label><label><input type="radio" autocomplete="off" name="radio_FIYPSQCLTI" value=""> <span>Compressed and emailed to you.</span></label><label><input type="radio" autocomplete="off" name="radio_FIYPSQCLTI" value="answer"> <span>Lost: the environment, loaded packages, and any in-memory state are all destroyed.</span></label><label><input type="radio" autocomplete="off" name="radio_FIYPSQCLTI" value=""> <span>Backed up automatically to the cloud.</span></label>
 </div>
+<p><strong>3. Why do experienced R users recommend regularly restarting the session?</strong></p>
+<div id="radio_KJBBUFSDGP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_KJBBUFSDGP" value=""> <span>Restarting clears the working directory but keeps all objects in memory.</span></label><label><input type="radio" autocomplete="off" name="radio_KJBBUFSDGP" value="answer"> <span>Restarting starts a fresh session, ensuring that your script works on its own without depending on stale objects accumulated during the session.</span></label><label><input type="radio" autocomplete="off" name="radio_KJBBUFSDGP" value=""> <span>Restarting reinstalls R, removing all packages.</span></label><label><input type="radio" autocomplete="off" name="radio_KJBBUFSDGP" value=""> <span>Restarting is a way to upgrade RStudio.</span></label>
+</div>
+<p><strong>4. Should you let RStudio automatically restore the previous workspace at startup?</strong></p>
+<div id="radio_HQKAITWJCG" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_HQKAITWJCG" value=""> <span>It is recommended, because it speeds up startup.</span></label><label><input type="radio" autocomplete="off" name="radio_HQKAITWJCG" value="answer"> <span>It is discouraged, because it silently restores stale objects from the previous session, which can cause bugs and obscure the source of the objects in the environment.</span></label><label><input type="radio" autocomplete="off" name="radio_HQKAITWJCG" value=""> <span>It is the only way to preserve your data between sessions.</span></label><label><input type="radio" autocomplete="off" name="radio_HQKAITWJCG" value=""> <span>It is required by reproducibility journals.</span></label>
+</div>
+<p><strong>5. What is the working directory?</strong></p>
+<div id="radio_CQINDXGVDV" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_CQINDXGVDV" value=""> <span>It is the folder where R itself was installed.</span></label><label><input type="radio" autocomplete="off" name="radio_CQINDXGVDV" value="answer"> <span>It is the folder R uses as the implicit current location for file operations that do not specify a full path.</span></label><label><input type="radio" autocomplete="off" name="radio_CQINDXGVDV" value=""> <span>It is the folder where RStudio stores user account information.</span></label><label><input type="radio" autocomplete="off" name="radio_CQINDXGVDV" value=""> <span>It is the folder where R Markdown files are automatically rendered.</span></label>
+</div>
+<p><strong>6. Should you use <code>setwd()</code> to set the working directory in your scripts?</strong></p>
+<div id="radio_CUXEHFGRHS" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_CUXEHFGRHS" value=""> <span>Yes, every script should begin with <code>setwd("C:/Users/...")</code> to be safe.</span></label><label><input type="radio" autocomplete="off" name="radio_CUXEHFGRHS" value="answer"> <span>No: hard-coding paths makes the script tied to one computer; using an R project lets paths be relative to the project folder.</span></label><label><input type="radio" autocomplete="off" name="radio_CUXEHFGRHS" value=""> <span>It is irrelevant; R does not have a working directory.</span></label><label><input type="radio" autocomplete="off" name="radio_CUXEHFGRHS" value=""> <span>Only on Linux.</span></label>
+</div>
+<p><strong>7. How costly is it to restart the R session?</strong></p>
+<div id="radio_BVAWXGVOHL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_BVAWXGVOHL" value=""> <span>Restarting is destructive: you should restart only after a crash.</span></label><label><input type="radio" autocomplete="off" name="radio_BVAWXGVOHL" value="answer"> <span>Restarting is essentially free (a fresh session takes about a second), and a regular habit of restarting catches problems early.</span></label><label><input type="radio" autocomplete="off" name="radio_BVAWXGVOHL" value=""> <span>Restarting requires re-installing all packages each time.</span></label><label><input type="radio" autocomplete="off" name="radio_BVAWXGVOHL" value=""> <span>Restarting is reserved for emergencies.</span></label>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script>
@@ -1024,4 +1181,4 @@ window.onload = function() {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/04-projects-and-sessions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/04-projects-and-sessions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
