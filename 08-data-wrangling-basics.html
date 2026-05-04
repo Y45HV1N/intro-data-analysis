@@ -68,6 +68,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./09-tidyverse-and-descriptives.html" rel="next">
 <link href="./07-recap.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -390,6 +391,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data wrangling: basics</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-tidyverse-and-descriptives.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wrangling and describing data with the tidyverse</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -638,32 +645,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="check-your-understanding" class="level2" data-number="8.11">
 <h2 data-number="8.11" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">8.11</span> Check your understanding</h2>
 <p><strong>1. What does <code>data$aggression</code> do?</strong></p>
-<div id="radio_FAROCCYTUB" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_FAROCCYTUB" value=""> <span>It is the position-based index of the column.</span></label><label><input type="radio" autocomplete="off" name="radio_FAROCCYTUB" value="answer"> <span>It extracts a single named column from the data frame as a vector.</span></label><label><input type="radio" autocomplete="off" name="radio_FAROCCYTUB" value=""> <span>It declares a new data frame.</span></label><label><input type="radio" autocomplete="off" name="radio_FAROCCYTUB" value=""> <span>It loads a column from a CSV file.</span></label>
+<div id="radio_JJAFGJNTOF" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_JJAFGJNTOF" value=""> <span>It is the position-based index of the column.</span></label><label><input type="radio" autocomplete="off" name="radio_JJAFGJNTOF" value="answer"> <span>It extracts a single named column from the data frame as a vector.</span></label><label><input type="radio" autocomplete="off" name="radio_JJAFGJNTOF" value=""> <span>It declares a new data frame.</span></label><label><input type="radio" autocomplete="off" name="radio_JJAFGJNTOF" value=""> <span>It loads a column from a CSV file.</span></label>
 </div>
 <p><strong>2. What does <code>data$aggression_doubled &lt;- data$aggression * 2</code> do, assuming <code>aggression_doubled</code> did not previously exist in <code>data</code>?</strong></p>
-<div id="radio_LHDVJIHZVQ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_LHDVJIHZVQ" value=""> <span>It changes the name of the column <code>aggression</code> in place.</span></label><label><input type="radio" autocomplete="off" name="radio_LHDVJIHZVQ" value=""> <span>It produces an error because <code>aggression_doubled</code> does not exist yet.</span></label><label><input type="radio" autocomplete="off" name="radio_LHDVJIHZVQ" value="answer"> <span>It creates a new column called <code>aggression_doubled</code> in <code>data</code>, containing each aggression score multiplied by two.</span></label><label><input type="radio" autocomplete="off" name="radio_LHDVJIHZVQ" value=""> <span>It removes the original <code>aggression</code> column from <code>data</code>.</span></label>
+<div id="radio_NAKUSGZPVB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_NAKUSGZPVB" value=""> <span>It changes the name of the column <code>aggression</code> in place.</span></label><label><input type="radio" autocomplete="off" name="radio_NAKUSGZPVB" value=""> <span>It produces an error because <code>aggression_doubled</code> does not exist yet.</span></label><label><input type="radio" autocomplete="off" name="radio_NAKUSGZPVB" value="answer"> <span>It creates a new column called <code>aggression_doubled</code> in <code>data</code>, containing each aggression score multiplied by two.</span></label><label><input type="radio" autocomplete="off" name="radio_NAKUSGZPVB" value=""> <span>It removes the original <code>aggression</code> column from <code>data</code>.</span></label>
 </div>
 <p><strong>3. Which operator do you use inside <code>[ ]</code> to test whether a value is equal to another value (e.g., to filter rows where <code>condition</code> is <code>"violent"</code>)?</strong></p>
-<div id="radio_XYVPWWVJMG" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_XYVPWWVJMG" value=""> <span><code>=</code> (single equals).</span></label><label><input type="radio" autocomplete="off" name="radio_XYVPWWVJMG" value="answer"> <span><code>==</code> (double equals).</span></label><label><input type="radio" autocomplete="off" name="radio_XYVPWWVJMG" value=""> <span><code>:=</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_XYVPWWVJMG" value=""> <span><code>equal()</code>.</span></label>
+<div id="radio_ORFAYFXIXH" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ORFAYFXIXH" value=""> <span><code>=</code> (single equals).</span></label><label><input type="radio" autocomplete="off" name="radio_ORFAYFXIXH" value="answer"> <span><code>==</code> (double equals).</span></label><label><input type="radio" autocomplete="off" name="radio_ORFAYFXIXH" value=""> <span><code>:=</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_ORFAYFXIXH" value=""> <span><code>equal()</code>.</span></label>
 </div>
 <p><strong>4. What does the expression <code>data[data$condition == "violent", ]</code> return?</strong></p>
-<div id="radio_OISKYDGYTN" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_OISKYDGYTN" value=""> <span>It returns the logical vector of length 120 used inside the bracket.</span></label><label><input type="radio" autocomplete="off" name="radio_OISKYDGYTN" value=""> <span>It returns the entire <code>data</code> data frame unchanged.</span></label><label><input type="radio" autocomplete="off" name="radio_OISKYDGYTN" value="answer"> <span>It returns a data frame with only the rows where the condition <code>data$condition == "violent"</code> is <code>TRUE</code>, and all columns.</span></label><label><input type="radio" autocomplete="off" name="radio_OISKYDGYTN" value=""> <span>It returns a data frame with one column called <code>"violent"</code>.</span></label>
+<div id="radio_PZYQFGJXZK" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_PZYQFGJXZK" value=""> <span>It returns the logical vector of length 120 used inside the bracket.</span></label><label><input type="radio" autocomplete="off" name="radio_PZYQFGJXZK" value=""> <span>It returns the entire <code>data</code> data frame unchanged.</span></label><label><input type="radio" autocomplete="off" name="radio_PZYQFGJXZK" value="answer"> <span>It returns a data frame with only the rows where the condition <code>data$condition == "violent"</code> is <code>TRUE</code>, and all columns.</span></label><label><input type="radio" autocomplete="off" name="radio_PZYQFGJXZK" value=""> <span>It returns a data frame with one column called <code>"violent"</code>.</span></label>
 </div>
 <p><strong>5. What does the expression <code>data[, c("aggression", "condition")]</code> return?</strong></p>
-<div id="radio_KNLJCRWDFX" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_KNLJCRWDFX" value=""> <span>A character vector of values from the <code>aggression</code> column.</span></label><label><input type="radio" autocomplete="off" name="radio_KNLJCRWDFX" value="answer"> <span>A data frame with all 120 rows and only the two named columns, <code>aggression</code> and <code>condition</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_KNLJCRWDFX" value=""> <span>A single number summarizing both columns.</span></label><label><input type="radio" autocomplete="off" name="radio_KNLJCRWDFX" value=""> <span>An error: you cannot select two columns at once.</span></label>
+<div id="radio_QMSFBUDFOF" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_QMSFBUDFOF" value=""> <span>A character vector of values from the <code>aggression</code> column.</span></label><label><input type="radio" autocomplete="off" name="radio_QMSFBUDFOF" value="answer"> <span>A data frame with all 120 rows and only the two named columns, <code>aggression</code> and <code>condition</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_QMSFBUDFOF" value=""> <span>A single number summarizing both columns.</span></label><label><input type="radio" autocomplete="off" name="radio_QMSFBUDFOF" value=""> <span>An error: you cannot select two columns at once.</span></label>
 </div>
 <p><strong>6. What does the expression <code>data[data$condition == "violent", "aggression"]</code> return?</strong></p>
-<div id="radio_KCRSPEEVXQ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_KCRSPEEVXQ" value=""> <span>A data frame of 60 rows and all columns.</span></label><label><input type="radio" autocomplete="off" name="radio_KCRSPEEVXQ" value="answer"> <span>A numeric vector of length 60, containing the aggression scores of the 60 participants in the violent condition.</span></label><label><input type="radio" autocomplete="off" name="radio_KCRSPEEVXQ" value=""> <span>A single number, the mean aggression of the violent condition.</span></label><label><input type="radio" autocomplete="off" name="radio_KCRSPEEVXQ" value=""> <span>A logical vector of length 120.</span></label>
+<div id="radio_BJCTIHJXMP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_BJCTIHJXMP" value=""> <span>A data frame of 60 rows and all columns.</span></label><label><input type="radio" autocomplete="off" name="radio_BJCTIHJXMP" value="answer"> <span>A numeric vector of length 60, containing the aggression scores of the 60 participants in the violent condition.</span></label><label><input type="radio" autocomplete="off" name="radio_BJCTIHJXMP" value=""> <span>A single number, the mean aggression of the violent condition.</span></label><label><input type="radio" autocomplete="off" name="radio_BJCTIHJXMP" value=""> <span>A logical vector of length 120.</span></label>
 </div>
 <p><strong>7. You computed the mean aggression score for each of the two conditions and reported the two numbers. What is the most important thing those two numbers do <em>not</em> tell you?</strong></p>
-<div id="radio_MMGYWNVHHJ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_MMGYWNVHHJ" value=""> <span>It saves a great deal of typing for an analysis that has only one or two groups.</span></label><label><input type="radio" autocomplete="off" name="radio_MMGYWNVHHJ" value=""> <span>It is more accurate than computing the mean of the whole dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_MMGYWNVHHJ" value="answer"> <span>It compresses 120 individual scores into a single number per group; what the number does not encode (such as spread, shape, individual differences) is lost.</span></label><label><input type="radio" autocomplete="off" name="radio_MMGYWNVHHJ" value=""> <span>It guarantees that the difference between groups is statistically significant.</span></label>
+<div id="radio_YMTOYXXVUF" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_YMTOYXXVUF" value=""> <span>It saves a great deal of typing for an analysis that has only one or two groups.</span></label><label><input type="radio" autocomplete="off" name="radio_YMTOYXXVUF" value=""> <span>It is more accurate than computing the mean of the whole dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_YMTOYXXVUF" value="answer"> <span>It compresses 120 individual scores into a single number per group; what the number does not encode (such as spread, shape, individual differences) is lost.</span></label><label><input type="radio" autocomplete="off" name="radio_YMTOYXXVUF" value=""> <span>It guarantees that the difference between groups is statistically significant.</span></label>
 </div>
 
 
@@ -1296,6 +1303,9 @@ window.onload = function() {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./09-tidyverse-and-descriptives.html" class="pagination-link" aria-label="Wrangling and describing data with the tidyverse">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wrangling and describing data with the tidyverse</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
