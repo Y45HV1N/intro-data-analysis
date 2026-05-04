@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -345,8 +380,38 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">6.1</span> Overview</a></li>
+  <li><a href="#basic-operations" id="toc-basic-operations" class="nav-link" data-scroll-target="#basic-operations"><span class="header-section-number">6.2</span> Basic operations</a>
+  <ul class="collapse">
+  <li><a href="#assignment" id="toc-assignment" class="nav-link" data-scroll-target="#assignment"><span class="header-section-number">6.2.1</span> Assignment</a></li>
+  <li><a href="#arithmetic" id="toc-arithmetic" class="nav-link" data-scroll-target="#arithmetic"><span class="header-section-number">6.2.2</span> Arithmetic</a></li>
+  <li><a href="#summary-functions" id="toc-summary-functions" class="nav-link" data-scroll-target="#summary-functions"><span class="header-section-number">6.2.3</span> Summary functions</a></li>
+  </ul></li>
+  <li><a href="#a-first-look-at-custom-functions" id="toc-a-first-look-at-custom-functions" class="nav-link" data-scroll-target="#a-first-look-at-custom-functions"><span class="header-section-number">6.3</span> A first look at custom functions</a></li>
+  <li><a href="#a-substantive-example-correcting-many-distorted-variables" id="toc-a-substantive-example-correcting-many-distorted-variables" class="nav-link" data-scroll-target="#a-substantive-example-correcting-many-distorted-variables"><span class="header-section-number">6.4</span> A substantive example: correcting many distorted variables</a>
+  <ul class="collapse">
+  <li><a href="#the-setup" id="toc-the-setup" class="nav-link" data-scroll-target="#the-setup"><span class="header-section-number">6.4.1</span> The setup</a></li>
+  <li><a href="#approach-1-manual-correction-one-line-per-variable" id="toc-approach-1-manual-correction-one-line-per-variable" class="nav-link" data-scroll-target="#approach-1-manual-correction-one-line-per-variable"><span class="header-section-number">6.4.2</span> Approach 1: manual correction, one line per variable</a></li>
+  <li><a href="#approach-2-a-custom-function-applied-to-each-variable" id="toc-approach-2-a-custom-function-applied-to-each-variable" class="nav-link" data-scroll-target="#approach-2-a-custom-function-applied-to-each-variable"><span class="header-section-number">6.4.3</span> Approach 2: a custom function applied to each variable</a></li>
+  <li><a href="#approach-3-a-custom-function-applied-to-all-variables-at-once" id="toc-approach-3-a-custom-function-applied-to-all-variables-at-once" class="nav-link" data-scroll-target="#approach-3-a-custom-function-applied-to-all-variables-at-once"><span class="header-section-number">6.4.4</span> Approach 3: a custom function applied to all variables at once</a></li>
+  <li><a href="#what-this-would-have-looked-like-in-spss-or-excel" id="toc-what-this-would-have-looked-like-in-spss-or-excel" class="nav-link" data-scroll-target="#what-this-would-have-looked-like-in-spss-or-excel"><span class="header-section-number">6.4.5</span> What this would have looked like in SPSS or Excel</a></li>
+  </ul></li>
+  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages"><span class="header-section-number">6.5</span> Packages</a>
+  <ul class="collapse">
+  <li><a href="#installing-and-loading" id="toc-installing-and-loading" class="nav-link" data-scroll-target="#installing-and-loading"><span class="header-section-number">6.5.1</span> Installing and loading</a></li>
+  <li><a href="#finding-documentation" id="toc-finding-documentation" class="nav-link" data-scroll-target="#finding-documentation"><span class="header-section-number">6.5.2</span> Finding documentation</a></li>
+  <li><a href="#a-worked-example-psychdescribe-and-describeby" id="toc-a-worked-example-psychdescribe-and-describeby" class="nav-link" data-scroll-target="#a-worked-example-psychdescribe-and-describeby"><span class="header-section-number">6.5.3</span> A worked example: <code>psych::describe()</code> and <code>describeBy()</code></a></li>
+  <li><a href="#an-alternative-without-library" id="toc-an-alternative-without-library" class="nav-link" data-scroll-target="#an-alternative-without-library"><span class="header-section-number">6.5.4</span> An alternative without <code>library()</code></a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">6.6</span> Summary</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">6.7</span> Check your understanding</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/06-operations-and-packages.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -371,21 +436,354 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<section id="overview" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">6.1</span> Overview</h2>
+<p>This chapter is the longest in Section 1. It is also the chapter where the value of working in R, as opposed to working in SPSS or Excel, becomes most concrete. The chapter is organized in four parts:</p>
+<ol type="1">
+<li><strong>Basic operations:</strong> assignment, arithmetic, and the small set of summary functions you will use most often (<code>mean</code>, <code>sd</code>, <code>min</code>, <code>max</code>, <code>median</code>).</li>
+<li><strong>A first look at custom functions:</strong> how you would package a few of those operations into a single named operation, illustrated with a deliberately simple example using <code>if</code> and <code>else</code>.</li>
+<li><strong>A substantive example:</strong> a survey dataset whose variables have been distorted by a software bug, walked through three times: manually, with a function applied repeatedly, and with a function applied in a single line. This is the example that shows what coding actually buys you.</li>
+<li><strong>Packages:</strong> what they are, how to install and load them, and how to find documentation. Most of the functions you will use in your career are in packages, not in base R.</li>
+</ol>
+<p>A note before we begin. We introduce custom functions in this chapter only for illustration. In the rest of Section 1 and the early sections that follow, you will not need to write your own functions. There are tens of thousands of functions already written by other people, and most of your learning curve will be about finding them and using them. We will return to writing your own functions much later in the book, once you are comfortable using existing ones.</p>
+</section>
+<section id="basic-operations" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="basic-operations"><span class="header-section-number">6.2</span> Basic operations</h2>
+<section id="assignment" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="assignment"><span class="header-section-number">6.2.1</span> Assignment</h3>
+<p>You assign a value to a name with the arrow <code>&lt;-</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">12</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>participants <span class="ot">&lt;-</span> <span class="dv">100</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="callout-title-container flex-fill">
-Note
+<p>The arrow is read “gets”: “x gets 5.” You can also use <code>=</code>, but <code>&lt;-</code> is the convention in R, and it removes ambiguity in places where <code>=</code> has another meaning (notably inside function calls, where <code>=</code> is used for named arguments).</p>
+</section>
+<section id="arithmetic" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="arithmetic"><span class="header-section-number">6.2.2</span> Arithmetic</h3>
+<p>R supports the usual arithmetic operators:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">+</span> y     <span class="co"># addition: 17</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>x <span class="sc">-</span> y     <span class="co"># subtraction: -7</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>x <span class="sc">*</span> y     <span class="co"># multiplication: 60</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>x <span class="sc">/</span> y     <span class="co"># division: 0.4166667</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>x<span class="sc">^</span><span class="dv">2</span>       <span class="co"># exponentiation: 25</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>y <span class="sc">%%</span> <span class="dv">5</span>    <span class="co"># remainder ("modulo"): 2</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>y <span class="sc">%/%</span> <span class="dv">5</span>   <span class="co"># integer division: 2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>These work on vectors as well as on single values. When applied to a vector, the operation is done element-wise:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">19</span>, <span class="dv">22</span>, <span class="dv">21</span>, <span class="dv">25</span>, <span class="dv">18</span>, <span class="dv">30</span>, <span class="dv">27</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ages <span class="sc">+</span> <span class="dv">10</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># returns c(29, 32, 31, 35, 28, 40, 37)</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>ages <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># returns c(9.5, 11.0, 10.5, 12.5, 9.0, 15.0, 13.5)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="callout-body-container callout-body">
-<p>This chapter is a placeholder. Content will be added in a later step.</p>
+<p>When two vectors of the same length are combined, the operation is applied element-wise:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>v1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>v2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>v1 <span class="sc">+</span> v2</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># returns c(11, 22, 33, 44)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</section>
+<section id="summary-functions" class="level3" data-number="6.2.3">
+<h3 data-number="6.2.3" class="anchored" data-anchor-id="summary-functions"><span class="header-section-number">6.2.3</span> Summary functions</h3>
+<p>The functions you will use most often when you first look at a vector of numbers are:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(ages)      <span class="co"># total</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(ages)     <span class="co"># arithmetic mean</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(ages)   <span class="co"># median</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(ages)      <span class="co"># smallest value</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(ages)      <span class="co"># largest value</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(ages)    <span class="co"># min and max returned together as a vector of length 2</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(ages)       <span class="co"># standard deviation (using n - 1)</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(ages)      <span class="co"># variance (using n - 1)</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(ages)   <span class="co"># number of elements</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>And the very useful catch-all:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ages)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># returns Min., 1st Qu., Median, Mean, 3rd Qu., Max.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>summary()</code> is type-aware. On a numeric vector you get the six-number summary above. On a logical vector you get counts of <code>TRUE</code> and <code>FALSE</code>. On a data frame, you get a one-column summary for each column.</p>
+<p>A single practical caveat: if any value in the vector is missing (<code>NA</code>), most of these functions return <code>NA</code> by default. To compute over the non-missing values only, set the <code>na.rm</code> argument to <code>TRUE</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ages_with_na <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">19</span>, <span class="dv">22</span>, <span class="cn">NA</span>, <span class="dv">25</span>, <span class="dv">18</span>, <span class="dv">30</span>, <span class="dv">27</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(ages_with_na)              <span class="co"># returns NA</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(ages_with_na, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co"># returns 23.5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You will encounter <code>na.rm = TRUE</code> constantly in real data analysis, because real data has missing values.</p>
+</section>
+</section>
+<section id="a-first-look-at-custom-functions" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="a-first-look-at-custom-functions"><span class="header-section-number">6.3</span> A first look at custom functions</h2>
+<p>Suppose you frequently want to look at five summaries of a vector at once: the mean, the standard deviation, the median, the minimum, and the maximum. You could write the five lines every time:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(ages)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(ages)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(ages)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(ages)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(ages)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This is tedious. A custom function lets you bundle those lines into one named operation.</p>
+<p>Here is the simplest possible version:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>quick_summary <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Mean:   "</span>, <span class="fu">mean</span>(x), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"SD:     "</span>, <span class="fu">sd</span>(x), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Median: "</span>, <span class="fu">median</span>(x), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Min:    "</span>, <span class="fu">min</span>(x), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Max:    "</span>, <span class="fu">max</span>(x), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Read this carefully. The structure of every function definition in R is the same:</p>
+<pre><code>function_name &lt;- function(arguments) {
+  body
+}</code></pre>
+<p><code>function_name &lt;- function(...)</code> says “create a function and give it a name.” The arguments listed in the parentheses are the inputs. The body, between the curly braces, is the code that runs when the function is called. (<code>cat()</code> is a small function that prints text to the Console; <code>"\n"</code> is a newline character that puts the next item on its own line.)</p>
+<p>To use the new function, call it like any other function:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quick_summary</span>(ages)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The function runs its body on <code>ages</code>, prints five lines, and returns nothing further.</p>
+<p>We can make the function slightly more careful by adding a check. Suppose we want it to refuse non-numeric input rather than producing a confusing error from <code>mean()</code>. We can use <code>if</code> and <code>else</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>quick_summary <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.numeric</span>(x)) {</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Input is not numeric; quick_summary cannot run.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Mean:   "</span>, <span class="fu">mean</span>(x), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"SD:     "</span>, <span class="fu">sd</span>(x), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Median: "</span>, <span class="fu">median</span>(x), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Min:    "</span>, <span class="fu">min</span>(x), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Max:    "</span>, <span class="fu">max</span>(x), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>is.numeric(x)</code> returns <code>TRUE</code> if <code>x</code> is numeric and <code>FALSE</code> otherwise. <code>!is.numeric(x)</code> reverses this; the <code>!</code> means “not.” So the <code>if</code> statement is read: “if x is not numeric, print a warning; else, print the five summaries.”</p>
+<p>You now have a tiny function with a guard clause. Call it on a numeric vector and you get the summaries; call it on a string vector and you get the warning:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quick_summary</span>(ages)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">quick_summary</span>(<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This is intentionally a small example. We are not yet using any of the more powerful tools R has for writing functions; in particular, we are not using the “apply” family of functions, which we will introduce much later. For now, the goal is for you to recognize the structure of a function definition when you see it, not to write your own.</p>
+</section>
+<section id="a-substantive-example-correcting-many-distorted-variables" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="a-substantive-example-correcting-many-distorted-variables"><span class="header-section-number">6.4</span> A substantive example: correcting many distorted variables</h2>
+<p>We now turn to the example that motivates the chapter. The example is realistic: at some point in your career you will encounter a dataset where a software bug, a coding mistake, or an unusual recoding scheme has left many variables in a slightly wrong form, and you will need to fix them.</p>
+<section id="the-setup" class="level3" data-number="6.4.1">
+<h3 data-number="6.4.1" class="anchored" data-anchor-id="the-setup"><span class="header-section-number">6.4.1</span> The setup</h3>
+<p>Suppose you have run a survey on attitudes toward climate policy. The survey was administered through an online platform that, due to a bug in its export function, has shifted every Likert-scale response upward by 2 and multiplied it by 0.5. So the values you see on disk are not the raw responses but <code>(raw + 2) * 0.5</code>. To recover the raw responses, you need to apply the inverse transformation: <code>raw = value / 0.5 - 2</code>, i.e., <code>raw = value * 2 - 2</code>.</p>
+<p>Your dataset has many such variables: ten Likert items measuring attitudes (<code>item1</code> through <code>item10</code>), and several demographic variables that are not affected. The question is how to apply the correction to the ten Likert variables while leaving the rest alone.</p>
+<p>We will work through three approaches: manual line-by-line correction, a custom function applied to each variable, and a custom function applied to all variables in one line. The first two are introduced specifically so that you can see how the third improves on them.</p>
+<p>For the example we will use a small fake dataset:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>survey <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">age =</span> <span class="fu">c</span>(<span class="dv">34</span>, <span class="dv">27</span>, <span class="dv">45</span>, <span class="dv">39</span>, <span class="dv">22</span>),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">item1  =</span> <span class="fu">c</span>(<span class="fl">2.5</span>, <span class="fl">3.0</span>, <span class="fl">1.5</span>, <span class="fl">2.0</span>, <span class="fl">3.5</span>),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">item2  =</span> <span class="fu">c</span>(<span class="fl">2.0</span>, <span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="fl">3.0</span>, <span class="fl">1.5</span>),</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">item3  =</span> <span class="fu">c</span>(<span class="fl">3.0</span>, <span class="fl">2.0</span>, <span class="fl">2.0</span>, <span class="fl">2.5</span>, <span class="fl">2.5</span>),</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">item4  =</span> <span class="fu">c</span>(<span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="fl">3.0</span>, <span class="fl">1.5</span>, <span class="fl">2.0</span>),</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">item5  =</span> <span class="fu">c</span>(<span class="fl">2.0</span>, <span class="fl">3.0</span>, <span class="fl">2.0</span>, <span class="fl">2.5</span>, <span class="fl">2.5</span>),</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">item6  =</span> <span class="fu">c</span>(<span class="fl">3.0</span>, <span class="fl">2.5</span>, <span class="fl">1.5</span>, <span class="fl">3.0</span>, <span class="fl">2.0</span>),</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">item7  =</span> <span class="fu">c</span>(<span class="fl">2.5</span>, <span class="fl">2.0</span>, <span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="fl">3.0</span>),</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">item8  =</span> <span class="fu">c</span>(<span class="fl">2.0</span>, <span class="fl">2.5</span>, <span class="fl">3.0</span>, <span class="fl">2.0</span>, <span class="fl">1.5</span>),</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">item9  =</span> <span class="fu">c</span>(<span class="fl">3.0</span>, <span class="fl">2.5</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>, <span class="fl">2.5</span>),</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">item10 =</span> <span class="fu">c</span>(<span class="fl">2.5</span>, <span class="fl">3.0</span>, <span class="fl">2.5</span>, <span class="fl">1.5</span>, <span class="fl">2.0</span>)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="approach-1-manual-correction-one-line-per-variable" class="level3" data-number="6.4.2">
+<h3 data-number="6.4.2" class="anchored" data-anchor-id="approach-1-manual-correction-one-line-per-variable"><span class="header-section-number">6.4.2</span> Approach 1: manual correction, one line per variable</h3>
+<p>The naive approach is to write out the correction for each variable in turn:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item1  <span class="ot">&lt;-</span> survey<span class="sc">$</span>item1  <span class="sc">*</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item2  <span class="ot">&lt;-</span> survey<span class="sc">$</span>item2  <span class="sc">*</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item3  <span class="ot">&lt;-</span> survey<span class="sc">$</span>item3  <span class="sc">*</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item4  <span class="ot">&lt;-</span> survey<span class="sc">$</span>item4  <span class="sc">*</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item5  <span class="ot">&lt;-</span> survey<span class="sc">$</span>item5  <span class="sc">*</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item6  <span class="ot">&lt;-</span> survey<span class="sc">$</span>item6  <span class="sc">*</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item7  <span class="ot">&lt;-</span> survey<span class="sc">$</span>item7  <span class="sc">*</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item8  <span class="ot">&lt;-</span> survey<span class="sc">$</span>item8  <span class="sc">*</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item9  <span class="ot">&lt;-</span> survey<span class="sc">$</span>item9  <span class="sc">*</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item10 <span class="ot">&lt;-</span> survey<span class="sc">$</span>item10 <span class="sc">*</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This works. Run it and the ten columns are now in their corrected form. Notice three things about it.</p>
+<p>First, this is roughly what you would have to do in SPSS or Excel: a separate operation for each column, one click or one formula per variable. With ten items it is bearable; with sixty it is painful and error-prone.</p>
+<p>Second, if the correction itself is wrong, you have to fix it in ten places. Imagine you discover that the right inverse is actually <code>value * 2 - 4</code>, not <code>value * 2 - 2</code>. Now you have ten lines to edit, and if you miss one you will quietly use the wrong correction on one variable for the rest of the project.</p>
+<p>Third, the code is hard to read. The pattern repeats ten times; the only differences are the variable names. You have to look closely to verify that all ten lines really do the same thing and that none of them has a typo.</p>
+</section>
+<section id="approach-2-a-custom-function-applied-to-each-variable" class="level3" data-number="6.4.3">
+<h3 data-number="6.4.3" class="anchored" data-anchor-id="approach-2-a-custom-function-applied-to-each-variable"><span class="header-section-number">6.4.3</span> Approach 2: a custom function applied to each variable</h3>
+<p>A small improvement is to write the correction once, as a function, and then apply that function to each variable:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>correct_value <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">*</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item1  <span class="ot">&lt;-</span> <span class="fu">correct_value</span>(survey<span class="sc">$</span>item1)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item2  <span class="ot">&lt;-</span> <span class="fu">correct_value</span>(survey<span class="sc">$</span>item2)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item3  <span class="ot">&lt;-</span> <span class="fu">correct_value</span>(survey<span class="sc">$</span>item3)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item4  <span class="ot">&lt;-</span> <span class="fu">correct_value</span>(survey<span class="sc">$</span>item4)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item5  <span class="ot">&lt;-</span> <span class="fu">correct_value</span>(survey<span class="sc">$</span>item5)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item6  <span class="ot">&lt;-</span> <span class="fu">correct_value</span>(survey<span class="sc">$</span>item6)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item7  <span class="ot">&lt;-</span> <span class="fu">correct_value</span>(survey<span class="sc">$</span>item7)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item8  <span class="ot">&lt;-</span> <span class="fu">correct_value</span>(survey<span class="sc">$</span>item8)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item9  <span class="ot">&lt;-</span> <span class="fu">correct_value</span>(survey<span class="sc">$</span>item9)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>item10 <span class="ot">&lt;-</span> <span class="fu">correct_value</span>(survey<span class="sc">$</span>item10)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This is better. The correction itself is now defined once: if it is wrong, you fix one place. The ten lines that follow are clearly doing the same thing to each variable; a typo in the formula is impossible because the formula is no longer being typed ten times.</p>
+<p>But the ten repetitive lines are still present. If you discover that the correction should not be applied to <code>item3</code> after all, you have to remove or modify line three. If you have sixty items, this section is sixty lines long. The error-detection benefit is real, but the scaling benefit is not.</p>
+</section>
+<section id="approach-3-a-custom-function-applied-to-all-variables-at-once" class="level3" data-number="6.4.4">
+<h3 data-number="6.4.4" class="anchored" data-anchor-id="approach-3-a-custom-function-applied-to-all-variables-at-once"><span class="header-section-number">6.4.4</span> Approach 3: a custom function applied to all variables at once</h3>
+<p>The full benefit appears when you apply the function to all relevant variables at once. We will use one function from the apply family here, called <code>lapply()</code>; we will return to the rest of the family later.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>likert_columns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"item1"</span>, <span class="st">"item2"</span>, <span class="st">"item3"</span>, <span class="st">"item4"</span>, <span class="st">"item5"</span>,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"item6"</span>, <span class="st">"item7"</span>, <span class="st">"item8"</span>, <span class="st">"item9"</span>, <span class="st">"item10"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>survey[likert_columns] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(survey[likert_columns], correct_value)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Two lines. The first defines which columns the correction applies to. The second applies the function to all of them in one go.</p>
+<p><code>lapply()</code> is a function that takes a list (or a data frame, which R treats as a list of columns) and a function, and applies the function to each element. <code>survey[likert_columns]</code> is a sub-data-frame containing just the ten Likert columns. <code>lapply(survey[likert_columns], correct_value)</code> applies <code>correct_value</code> to each of those ten columns, returning a list of ten corrected vectors. Assigning that list back into <code>survey[likert_columns]</code> replaces the original columns with the corrected ones.</p>
+<p>You do not need to fully understand <code>lapply()</code> yet. We will discuss it carefully later. For now, what matters is the comparison.</p>
+<p>Three things have improved.</p>
+<p>First, <strong>scaling.</strong> With sixty Likert variables instead of ten, this code stays at two lines. You add the new variable names to <code>likert_columns</code> and you are done.</p>
+<p>Second, <strong>correction.</strong> If the correction formula is wrong, you fix it in <code>correct_value()</code>, in one place. The line that applies it does not change.</p>
+<p>Third, <strong>error detection.</strong> Read the two lines aloud: “the Likert columns are item1 through item10; apply correct_value to all of them.” The intent is clear in two lines, in a way that ten or sixty repeated lines obscure.</p>
+</section>
+<section id="what-this-would-have-looked-like-in-spss-or-excel" class="level3" data-number="6.4.5">
+<h3 data-number="6.4.5" class="anchored" data-anchor-id="what-this-would-have-looked-like-in-spss-or-excel"><span class="header-section-number">6.4.5</span> What this would have looked like in SPSS or Excel</h3>
+<p>Compare what we just did with what you would have done in SPSS or Excel.</p>
+<p>In SPSS, with the menus, you would have used Transform &gt; Compute Variable, ten times, once per variable. With syntax, you would have written ten compute commands. Either way, ten operations.</p>
+<p>In Excel, you would have inserted ten new columns next to the originals, written the formula in each, copied it down, and then either replaced the originals with the corrected versions or kept both side by side (cluttering the spreadsheet).</p>
+<p>In both cases, if the correction formula was later found to be wrong, you would re-do all ten operations. In neither case would there be a written record, in code, of what was done. A reviewer asking “exactly how did you correct these variables?” would receive an answer that depends on your memory of the menu sequence.</p>
+<p>The R version is shorter to write, faster to update, and self-documenting. This is the moment in the book where the value of coding crystallizes. It is not about typing fewer characters; it is about the operation being re-runnable, inspectable, and scalable.</p>
+</section>
+</section>
+<section id="packages" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="packages"><span class="header-section-number">6.5</span> Packages</h2>
+<p>We have so far used only base R: the functions that ship with R itself. R’s true reach comes from <strong>packages</strong>. A package is a collection of functions, datasets, and documentation, packaged together by the people who developed it. Packages let people who are not part of the R core team contribute new functions to the ecosystem and let any user benefit from those contributions.</p>
+<p>Some packages come from the R core team and are maintained alongside R itself. The vast majority come from researchers, practitioners, and hobbyists who needed a particular tool, wrote it, documented it, and made it available. The total number of packages on the central R archive (CRAN) is in the tens of thousands and grows continuously.</p>
+<p>A useful default attitude: when you have a task and you are about to write the code yourself, search first to see whether someone has already written a package for it. They usually have.</p>
+<section id="installing-and-loading" class="level3" data-number="6.5.1">
+<h3 data-number="6.5.1" class="anchored" data-anchor-id="installing-and-loading"><span class="header-section-number">6.5.1</span> Installing and loading</h3>
+<p>Two distinct steps are involved in using a package: <strong>installing</strong> it (downloading it from the internet onto your computer) and <strong>loading</strong> it (telling the current R session to make its functions available).</p>
+<p>You install a package once per computer. The standard command:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"psych"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This downloads and installs the package called <code>psych</code>. The quotation marks are required. After installation, the package sits on your hard drive but is not yet active in your session.</p>
+<p>You load a package every session in which you want to use it:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>After this line, all the functions in <code>psych</code> are available in the current session, just as if they were part of base R. If you restart R (which, recall from Chapter 4, you should do regularly), you will need to call <code>library(psych)</code> again before the package’s functions are available.</p>
+<p>A common confusion: <code>install.packages()</code> requires quotes around the package name; <code>library()</code> does not. This is an inconsistency in R’s history; you simply have to remember it.</p>
+</section>
+<section id="finding-documentation" class="level3" data-number="6.5.2">
+<h3 data-number="6.5.2" class="anchored" data-anchor-id="finding-documentation"><span class="header-section-number">6.5.2</span> Finding documentation</h3>
+<p>After loading a package, you can read its documentation in three ways.</p>
+<p><strong>Help on a single function.</strong> Use <code>?</code> followed by the function name:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>?describe</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This opens the help page for <code>describe()</code> in the Help panel of RStudio.</p>
+<p><strong>Help on the package as a whole.</strong> Each well-maintained package has an overview page:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(<span class="at">package =</span> <span class="st">"psych"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This lists every function in the package, with a one-line description.</p>
+<p><strong>Vignettes.</strong> Many packages include longer narrative tutorials, called vignettes, written by the authors. To list the vignettes in a package:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vignette</span>(<span class="at">package =</span> <span class="st">"psych"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>To open one:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vignette</span>(<span class="st">"intro"</span>, <span class="at">package =</span> <span class="st">"psych"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Vignettes are often the best resource when learning a new package, because they show how the functions are intended to be used together.</p>
+</section>
+<section id="a-worked-example-psychdescribe-and-describeby" class="level3" data-number="6.5.3">
+<h3 data-number="6.5.3" class="anchored" data-anchor-id="a-worked-example-psychdescribe-and-describeby"><span class="header-section-number">6.5.3</span> A worked example: <code>psych::describe()</code> and <code>describeBy()</code></h3>
+<p>Let us work through a concrete example using <code>psych</code>, a package widely used in psychology and the social sciences.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"psych"</span>)  <span class="co"># only if you have not installed it already</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The function <code>describe()</code> produces a more thorough version of <code>summary()</code>. On a numeric vector or a data frame, it returns the number of valid cases, the mean, the standard deviation, the median, the minimum, the maximum, the range, the skewness, the kurtosis, and the standard error of the mean.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(survey<span class="sc">$</span>age)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># returns a one-row table with the columns above</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(survey)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># returns one row per numeric column</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>For a researcher working with social and behavioral data, the additional columns (skewness, kurtosis, standard error) are often exactly what you want.</p>
+<p><code>describeBy()</code> does the same, but separately for each level of a grouping variable. Suppose you also have a condition variable:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"control"</span>, <span class="st">"treatment"</span>, <span class="st">"control"</span>, <span class="st">"treatment"</span>, <span class="st">"control"</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">describeBy</span>(survey<span class="sc">$</span>item1, <span class="at">group =</span> survey<span class="sc">$</span>condition)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># returns a separate describe table for control and treatment</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This is a one-line operation that, in SPSS, would be a multi-step menu walk through “Split File” and then “Descriptives.”</p>
+</section>
+<section id="an-alternative-without-library" class="level3" data-number="6.5.4">
+<h3 data-number="6.5.4" class="anchored" data-anchor-id="an-alternative-without-library"><span class="header-section-number">6.5.4</span> An alternative without <code>library()</code></h3>
+<p>There is a second way to use a package’s functions without loading it into the session: the <strong>double-colon operator</strong> <code>::</code>. The syntax is <code>package::function</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">describe</span>(survey<span class="sc">$</span>age)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This calls <code>describe()</code> from the <code>psych</code> package without having loaded <code>psych</code>. The package must still be installed; it just does not have to be loaded.</p>
+<p>This style has two advantages and one cost.</p>
+<p>The advantages: it makes the source of every function explicit (a reader can tell at a glance which package each function comes from), and it avoids problems caused by two packages defining a function with the same name (because <code>psych::describe</code> and <code>Hmisc::describe</code>, both real, are unambiguous when written with <code>::</code>).</p>
+<p>The cost: it is more verbose. Code that uses the same function many times becomes cluttered.</p>
+<p>A reasonable convention: use <code>library()</code> for packages whose functions you will call frequently in a script, and use <code>package::function</code> style for one-off calls to functions from packages you do not otherwise need.</p>
+</section>
+</section>
+<section id="summary" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="summary"><span class="header-section-number">6.6</span> Summary</h2>
+<p>The chapter has covered four threads. Basic operations (assignment, arithmetic, summary functions) are the day-to-day vocabulary you will use constantly. Custom functions are introduced for illustration only; you will not write your own functions for some time, but recognizing the structure of one when you encounter it is useful. The substantive example with the distorted survey shows what coding actually buys you: a re-runnable, scalable, transparent transformation that a click-based workflow cannot match. Packages multiply the available functions by a factor of thousands and are how the R ecosystem extends itself.</p>
+<p>You now have the conceptual foundations of working in R. Chapter 7 is a brief recap, and after that you are ready for the rest of the book.</p>
+</section>
+<section id="check-your-understanding" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">6.7</span> Check your understanding</h2>
+<p><strong>1. What is the difference between <code>&lt;-</code> and <code>=</code> for assignment in R?</strong></p>
+<div id="radio_OPLKENQGCG" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_OPLKENQGCG" value=""> <span><code>x = 5</code> is the only correct way to assign in R; <code>x &lt;- 5</code> is wrong.</span></label><label><input type="radio" autocomplete="off" name="radio_OPLKENQGCG" value="answer"> <span>Both work, but <code>&lt;-</code> is the convention in R; <code>=</code> has another meaning inside function calls (named arguments).</span></label><label><input type="radio" autocomplete="off" name="radio_OPLKENQGCG" value=""> <span><code>&lt;-</code> and <code>=</code> are completely interchangeable; there is no difference.</span></label><label><input type="radio" autocomplete="off" name="radio_OPLKENQGCG" value=""> <span><code>&lt;-</code> only works inside functions, not in scripts.</span></label>
+</div>
+<p><strong>2. What does <code>mean()</code> return when applied to a vector containing one or more <code>NA</code> values, by default?</strong></p>
+<div id="radio_WXULYSHUUD" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_WXULYSHUUD" value=""> <span><code>mean()</code> returns 0 by default.</span></label><label><input type="radio" autocomplete="off" name="radio_WXULYSHUUD" value="answer"> <span><code>mean()</code> returns NA by default; setting <code>na.rm = TRUE</code> computes the mean of the non-missing values.</span></label><label><input type="radio" autocomplete="off" name="radio_WXULYSHUUD" value=""> <span><code>mean()</code> automatically removes missing values without needing any argument.</span></label><label><input type="radio" autocomplete="off" name="radio_WXULYSHUUD" value=""> <span>R refuses to run <code>mean()</code> on a vector containing NA.</span></label>
+</div>
+<p><strong>3. Which is the correct syntax for defining a function named <code>quick_summary</code> that takes one argument <code>x</code>?</strong></p>
+<div id="radio_WIZOFYCAZC" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_WIZOFYCAZC" value=""> <span><code>function quick_summary(x) { ... }</code></span></label><label><input type="radio" autocomplete="off" name="radio_WIZOFYCAZC" value="answer"> <span><code>quick_summary &lt;- function(x) { ... }</code></span></label><label><input type="radio" autocomplete="off" name="radio_WIZOFYCAZC" value=""> <span><code>define quick_summary(x) { ... }</code></span></label><label><input type="radio" autocomplete="off" name="radio_WIZOFYCAZC" value=""> <span><code>quick_summary = function: x -&gt; { ... }</code></span></label>
+</div>
+<p><strong>4. What is the main advantage of applying a custom function to all relevant variables at once, compared to applying it manually one variable at a time?</strong></p>
+<div id="radio_XKTXMRLHBE" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_XKTXMRLHBE" value=""> <span>It is faster than the manual approach but produces different results.</span></label><label><input type="radio" autocomplete="off" name="radio_XKTXMRLHBE" value="answer"> <span>It scales to many more variables without growing in length, makes the correction formula live in one place, and keeps the intent of the code clear.</span></label><label><input type="radio" autocomplete="off" name="radio_XKTXMRLHBE" value=""> <span>It is the only way to apply a correction to a data frame.</span></label><label><input type="radio" autocomplete="off" name="radio_XKTXMRLHBE" value=""> <span>It avoids the need to ever inspect the data.</span></label>
+</div>
+<p><strong>5. What does <code>install.packages("psych")</code> do?</strong></p>
+<div id="radio_HMQTQMGBHM" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_HMQTQMGBHM" value=""> <span>It downloads but does not install the package.</span></label><label><input type="radio" autocomplete="off" name="radio_HMQTQMGBHM" value=""> <span>It loads an already-installed package into the current session.</span></label><label><input type="radio" autocomplete="off" name="radio_HMQTQMGBHM" value="answer"> <span>It downloads and installs a package on your computer; this needs to be done once per computer.</span></label><label><input type="radio" autocomplete="off" name="radio_HMQTQMGBHM" value=""> <span>It is required at the start of every R session for every package.</span></label>
+</div>
+<p><strong>6. How often do you need to call <code>library(psych)</code>?</strong></p>
+<div id="radio_PPSSDHDZDD" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_PPSSDHDZDD" value=""> <span>Once: it persists across all future sessions.</span></label><label><input type="radio" autocomplete="off" name="radio_PPSSDHDZDD" value=""> <span>It loads automatically; no <code>library()</code> call is ever needed.</span></label><label><input type="radio" autocomplete="off" name="radio_PPSSDHDZDD" value="answer"> <span>At the start of every R session in which you want to use the package's functions.</span></label><label><input type="radio" autocomplete="off" name="radio_PPSSDHDZDD" value=""> <span>Only when the package is installed.</span></label>
+</div>
+<p><strong>7. What is the <code>::</code> operator used for, as in <code>psych::describe()</code>?</strong></p>
+<div id="radio_MCXPKWXINI" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MCXPKWXINI" value=""> <span>It is a way to install a package directly from a function call.</span></label><label><input type="radio" autocomplete="off" name="radio_MCXPKWXINI" value="answer"> <span>It calls a function from a package without loading the entire package into the session.</span></label><label><input type="radio" autocomplete="off" name="radio_MCXPKWXINI" value=""> <span>It is the only way to call functions from packages developed by others.</span></label><label><input type="radio" autocomplete="off" name="radio_MCXPKWXINI" value=""> <span>It tells R to ignore the package and use a base R version of the function instead.</span></label>
+</div>
+<p><strong>8. Which of the following best describes <code>describe()</code> from the <code>psych</code> package?</strong></p>
+<div id="radio_STNLXSOSVE" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_STNLXSOSVE" value=""> <span>It is faster than <code>summary()</code> but returns less information.</span></label><label><input type="radio" autocomplete="off" name="radio_STNLXSOSVE" value=""> <span>It is a base R function, available without loading any package.</span></label><label><input type="radio" autocomplete="off" name="radio_STNLXSOSVE" value="answer"> <span>It is in the <code>psych</code> package and returns a richer set of descriptive statistics than base R's <code>summary()</code>, including skewness, kurtosis, and the standard error of the mean.</span></label><label><input type="radio" autocomplete="off" name="radio_STNLXSOSVE" value=""> <span>It only works on data frames, not on vectors.</span></label>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script>
@@ -1024,4 +1422,4 @@ window.onload = function() {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/06-operations-and-packages.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/06-operations-and-packages.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
