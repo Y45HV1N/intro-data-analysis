@@ -374,7 +374,106 @@
     "href": "05-objects-and-functions.html",
     "title": "5  Objects and functions",
     "section": "",
-    "text": "Note\n\n\n\nThis chapter is a placeholder. Content will be added in a later step.",
+    "text": "5.1 The two main verbs of R\nIn Chapter 1 we said that working in R consists mostly of two activities: creating objects, and feeding objects into operations to produce new objects. The operations themselves are called functions. This chapter takes that loose description and replaces it with a more precise vocabulary.\nConcretely, this chapter covers:",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Objects and functions</span>"
+    ]
+  },
+  {
+    "objectID": "05-objects-and-functions.html#the-two-main-verbs-of-r",
+    "href": "05-objects-and-functions.html#the-two-main-verbs-of-r",
+    "title": "5  Objects and functions",
+    "section": "",
+    "text": "The kinds of objects R has (values, vectors, data frames, and a few related types).\nThe fact that some objects are composed of smaller objects, and how to look inside them.\nWhat a function is and how it works in practice.\nHow to assign objects, read what is inside them, and extract pieces of them.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Objects and functions</span>"
+    ]
+  },
+  {
+    "objectID": "05-objects-and-functions.html#single-values",
+    "href": "05-objects-and-functions.html#single-values",
+    "title": "5  Objects and functions",
+    "section": "5.2 Single values",
+    "text": "5.2 Single values\nThe simplest kind of object in R is a single value. A number, a single piece of text, or a true/false flag are all single values.\nTo create a single value, you use the assignment arrow &lt;-. The arrow points from the value to the name. The general form is name &lt;- value.\n\nparticipants &lt;- 100\nmean_age &lt;- 21.4\nstudy_name &lt;- \"pilot 2024\"\nfinished &lt;- TRUE\n\nYou have created four objects. The first two are numbers. The third is a piece of text, called a character string or just string. Strings are written between double quotes. The fourth is a logical value (TRUE or FALSE), used for true/false flags.\nTo inspect an object, type its name in the Console:\n\nparticipants\n# returns 100\n\nR prints the value. (Throughout this book, comments starting with # indicate what R returns, so that you can read the examples without running them.)\nR has different “types” for these different kinds of values: numeric for numbers, character for strings, logical for true/false. To check the type of an object:\n\nclass(participants)   # returns \"numeric\"\nclass(study_name)     # returns \"character\"\nclass(finished)       # returns \"logical\"\n\nThe function class() is itself an example of what we will discuss later in the chapter: a function that takes an object as input and returns information about it.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Objects and functions</span>"
+    ]
+  },
+  {
+    "objectID": "05-objects-and-functions.html#vectors",
+    "href": "05-objects-and-functions.html#vectors",
+    "title": "5  Objects and functions",
+    "section": "5.3 Vectors",
+    "text": "5.3 Vectors\nA vector is an ordered sequence of values of the same type. In R, a vector is created with the function c() (the letter “c” stands for “combine”):\n\nages &lt;- c(19, 22, 21, 25, 18, 30, 27)\ngenders &lt;- c(\"F\", \"M\", \"F\", \"F\", \"M\", \"F\", \"M\")\nfinished_each &lt;- c(TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE)\n\nages is now a vector of seven numbers, genders is a vector of seven strings, and finished_each is a vector of seven logical values. The objects you created with single values in the previous section were technically vectors of length one; R does not formally distinguish “scalars” from “vectors of length one.” Almost everything in R is a vector at some level.\nTo find the length of a vector, use length():\n\nlength(ages)\n# returns 7\n\nTo extract one or more elements of a vector, use square brackets [ ]:\n\nages[1]        # the first element\nages[3]        # the third element\nages[c(1, 3)]  # the first and third elements together\nages[1:5]      # elements one through five\n\nNote that R uses 1-based indexing: the first element is at position 1, not 0. (If you have used Python or some other languages, this is one of the differences to remember.)\nThe expression 1:5 is shorthand for the vector c(1, 2, 3, 4, 5). The colon operator generates a sequence of consecutive integers.\nA common mistake is to mix types within c(). R will silently convert all elements to the most general type:\n\nmixed &lt;- c(1, 2, \"three\")\nclass(mixed)\n# returns \"character\"\n\nThe first two values were converted to strings (\"1\" and \"2\") so that all elements have a common type. This is rarely what you want; if you find yourself doing this by accident, it usually means you misclassified the data on input.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Objects and functions</span>"
+    ]
+  },
+  {
+    "objectID": "05-objects-and-functions.html#data-frames",
+    "href": "05-objects-and-functions.html#data-frames",
+    "title": "5  Objects and functions",
+    "section": "5.4 Data frames",
+    "text": "5.4 Data frames\nA data frame is the structure most often used to represent a dataset: rows are observations (e.g., participants), columns are variables (e.g., age, gender, response on item 1). It is the R analogue of a spreadsheet.\nYou can create a data frame from existing vectors:\n\nparticipants_data &lt;- data.frame(\n  id     = c(1, 2, 3, 4, 5, 6, 7),\n  age    = c(19, 22, 21, 25, 18, 30, 27),\n  gender = c(\"F\", \"M\", \"F\", \"F\", \"M\", \"F\", \"M\"),\n  finished = c(TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE)\n)\n\nNow participants_data is a data frame with seven rows and four columns. To see it:\n\nparticipants_data\n\nTo learn its dimensions:\n\nnrow(participants_data)   # 7\nncol(participants_data)   # 4\ndim(participants_data)    # both at once: c(7, 4)\n\nTo peek at the first few rows:\n\nhead(participants_data)        # first 6 rows by default\nhead(participants_data, n = 3) # first 3 rows\ntail(participants_data, n = 3) # last 3 rows\n\nTo get a structural overview:\n\nstr(participants_data)\n\nstr() (for “structure”) prints a compact summary: the number of observations, the number of variables, the type of each variable, and a few sample values.\nTo extract one column of a data frame, use the dollar sign $:\n\nparticipants_data$age\n# returns the vector c(19, 22, 21, 25, 18, 30, 27)\n\nparticipants_data$age returns the column age as a regular vector. You can do anything with it that you would do with any other vector:\n\nmean(participants_data$age)\n# returns 23.14286\n\nYou can also extract rows and columns by position with two-dimensional bracket indexing. The general form is dataframe[rows, columns]:\n\nparticipants_data[1, ]            # first row, all columns\nparticipants_data[, 2]            # all rows, second column\nparticipants_data[1:3, c(1, 2)]   # first three rows, first two columns\n\nLeaving one of the slots empty means “all”: [1, ] means “row 1, all columns,” and [, 2] means “all rows, column 2.” This pattern is worth practicing; it is used frequently.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Objects and functions</span>"
+    ]
+  },
+  {
+    "objectID": "05-objects-and-functions.html#objects-composed-of-objects",
+    "href": "05-objects-and-functions.html#objects-composed-of-objects",
+    "title": "5  Objects and functions",
+    "section": "5.5 Objects composed of objects",
+    "text": "5.5 Objects composed of objects\nWe have already seen this idea in passing, but it is worth making explicit. A vector is a sequence of single values. A data frame is a collection of vectors of equal length. A data frame, in turn, is itself an object that can be passed as input to functions like nrow(), mean(), str(). Larger objects are built from smaller ones.\nTwo more compound types are worth knowing about, even though we will not use them heavily in Section 1.\nA list is an ordered collection of objects, like a vector, except that the elements can be of any type and any length. A list could contain a single number in the first slot, a vector of strings in the second slot, and a data frame in the third slot. Many functions that fit statistical models (regressions, ANOVAs) return their results as a list. We will revisit lists when we encounter such results in later sections.\nA factor is a vector of strings that R has been told to treat as a fixed set of categorical levels. Factors are useful for categorical predictors in models (e.g., experimental conditions). For now, what matters is to recognize the term when you see it.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Objects and functions</span>"
+    ]
+  },
+  {
+    "objectID": "05-objects-and-functions.html#functions",
+    "href": "05-objects-and-functions.html#functions",
+    "title": "5  Objects and functions",
+    "section": "5.6 Functions",
+    "text": "5.6 Functions\nA function is a piece of R that takes objects as input and produces a new object as output. We have already used several: mean(), class(), length(), nrow(), c(), data.frame(). The general form of a function call is:\nfunction_name(input1, input2, ...)\nThe inputs are called arguments. The general syntax is to write the function name, an open parenthesis, the arguments separated by commas, and a close parenthesis. R passes the arguments to the function, the function does its work, and a value is returned. That returned value can be used (assigned to a name, passed to another function, printed).\nA useful mental model is a machine in a factory: ingredients go in, the machine processes them, and a product comes out. R’s functions are exactly this. The “ingredients” are the objects you pass in, the “machine” is the body of the function, and the “product” is the returned object.\nHere is the same function, mean, used in three different ways:\n\nmean(ages)                          # used directly; result printed\naverage_age &lt;- mean(ages)           # result assigned to a name\nmean(participants_data$age)         # input pulled from a data frame\n\nMany functions accept multiple arguments. round(), for example, takes a number and an optional second argument specifying how many decimals to keep:\n\nround(23.14286)            # 23\nround(23.14286, digits = 2) # 23.14\n\nThe phrase digits = 2 is called a named argument: you are explicitly identifying which argument you are setting. You can also pass arguments by position (round(23.14286, 2)), but for any argument other than the first one or two, named arguments are clearer and less error-prone.\nEvery function has a help page. To open the help page for a function, type ? followed by its name in the Console:\n\n?mean\n?round\n?data.frame\n\nThe help page lists the arguments, what they do, what the function returns, and usually a few examples at the bottom. Reading help pages is a skill that takes some getting used to. The examples are the most useful section for beginners; if you are unsure how to use a function, scroll directly to the bottom of its help page.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Objects and functions</span>"
+    ]
+  },
+  {
+    "objectID": "05-objects-and-functions.html#looking-inside-objects",
+    "href": "05-objects-and-functions.html#looking-inside-objects",
+    "title": "5  Objects and functions",
+    "section": "5.7 Looking inside objects",
+    "text": "5.7 Looking inside objects\nA small set of functions are constantly useful for “looking inside” objects:\n\nclass(x)        # what type of object is x?\nlength(x)       # how long is it?\nstr(x)          # a structural overview\nhead(x)         # the first few elements (or rows)\nsummary(x)      # a quick summary, type-dependent\nnames(x)        # the names of components, if any\n\nFor data frames specifically, you will also use:\n\nnrow(df)        # number of rows\nncol(df)        # number of columns\ncolnames(df)    # column names\n\nWhen you encounter an unfamiliar object (for example, the result of a function you have not used before), running class() and str() on it is a good first move. Together they tell you what kind of object you have and what is inside it.",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Objects and functions</span>"
+    ]
+  },
+  {
+    "objectID": "05-objects-and-functions.html#exercises",
+    "href": "05-objects-and-functions.html#exercises",
+    "title": "5  Objects and functions",
+    "section": "5.8 Exercises",
+    "text": "5.8 Exercises\nBelow are some exercises you can do in RStudio. They are not graded; the answers will appear in your Console as you work. The aim is to get you comfortable with assigning, inspecting, and indexing objects.\nExercise 1: assignment. Create three objects:\n\nn_items containing the integer 10\nscale_name containing the string “Big Five”\nresponses containing the vector c(3, 5, 4, 2, 5, 4, 3, 4, 5, 4)\n\nInspect each by typing its name in the Console.\nExercise 2: type-checking. For each of the three objects above, run class(). What does each return?\nExercise 3: indexing. From responses, extract:\n\nthe first element\nthe last element (hint: use length(responses) inside the brackets)\nelements 1 through 5\nelements 6 through 10\n\nExercise 4: a data frame. Create a data frame with three rows and three columns:\n\nmini_data &lt;- data.frame(\n  id     = c(1, 2, 3),\n  rt_ms  = c(523, 612, 478),\n  correct = c(TRUE, FALSE, TRUE)\n)\n\nThen:\n\nprint the data frame;\nrun str(mini_data);\nextract the column rt_ms as a vector;\nextract the second row;\nextract the cell in row 1, column 2.\n\nExercise 5: functions. Compute the mean of responses and assign it to an object called mean_response. Then compute the mean of mini_data$rt_ms and assign it to mean_rt.\nExercise 6: help pages. Open the help page for mean (with ?mean). Find the description of the argument na.rm. What does it do? (You will encounter this argument frequently when you work with real data, where missing values are common.)",
+    "crumbs": [
+      "Section 1: Getting Started Properly",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Objects and functions</span>"
+    ]
+  },
+  {
+    "objectID": "05-objects-and-functions.html#check-your-understanding",
+    "href": "05-objects-and-functions.html#check-your-understanding",
+    "title": "5  Objects and functions",
+    "section": "5.9 Check your understanding",
+    "text": "5.9 Check your understanding\n1. What is a vector in R?\n\n A vector with mixed types: numbers, strings, and logicals together. Another name for the working directory. An ordered sequence of values of the same type, created with c(). A built-in plotting function.\n\n2. At what index is the first element of a vector in R?\n\n Index 0. Index 1. Index -1. It depends on the operating system.\n\n3. What is a data frame?\n\n A spreadsheet file saved in CSV format. A two-dimensional structure where rows are observations and columns are variables, holding vectors of equal length. A list of installed packages. A graphical representation of a dataset.\n\n4. Which expression extracts the column age from a data frame called participants_data?\n\n participants_data[age] participants_data#age participants_data$age participants_data-&gt;age\n\n5. What is a function?\n\n A type of file used to save analyses. A panel in the RStudio interface. A piece of R that takes objects as input and produces a new object as output. A specific kind of vector.\n\n6. What does round(23.14286, digits = 2) do?\n\n Add a new column called digits to the data frame. Round 23.14286 to two decimals, returning 23.14. Round 23.14286 to two significant figures, returning 23. Multiply 23.14286 by 2.\n\n7. If ages is a vector of length 7, what does length(ages) return?\n\n It returns 0 because R indexes from 0. It returns 1 because there is one element. It returns 7, the length of the original vector. It causes an error.\n\n8. What does typing ?mean in the Console do?\n\n Open the documentation for the mean package. Open the help page for the mean function, listing its arguments and examples. Calculate the mean of all objects in the environment. Print the source code of the mean function.",
     "crumbs": [
       "Section 1: Getting Started Properly",
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Objects and functions</span>"
