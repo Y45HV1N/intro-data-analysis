@@ -1,0 +1,525 @@
+---
+title: "Wrangling for psychology research"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(webexercises)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(forcats)
+theme_set(theme_minimal(base_size = 12))
+data <- read.csv("data/vgames_study.csv")
+```
+
+## Overview
+
+Real research data rarely arrives in the clean, complete state of `vgames_study.csv`. Participants skip items, demographic categories need to be collapsed, multi-item questionnaires need to be combined into single scale scores, and categorical variables need to be told what order to appear in. This chapter covers the four wrangling skills you will use most often in psychology research:
+
+1. handling missing data,
+2. recoding variables with `case_when()`,
+3. computing composite scores from item-level data,
+4. working with factor variables and reference levels.
+
+Each builds directly on the tidyverse tools from Chapter 9. The chapter assumes you have `library(tidyverse)` loaded.
+
+## Missing data
+
+R uses a special value, `NA`, to represent "missing." It is not zero, not blank, not a string; it is a marker that the value is unknown. Almost every real dataset has at least some missing values, and how you handle them affects every analysis you do.
+
+### Detecting missing values
+
+The function `is.na()` returns `TRUE` for each element that is `NA` and `FALSE` otherwise:
+
+```{r}
+#| eval: false
+x <- c(4.2, 3.7, NA, 5.8, NA, 4.1)
+is.na(x)
+# [1] FALSE FALSE  TRUE FALSE  TRUE FALSE
+```
+
+To count the number of missing values in a vector:
+
+```{r}
+#| eval: false
+sum(is.na(x))
+# [1] 2
+```
+
+`sum()` counts `TRUE` as 1 and `FALSE` as 0, so summing the logical vector gives the count of missings. To count missings in every column of a data frame:
+
+```{r}
+#| eval: false
+sapply(data, function(col) sum(is.na(col)))
+```
+
+This is usually the first thing to run on a fresh dataset. Knowing where the missings are tells you what you can and cannot analyze.
+
+### Computing with missing values
+
+Most summary functions return `NA` when any input is missing, unless you tell them otherwise:
+
+```{r}
+#| eval: false
+mean(x)                 # NA
+mean(x, na.rm = TRUE)   # 4.45
+```
+
+`na.rm = TRUE` tells the function to remove missing values before computing. You will type this argument constantly. This was first introduced in Chapter 6.
+
+### Removing rows with missing values
+
+Two common options:
+
+```{r}
+#| eval: false
+# Keep only rows where every value is non-missing
+complete_data <- data |> filter(complete.cases(data))
+
+# Same idea, base R shorthand
+complete_data <- na.omit(data)
+```
+
+Both produce a data frame with only complete observations. This is called **listwise deletion**. It is the simplest approach and is sometimes appropriate, but it can lose a large fraction of your sample if missing values are scattered across many variables. Inspect how much you would lose before applying it:
+
+```{r}
+#| eval: false
+nrow(data)                            # original sample size
+sum(complete.cases(data))             # how many would survive listwise deletion
+```
+
+### Filling in missing values
+
+For some variables, replacing missing values with a specific value is reasonable (for example, replacing missing free-text responses with `"none"`). `tidyr::replace_na()` does this:
+
+```{r}
+#| eval: false
+data <- data |>
+  mutate(comments = replace_na(comments, "none"))
+```
+
+Replacing numeric missings with the mean of the variable (mean imputation) is sometimes done but is statistically dubious; it shrinks variance and can bias correlations. For serious work, look up multiple imputation in a later course or the `mice` package.
+
+### Why this matters for your sample
+
+The dataset you analyze is not always the dataset you collected. Below is a simple visualization of what happens when you apply listwise deletion to a hypothetical version of our data with some missing aggression scores: the sample shrinks, and (often) the participants who remain differ in subtle ways from those who were dropped.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3
+set.seed(1)
+demo <- data
+demo$aggression_with_na <- demo$aggression
+demo$aggression_with_na[sample(seq_len(nrow(demo)), 30)] <- NA
+n_full <- nrow(demo)
+n_complete <- sum(complete.cases(demo$aggression_with_na))
+sample_sizes <- data.frame(
+  step = factor(c("Original sample", "After listwise deletion"),
+                levels = c("Original sample", "After listwise deletion")),
+  n = c(n_full, n_complete)
+)
+ggplot(sample_sizes, aes(x = step, y = n)) +
+  geom_col(width = 0.55, fill = "#1F2937") +
+  geom_text(aes(label = n), vjust = -0.4, size = 4) +
+  coord_cartesian(ylim = c(0, n_full + 15)) +
+  labs(x = NULL, y = "Number of participants")
+```
+
+The number always goes down when you delete. The question is by how much, and whether what is left is still representative.
+
+## Recoding with `case_when()`
+
+The dplyr function `case_when()` is the general-purpose tool for "if this, then that; else if something else, then something else; else..." It is much more readable than nested `ifelse()` calls and accommodates any number of conditions.
+
+The general form is a list of `condition ~ value` pairs:
+
+```{r}
+#| eval: false
+data <- data |>
+  mutate(age_band = case_when(
+    age < 21          ~ "young",
+    age >= 21 & age < 23 ~ "middle",
+    age >= 23         ~ "older"
+  ))
+```
+
+R checks each row against the conditions in order. The first condition that matches wins. The result is a new variable `age_band` with one of three values for each participant.
+
+`case_when()` is used constantly for:
+
+- **Collapsing categories.** For example, combining several gender labels into a smaller set if cell sizes are small:
+
+```{r}
+#| eval: false
+data <- data |>
+  mutate(gender_collapsed = case_when(
+    gender == "man"   ~ "man",
+    gender == "woman" ~ "woman",
+    TRUE              ~ "other"
+  ))
+```
+
+The last condition `TRUE` is a catch-all: any row that did not match a previous condition gets the value `"other"`. (`TRUE` is always true, so it always matches.)
+
+- **Binning continuous variables.** Creating a high/low split, or quartiles, or theoretically meaningful groups:
+
+```{r}
+#| eval: false
+data <- data |>
+  mutate(hostility_group = case_when(
+    trait_hostility <= 3  ~ "low",
+    trait_hostility <= 5  ~ "medium",
+    trait_hostility > 5   ~ "high"
+  ))
+```
+
+A short visualization of the recoded variable confirms the counts:
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3
+data |>
+  mutate(hostility_group = factor(
+    case_when(
+      trait_hostility <= 3 ~ "low",
+      trait_hostility <= 5 ~ "medium",
+      trait_hostility > 5  ~ "high"
+    ),
+    levels = c("low", "medium", "high")
+  )) |>
+  count(hostility_group) |>
+  ggplot(aes(x = hostility_group, y = n)) +
+  geom_col(width = 0.55, fill = "#1F2937") +
+  geom_text(aes(label = n), vjust = -0.4, size = 4) +
+  labs(x = "Trait hostility (recoded)", y = "Number of participants") +
+  coord_cartesian(ylim = c(0, max(table(cut(data$trait_hostility, breaks = c(-Inf, 3, 5, Inf)))) + 10))
+```
+
+A binary variable is a special case of the same pattern: two conditions, two values.
+
+A general piece of advice. When you recode, keep both the original variable and the recoded one (use `mutate()` to add the new variable, not to overwrite the old). Your original measurement is what should appear in your data archive. Recoded variables are derived; if you change your mind about the recoding rules, you want to be able to start over from the original.
+
+## Computing composite scores
+
+This is the most common wrangling task in psychology that the basic dplyr verbs do not address directly. A questionnaire study typically measures one construct (anxiety, openness, hostility, attitudes toward something) with several items. The analysis treats the construct as a single score per participant. Computing that single score from the individual items, correctly, is the centerpiece of this section.
+
+The procedure has three steps:
+
+1. **Inspect the items.** Each row is one participant. Each item is one column.
+2. **Reverse-score negatively-worded items.** Some items are worded so that agreement indicates *less* of the construct (e.g., for a hostility scale: "I rarely lose my temper" should be reverse-scored, because high agreement means *low* hostility). Reversing is a single arithmetic step.
+3. **Aggregate.** Compute the participant's mean (or sum) across the now-consistently-coded items.
+
+We illustrate with a small synthetic dataset of five hostility items. (The `vgames_study.csv` file contains the already-aggregated `trait_hostility` variable, not the individual items, so we generate items here so you can see the procedure.)
+
+```{r}
+#| eval: false
+# Five items on a 1-7 scale. h4 is negatively worded.
+set.seed(42)
+hostility <- data.frame(
+  participant_id = 1:120,
+  h1 = sample(1:7, 120, replace = TRUE),
+  h2 = sample(1:7, 120, replace = TRUE),
+  h3 = sample(1:7, 120, replace = TRUE),
+  h4 = sample(1:7, 120, replace = TRUE),
+  h5 = sample(1:7, 120, replace = TRUE)
+)
+
+head(hostility)
+```
+
+### Reverse-scoring an item
+
+A 1-7 scale reverses with the formula `8 - x`: a 1 becomes a 7, a 4 stays a 4, a 7 becomes a 1. More generally, for a scale from *low* to *high*, the reversed value of `x` is `(low + high) - x`. On a 1-5 scale that is `6 - x`. On a 0-10 scale that is `10 - x`.
+
+To reverse-score item 4:
+
+```{r}
+#| eval: false
+hostility <- hostility |>
+  mutate(h4_rev = 8 - h4)
+```
+
+Note that we kept `h4` and added `h4_rev` as a new variable. Do not overwrite the original; you want a clear audit trail of which items were reversed.
+
+### Computing the composite
+
+Now that all five items code "high = more hostility," the composite is the participant's mean across the five items. The most readable form is explicit:
+
+```{r}
+#| eval: false
+hostility <- hostility |>
+  mutate(hostility_score = (h1 + h2 + h3 + h4_rev + h5) / 5)
+```
+
+For five items this is fine. With twenty items it becomes tedious, and `rowMeans()` is shorter:
+
+```{r}
+#| eval: false
+hostility <- hostility |>
+  mutate(hostility_score = rowMeans(
+    cbind(h1, h2, h3, h4_rev, h5),
+    na.rm = TRUE
+  ))
+```
+
+`rowMeans()` takes a matrix or data-frame-like collection of columns and returns the row-wise mean. `na.rm = TRUE` makes it ignore missing items; without it, a participant who skipped one item would get an `NA` score. Most psychometric guidance recommends computing the mean only if the participant answered at least some minimum number of items (often two-thirds); flagging participants below that threshold is a separate step that we will not cover here.
+
+### Inspecting the result
+
+The composite is a numeric variable on the same scale as the items. To check it, you would look at its distribution.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 3
+set.seed(42)
+hostility_demo <- data.frame(
+  h1 = sample(1:7, 120, replace = TRUE),
+  h2 = sample(1:7, 120, replace = TRUE),
+  h3 = sample(1:7, 120, replace = TRUE),
+  h4 = sample(1:7, 120, replace = TRUE),
+  h5 = sample(1:7, 120, replace = TRUE)
+)
+hostility_demo$h4_rev <- 8 - hostility_demo$h4
+hostility_demo$hostility_score <- with(hostility_demo,
+  (h1 + h2 + h3 + h4_rev + h5) / 5
+)
+ggplot(hostility_demo, aes(x = hostility_score)) +
+  geom_histogram(binwidth = 0.3, fill = "#1F2937", color = "white") +
+  labs(x = "Hostility composite (mean of 5 items)",
+       y = "Number of participants")
+```
+
+A composite score also lets you ask whether the construct is related to anything else. For example, is hostility related to aggression? A scatterplot answers that question directly.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 6
+#| fig.height: 3.5
+data |>
+  mutate(hostility_centered = trait_hostility - mean(trait_hostility)) |>
+  ggplot(aes(x = trait_hostility, y = aggression, color = condition)) +
+  geom_point(alpha = 0.7) +
+  scale_color_manual(values = c("neutral" = "#1E88E5", "violent" = "#FFA500"),
+                     name = "Condition") +
+  labs(x = "Trait hostility composite",
+       y = "Aggression")
+```
+
+(The plot uses the already-aggregated `trait_hostility` from `vgames_study.csv`. In your own analyses, the composite you computed and the scatterplot you draw on top of it follow exactly the same pattern.)
+
+The scatterplot uses the visualization principles from Chapter 10: each participant is a single point, color encodes condition (with a colorblind-safe palette), axes are labeled in plain language, and the relationship between the two variables is visible at a glance.
+
+## Factor variables and reference levels
+
+Categorical variables in R come in two flavors. A **character** vector is plain text. A **factor** vector is text plus an explicit list of allowed levels in a specific order. The distinction matters for analysis and for plotting.
+
+### Why factors
+
+Most modeling functions in R (regression, ANOVA, t-test, mixed models) need a categorical predictor to be a factor. They use the factor's first level as the **reference category** against which other levels are compared. By default, R sorts character vectors alphabetically when it converts them to factors:
+
+```{r}
+#| eval: false
+factor(c("man", "woman", "non-binary"))
+# Levels: man non-binary woman
+```
+
+Alphabetical order is rarely what you want. For an experiment with a `control` and `treatment` condition, you almost certainly want `control` as the reference; alphabetically, `control` happens to come first, so you are lucky. For our `vgames_study` data, `neutral` and `violent` are also alphabetical, so we are lucky again. For `man`, `non-binary`, and `woman`, alphabetical puts `man` first, which is the default reference for any model that uses `gender`. Maybe that is what you want; maybe it is not. You should always set it explicitly.
+
+### Setting and changing reference levels
+
+The `forcats` package (part of the tidyverse) makes factor manipulation readable. The most common operations:
+
+**`fct_relevel()`** changes the order of levels. The level you put first becomes the reference:
+
+```{r}
+#| eval: false
+data <- data |>
+  mutate(gender = fct_relevel(gender, "woman", "man", "non-binary"))
+```
+
+After this, `woman` is the reference category. Models will compare `man` and `non-binary` to `woman`.
+
+**`fct_recode()`** renames levels:
+
+```{r}
+#| eval: false
+data <- data |>
+  mutate(condition = fct_recode(condition,
+    "Violent game" = "violent",
+    "Neutral game" = "neutral"
+  ))
+```
+
+This is useful for cleaning labels that arrived in inconsistent or unfriendly forms.
+
+**`fct_lump()`** combines rare levels into "Other":
+
+```{r}
+#| eval: false
+data <- data |>
+  mutate(gender_lumped = fct_lump(gender, n = 2))
+```
+
+`n = 2` keeps the two most frequent levels and lumps the rest into `Other`. Useful when one of your categories has very few participants and your analysis would be unstable if you treated it as its own group.
+
+### Why factor order matters for plots
+
+The order of factor levels controls the order in which categories appear on a plot. A plot of gender counts respects alphabetical order by default, which may not be the order you want to communicate.
+
+**Default (alphabetical) order:**
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5
+#| fig.height: 3
+ggplot(data, aes(x = factor(gender))) +
+  geom_bar(fill = "#1F2937", width = 0.55) +
+  labs(x = "Gender", y = "Number of participants")
+```
+
+**Custom order (by frequency):**
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5
+#| fig.height: 3
+ggplot(data, aes(x = fct_infreq(factor(gender)))) +
+  geom_bar(fill = "#1F2937", width = 0.55) +
+  labs(x = "Gender", y = "Number of participants")
+```
+
+The data are identical. The second plot is easier to read because the bars are in a meaningful order (most frequent to least). `fct_infreq()` reorders a factor by descending frequency; `fct_inorder()` keeps the order in which levels first appear in the data; `fct_relevel()` lets you specify the order explicitly. Picking the right order is a small choice that consistently improves readability.
+
+The same logic applies to models: reordering factor levels does not change the underlying data, but it changes which comparisons appear in the model output and which level is the reference. Setting factor order deliberately is part of preparing data for analysis, not just a cosmetic step for plots.
+
+## Check your understanding
+
+```{r}
+#| echo: false
+opts_q1 <- c(
+  "A vector of zeros (`0`).",
+  "An empty character string (`\"\"`).",
+  answer = "A special value, `NA`, that marks the value as unknown. It is not zero and not blank.",
+  "It silently removes the corresponding row from the dataset."
+)
+
+opts_q2 <- c(
+  answer = "`NA`. Most summary functions return `NA` when any input is missing, unless you set `na.rm = TRUE`.",
+  "The mean of the non-missing values, automatically.",
+  "An error message and execution stops.",
+  "The number of missing values."
+)
+
+opts_q3 <- c(
+  "It produces a sample identical in size and composition to the original.",
+  answer = "It produces a smaller sample (only rows with no missing values across the variables used) and the participants who remain can differ systematically from those who were dropped.",
+  "It fills in missing values with the mean of each column.",
+  "It silently replaces `NA` with zero."
+)
+
+opts_q4 <- c(
+  "`case_when()` only works on numeric variables.",
+  "`case_when()` is the same as `mean()` for two groups.",
+  answer = "`case_when()` is a readable way to write multiple condition-result pairs; each row gets the value from the first matching condition. It replaces nested `ifelse()` calls.",
+  "`case_when()` always produces a logical vector."
+)
+
+opts_q5 <- c(
+  "Modifying the original variable in place because the new value is intended to overwrite it.",
+  answer = "Adding the recoded variable as a new column with `mutate()` and keeping the original. The original is the raw measurement; the recoded variable is derived from it.",
+  "Renaming the original variable so it cannot be retrieved.",
+  "Deleting the original variable to save memory."
+)
+
+opts_q6 <- c(
+  "The reverse of `x` on a 1-7 scale is `7 - x`.",
+  answer = "The reverse of `x` on a 1-7 scale is `8 - x`. On a 1-5 scale it would be `6 - x`. The formula is `(low + high) - x`.",
+  "Reverse-scoring is unnecessary if the items are designed correctly.",
+  "Reverse-scoring uses the `rev()` function applied to the column."
+)
+
+opts_q7 <- c(
+  "It computes the sum of the items.",
+  "It assumes there are no missing values; if any item is missing, it errors out.",
+  answer = "It computes the mean across the named columns row by row. With `na.rm = TRUE`, missing items are ignored before averaging.",
+  "It only works on character columns."
+)
+
+opts_q8 <- c(
+  "Models in R do not accept factors; they need character vectors.",
+  answer = "Most modeling functions use the first level of a factor as the reference category against which other levels are compared. R sorts levels alphabetically by default, which is often not the reference you intended.",
+  "Factors automatically reverse-score themselves.",
+  "Factors are a synonym for numeric vectors."
+)
+
+opts_q9 <- c(
+  "It renames the levels of a factor.",
+  "It removes the factor entirely.",
+  answer = "It reorders the levels of a factor; the level you place first becomes the reference category.",
+  "It deletes rows that contain a specific level."
+)
+
+opts_q10 <- c(
+  "The data have changed; the second plot shows a different dataset.",
+  answer = "The data are identical. Only the order of the factor levels has changed, which controls the order of the bars on the x-axis.",
+  "The second plot is wrong because it does not show the categories alphabetically.",
+  "The second plot uses a different geom than the first."
+)
+```
+
+**1. What does `NA` mean in R?**
+
+`r longmcq(opts_q1)`
+
+**2. What does `mean(x)` return when `x` is a numeric vector containing one or more `NA` values, by default?**
+
+`r longmcq(opts_q2)`
+
+**3. What is "listwise deletion" (also known as keeping only complete cases) likely to do to your dataset?**
+
+`r longmcq(opts_q3)`
+
+**4. What is `case_when()` used for?**
+
+`r longmcq(opts_q4)`
+
+**5. When you create a recoded version of a variable, what is the recommended practice?**
+
+`r longmcq(opts_q5)`
+
+**6. What is the formula to reverse-score an item that was answered on a 1-to-7 scale?**
+
+`r longmcq(opts_q6)`
+
+**7. What does `rowMeans()` do when applied to several columns of a data frame?**
+
+`r longmcq(opts_q7)`
+
+**8. Why does the order of levels in a factor variable matter for analysis?**
+
+`r longmcq(opts_q8)`
+
+**9. What does `fct_relevel(gender, "woman", "man", "non-binary")` do?**
+
+`r longmcq(opts_q9)`
+
+**10. Two bar charts of the same `gender` variable look different because one shows the bars in alphabetical order and the other in descending frequency. What is the relationship between the two plots?**
+
+`r longmcq(opts_q10)`

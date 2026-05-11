@@ -29,6 +29,8 @@ book:
     - 08-data-wrangling-basics.qmd
     - 09-tidyverse-and-descriptives.qmd
     - 10-data-visualization-principles.qmd
+    - 11-wrangling-for-psychology.qmd
+    - 12-advanced-wrangling-optional.qmd
 format:
   html:
     theme:

@@ -1,0 +1,298 @@
+---
+title: "Advanced wrangling (optional)"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(webexercises)
+library(dplyr)
+library(stringr)
+data <- read.csv("data/vgames_study.csv")
+```
+
+## Overview
+
+This chapter is optional. The wrangling skills covered in Chapters 8, 9, and 11 are sufficient for most analyses in a typical psychology study. The four topics here come up in specific situations rather than universally, and you can skip the chapter on a first reading and come back when one of these situations actually arises.
+
+The topics are:
+
+1. **Joining datasets** when you have data spread across multiple files.
+2. **Standardizing and centering** numeric variables, which you will need before many analyses.
+3. **String manipulation** for cleaning text data that arrived in inconsistent forms.
+4. **Detecting and handling outliers**.
+
+Each is presented briefly with a single concrete example. If you need to do one of these tasks seriously, the section here is a starting point; the relevant package's documentation will go further.
+
+## Joining datasets
+
+Research data often arrives in pieces. You might have one file with participant demographics, another with trial-by-trial responses from the experiment, another with self-report questionnaires administered later. Before analysis, these need to be combined into a single data frame, one row per (participant or trial).
+
+The dplyr family of join functions handles this. Each takes two data frames, `x` and `y`, plus a `by` argument that names the column they have in common (the **key**). The functions differ in what they do with rows that have no match on the other side.
+
+The four join functions you will use most often:
+
+- **`left_join(x, y, by = "key")`** keeps all rows of `x`, and for each row brings in the matching columns from `y`. If a row in `x` has no match in `y`, the new columns are filled with `NA`. This is the most common case: keep your main dataset complete, add information from elsewhere where you can.
+- **`inner_join(x, y, by = "key")`** keeps only rows that have a match in both `x` and `y`.
+- **`full_join(x, y, by = "key")`** keeps every row from both sides, with `NA` where the match is missing on either side.
+- **`anti_join(x, y, by = "key")`** keeps rows of `x` that do *not* have a match in `y`. Useful for finding what is missing.
+
+A small concrete example. Suppose alongside `vgames_study.csv` you also have a short questionnaire administered one week later, in a separate file with one row per participant and a `wellbeing` score. The two data frames share the column `participant_id`.
+
+```{r}
+#| eval: false
+# Read the two files
+data <- read.csv("data/vgames_study.csv")
+followup <- read.csv("data/wellbeing_followup.csv")
+
+# Combine: keep all participants from the main dataset, add wellbeing where available
+combined <- data |> left_join(followup, by = "participant_id")
+```
+
+After this, `combined` is a data frame with all 120 participants from `data` and an additional `wellbeing` column. Participants who did not complete the follow-up have `NA` in that column.
+
+A few practical pieces of advice. First, before joining, check that the key column has the same type in both data frames (`integer` vs `character` are not equivalent for matching). Second, check for duplicate keys; if `data` has one row per participant but `followup` has two rows for the same participant, the join will produce two rows in the result, which is usually a bug. The functions `duplicated()` and `table(data$participant_id)` are useful sanity checks. Third, after joining, run `nrow()` and `sum(is.na(new_column))` to confirm the result has the expected shape.
+
+## Standardizing and centering
+
+Many analyses require numeric variables to be **standardized** (rescaled to have mean 0 and standard deviation 1) or **centered** (rescaled to have mean 0, without changing the standard deviation). Both are routine and both are easy to do, but they are easy to forget if you do not have a workflow for them.
+
+### z-scores with `scale()`
+
+The base R function `scale()` computes a z-score: subtract the mean, divide by the standard deviation. The result has mean 0 and standard deviation 1.
+
+```{r}
+#| eval: false
+data <- data |>
+  mutate(aggression_z = as.numeric(scale(aggression)))
+```
+
+`scale()` returns a one-column matrix by default; wrapping it in `as.numeric()` turns it into a plain vector, which is what `mutate()` and downstream functions expect.
+
+z-scores are useful when you want to put variables on a common scale (so a regression coefficient on a z-scored predictor is the change in the outcome per one-standard-deviation change in the predictor), and when you want to identify extreme observations (a z-score above 3 in absolute value is often used as a rough outlier rule, though see the outliers section below).
+
+### Mean-centering
+
+For some analyses, especially those involving interactions or moderation, you want to center the variable on its mean without rescaling the variance:
+
+```{r}
+#| eval: false
+data <- data |>
+  mutate(aggression_centered = aggression - mean(aggression))
+```
+
+The centered variable has mean 0 and the same standard deviation as the original. Centering predictors before computing an interaction term reduces the correlation between the interaction term and the main effects, which makes the regression coefficients easier to interpret. This is standard practice in psychology when fitting models with interactions.
+
+### Group-mean centering
+
+In multilevel and longitudinal data, you sometimes want to center a variable on its **group** mean, not the grand mean. For example, in a study where each participant provides multiple observations, you may want to separate within-person variability (deviation from the participant's own average) from between-person variability (how participants differ from each other on average).
+
+Using the `group_by()` + `mutate()` pattern from Chapter 9:
+
+```{r}
+#| eval: false
+data <- data |>
+  group_by(condition) |>
+  mutate(aggression_group_centered = aggression - mean(aggression)) |>
+  ungroup()
+```
+
+Here we have centered each participant's aggression score on the mean of their condition. This is a small step at the wrangling level but is the foundation of correctly specified multilevel models. In a course on multilevel modeling you will see this distinction (within-person vs between-person centering) elaborated in much more detail.
+
+## String manipulation
+
+Real text data is messy. The same answer might appear as `"Male"`, `"male"`, `"M"`, `" male"` (note the leading space), or `"male "` (trailing space). Before analysis, you usually need to clean these into a consistent form. The `stringr` package (part of the tidyverse) provides functions for this. All of them take a string vector and return a transformed string vector.
+
+The most commonly useful:
+
+- **`str_to_lower(x)`** converts to lowercase. Solves most case-inconsistency problems in one step.
+- **`str_to_upper(x)`** the reverse.
+- **`str_trim(x)`** removes leading and trailing whitespace.
+- **`str_replace(x, pattern, replacement)`** replaces the first occurrence of a pattern within each string.
+- **`str_replace_all(x, pattern, replacement)`** replaces all occurrences.
+- **`str_detect(x, pattern)`** returns a logical vector: does each string contain the pattern?
+- **`str_sub(x, start, end)`** extracts a substring (by character position).
+
+A small example. Suppose a free-text gender column arrived in messy form. Clean it like this:
+
+```{r}
+#| eval: false
+data <- data |>
+  mutate(gender = str_trim(gender)) |>          # remove leading/trailing spaces
+  mutate(gender = str_to_lower(gender)) |>      # normalize case
+  mutate(gender = case_when(                    # collapse variants
+    gender %in% c("m", "male", "man")     ~ "man",
+    gender %in% c("f", "female", "woman") ~ "woman",
+    gender %in% c("nb", "non-binary", "nonbinary") ~ "non-binary",
+    TRUE ~ NA_character_
+  ))
+```
+
+Notice that the case-collapse step in the middle uses `case_when()` from Chapter 11. String functions get the data into a consistent form; `case_when()` then maps the cleaned strings to a final, controlled set of categories.
+
+For more sophisticated patterns, `stringr` also supports **regular expressions** (a notation for describing patterns in text). Regular expressions are powerful but have their own learning curve; the `stringr` cheatsheet on the tidyverse website is the best starting point if you find yourself needing them.
+
+## Detecting and handling outliers
+
+An **outlier** is an observation that is unusually extreme relative to the rest of the data. Outliers matter because many statistical methods are sensitive to them: a single very extreme point can change the slope of a regression line, the value of a mean, or the result of a t-test. Identifying outliers and deciding what to do about them is a separate analytic step that you should think through deliberately, not on autopilot.
+
+### Detecting outliers with z-scores
+
+A common rule of thumb: an observation with a z-score greater than 3 (or less than -3) in absolute value is considered a potential outlier. After computing the z-score, you can flag such observations:
+
+```{r}
+#| eval: false
+data <- data |>
+  mutate(
+    aggression_z = as.numeric(scale(aggression)),
+    is_outlier_z = abs(aggression_z) > 3
+  )
+
+# How many?
+sum(data$is_outlier_z)
+```
+
+This rule is simple and easy to communicate, but it has known weaknesses. It assumes the distribution is roughly normal; if the underlying distribution is skewed or has natural heavy tails, the rule will flag too many observations (or too few). It is also influenced by the outliers themselves: extreme values inflate the standard deviation, which can mask other outliers.
+
+### Detecting outliers with the IQR rule
+
+A more robust rule uses the interquartile range (IQR), the distance between the 25th and 75th percentiles:
+
+```{r}
+#| eval: false
+q1 <- quantile(data$aggression, 0.25)
+q3 <- quantile(data$aggression, 0.75)
+iqr <- q3 - q1
+
+data <- data |>
+  mutate(is_outlier_iqr = aggression < (q1 - 1.5 * iqr) | aggression > (q3 + 1.5 * iqr))
+
+sum(data$is_outlier_iqr)
+```
+
+Observations more than 1.5 IQRs below the 25th percentile or above the 75th percentile are flagged. This is the rule that produces the "whiskers" of a boxplot, and it is more robust than the z-score rule because percentiles are less influenced by extreme values than means and standard deviations.
+
+### Deciding what to do
+
+Detecting an outlier is the easy part. Deciding what to do about it requires judgment. The options:
+
+- **Keep all observations and report.** The most defensible choice in many cases. Real data has outliers; pretending they do not exist can produce misleading inferences. Report the values, run the analysis with and without them, and discuss any difference.
+- **Trim (remove).** Drop the outliers and re-run the analysis. This is sometimes appropriate when you have strong reason to believe the value is an error (e.g., a reaction time of -50 milliseconds, or a score of 99 on a 1-7 scale). Always report what was trimmed and why.
+- **Winsorize.** Replace each extreme value with the nearest non-outlier value (e.g., replace anything above the 95th percentile with the 95th-percentile value). Preserves the participant in the dataset but reduces the influence of the extreme value on the analysis.
+
+The rule that matters across all of these: decisions about outliers should be made and pre-registered before looking at the analysis results, and should be reported transparently. The temptation to drop "inconvenient" observations after seeing how they affect the result is one of the better-documented sources of false-positive findings in the published literature. Pre-specifying your outlier rule (and your rule for what to do with detected outliers) protects you and your reader from that temptation.
+
+## Check your understanding
+
+```{r}
+#| echo: false
+opts_q1 <- c(
+  answer = "It keeps all rows of `x` and brings in matching columns from `y`, filling `NA` where there is no match in `y`.",
+  "It keeps only rows that appear in both `x` and `y`.",
+  "It deletes rows of `x` that have no match in `y`.",
+  "It keeps every row of both `x` and `y`, replacing the data of one with the data of the other."
+)
+
+opts_q2 <- c(
+  "It produces an error.",
+  answer = "The join produces multiple rows in the result for each duplicated key, which is usually a bug. You should check for duplicates with `duplicated()` or `table()` before joining.",
+  "It silently averages the duplicated values.",
+  "Duplicated keys are impossible in dplyr joins."
+)
+
+opts_q3 <- c(
+  "It returns a vector with the same mean and standard deviation as the original.",
+  "It removes all `NA` values from the variable.",
+  answer = "It returns a z-scored version of the variable: subtract the mean and divide by the standard deviation, so the result has mean 0 and standard deviation 1.",
+  "It scales the values to lie between 0 and 1."
+)
+
+opts_q4 <- c(
+  "It changes the result of a regression in unpredictable ways.",
+  answer = "It puts the variable on a scale centered at 0 (mean of the centered variable is zero) without changing its standard deviation; this is useful for fitting interaction or moderation models because it reduces collinearity between main effects and the interaction term.",
+  "It is the same as z-scoring.",
+  "It removes outliers from the variable."
+)
+
+opts_q5 <- c(
+  "Reads the file as a UTF-8 string.",
+  answer = "Converts the string to lowercase, which solves most case-inconsistency problems in one step (e.g., `\"Male\"` and `\"male\"` both become `\"male\"`).",
+  "Counts how many lowercase letters appear in the string.",
+  "Sorts the elements of a string vector."
+)
+
+opts_q6 <- c(
+  "It checks that all strings have the same length.",
+  answer = "It removes leading and trailing whitespace from each string, so `\" male \"` becomes `\"male\"`.",
+  "It removes all spaces from the string, including internal ones.",
+  "It converts the string to a number."
+)
+
+opts_q7 <- c(
+  "An observation that is missing.",
+  answer = "An observation that is unusually extreme relative to the rest of the data; outliers matter because many statistical methods are sensitive to them.",
+  "An observation that disagrees with the researcher's hypothesis.",
+  "An observation collected in a different session."
+)
+
+opts_q8 <- c(
+  "It works best on heavily skewed distributions.",
+  "It is completely insensitive to the distribution of the data.",
+  answer = "It is sensitive to the distribution (it implicitly assumes roughly normal data) and to the outliers themselves, because extreme values inflate the standard deviation that the rule depends on.",
+  "It is required by all reputable journals."
+)
+
+opts_q9 <- c(
+  answer = "Observations below the 25th percentile minus 1.5 times the interquartile range, or above the 75th percentile plus 1.5 times the IQR, are flagged. These are also the values that fall outside a boxplot's whiskers.",
+  "Observations more than 1.5 standard deviations from the mean.",
+  "All observations in the bottom or top 25 percent of the distribution.",
+  "Observations that are exactly equal to the median."
+)
+
+opts_q10 <- c(
+  "Always drop them, because they are by definition errors.",
+  "Always keep them and never discuss them.",
+  answer = "Make the decision (keep, trim, or winsorize) deliberately, ideally before looking at the analysis results, and report transparently what was done and why. Running the analysis with and without the flagged observations and comparing is good practice.",
+  "Replace them with the median of the variable."
+)
+```
+
+**1. What does `left_join(x, y, by = "key")` do?**
+
+`r longmcq(opts_q1)`
+
+**2. What happens if the key column has duplicate values in one of the two data frames being joined?**
+
+`r longmcq(opts_q2)`
+
+**3. What does `scale()` do to a numeric variable?**
+
+`r longmcq(opts_q3)`
+
+**4. What is the purpose of mean-centering a predictor before fitting a model with interactions or moderation?**
+
+`r longmcq(opts_q4)`
+
+**5. What does `str_to_lower(x)` do?**
+
+`r longmcq(opts_q5)`
+
+**6. What does `str_trim(x)` do?**
+
+`r longmcq(opts_q6)`
+
+**7. What is an outlier?**
+
+`r longmcq(opts_q7)`
+
+**8. What is a known weakness of the "z-score above 3" rule for detecting outliers?**
+
+`r longmcq(opts_q8)`
+
+**9. What does the IQR rule flag as outliers?**
+
+`r longmcq(opts_q9)`
+
+**10. What is the recommended approach to handling detected outliers?**
+
+`r longmcq(opts_q10)`
