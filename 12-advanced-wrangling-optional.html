@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2&nbsp; R, RStudio, and how they relate – Understanding and analyzing social and behavioral data</title>
+<title>12&nbsp; Advanced wrangling (optional) – Understanding and analyzing social and behavioral data</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -68,8 +68,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./03-files-and-environment.html" rel="next">
-<link href="./01-basics-r.html" rel="prev">
+<link href="./11-wrangling-for-psychology.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -288,7 +287,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-basics-r.html">Section 1: Getting Started Properly</a></li><li class="breadcrumb-item"><a href="./02-r-vs-rstudio.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R, RStudio, and how they relate</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08-data-wrangling-basics.html">Section 2: Manipulating and Visualizing Data</a></li><li class="breadcrumb-item"><a href="./12-advanced-wrangling-optional.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Advanced wrangling (optional)</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -340,7 +339,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-r-vs-rstudio.html" class="sidebar-item-text sidebar-link active">
+  <a href="./02-r-vs-rstudio.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R, RStudio, and how they relate</span></span></a>
   </div>
 </li>
@@ -411,7 +410,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./12-advanced-wrangling-optional.html" class="sidebar-item-text sidebar-link">
+  <a href="./12-advanced-wrangling-optional.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Advanced wrangling (optional)</span></span></a>
   </div>
 </li>
@@ -427,26 +426,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#two-pieces-of-software-one-workflow" id="toc-two-pieces-of-software-one-workflow" class="nav-link active" data-scroll-target="#two-pieces-of-software-one-workflow"><span class="header-section-number">2.1</span> Two pieces of software, one workflow</a></li>
-  <li><a href="#are-there-alternatives-to-rstudio" id="toc-are-there-alternatives-to-rstudio" class="nav-link" data-scroll-target="#are-there-alternatives-to-rstudio"><span class="header-section-number">2.2</span> Are there alternatives to RStudio?</a></li>
-  <li><a href="#installing-r" id="toc-installing-r" class="nav-link" data-scroll-target="#installing-r"><span class="header-section-number">2.3</span> Installing R</a></li>
-  <li><a href="#installing-rstudio" id="toc-installing-rstudio" class="nav-link" data-scroll-target="#installing-rstudio"><span class="header-section-number">2.4</span> Installing RStudio</a>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">12.1</span> Overview</a></li>
+  <li><a href="#joining-datasets" id="toc-joining-datasets" class="nav-link" data-scroll-target="#joining-datasets"><span class="header-section-number">12.2</span> Joining datasets</a></li>
+  <li><a href="#standardizing-and-centering" id="toc-standardizing-and-centering" class="nav-link" data-scroll-target="#standardizing-and-centering"><span class="header-section-number">12.3</span> Standardizing and centering</a>
   <ul class="collapse">
-  <li><a href="#video-walkthroughs" id="toc-video-walkthroughs" class="nav-link" data-scroll-target="#video-walkthroughs"><span class="header-section-number">2.4.1</span> Video walkthroughs</a></li>
+  <li><a href="#z-scores-with-scale" id="toc-z-scores-with-scale" class="nav-link" data-scroll-target="#z-scores-with-scale"><span class="header-section-number">12.3.1</span> z-scores with <code>scale()</code></a></li>
+  <li><a href="#mean-centering" id="toc-mean-centering" class="nav-link" data-scroll-target="#mean-centering"><span class="header-section-number">12.3.2</span> Mean-centering</a></li>
+  <li><a href="#group-mean-centering" id="toc-group-mean-centering" class="nav-link" data-scroll-target="#group-mean-centering"><span class="header-section-number">12.3.3</span> Group-mean centering</a></li>
   </ul></li>
-  <li><a href="#what-you-see-when-you-open-rstudio-for-the-first-time" id="toc-what-you-see-when-you-open-rstudio-for-the-first-time" class="nav-link" data-scroll-target="#what-you-see-when-you-open-rstudio-for-the-first-time"><span class="header-section-number">2.5</span> What you see when you open RStudio for the first time</a></li>
-  <li><a href="#a-note-on-updates" id="toc-a-note-on-updates" class="nav-link" data-scroll-target="#a-note-on-updates"><span class="header-section-number">2.6</span> A note on updates</a></li>
-  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">2.7</span> Check your understanding</a></li>
+  <li><a href="#string-manipulation" id="toc-string-manipulation" class="nav-link" data-scroll-target="#string-manipulation"><span class="header-section-number">12.4</span> String manipulation</a></li>
+  <li><a href="#detecting-and-handling-outliers" id="toc-detecting-and-handling-outliers" class="nav-link" data-scroll-target="#detecting-and-handling-outliers"><span class="header-section-number">12.5</span> Detecting and handling outliers</a>
+  <ul class="collapse">
+  <li><a href="#detecting-outliers-with-z-scores" id="toc-detecting-outliers-with-z-scores" class="nav-link" data-scroll-target="#detecting-outliers-with-z-scores"><span class="header-section-number">12.5.1</span> Detecting outliers with z-scores</a></li>
+  <li><a href="#detecting-outliers-with-the-iqr-rule" id="toc-detecting-outliers-with-the-iqr-rule" class="nav-link" data-scroll-target="#detecting-outliers-with-the-iqr-rule"><span class="header-section-number">12.5.2</span> Detecting outliers with the IQR rule</a></li>
+  <li><a href="#deciding-what-to-do" id="toc-deciding-what-to-do" class="nav-link" data-scroll-target="#deciding-what-to-do"><span class="header-section-number">12.5.3</span> Deciding what to do</a></li>
+  </ul></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">12.6</span> Check your understanding</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/02-r-vs-rstudio.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/12-advanced-wrangling-optional.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-basics-r.html">Section 1: Getting Started Properly</a></li><li class="breadcrumb-item"><a href="./02-r-vs-rstudio.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R, RStudio, and how they relate</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08-data-wrangling-basics.html">Section 2: Manipulating and Visualizing Data</a></li><li class="breadcrumb-item"><a href="./12-advanced-wrangling-optional.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Advanced wrangling (optional)</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R, RStudio, and how they relate</span></h1>
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Advanced wrangling (optional)</span></h1>
 </div>
 
 
@@ -463,113 +468,189 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="two-pieces-of-software-one-workflow" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="two-pieces-of-software-one-workflow"><span class="header-section-number">2.1</span> Two pieces of software, one workflow</h2>
-<p>A common point of confusion for new users is the difference between R and RStudio. They are two separate programs, made by two different organizations, that work together. To use R productively, you will install both, and you will use them at the same time.</p>
-<p>The simplest way to picture the relationship is the following. <strong>R is the engine.</strong> It is the piece of software that actually understands the R language and performs the computations: when you ask for a mean, R is what calculates it. <strong>RStudio is the dashboard.</strong> It does not perform any statistics on its own. What it provides is a comfortable working environment around R: a place to write scripts, a console where you can type commands, a panel showing the objects you have created, a panel for plots, a file browser, and many other conveniences.</p>
-<p>If you install RStudio without installing R first, RStudio will open but it will have nothing to talk to: clicking “Run” will produce an error. If you install R without installing RStudio, R will work, but you will be using a fairly bare interface that most users find harder to navigate. The standard practice is to install both.</p>
-<p>This division of labor has a useful consequence: you can update one without the other. The R Foundation releases new versions of R from time to time, and Posit (the company that maintains RStudio) releases new versions of RStudio on a separate schedule. Each can evolve at its own pace.</p>
-</section>
-<section id="are-there-alternatives-to-rstudio" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="are-there-alternatives-to-rstudio"><span class="header-section-number">2.2</span> Are there alternatives to RStudio?</h2>
-<p>Yes. RStudio is the most widely used environment for R, but it is not the only one. Several alternatives exist:</p>
-<ul>
-<li><strong>Positron</strong>, also developed by Posit, is a newer environment that supports R and Python in a single interface. It is built on the same foundations as Visual Studio Code.</li>
-<li><strong>Visual Studio Code (VS Code)</strong> with the official R extension provides an R working environment inside a popular general-purpose editor.</li>
-<li><strong>Jupyter notebooks</strong> with an R kernel provide a notebook-style interface, more common in the Python world but also usable for R.</li>
-<li><strong>The plain R console</strong> that ships with R itself can be used directly, without any additional environment.</li>
-</ul>
-<p>For this book we will use RStudio. The reasoning is practical: it is the environment with the most accessible learning materials, the most stable behavior, and the smoothest integration with the kinds of files (R scripts, R Markdown, R projects) that we will introduce in Chapter 3. If you later want to try one of the alternatives, the underlying R code you write will work in any of them.</p>
-</section>
-<section id="installing-r" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="installing-r"><span class="header-section-number">2.3</span> Installing R</h2>
-<p>R is distributed by the <strong>Comprehensive R Archive Network (CRAN)</strong>, a network of servers maintained by the R community. You can download R from any of these servers; in practice it is easiest to use the official entry point.</p>
-<p>Step by step:</p>
+<section id="overview" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">12.1</span> Overview</h2>
+<p>This chapter is optional. The wrangling skills covered in Chapters 8, 9, and 11 are sufficient for most analyses in a typical psychology study. The four topics here come up in specific situations rather than universally, and you can skip the chapter on a first reading and come back when one of these situations actually arises.</p>
+<p>The topics are:</p>
 <ol type="1">
-<li>Open a web browser and go to <a href="https://cran.r-project.org" class="uri">https://cran.r-project.org</a>.</li>
-<li>On the home page, find the section <strong>“Download and Install R”</strong> at the top. There are three links: one for Linux, one for macOS, and one for Windows. Click the link that matches your operating system.</li>
-<li><strong>If you are on Windows:</strong> click the link that reads “install R for the first time,” then click the large download link at the top of the next page (it will read something like “Download R-X.Y.Z for Windows,” where X.Y.Z is the current version number). The file is a <code>.exe</code> installer. Double-click it and accept the default options at every step. You do not need to change any settings.</li>
-<li><strong>If you are on macOS:</strong> on the macOS download page, choose the <code>.pkg</code> file that matches your processor. Apple computers built since 2020 use Apple Silicon (M1, M2, M3, M4); older Apple computers use Intel processors. If you are unsure, click the Apple menu in the top-left corner of your screen, choose “About This Mac,” and look at the “Chip” or “Processor” line. Download the matching <code>.pkg</code> file, double-click it, and accept the default options.</li>
-<li><strong>If you are on Linux:</strong> follow the instructions for your distribution. They differ between Ubuntu, Debian, Fedora, and others. Linux users typically have the necessary technical background; if you do not, the simplest approach is to use an Ubuntu-based distribution and follow the Ubuntu instructions on CRAN.</li>
+<li><strong>Joining datasets</strong> when you have data spread across multiple files.</li>
+<li><strong>Standardizing and centering</strong> numeric variables, which you will need before many analyses.</li>
+<li><strong>String manipulation</strong> for cleaning text data that arrived in inconsistent forms.</li>
+<li><strong>Detecting and handling outliers</strong>.</li>
 </ol>
-<p>After installation finishes, R is on your computer. You will not normally open it directly; you will reach it through RStudio, which we install next.</p>
+<p>Each is presented briefly with a single concrete example. If you need to do one of these tasks seriously, the section here is a starting point; the relevant package’s documentation will go further.</p>
 </section>
-<section id="installing-rstudio" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="installing-rstudio"><span class="header-section-number">2.4</span> Installing RStudio</h2>
-<p>RStudio is distributed by Posit. The free version, called <strong>RStudio Desktop (Open Source Edition)</strong>, is the one most users want. It has all the features you need for the work in this book.</p>
-<p>Step by step:</p>
-<ol type="1">
-<li>Go to <a href="https://posit.co/download/rstudio-desktop/" class="uri">https://posit.co/download/rstudio-desktop/</a>.</li>
-<li>The page shows two steps: “Install R” (which you have already done) and “Install RStudio.” Scroll to the second step.</li>
-<li>The page typically detects your operating system and offers a single download button. Click it.</li>
-<li><strong>If you are on Windows:</strong> the file is an <code>.exe</code> installer. Double-click it and accept the default options.</li>
-<li><strong>If you are on macOS:</strong> the file is a <code>.dmg</code> disk image. Double-click it to open, then drag the RStudio icon into the Applications folder.</li>
-<li><strong>If you are on Linux:</strong> follow the Linux instructions on the same page. RStudio is provided as a <code>.deb</code> or <code>.rpm</code> package depending on your distribution.</li>
-</ol>
-<p>If you are using a university computer where you cannot install software, ask your IT department to install both R and RStudio, or use the cloud version of RStudio at <a href="https://posit.cloud" class="uri">https://posit.cloud</a>, which runs in a browser and requires no installation.</p>
-<section id="video-walkthroughs" class="level3" data-number="2.4.1">
-<h3 data-number="2.4.1" class="anchored" data-anchor-id="video-walkthroughs"><span class="header-section-number">2.4.1</span> Video walkthroughs</h3>
-<p>You may find the following short videos helpful as a complement to the written instructions above. They are not the most recent, and the download pages may have changed slightly in appearance, but the essentials of the installation process have not changed.</p>
-<p><strong>Installing R and RStudio on Windows.</strong></p>
-<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/_2sewGCA0y4" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
-<p><strong>Installing R and RStudio on macOS.</strong></p>
-<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/UesYjMLSrbg" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
-<p><strong>A walkthrough of RStudio setup once both are installed.</strong></p>
-<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/jAHJyeOqe24" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
-</section>
-</section>
-<section id="what-you-see-when-you-open-rstudio-for-the-first-time" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="what-you-see-when-you-open-rstudio-for-the-first-time"><span class="header-section-number">2.5</span> What you see when you open RStudio for the first time</h2>
-<p>Open RStudio. You should see a window divided into three panels (later it will become four, once you create a script). The exact arrangement varies, but the typical default is:</p>
+<section id="joining-datasets" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="joining-datasets"><span class="header-section-number">12.2</span> Joining datasets</h2>
+<p>Research data often arrives in pieces. You might have one file with participant demographics, another with trial-by-trial responses from the experiment, another with self-report questionnaires administered later. Before analysis, these need to be combined into a single data frame, one row per (participant or trial).</p>
+<p>The dplyr family of join functions handles this. Each takes two data frames, <code>x</code> and <code>y</code>, plus a <code>by</code> argument that names the column they have in common (the <strong>key</strong>). The functions differ in what they do with rows that have no match on the other side.</p>
+<p>The four join functions you will use most often:</p>
 <ul>
-<li>A large panel on the <strong>left</strong> called the <strong>Console</strong>. This is where R receives commands and prints results. If you type <code>2 + 2</code> and press Enter here, R will print <code>4</code>.</li>
-<li>A panel on the <strong>upper right</strong> containing several tabs. The most important tab is <strong>Environment</strong>. This panel will eventually list every object you have created, with its name and a brief description of its contents. When RStudio first opens it is empty.</li>
-<li>A panel on the <strong>lower right</strong>, also with tabs. The most important ones are <strong>Files</strong> (a built-in file browser), <strong>Plots</strong> (where graphs you produce will appear), <strong>Packages</strong> (a list of installed packages, which we will discuss in Chapter 6), and <strong>Help</strong> (the R documentation system).</li>
+<li><strong><code>left_join(x, y, by = "key")</code></strong> keeps all rows of <code>x</code>, and for each row brings in the matching columns from <code>y</code>. If a row in <code>x</code> has no match in <code>y</code>, the new columns are filled with <code>NA</code>. This is the most common case: keep your main dataset complete, add information from elsewhere where you can.</li>
+<li><strong><code>inner_join(x, y, by = "key")</code></strong> keeps only rows that have a match in both <code>x</code> and <code>y</code>.</li>
+<li><strong><code>full_join(x, y, by = "key")</code></strong> keeps every row from both sides, with <code>NA</code> where the match is missing on either side.</li>
+<li><strong><code>anti_join(x, y, by = "key")</code></strong> keeps rows of <code>x</code> that do <em>not</em> have a match in <code>y</code>. Useful for finding what is missing.</li>
 </ul>
-<p>You can verify that R and RStudio are talking to each other. Click in the Console, type the following exactly, and press Enter:</p>
+<p>A small concrete example. Suppose alongside <code>vgames_study.csv</code> you also have a short questionnaire administered one week later, in a separate file with one row per participant and a <code>wellbeing</code> score. The two data frames share the column <code>participant_id</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">+</span> <span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the two files</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/vgames_study.csv"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>followup <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/wellbeing_followup.csv"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine: keep all participants from the main dataset, add wellbeing where available</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>combined <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> <span class="fu">left_join</span>(followup, <span class="at">by =</span> <span class="st">"participant_id"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>R should print <code>[1] 4</code> on the next line. The <code>[1]</code> is a labeling convention used by R to mark the position of values in long output; for a single value you can ignore it. If you see <code>[1] 4</code>, your installation is working.</p>
-<p>Two more checks worth doing the first time:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>This prints information about your R version, your operating system, and the packages currently loaded. The first line of the output starts with “R version” followed by the version number; this confirms which version of R you are running.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">RStudio.Version</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>This works only inside RStudio (not in the bare R console) and prints the RStudio version. If both commands work, you have a complete and matched installation.</p>
+<p>After this, <code>combined</code> is a data frame with all 120 participants from <code>data</code> and an additional <code>wellbeing</code> column. Participants who did not complete the follow-up have <code>NA</code> in that column.</p>
+<p>A few practical pieces of advice. First, before joining, check that the key column has the same type in both data frames (<code>integer</code> vs <code>character</code> are not equivalent for matching). Second, check for duplicate keys; if <code>data</code> has one row per participant but <code>followup</code> has two rows for the same participant, the join will produce two rows in the result, which is usually a bug. The functions <code>duplicated()</code> and <code>table(data$participant_id)</code> are useful sanity checks. Third, after joining, run <code>nrow()</code> and <code>sum(is.na(new_column))</code> to confirm the result has the expected shape.</p>
 </section>
-<section id="a-note-on-updates" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="a-note-on-updates"><span class="header-section-number">2.6</span> A note on updates</h2>
-<p>Both R and RStudio release new versions periodically. Updating R requires running the installer again; updating RStudio also requires running its installer again. There is no automatic update process built into either program. For the work in this book, any version of R from 4.2 onwards and any RStudio version from 2023 onwards will work. If you have a working installation, do not feel obliged to update it for now.</p>
+<section id="standardizing-and-centering" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="standardizing-and-centering"><span class="header-section-number">12.3</span> Standardizing and centering</h2>
+<p>Many analyses require numeric variables to be <strong>standardized</strong> (rescaled to have mean 0 and standard deviation 1) or <strong>centered</strong> (rescaled to have mean 0, without changing the standard deviation). Both are routine and both are easy to do, but they are easy to forget if you do not have a workflow for them.</p>
+<section id="z-scores-with-scale" class="level3" data-number="12.3.1">
+<h3 data-number="12.3.1" class="anchored" data-anchor-id="z-scores-with-scale"><span class="header-section-number">12.3.1</span> z-scores with <code>scale()</code></h3>
+<p>The base R function <code>scale()</code> computes a z-score: subtract the mean, divide by the standard deviation. The result has mean 0 and standard deviation 1.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">aggression_z =</span> <span class="fu">as.numeric</span>(<span class="fu">scale</span>(aggression)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>scale()</code> returns a one-column matrix by default; wrapping it in <code>as.numeric()</code> turns it into a plain vector, which is what <code>mutate()</code> and downstream functions expect.</p>
+<p>z-scores are useful when you want to put variables on a common scale (so a regression coefficient on a z-scored predictor is the change in the outcome per one-standard-deviation change in the predictor), and when you want to identify extreme observations (a z-score above 3 in absolute value is often used as a rough outlier rule, though see the outliers section below).</p>
 </section>
-<section id="check-your-understanding" class="level2" data-number="2.7">
-<h2 data-number="2.7" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">2.7</span> Check your understanding</h2>
-<p><strong>1. Which of the following best describes the relationship between R and RStudio?</strong></p>
-<div id="radio_OWZCEWDPBA" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_OWZCEWDPBA" value=""> <span>R is the dashboard you click on, and RStudio is the engine that performs computations.</span></label><label><input type="radio" autocomplete="off" name="radio_OWZCEWDPBA" value=""> <span>R and RStudio are two names for the same program.</span></label><label><input type="radio" autocomplete="off" name="radio_OWZCEWDPBA" value="answer"> <span>R is the engine that performs computations, and RStudio is a dashboard that provides a comfortable working environment around R.</span></label><label><input type="radio" autocomplete="off" name="radio_OWZCEWDPBA" value=""> <span>RStudio includes its own version of R and replaces the need to install R separately.</span></label>
+<section id="mean-centering" class="level3" data-number="12.3.2">
+<h3 data-number="12.3.2" class="anchored" data-anchor-id="mean-centering"><span class="header-section-number">12.3.2</span> Mean-centering</h3>
+<p>For some analyses, especially those involving interactions or moderation, you want to center the variable on its mean without rescaling the variance:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">aggression_centered =</span> aggression <span class="sc">-</span> <span class="fu">mean</span>(aggression))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>2. Which piece of software actually performs the statistical computations?</strong></p>
-<div id="radio_QUTZFEUDBW" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_QUTZFEUDBW" value=""> <span>RStudio.</span></label><label><input type="radio" autocomplete="off" name="radio_QUTZFEUDBW" value="answer"> <span>R.</span></label><label><input type="radio" autocomplete="off" name="radio_QUTZFEUDBW" value=""> <span>Microsoft Excel.</span></label><label><input type="radio" autocomplete="off" name="radio_QUTZFEUDBW" value=""> <span>The web browser used to download the installer.</span></label>
+<p>The centered variable has mean 0 and the same standard deviation as the original. Centering predictors before computing an interaction term reduces the correlation between the interaction term and the main effects, which makes the regression coefficients easier to interpret. This is standard practice in psychology when fitting models with interactions.</p>
+</section>
+<section id="group-mean-centering" class="level3" data-number="12.3.3">
+<h3 data-number="12.3.3" class="anchored" data-anchor-id="group-mean-centering"><span class="header-section-number">12.3.3</span> Group-mean centering</h3>
+<p>In multilevel and longitudinal data, you sometimes want to center a variable on its <strong>group</strong> mean, not the grand mean. For example, in a study where each participant provides multiple observations, you may want to separate within-person variability (deviation from the participant’s own average) from between-person variability (how participants differ from each other on average).</p>
+<p>Using the <code>group_by()</code> + <code>mutate()</code> pattern from Chapter 9:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condition) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">aggression_group_centered =</span> aggression <span class="sc">-</span> <span class="fu">mean</span>(aggression)) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>3. What happens if you install RStudio without first installing R?</strong></p>
-<div id="radio_VUXVLAZEHD" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_VUXVLAZEHD" value=""> <span>RStudio works without R, because RStudio comes with its own statistical engine built in.</span></label><label><input type="radio" autocomplete="off" name="radio_VUXVLAZEHD" value=""> <span>RStudio refuses to start.</span></label><label><input type="radio" autocomplete="off" name="radio_VUXVLAZEHD" value="answer"> <span>RStudio opens, but it has no engine to talk to, so commands cannot be executed.</span></label><label><input type="radio" autocomplete="off" name="radio_VUXVLAZEHD" value=""> <span>R is automatically downloaded by RStudio the first time it is launched.</span></label>
+<p>Here we have centered each participant’s aggression score on the mean of their condition. This is a small step at the wrangling level but is the foundation of correctly specified multilevel models. In a course on multilevel modeling you will see this distinction (within-person vs between-person centering) elaborated in much more detail.</p>
+</section>
+</section>
+<section id="string-manipulation" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="string-manipulation"><span class="header-section-number">12.4</span> String manipulation</h2>
+<p>Real text data is messy. The same answer might appear as <code>"Male"</code>, <code>"male"</code>, <code>"M"</code>, <code>" male"</code> (note the leading space), or <code>"male "</code> (trailing space). Before analysis, you usually need to clean these into a consistent form. The <code>stringr</code> package (part of the tidyverse) provides functions for this. All of them take a string vector and return a transformed string vector.</p>
+<p>The most commonly useful:</p>
+<ul>
+<li><strong><code>str_to_lower(x)</code></strong> converts to lowercase. Solves most case-inconsistency problems in one step.</li>
+<li><strong><code>str_to_upper(x)</code></strong> the reverse.</li>
+<li><strong><code>str_trim(x)</code></strong> removes leading and trailing whitespace.</li>
+<li><strong><code>str_replace(x, pattern, replacement)</code></strong> replaces the first occurrence of a pattern within each string.</li>
+<li><strong><code>str_replace_all(x, pattern, replacement)</code></strong> replaces all occurrences.</li>
+<li><strong><code>str_detect(x, pattern)</code></strong> returns a logical vector: does each string contain the pattern?</li>
+<li><strong><code>str_sub(x, start, end)</code></strong> extracts a substring (by character position).</li>
+</ul>
+<p>A small example. Suppose a free-text gender column arrived in messy form. Clean it like this:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gender =</span> <span class="fu">str_trim</span>(gender)) <span class="sc">|&gt;</span>          <span class="co"># remove leading/trailing spaces</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gender =</span> <span class="fu">str_to_lower</span>(gender)) <span class="sc">|&gt;</span>      <span class="co"># normalize case</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gender =</span> <span class="fu">case_when</span>(                    <span class="co"># collapse variants</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    gender <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"m"</span>, <span class="st">"male"</span>, <span class="st">"man"</span>)     <span class="sc">~</span> <span class="st">"man"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    gender <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"f"</span>, <span class="st">"female"</span>, <span class="st">"woman"</span>) <span class="sc">~</span> <span class="st">"woman"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    gender <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"nb"</span>, <span class="st">"non-binary"</span>, <span class="st">"nonbinary"</span>) <span class="sc">~</span> <span class="st">"non-binary"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  ))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>4. Where does R itself come from when you install it?</strong></p>
-<div id="radio_MBOKLWTMQT" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_MBOKLWTMQT" value="answer"> <span>CRAN, the Comprehensive R Archive Network.</span></label><label><input type="radio" autocomplete="off" name="radio_MBOKLWTMQT" value=""> <span>The Apple App Store and the Microsoft Store.</span></label><label><input type="radio" autocomplete="off" name="radio_MBOKLWTMQT" value=""> <span>GitHub.</span></label><label><input type="radio" autocomplete="off" name="radio_MBOKLWTMQT" value=""> <span>The RStudio website.</span></label>
+<p>Notice that the case-collapse step in the middle uses <code>case_when()</code> from Chapter 11. String functions get the data into a consistent form; <code>case_when()</code> then maps the cleaned strings to a final, controlled set of categories.</p>
+<p>For more sophisticated patterns, <code>stringr</code> also supports <strong>regular expressions</strong> (a notation for describing patterns in text). Regular expressions are powerful but have their own learning curve; the <code>stringr</code> cheatsheet on the tidyverse website is the best starting point if you find yourself needing them.</p>
+</section>
+<section id="detecting-and-handling-outliers" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="detecting-and-handling-outliers"><span class="header-section-number">12.5</span> Detecting and handling outliers</h2>
+<p>An <strong>outlier</strong> is an observation that is unusually extreme relative to the rest of the data. Outliers matter because many statistical methods are sensitive to them: a single very extreme point can change the slope of a regression line, the value of a mean, or the result of a t-test. Identifying outliers and deciding what to do about them is a separate analytic step that you should think through deliberately, not on autopilot.</p>
+<section id="detecting-outliers-with-z-scores" class="level3" data-number="12.5.1">
+<h3 data-number="12.5.1" class="anchored" data-anchor-id="detecting-outliers-with-z-scores"><span class="header-section-number">12.5.1</span> Detecting outliers with z-scores</h3>
+<p>A common rule of thumb: an observation with a z-score greater than 3 (or less than -3) in absolute value is considered a potential outlier. After computing the z-score, you can flag such observations:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">aggression_z =</span> <span class="fu">as.numeric</span>(<span class="fu">scale</span>(aggression)),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">is_outlier_z =</span> <span class="fu">abs</span>(aggression_z) <span class="sc">&gt;</span> <span class="dv">3</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># How many?</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(data<span class="sc">$</span>is_outlier_z)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>5. Is installing RStudio required to use R?</strong></p>
-<div id="radio_COXUOKZVBR" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_COXUOKZVBR" value=""> <span>It is mandatory: R cannot be used without RStudio.</span></label><label><input type="radio" autocomplete="off" name="radio_COXUOKZVBR" value=""> <span>It is discouraged: most experienced users avoid RStudio in favor of the bare console.</span></label><label><input type="radio" autocomplete="off" name="radio_COXUOKZVBR" value="answer"> <span>It is the standard practice for most users, although other environments such as Positron, VS Code, and Jupyter also exist.</span></label><label><input type="radio" autocomplete="off" name="radio_COXUOKZVBR" value=""> <span>It is only useful for users on Windows; macOS users should not install it.</span></label>
+<p>This rule is simple and easy to communicate, but it has known weaknesses. It assumes the distribution is roughly normal; if the underlying distribution is skewed or has natural heavy tails, the rule will flag too many observations (or too few). It is also influenced by the outliers themselves: extreme values inflate the standard deviation, which can mask other outliers.</p>
+</section>
+<section id="detecting-outliers-with-the-iqr-rule" class="level3" data-number="12.5.2">
+<h3 data-number="12.5.2" class="anchored" data-anchor-id="detecting-outliers-with-the-iqr-rule"><span class="header-section-number">12.5.2</span> Detecting outliers with the IQR rule</h3>
+<p>A more robust rule uses the interquartile range (IQR), the distance between the 25th and 75th percentiles:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>q1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(data<span class="sc">$</span>aggression, <span class="fl">0.25</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>q3 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(data<span class="sc">$</span>aggression, <span class="fl">0.75</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>iqr <span class="ot">&lt;-</span> q3 <span class="sc">-</span> q1</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">is_outlier_iqr =</span> aggression <span class="sc">&lt;</span> (q1 <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> iqr) <span class="sc">|</span> aggression <span class="sc">&gt;</span> (q3 <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> iqr))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(data<span class="sc">$</span>is_outlier_iqr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>6. Which RStudio panel will list the objects you have created during a session?</strong></p>
-<div id="radio_ONLXQFDQYK" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_ONLXQFDQYK" value=""> <span>The Help panel.</span></label><label><input type="radio" autocomplete="off" name="radio_ONLXQFDQYK" value=""> <span>The Plots panel.</span></label><label><input type="radio" autocomplete="off" name="radio_ONLXQFDQYK" value="answer"> <span>The Environment panel.</span></label><label><input type="radio" autocomplete="off" name="radio_ONLXQFDQYK" value=""> <span>The Files panel.</span></label>
+<p>Observations more than 1.5 IQRs below the 25th percentile or above the 75th percentile are flagged. This is the rule that produces the “whiskers” of a boxplot, and it is more robust than the z-score rule because percentiles are less influenced by extreme values than means and standard deviations.</p>
+</section>
+<section id="deciding-what-to-do" class="level3" data-number="12.5.3">
+<h3 data-number="12.5.3" class="anchored" data-anchor-id="deciding-what-to-do"><span class="header-section-number">12.5.3</span> Deciding what to do</h3>
+<p>Detecting an outlier is the easy part. Deciding what to do about it requires judgment. The options:</p>
+<ul>
+<li><strong>Keep all observations and report.</strong> The most defensible choice in many cases. Real data has outliers; pretending they do not exist can produce misleading inferences. Report the values, run the analysis with and without them, and discuss any difference.</li>
+<li><strong>Trim (remove).</strong> Drop the outliers and re-run the analysis. This is sometimes appropriate when you have strong reason to believe the value is an error (e.g., a reaction time of -50 milliseconds, or a score of 99 on a 1-7 scale). Always report what was trimmed and why.</li>
+<li><strong>Winsorize.</strong> Replace each extreme value with the nearest non-outlier value (e.g., replace anything above the 95th percentile with the 95th-percentile value). Preserves the participant in the dataset but reduces the influence of the extreme value on the analysis.</li>
+</ul>
+<p>The rule that matters across all of these: decisions about outliers should be made and pre-registered before looking at the analysis results, and should be reported transparently. The temptation to drop “inconvenient” observations after seeing how they affect the result is one of the better-documented sources of false-positive findings in the published literature. Pre-specifying your outlier rule (and your rule for what to do with detected outliers) protects you and your reader from that temptation.</p>
+</section>
+</section>
+<section id="check-your-understanding" class="level2" data-number="12.6">
+<h2 data-number="12.6" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">12.6</span> Check your understanding</h2>
+<p><strong>1. What does <code>left_join(x, y, by = "key")</code> do?</strong></p>
+<div id="radio_QXFQCIIIHX" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_QXFQCIIIHX" value="answer"> <span>It keeps all rows of <code>x</code> and brings in matching columns from <code>y</code>, filling <code>NA</code> where there is no match in <code>y</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_QXFQCIIIHX" value=""> <span>It keeps only rows that appear in both <code>x</code> and <code>y</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_QXFQCIIIHX" value=""> <span>It deletes rows of <code>x</code> that have no match in <code>y</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_QXFQCIIIHX" value=""> <span>It keeps every row of both <code>x</code> and <code>y</code>, replacing the data of one with the data of the other.</span></label>
+</div>
+<p><strong>2. What happens if the key column has duplicate values in one of the two data frames being joined?</strong></p>
+<div id="radio_FIZPOXQYPP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_FIZPOXQYPP" value=""> <span>It produces an error.</span></label><label><input type="radio" autocomplete="off" name="radio_FIZPOXQYPP" value="answer"> <span>The join produces multiple rows in the result for each duplicated key, which is usually a bug. You should check for duplicates with <code>duplicated()</code> or <code>table()</code> before joining.</span></label><label><input type="radio" autocomplete="off" name="radio_FIZPOXQYPP" value=""> <span>It silently averages the duplicated values.</span></label><label><input type="radio" autocomplete="off" name="radio_FIZPOXQYPP" value=""> <span>Duplicated keys are impossible in dplyr joins.</span></label>
+</div>
+<p><strong>3. What does <code>scale()</code> do to a numeric variable?</strong></p>
+<div id="radio_MSRSSJCBPH" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MSRSSJCBPH" value=""> <span>It returns a vector with the same mean and standard deviation as the original.</span></label><label><input type="radio" autocomplete="off" name="radio_MSRSSJCBPH" value=""> <span>It removes all <code>NA</code> values from the variable.</span></label><label><input type="radio" autocomplete="off" name="radio_MSRSSJCBPH" value="answer"> <span>It returns a z-scored version of the variable: subtract the mean and divide by the standard deviation, so the result has mean 0 and standard deviation 1.</span></label><label><input type="radio" autocomplete="off" name="radio_MSRSSJCBPH" value=""> <span>It scales the values to lie between 0 and 1.</span></label>
+</div>
+<p><strong>4. What is the purpose of mean-centering a predictor before fitting a model with interactions or moderation?</strong></p>
+<div id="radio_QHYEAHWVVB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_QHYEAHWVVB" value=""> <span>It changes the result of a regression in unpredictable ways.</span></label><label><input type="radio" autocomplete="off" name="radio_QHYEAHWVVB" value="answer"> <span>It puts the variable on a scale centered at 0 (mean of the centered variable is zero) without changing its standard deviation; this is useful for fitting interaction or moderation models because it reduces collinearity between main effects and the interaction term.</span></label><label><input type="radio" autocomplete="off" name="radio_QHYEAHWVVB" value=""> <span>It is the same as z-scoring.</span></label><label><input type="radio" autocomplete="off" name="radio_QHYEAHWVVB" value=""> <span>It removes outliers from the variable.</span></label>
+</div>
+<p><strong>5. What does <code>str_to_lower(x)</code> do?</strong></p>
+<div id="radio_IZCXZWCCOL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_IZCXZWCCOL" value=""> <span>Reads the file as a UTF-8 string.</span></label><label><input type="radio" autocomplete="off" name="radio_IZCXZWCCOL" value="answer"> <span>Converts the string to lowercase, which solves most case-inconsistency problems in one step (e.g., <code>"Male"</code> and <code>"male"</code> both become <code>"male"</code>).</span></label><label><input type="radio" autocomplete="off" name="radio_IZCXZWCCOL" value=""> <span>Counts how many lowercase letters appear in the string.</span></label><label><input type="radio" autocomplete="off" name="radio_IZCXZWCCOL" value=""> <span>Sorts the elements of a string vector.</span></label>
+</div>
+<p><strong>6. What does <code>str_trim(x)</code> do?</strong></p>
+<div id="radio_LPIIWOWKRZ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_LPIIWOWKRZ" value=""> <span>It checks that all strings have the same length.</span></label><label><input type="radio" autocomplete="off" name="radio_LPIIWOWKRZ" value="answer"> <span>It removes leading and trailing whitespace from each string, so <code>" male "</code> becomes <code>"male"</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_LPIIWOWKRZ" value=""> <span>It removes all spaces from the string, including internal ones.</span></label><label><input type="radio" autocomplete="off" name="radio_LPIIWOWKRZ" value=""> <span>It converts the string to a number.</span></label>
+</div>
+<p><strong>7. What is an outlier?</strong></p>
+<div id="radio_SHGQHLYMLC" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_SHGQHLYMLC" value=""> <span>An observation that is missing.</span></label><label><input type="radio" autocomplete="off" name="radio_SHGQHLYMLC" value="answer"> <span>An observation that is unusually extreme relative to the rest of the data; outliers matter because many statistical methods are sensitive to them.</span></label><label><input type="radio" autocomplete="off" name="radio_SHGQHLYMLC" value=""> <span>An observation that disagrees with the researcher's hypothesis.</span></label><label><input type="radio" autocomplete="off" name="radio_SHGQHLYMLC" value=""> <span>An observation collected in a different session.</span></label>
+</div>
+<p><strong>8. What is a known weakness of the “z-score above 3” rule for detecting outliers?</strong></p>
+<div id="radio_HCUPARVYAY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_HCUPARVYAY" value=""> <span>It works best on heavily skewed distributions.</span></label><label><input type="radio" autocomplete="off" name="radio_HCUPARVYAY" value=""> <span>It is completely insensitive to the distribution of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_HCUPARVYAY" value="answer"> <span>It is sensitive to the distribution (it implicitly assumes roughly normal data) and to the outliers themselves, because extreme values inflate the standard deviation that the rule depends on.</span></label><label><input type="radio" autocomplete="off" name="radio_HCUPARVYAY" value=""> <span>It is required by all reputable journals.</span></label>
+</div>
+<p><strong>9. What does the IQR rule flag as outliers?</strong></p>
+<div id="radio_JYYYKYIJRP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_JYYYKYIJRP" value="answer"> <span>Observations below the 25th percentile minus 1.5 times the interquartile range, or above the 75th percentile plus 1.5 times the IQR, are flagged. These are also the values that fall outside a boxplot's whiskers.</span></label><label><input type="radio" autocomplete="off" name="radio_JYYYKYIJRP" value=""> <span>Observations more than 1.5 standard deviations from the mean.</span></label><label><input type="radio" autocomplete="off" name="radio_JYYYKYIJRP" value=""> <span>All observations in the bottom or top 25 percent of the distribution.</span></label><label><input type="radio" autocomplete="off" name="radio_JYYYKYIJRP" value=""> <span>Observations that are exactly equal to the median.</span></label>
+</div>
+<p><strong>10. What is the recommended approach to handling detected outliers?</strong></p>
+<div id="radio_SGZOYVDJUE" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_SGZOYVDJUE" value=""> <span>Always drop them, because they are by definition errors.</span></label><label><input type="radio" autocomplete="off" name="radio_SGZOYVDJUE" value=""> <span>Always keep them and never discuss them.</span></label><label><input type="radio" autocomplete="off" name="radio_SGZOYVDJUE" value="answer"> <span>Make the decision (keep, trim, or winsorize) deliberately, ideally before looking at the analysis results, and report transparently what was done and why. Running the analysis with and without the flagged observations and comparing is good practice.</span></label><label><input type="radio" autocomplete="off" name="radio_SGZOYVDJUE" value=""> <span>Replace them with the median of the variable.</span></label>
 </div>
 
 
@@ -1197,14 +1278,11 @@ window.onload = function() {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./01-basics-r.html" class="pagination-link" aria-label="What is R, and why use it?">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What is R, and why use it?</span></span>
+      <a href="./11-wrangling-for-psychology.html" class="pagination-link" aria-label="Wrangling for psychology research">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Wrangling for psychology research</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./03-files-and-environment.html" class="pagination-link" aria-label="Scripts, RData, projects, environments, and R Markdown">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Scripts, RData, projects, environments, and R Markdown</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -1212,4 +1290,4 @@ window.onload = function() {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/02-r-vs-rstudio.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/12-advanced-wrangling-optional.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
