@@ -438,6 +438,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The mean as a model: residuals, fit, and comparing models</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-simple-linear-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">From the mean to the line: the simple linear model</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -532,28 +538,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="check-your-understanding" class="level2" data-number="1.6">
 <h2 data-number="1.6" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">1.6</span> Check your understanding</h2>
 <p><strong>1. Which of the following best describes what R is?</strong></p>
-<div id="radio_OITJNVRUJC" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_OITJNVRUJC" value=""> <span>R is a paid statistical software package developed by IBM.</span></label><label><input type="radio" autocomplete="off" name="radio_OITJNVRUJC" value="answer"> <span>R is a free, open-source programming language designed for statistics and data analysis.</span></label><label><input type="radio" autocomplete="off" name="radio_OITJNVRUJC" value=""> <span>R is a graphical user interface that lets you perform statistical tests by clicking through menus.</span></label><label><input type="radio" autocomplete="off" name="radio_OITJNVRUJC" value=""> <span>R is a cloud-based application that runs only inside a web browser.</span></label>
+<div id="radio_OHYLEIGUCP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_OHYLEIGUCP" value=""> <span>R is a paid statistical software package developed by IBM.</span></label><label><input type="radio" autocomplete="off" name="radio_OHYLEIGUCP" value="answer"> <span>R is a free, open-source programming language designed for statistics and data analysis.</span></label><label><input type="radio" autocomplete="off" name="radio_OHYLEIGUCP" value=""> <span>R is a graphical user interface that lets you perform statistical tests by clicking through menus.</span></label><label><input type="radio" autocomplete="off" name="radio_OHYLEIGUCP" value=""> <span>R is a cloud-based application that runs only inside a web browser.</span></label>
 </div>
 <p><strong>2. Which of the following best summarizes the advantages of R over click-based software for serious research work?</strong></p>
-<div id="radio_BULIAOXQPU" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_BULIAOXQPU" value="answer"> <span>Reproducibility, error detection, and scaling operations to many variables.</span></label><label><input type="radio" autocomplete="off" name="radio_BULIAOXQPU" value=""> <span>Faster computation than SPSS for every analysis.</span></label><label><input type="radio" autocomplete="off" name="radio_BULIAOXQPU" value=""> <span>Built-in graphical menus for every common statistical test.</span></label><label><input type="radio" autocomplete="off" name="radio_BULIAOXQPU" value=""> <span>Automatic generation of APA-formatted reports without any code.</span></label>
+<div id="radio_KDNNQTSUZT" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_KDNNQTSUZT" value="answer"> <span>Reproducibility, error detection, and scaling operations to many variables.</span></label><label><input type="radio" autocomplete="off" name="radio_KDNNQTSUZT" value=""> <span>Faster computation than SPSS for every analysis.</span></label><label><input type="radio" autocomplete="off" name="radio_KDNNQTSUZT" value=""> <span>Built-in graphical menus for every common statistical test.</span></label><label><input type="radio" autocomplete="off" name="radio_KDNNQTSUZT" value=""> <span>Automatic generation of APA-formatted reports without any code.</span></label>
 </div>
 <p><strong>3. In R, what is an “object”?</strong></p>
-<div id="radio_YIUCQWWEOM" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_YIUCQWWEOM" value=""> <span>Anything that has been clicked on at least once during the session.</span></label><label><input type="radio" autocomplete="off" name="radio_YIUCQWWEOM" value=""> <span>A type of file used to save analyses to disk.</span></label><label><input type="radio" autocomplete="off" name="radio_YIUCQWWEOM" value="answer"> <span>A piece of information stored under a name, such as a number, a vector, or a dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_YIUCQWWEOM" value=""> <span>A function that has been written by the R Foundation.</span></label>
+<div id="radio_UDLYKBWPNS" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_UDLYKBWPNS" value=""> <span>Anything that has been clicked on at least once during the session.</span></label><label><input type="radio" autocomplete="off" name="radio_UDLYKBWPNS" value=""> <span>A type of file used to save analyses to disk.</span></label><label><input type="radio" autocomplete="off" name="radio_UDLYKBWPNS" value="answer"> <span>A piece of information stored under a name, such as a number, a vector, or a dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_UDLYKBWPNS" value=""> <span>A function that has been written by the R Foundation.</span></label>
 </div>
 <p><strong>4. Why does coding an analysis (rather than clicking through menus) help with reproducibility?</strong></p>
-<div id="radio_LCZPAZAGPU" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_LCZPAZAGPU" value=""> <span>Because R automatically records every menu click in a hidden log file.</span></label><label><input type="radio" autocomplete="off" name="radio_LCZPAZAGPU" value=""> <span>Because R cannot save its work in any other way.</span></label><label><input type="radio" autocomplete="off" name="radio_LCZPAZAGPU" value="answer"> <span>Because the script is a complete written record of every step of the analysis, which can be re-run, inspected, and shared.</span></label><label><input type="radio" autocomplete="off" name="radio_LCZPAZAGPU" value=""> <span>Because R rejects analyses that have not been pre-registered.</span></label>
+<div id="radio_RXYHDDRXFM" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_RXYHDDRXFM" value=""> <span>Because R automatically records every menu click in a hidden log file.</span></label><label><input type="radio" autocomplete="off" name="radio_RXYHDDRXFM" value=""> <span>Because R cannot save its work in any other way.</span></label><label><input type="radio" autocomplete="off" name="radio_RXYHDDRXFM" value="answer"> <span>Because the script is a complete written record of every step of the analysis, which can be re-run, inspected, and shared.</span></label><label><input type="radio" autocomplete="off" name="radio_RXYHDDRXFM" value=""> <span>Because R rejects analyses that have not been pre-registered.</span></label>
 </div>
 <p><strong>5. In the line <code>average_score &lt;- mean(scores)</code>, what is <code>mean</code>?</strong></p>
-<div id="radio_XXVEVAJOTT" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_XXVEVAJOTT" value="answer"> <span>A function takes one or more objects as input and returns a new object as output.</span></label><label><input type="radio" autocomplete="off" name="radio_XXVEVAJOTT" value=""> <span>A function is a saved menu setting in R.</span></label><label><input type="radio" autocomplete="off" name="radio_XXVEVAJOTT" value=""> <span>A function is a way of giving a name to a single number.</span></label><label><input type="radio" autocomplete="off" name="radio_XXVEVAJOTT" value=""> <span>A function is a type of file extension used by R.</span></label>
+<div id="radio_GSOMIJOYJJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_GSOMIJOYJJ" value="answer"> <span>A function takes one or more objects as input and returns a new object as output.</span></label><label><input type="radio" autocomplete="off" name="radio_GSOMIJOYJJ" value=""> <span>A function is a saved menu setting in R.</span></label><label><input type="radio" autocomplete="off" name="radio_GSOMIJOYJJ" value=""> <span>A function is a way of giving a name to a single number.</span></label><label><input type="radio" autocomplete="off" name="radio_GSOMIJOYJJ" value=""> <span>A function is a type of file extension used by R.</span></label>
 </div>
 <p><strong>6. In this book, what does it mean to say that R is “object-based”?</strong></p>
-<div id="radio_UIJCBYYDIK" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_UIJCBYYDIK" value=""> <span>It means that R is the only language with named variables.</span></label><label><input type="radio" autocomplete="off" name="radio_UIJCBYYDIK" value="answer"> <span>It means that the information you work with is stored under names, and you create new objects by feeding existing objects into operations.</span></label><label><input type="radio" autocomplete="off" name="radio_UIJCBYYDIK" value=""> <span>It means that R can only be used to analyze datasets that have been organized into objects beforehand by SPSS.</span></label><label><input type="radio" autocomplete="off" name="radio_UIJCBYYDIK" value=""> <span>It means that R requires you to define classes and inheritance hierarchies before doing any analysis.</span></label>
+<div id="radio_YMGWHYGZOO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_YMGWHYGZOO" value=""> <span>It means that R is the only language with named variables.</span></label><label><input type="radio" autocomplete="off" name="radio_YMGWHYGZOO" value="answer"> <span>It means that the information you work with is stored under names, and you create new objects by feeding existing objects into operations.</span></label><label><input type="radio" autocomplete="off" name="radio_YMGWHYGZOO" value=""> <span>It means that R can only be used to analyze datasets that have been organized into objects beforehand by SPSS.</span></label><label><input type="radio" autocomplete="off" name="radio_YMGWHYGZOO" value=""> <span>It means that R requires you to define classes and inheritance hierarchies before doing any analysis.</span></label>
 </div>
 
 

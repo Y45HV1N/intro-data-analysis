@@ -1402,5 +1402,126 @@
       "Section 3: Statistical Modeling — Regressions",
       "<span class='chapter-number'>14</span>  <span class='chapter-title'>The mean as a model: residuals, fit, and comparing models</span>"
     ]
+  },
+  {
+    "objectID": "15-simple-linear-model.html",
+    "href": "15-simple-linear-model.html",
+    "title": "15  From the mean to the line: the simple linear model",
+    "section": "",
+    "text": "15.1 Overview\nChapter 14 fitted two models to a small dataset: the grand-mean model, which makes the same prediction for every observation, and the group-means model, which makes a different prediction for each experimental condition. The two-group model fit better. The reason: it used more information about each participant.\nThis chapter takes the next step. What if the information we use to make a participant’s prediction is not their group, but the value of a continuous variable measured on them? For example: what if we predict each participant’s aggression score from how many hours per week they play video games?\nA model that uses one continuous predictor needs a new mathematical form. We will replace the flat horizontal line (the grand mean) with a sloped line, and we will introduce the two numbers that define such a line. This chapter is conceptual: by the end you will understand what a simple linear model is, what its parameters mean, what counts as a prediction, and what criterion R uses to choose “the best” line. Chapter 16 will then walk through how to fit and interpret the model in R using lm().",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>From the mean to the line: the simple linear model</span>"
+    ]
+  },
+  {
+    "objectID": "15-simple-linear-model.html#a-new-question-a-new-picture",
+    "href": "15-simple-linear-model.html#a-new-question-a-new-picture",
+    "title": "15  From the mean to the line: the simple linear model",
+    "section": "15.2 A new question, a new picture",
+    "text": "15.2 A new question, a new picture\nThe motivating question for this chapter is one many researchers have asked: do people who play more hours of video games per week tend to report higher aggression?\nWe have two variables in vgames_study:\n\nThe predictor (which we will call \\(X\\) from here on): hours_weekly, how many hours of gaming per week.\nThe outcome (which we will call \\(Y\\)): aggression, the post-experiment aggression score on a 1-10 scale.\n\nThe natural picture for one continuous predictor and one continuous outcome is a scatterplot, which you met in Chapter 10. Each participant is one point, positioned by their \\(X\\) value horizontally and their \\(Y\\) value vertically.\n\n\n\n\n\n\n\n\n\nThere is a vague upward trend: participants who play more hours tend to score slightly higher on aggression, on average. But the trend is not tight; there is substantial scatter. Plenty of heavy players have low aggression scores; plenty of light players have high ones. The relationship is real but weak, and the eye alone is not good at quantifying it.\nIn Chapter 14, our model for aggression was a single number (the grand mean, around 4.89). On this scatterplot, that model is a flat horizontal line:\n\n\n\n\n\n\n\n\n\nThis is the mean-only model viewed in two dimensions. The line is flat because the prediction does not depend on hours_weekly: every participant is predicted to have aggression 4.89, regardless of how many hours they play. The residual of each participant is the vertical distance from their point to this red line, which is exactly the residual we computed in Chapter 14.\nWhat if we let the prediction depend on hours_weekly?",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>From the mean to the line: the simple linear model</span>"
+    ]
+  },
+  {
+    "objectID": "15-simple-linear-model.html#the-line-as-a-two-number-model",
+    "href": "15-simple-linear-model.html#the-line-as-a-two-number-model",
+    "title": "15  From the mean to the line: the simple linear model",
+    "section": "15.3 The line as a two-number model",
+    "text": "15.3 The line as a two-number model\nThe simplest way to let the prediction vary with \\(X\\) is to tilt the line. Instead of a flat horizontal line at one fixed value, we draw a line that has both a height (where it sits on the y-axis) and a tilt (how much it rises or falls per unit of \\(X\\)).\nThis is the equation of a line, which you may recognize from high school mathematics:\n\\[\nY = b_0 + b_1 X.\n\\]\nTwo numbers define the line:\n\nThe intercept, \\(b_0\\), is the value of \\(Y\\) when \\(X\\) is zero. It is the height at which the line meets the y-axis.\nThe slope, \\(b_1\\), is the amount \\(Y\\) changes for each one-unit increase in \\(X\\). It is the line’s tilt.\n\nFor real data, the line will not pass exactly through every point; the points scatter around it. The full simple linear model acknowledges this by adding a residual term, one residual per observation:\n\\[\nY_i = b_0 + b_1 X_i + \\varepsilon_i.\n\\]\nThe subscript \\(i\\) indexes each participant. \\(Y_i\\) is participant \\(i\\)’s observed outcome; \\(X_i\\) is participant \\(i\\)’s predictor value; \\(b_0 + b_1 X_i\\) is the model’s prediction for that participant (sometimes written \\(\\hat{Y}_i\\)); and \\(\\varepsilon_i\\) is participant \\(i\\)’s residual, the vertical distance between the point and the line.\nWhen \\(b_1\\) is zero, the line is flat and the model reduces to the mean-only model from Chapter 14: a single value (\\(b_0\\)) predicted for everyone, regardless of \\(X\\). The simple linear model contains the mean-only model as a special case.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>From the mean to the line: the simple linear model</span>"
+    ]
+  },
+  {
+    "objectID": "15-simple-linear-model.html#what-the-slope-means",
+    "href": "15-simple-linear-model.html#what-the-slope-means",
+    "title": "15  From the mean to the line: the simple linear model",
+    "section": "15.4 What the slope means",
+    "text": "15.4 What the slope means\nThe slope \\(b_1\\) is the most important number in the model. It captures both the direction and the size of the relationship between \\(X\\) and \\(Y\\).\n\nPositive slope (\\(b_1 &gt; 0\\)): as \\(X\\) increases, \\(Y\\) increases. The line goes up to the right. In our example: more weekly hours of gaming, higher predicted aggression.\nNegative slope (\\(b_1 &lt; 0\\)): as \\(X\\) increases, \\(Y\\) decreases. The line goes down to the right.\nSlope of zero (\\(b_1 = 0\\)): no relationship; the line is flat (this is the mean-only model).\n\nThe size of the slope tells you how strong the predicted change in \\(Y\\) is for a one-unit increase in \\(X\\). For our running example, the best-fitting line has \\(b_1 \\approx 0.08\\). The interpretation in plain English:\n\nEach additional hour of weekly gaming is associated with an increase of 0.08 points in aggression.\n\nA few practical points about this interpretation.\nThe slope is per one-unit change in \\(X\\). If you want to know what the model predicts for a ten-hour difference, multiply: \\(0.08 \\times 10 = 0.8\\) points. The model says ten more hours of gaming is associated with about eight tenths of a point higher aggression.\nThe slope is an average over the dataset. It is what the model predicts; it does not mean every participant who plays one more hour scores 0.08 more on aggression. Individual participants vary widely around the line.\nThe slope is a description, not a cause. Notice the wording: “associated with.” We have a statistical relationship between two variables in a sample. We have not (yet) said that gaming causes aggression. Causal inference is a separate question, with its own logic, and we will return to it in later sections of the book.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>From the mean to the line: the simple linear model</span>"
+    ]
+  },
+  {
+    "objectID": "15-simple-linear-model.html#what-the-intercept-means",
+    "href": "15-simple-linear-model.html#what-the-intercept-means",
+    "title": "15  From the mean to the line: the simple linear model",
+    "section": "15.5 What the intercept means",
+    "text": "15.5 What the intercept means\nThe intercept \\(b_0\\) is the predicted value of \\(Y\\) when \\(X = 0\\). In our example, the best-fitting line has \\(b_0 \\approx 4.20\\), so a participant who plays zero hours per week is predicted to have an aggression score of 4.20.\nThe intercept is sometimes a substantively meaningful number, and sometimes it is not. In our case, \\(X = 0\\) (zero hours of gaming) is a value participants could plausibly take, so the intercept has a real interpretation: it is the model’s prediction for non-gamers. In other studies, \\(X = 0\\) is outside the range of the data (for example, a study measuring height in adults: \\(X = 0\\) would mean a height of zero, which is not a meaningful baseline). In those cases the intercept is still mathematically necessary (the line has to start somewhere) but should not be interpreted as a real prediction. We will see techniques for making the intercept meaningful (such as centering predictors) in later chapters.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>From the mean to the line: the simple linear model</span>"
+    ]
+  },
+  {
+    "objectID": "15-simple-linear-model.html#a-prediction-for-any-value-of-x",
+    "href": "15-simple-linear-model.html#a-prediction-for-any-value-of-x",
+    "title": "15  From the mean to the line: the simple linear model",
+    "section": "15.6 A prediction for any value of \\(X\\)",
+    "text": "15.6 A prediction for any value of \\(X\\)\nOnce you have \\(b_0\\) and \\(b_1\\), the line gives a prediction for any value of \\(X\\) you care to plug in. You simply evaluate the equation:\n\\[\n\\hat{Y} = b_0 + b_1 X.\n\\]\nIn our example, \\(\\hat{Y} = 4.20 + 0.08 X\\):\n\nFor \\(X = 0\\) hours: \\(\\hat{Y} = 4.20 + 0.08 \\times 0 = 4.20\\).\nFor \\(X = 5\\) hours: \\(\\hat{Y} = 4.20 + 0.08 \\times 5 = 4.60\\).\nFor \\(X = 10\\) hours: \\(\\hat{Y} = 4.20 + 0.08 \\times 10 = 5.00\\).\nFor \\(X = 20\\) hours: \\(\\hat{Y} = 4.20 + 0.08 \\times 20 = 5.80\\).\n\nEvery point along the line is a prediction. Unlike the mean-only model (one prediction for everyone), the simple linear model produces a different prediction for each value of the predictor.\n\n\n\n\n\n\n\n\n\nThe blue line is the simple linear model’s prediction. It is not flat: it tilts upward gently. Two participants with different hours_weekly values receive different predictions, instead of the same one as under the mean-only model.\nOne caution. Plugging values of \\(X\\) outside the range of the observed data into the equation is called extrapolation, and you should treat any such prediction with caution. Our data go up to about 30 hours of gaming per week. The model will dutifully produce a prediction for \\(X = 100\\), but we have no evidence that the linear relationship continues that far. A line that fits well in the observed range can curve in ways we cannot see beyond it.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>From the mean to the line: the simple linear model</span>"
+    ]
+  },
+  {
+    "objectID": "15-simple-linear-model.html#residuals-from-the-line",
+    "href": "15-simple-linear-model.html#residuals-from-the-line",
+    "title": "15  From the mean to the line: the simple linear model",
+    "section": "15.7 Residuals from the line",
+    "text": "15.7 Residuals from the line\nFor each participant, the residual is exactly the same idea as in Chapter 14: observed minus predicted.\n\\[\n\\varepsilon_i = Y_i - \\hat{Y}_i = Y_i - (b_0 + b_1 X_i).\n\\]\nGeometrically, the residual is the vertical distance from each point to the line. Below, the residuals are drawn as grey segments connecting each observation to its prediction on the line:\n\n\n\n\n\n\n\n\n\nParticipants above the line have positive residuals (they scored higher than the model predicted); participants below the line have negative residuals. Compare this picture to the analogous picture in Chapter 14 (with the grey segments running to the flat grand-mean line). The line tilts in a direction that, on average, makes the grey segments shorter than they were under the mean-only model. That improvement in fit will be quantified by R-squared in the next chapter.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>From the mean to the line: the simple linear model</span>"
+    ]
+  },
+  {
+    "objectID": "15-simple-linear-model.html#how-is-the-best-line-chosen",
+    "href": "15-simple-linear-model.html#how-is-the-best-line-chosen",
+    "title": "15  From the mean to the line: the simple linear model",
+    "section": "15.8 How is “the best” line chosen?",
+    "text": "15.8 How is “the best” line chosen?\nThere are infinitely many candidate lines you could draw through a scatterplot. Some are clearly too steep, some too flat, some pass too low, some too high. We need a precise rule for choosing one of them as “the” line of the model.\nThe rule is the same one introduced in Chapter 14:\n\nChoose the line that minimizes the sum of squared residuals.\n\nThis estimation method is called Ordinary Least Squares, abbreviated OLS. “Least squares” because it chooses the intercept and slope that make the squared distances from the points to the line as small as possible, in total. “Ordinary” because there are more elaborate versions for special situations (we will not need them in this book), and this is the standard one.\nThree candidate lines through the same data illustrate the idea. The first is too flat (it does not tilt enough to capture the upward trend). The second is too steep. The third is the OLS line, where the sum of squared vertical distances from the points to the line is as small as it can be.\n\n\n\n\n\n\n\n\n\nThe OLS line is the unique line that makes the sum of squared vertical distances from the points to the line as small as possible. R does this calculation for you automatically: the function lm() (introduced in the next chapter) takes a dataset and a formula and returns the OLS intercept and slope. You do not need to know the closed-form formulas for \\(b_0\\) and \\(b_1\\) to use the model; you need to know what they mean and what criterion produced them.\nA worthwhile fact about OLS. The mean-only model from Chapter 14 is itself an OLS estimate: the single number that minimizes the sum of squared residuals from a constant prediction is exactly the mean (this is a theorem from a first calculus course). So the framework in this chapter is not a different framework. It is the same one, applied to a slightly more flexible class of predictions.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>From the mean to the line: the simple linear model</span>"
+    ]
+  },
+  {
+    "objectID": "15-simple-linear-model.html#looking-ahead",
+    "href": "15-simple-linear-model.html#looking-ahead",
+    "title": "15  From the mean to the line: the simple linear model",
+    "section": "15.9 Looking ahead",
+    "text": "15.9 Looking ahead\nWe now have a richer model than the mean: the simple linear model, with two parameters (\\(b_0\\) and \\(b_1\\)) and the OLS criterion for choosing them. We have spent this chapter on what the model is, how to read its parameters, and how to think about its predictions and residuals. We have not yet computed any of these quantities in R. That is the topic of the next chapter.\nChapter 16 will:\n\nintroduce the lm() function and the formula syntax Y ~ X,\nshow how to read the summary() output (focusing on the coefficients, which are \\(b_0\\) and \\(b_1\\)),\nintroduce R-squared as the formal measure of how much better the line is than the mean,\nshow that correlation (which you may have heard of) is a special case of simple regression,\nand walk through a small worked example so you can read regression output yourself.\n\nBy the end of Chapter 16 you will be fitting and interpreting your first regression models.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>From the mean to the line: the simple linear model</span>"
+    ]
+  },
+  {
+    "objectID": "15-simple-linear-model.html#check-your-understanding",
+    "href": "15-simple-linear-model.html#check-your-understanding",
+    "title": "15  From the mean to the line: the simple linear model",
+    "section": "15.10 Check your understanding",
+    "text": "15.10 Check your understanding\n1. What is a simple linear model?\n\n It is the same as the mean-only model from Chapter 14. It uses a different prediction for each observation, ignoring any predictor. It uses a continuous predictor \\(X\\) to make a different prediction for each observation; the predictions form a line with two parameters: an intercept (\\(b_0\\)) and a slope (\\(b_1\\)). It guarantees a perfect fit to the data.\n\n2. What does the intercept (\\(b_0\\)) of a simple linear model represent?\n\n The predicted value of \\(X\\) when \\(Y = 0\\). The predicted value of \\(Y\\) when \\(X = 0\\); the height at which the line crosses the y-axis. The average of all \\(Y\\) values. The slope of the line.\n\n3. What does the slope (\\(b_1\\)) of a simple linear model represent?\n\n How much \\(X\\) changes for a one-unit increase in \\(Y\\). How much \\(Y\\) changes for a one-unit increase in \\(X\\). A positive slope means \\(Y\\) increases as \\(X\\) increases; a negative slope means \\(Y\\) decreases as \\(X\\) increases. The correlation between \\(X\\) and \\(Y\\). The intercept of the line.\n\n4. What happens when you plug a value of \\(X\\) into the model equation \\(\\\\hat{Y} = b_0 + b_1 X\\)?\n\n It produces an exact, deterministic, fully accurate prediction. It produces a prediction \\(\\hat{Y} = b_0 + b_1 X\\); the actual observed \\(Y_i\\) for that participant will typically differ from the prediction by some residual \\(\\varepsilon_i = Y_i - \\hat{Y}_i\\). It produces the same prediction for every participant. It does not produce a prediction; only the mean-only model does.\n\n5. How does Ordinary Least Squares (OLS) choose the best-fitting line?\n\n Pick the line that passes through the most data points. Pick the line that has the steepest slope. Pick the intercept and slope that minimize the sum of squared residuals (the sum of squared vertical distances from the observations to the line). This is called Ordinary Least Squares (OLS). Pick the line that has slope = 0.\n\n6. The mean-only model is a special case of the simple linear model. Which value of the slope makes them equivalent?\n\n Slope of zero means the line is vertical. Slope of zero means the line is flat, the model predicts the same value (the intercept) for every observation, and the simple linear model reduces to the mean-only model from Chapter 14. Slope of zero is impossible in OLS regression. Slope of zero means \\(Y\\) is always zero.\n\n7. What is “extrapolation,” and why is it a concern in simple regression?\n\n It is the safest place to make predictions because it lies outside the data. It is making predictions for values of the predictor outside the range of the observed data, and such predictions should be treated with caution because we have no evidence the linear relationship continues that far. It is the same thing as interpolation. It always produces correct predictions.\n\n8. Suppose your simple linear model has a slope of \\(b_1 = 0.5\\), meaning each unit increase in \\(X\\) is associated with a 0.5-unit increase in \\(Y\\). Can you conclude from this slope alone that \\(X\\) causes \\(Y\\)?\n\n Yes: a positive slope and a strong relationship together imply a causal effect. No: a slope describes a statistical association in a sample. Concluding that \\(X\\) causes \\(Y\\) requires a different argument (causal inference) that the simple linear model itself does not provide. Yes: the OLS estimator was designed to recover causal effects. It depends only on the sample size.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>From the mean to the line: the simple linear model</span>"
+    ]
+  },
+  {
+    "objectID": "15-simple-linear-model.html#references",
+    "href": "15-simple-linear-model.html#references",
+    "title": "15  From the mean to the line: the simple linear model",
+    "section": "15.11 References",
+    "text": "15.11 References\nNavarro, D. J. (2018). Learning statistics with R: A tutorial for psychology students and other beginners (Version 0.6), Chapter 15. https://learningstatisticswithr.com",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>From the mean to the line: the simple linear model</span>"
+    ]
   }
 ]
