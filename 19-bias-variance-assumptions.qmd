@@ -262,7 +262,7 @@ opts_q4 <- c(
 )
 
 opts_q5 <- c(
-  "L = Linearity, I = Independence, N = Normality of residuals, E = Equal variance (homoscedasticity).",
+  answer = "L = Linearity, I = Independence, N = Normality of residuals, E = Equal variance (homoscedasticity).",
   "L = Lines, I = Indicators, N = Numbers, E = Estimates.",
   "L = Least, I = Indicator, N = Noise, E = Error.",
   "Linearity, Inference, Normality, Equality."
