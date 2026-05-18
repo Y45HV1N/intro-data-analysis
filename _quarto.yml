@@ -36,6 +36,7 @@ book:
     chapters:
     - 13-data-and-models.qmd
     - 14-mean-as-model.qmd
+    - 15-simple-linear-model.qmd
 format:
   html:
     theme:
