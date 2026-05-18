@@ -3,6 +3,7 @@ project:
   output-dir: _book
   resources:
     - data/
+    - images/
 book:
   title: Understanding and analyzing social and behavioral data
   author: Yashvin Seetahul

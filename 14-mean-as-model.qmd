@@ -38,7 +38,11 @@ For the mean-only model from Chapter 13, every prediction is the same value (the
 
 ## A small worked example
 
-The rest of this chapter uses a small fictional dataset inspired by a classic social-psychology paradigm called **Cyberball**, in which participants play a virtual ball-tossing game with other players. In the **exclusion** condition, the other players stop throwing the ball to the participant after a while; in the **inclusion** condition, the ball continues to be shared with everyone. After the game, participants rate their self-esteem on a 1-7 scale. The question is whether being excluded lowers self-esteem.
+The rest of this chapter uses a small fictional dataset inspired by a classic social-psychology paradigm called **Cyberball**, developed by Williams and colleagues to study social ostracism. In the paradigm, participants play a simple virtual ball-tossing game on a computer with two other "players" who they believe are also participants, but who are actually controlled by the experimenter.
+
+![Schematic illustration of a three-player Cyberball game. The participant is one of the three figures; the other two appear to be other players but are in fact controlled by the experimenter, who decides whether and how often the ball is thrown to the participant.](images/cyberball.jpg){width=70% fig-align="center"}
+
+There are two experimental conditions. In the **inclusion** condition, the ball is shared among all three players roughly evenly: the participant receives the ball regularly throughout the game and is, in effect, a full member of the group. In the **exclusion** condition, the two confederate "players" stop throwing the ball to the participant after a few initial passes, and continue tossing only between themselves for the remainder of the game; the participant is socially excluded from the group activity. After the game, participants complete self-report measures, here a 1-7 self-esteem scale. The question is whether being excluded lowers self-esteem.
 
 We construct the dataset by hand so that you can verify every calculation that follows. Type these lines into your R script:
 
