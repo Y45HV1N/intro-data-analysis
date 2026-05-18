@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; Working with R projects and R sessions – Understanding and analyzing social and behavioral data</title>
+<title>14&nbsp; The mean as a model: residuals, fit, and comparing models – Understanding and analyzing social and behavioral data</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -68,8 +68,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./05-objects-and-functions.html" rel="next">
-<link href="./03-files-and-environment.html" rel="prev">
+<link href="./13-data-and-models.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -112,6 +111,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="include/webex.css">
 <link rel="stylesheet" href="include/custom.css">
@@ -288,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-basics-r.html">Section 1: Getting Started Properly</a></li><li class="breadcrumb-item"><a href="./04-projects-and-sessions.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Working with R projects and R sessions</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./13-data-and-models.html">Section 3: Statistical Modeling — Regressions</a></li><li class="breadcrumb-item"><a href="./14-mean-as-model.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The mean as a model: residuals, fit, and comparing models</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -352,7 +380,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-projects-and-sessions.html" class="sidebar-item-text sidebar-link active">
+  <a href="./04-projects-and-sessions.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Working with R projects and R sessions</span></span></a>
   </div>
 </li>
@@ -434,7 +462,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./14-mean-as-model.html" class="sidebar-item-text sidebar-link">
+  <a href="./14-mean-as-model.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The mean as a model: residuals, fit, and comparing models</span></span></a>
   </div>
 </li>
@@ -450,24 +478,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#why-this-chapter-exists" id="toc-why-this-chapter-exists" class="nav-link active" data-scroll-target="#why-this-chapter-exists"><span class="header-section-number">4.1</span> Why this chapter exists</a></li>
-  <li><a href="#what-an-r-session-is" id="toc-what-an-r-session-is" class="nav-link" data-scroll-target="#what-an-r-session-is"><span class="header-section-number">4.2</span> What an R session is</a></li>
-  <li><a href="#how-sessions-and-projects-fit-together" id="toc-how-sessions-and-projects-fit-together" class="nav-link" data-scroll-target="#how-sessions-and-projects-fit-together"><span class="header-section-number">4.3</span> How sessions and projects fit together</a></li>
-  <li><a href="#why-and-when-to-restart-the-session" id="toc-why-and-when-to-restart-the-session" class="nav-link" data-scroll-target="#why-and-when-to-restart-the-session"><span class="header-section-number">4.4</span> Why and when to restart the session</a></li>
-  <li><a href="#saving-and-not-saving-the-environment" id="toc-saving-and-not-saving-the-environment" class="nav-link" data-scroll-target="#saving-and-not-saving-the-environment"><span class="header-section-number">4.5</span> Saving (and not saving) the environment</a></li>
-  <li><a href="#working-directory-where-r-looks-for-files" id="toc-working-directory-where-r-looks-for-files" class="nav-link" data-scroll-target="#working-directory-where-r-looks-for-files"><span class="header-section-number">4.6</span> Working directory: where R looks for files</a></li>
-  <li><a href="#tutorial-practice-opening-restarting-and-switching" id="toc-tutorial-practice-opening-restarting-and-switching" class="nav-link" data-scroll-target="#tutorial-practice-opening-restarting-and-switching"><span class="header-section-number">4.7</span> Tutorial: practice opening, restarting, and switching</a></li>
-  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">4.8</span> Check your understanding</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">14.1</span> Overview</a></li>
+  <li><a href="#residuals-what-the-model-misses" id="toc-residuals-what-the-model-misses" class="nav-link" data-scroll-target="#residuals-what-the-model-misses"><span class="header-section-number">14.2</span> Residuals: what the model misses</a></li>
+  <li><a href="#a-small-worked-example" id="toc-a-small-worked-example" class="nav-link" data-scroll-target="#a-small-worked-example"><span class="header-section-number">14.3</span> A small worked example</a></li>
+  <li><a href="#model-1-the-grand-mean-model" id="toc-model-1-the-grand-mean-model" class="nav-link" data-scroll-target="#model-1-the-grand-mean-model"><span class="header-section-number">14.4</span> Model 1: the grand-mean model</a></li>
+  <li><a href="#why-we-cannot-just-sum-the-residuals-squaring" id="toc-why-we-cannot-just-sum-the-residuals-squaring" class="nav-link" data-scroll-target="#why-we-cannot-just-sum-the-residuals-squaring"><span class="header-section-number">14.5</span> Why we cannot just sum the residuals: squaring</a></li>
+  <li><a href="#model-2-the-group-means-model" id="toc-model-2-the-group-means-model" class="nav-link" data-scroll-target="#model-2-the-group-means-model"><span class="header-section-number">14.6</span> Model 2: the group-means model</a></li>
+  <li><a href="#comparing-the-two-models" id="toc-comparing-the-two-models" class="nav-link" data-scroll-target="#comparing-the-two-models"><span class="header-section-number">14.7</span> Comparing the two models</a></li>
+  <li><a href="#from-ss-to-variance-and-standard-deviation" id="toc-from-ss-to-variance-and-standard-deviation" class="nav-link" data-scroll-target="#from-ss-to-variance-and-standard-deviation"><span class="header-section-number">14.8</span> From SS to variance and standard deviation</a></li>
+  <li><a href="#the-trap-of-perfect-fit" id="toc-the-trap-of-perfect-fit" class="nav-link" data-scroll-target="#the-trap-of-perfect-fit"><span class="header-section-number">14.9</span> The trap of “perfect fit”</a></li>
+  <li><a href="#recalling-chapter-9" id="toc-recalling-chapter-9" class="nav-link" data-scroll-target="#recalling-chapter-9"><span class="header-section-number">14.10</span> Recalling Chapter 9</a></li>
+  <li><a href="#looking-ahead" id="toc-looking-ahead" class="nav-link" data-scroll-target="#looking-ahead"><span class="header-section-number">14.11</span> Looking ahead</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">14.12</span> Check your understanding</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">14.13</span> References</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/04-projects-and-sessions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/14-mean-as-model.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-basics-r.html">Section 1: Getting Started Properly</a></li><li class="breadcrumb-item"><a href="./04-projects-and-sessions.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Working with R projects and R sessions</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./13-data-and-models.html">Section 3: Statistical Modeling — Regressions</a></li><li class="breadcrumb-item"><a href="./14-mean-as-model.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The mean as a model: residuals, fit, and comparing models</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Working with R projects and R sessions</span></h1>
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The mean as a model: residuals, fit, and comparing models</span></h1>
 </div>
 
 
@@ -484,128 +517,372 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="why-this-chapter-exists" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="why-this-chapter-exists"><span class="header-section-number">4.1</span> Why this chapter exists</h2>
-<p>Chapter 3 introduced R projects briefly. Chapter 4 returns to them, alongside a related concept (the <strong>R session</strong>) that often causes confusion. The two are easy to conflate but distinct, and the distinction matters in practice. The promise of this chapter is that, by the end, you will know what is happening when you “restart the session,” when to do it, and how it relates to projects, scripts, and the environment.</p>
-</section>
-<section id="what-an-r-session-is" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="what-an-r-session-is"><span class="header-section-number">4.2</span> What an R session is</h2>
-<p>An <strong>R session</strong> is one running instance of R. When you open RStudio, R is launched in the background; that running instance is the session. The session lasts from the moment R starts until the moment R is shut down. While the session is alive, it holds the environment (your objects), it remembers which packages you have loaded, and it remembers any settings you have changed.</p>
-<p>When the session ends (because you closed RStudio, or because you explicitly restarted the session, or because R crashed), all of that in-memory state is gone. Anything saved to disk (scripts, RData files, output files) survives. Anything held only in memory (objects in the environment, loaded packages, temporary settings) does not.</p>
-<p>A session is roughly the runtime equivalent of “what R is currently doing and remembering.” If we draw a chronology:</p>
+<section id="overview" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">14.1</span> Overview</h2>
+<p>Chapter 13 introduced the idea that the mean of a dataset can be thought of as the simplest possible <strong>statistical model</strong>: it makes one prediction (the mean value) for every observation. This chapter takes that idea and turns it into something you can compute in R. By the end of the chapter you will have:</p>
 <ul>
-<li>you start RStudio (a new session begins);</li>
-<li>you load a package and create some objects (those changes are part of this session);</li>
-<li>you stop RStudio (the session ends, the environment is destroyed);</li>
-<li>you start RStudio again (a new session begins, with a clean environment).</li>
+<li>computed the <strong>residuals</strong> of two competing models on a small dataset,</li>
+<li>quantified each model’s overall miss with the <strong>sum of squared residuals</strong>,</li>
+<li>shown that a model that makes a separate prediction for each experimental condition fits better than a model that makes one prediction for everyone.</li>
 </ul>
-<p>A session is not a file. Like the environment, it exists only while R is running.</p>
+<p>This is the same logic you applied to the aggression scores at the end of Chapter 9 (where you compared <code>SS_grand</code> to <code>SS_group</code> on the <code>vgames_study</code> dataset). The new thing here is the framing: each calculation is the fit of a specific <strong>model</strong>, and choosing between models is a comparison of how well each fits.</p>
 </section>
-<section id="how-sessions-and-projects-fit-together" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="how-sessions-and-projects-fit-together"><span class="header-section-number">4.3</span> How sessions and projects fit together</h2>
-<p>A project is a folder; a session is a running instance of R. They are different kinds of thing.</p>
-<p>Their relationship in RStudio works as follows. Each open project has its own session. If you open a project, RStudio starts a session associated with that project. If you switch to a different project (using <strong>File &gt; Open Project</strong>), RStudio shuts down the current session and starts a new one in the new project. If you have two projects open in two RStudio windows simultaneously, you have two independent sessions running.</p>
-<p>This is convenient: it ensures that the work in one project does not contaminate the work in another. Objects created while working on Project A will not appear when you switch to Project B.</p>
+<section id="residuals-what-the-model-misses" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="residuals-what-the-model-misses"><span class="header-section-number">14.2</span> Residuals: what the model misses</h2>
+<p>For any model that makes a prediction for each observation, the <strong>residual</strong> of an observation is the simple difference</p>
+<p><span class="math display">\[
+\text{residual} = \text{observed} - \text{predicted}.
+\]</span></p>
+<p>If a participant scored 6 on a 1-10 scale and the model predicted 5, the residual is +1: the participant scored one point above what the model expected. If a participant scored 3 and the model predicted 5, the residual is -2: the participant scored two points below the model’s prediction. The residual is positive when the model under-predicts, negative when it over-predicts, and zero when the model is exactly right.</p>
+<p>Residuals are the central diagnostic quantity in statistical modeling. The sizes of the residuals tell you how well the model fits; the patterns in the residuals (across rows, across groups, across time) tell you whether the model is missing something systematic.</p>
+<p>For the mean-only model from Chapter 13, every prediction is the same value (the mean). So every residual is just the observation’s distance from the mean.</p>
 </section>
-<section id="why-and-when-to-restart-the-session" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="why-and-when-to-restart-the-session"><span class="header-section-number">4.4</span> Why and when to restart the session</h2>
-<p>Working in an interactive console encourages a habit that, if left unchecked, leads to subtle bugs. Over the course of an hour, you create dozens of objects, load several packages, and make small changes to the code as you go. Some of those objects are stale: they were created earlier in the session and no longer reflect what your current script would produce if run from scratch.</p>
-<p>The danger is that your script can appear to work in a particular session because of an object that exists in your environment but is not actually created by the script anywhere. When you open the script tomorrow in a fresh session, the object is gone and the script fails. Worse: someone else (or future you) runs the script and gets a different result, because their session does not have the same accumulated state.</p>
-<p>The defense against this is simple: <strong>regularly restart the session and re-run the script from the top.</strong> A passing script in a clean session is a script that actually works. A passing script in a session you have been using for hours is a script that works in <em>that</em> session, which is a weaker claim.</p>
-<p>To restart the session in RStudio: click <strong>Session &gt; Restart R</strong>, or press Ctrl+Shift+F10 (Cmd+Shift+0 on macOS). All objects disappear, all loaded packages are unloaded, and you start with a clean slate. Now run your script from the top. If it produces the expected results, you have evidence that your script is self-contained.</p>
-<p>A reasonable habit is to restart the session at the start of each work session and at any moment when something seems “off.” Some people restart it many times a day; the cost is essentially zero (a fresh session takes a second to start).</p>
-</section>
-<section id="saving-and-not-saving-the-environment" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="saving-and-not-saving-the-environment"><span class="header-section-number">4.5</span> Saving (and not saving) the environment</h2>
-<p>In Chapter 3 we recommended answering <strong>No</strong> to the prompt “Save workspace image?” when closing RStudio. The reasoning is now in scope.</p>
-<p>The prompt asks whether you want to save the entire environment to a file called <code>.RData</code> in the project folder, which would automatically reload the next time you open R. If you answer Yes, what happens is this. The next time you open the project, the previous session’s environment is silently restored. Your Environment panel will be full of objects from yesterday. <em>None</em> of those objects are produced by your current script; they are leftovers. Your script will appear to work, because the objects it expects are already there, regardless of whether the script actually creates them.</p>
-<p>Recall the recipe analogy from Chapter 3: the script is the recipe, the data is the ingredients, and running the script is cooking the meal. In that picture, letting R restore the previous workspace is like cooking a new dish in a pot that still contains leftovers from yesterday’s meal, without washing it first. Sometimes those leftovers do not affect the new dish; other times they spoil it in ways that are hard to detect. The safe habit is the same in both cases: clean the pot (or the workspace) before starting something new.</p>
-<p>This is precisely the failure mode described in the previous section, made worse by being invisible. You did not even notice that the objects had been preserved.</p>
-<p>The recommended setting is to disable this entirely. In RStudio:</p>
-<ol type="1">
-<li>Open <strong>Tools &gt; Global Options</strong>.</li>
-<li>Click the <strong>General</strong> tab.</li>
-<li>Under “Workspace,” <strong>uncheck</strong> “Restore .RData into workspace at startup.”</li>
-<li>Set “Save workspace to .RData on exit” to <strong>Never</strong>.</li>
-<li>Click OK.</li>
-</ol>
-<p>With these settings, every R session starts clean. Your script is the only source of objects in the environment. If you find that you need to preserve an expensive intermediate result, save it explicitly with <code>save()</code> (as we did in Chapter 3) and load it explicitly with <code>load()</code> at the top of the script that needs it.</p>
-</section>
-<section id="working-directory-where-r-looks-for-files" class="level2" data-number="4.6">
-<h2 data-number="4.6" class="anchored" data-anchor-id="working-directory-where-r-looks-for-files"><span class="header-section-number">4.6</span> Working directory: where R looks for files</h2>
-<p>When you ask R to read a file, e.g.&nbsp;<code>read.csv("data.csv")</code>, R looks for <code>data.csv</code> in the <strong>working directory</strong>. The working directory is a setting of the current session: it points at one folder on your computer, and that folder is the implicit “current location” for any file operation that does not specify a full path.</p>
-<p>To find out what the working directory currently is:</p>
+<section id="a-small-worked-example" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="a-small-worked-example"><span class="header-section-number">14.3</span> A small worked example</h2>
+<p>The rest of this chapter uses a small fictional dataset inspired by a classic social-psychology paradigm called <strong>Cyberball</strong>, in which participants play a virtual ball-tossing game with other players. In the <strong>exclusion</strong> condition, the other players stop throwing the ball to the participant after a while; in the <strong>inclusion</strong> condition, the ball continues to be shared with everyone. After the game, participants rate their self-esteem on a 1-7 scale. The question is whether being excluded lowers self-esteem.</p>
+<p>We construct the dataset by hand so that you can verify every calculation that follows. Type these lines into your R script:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cyberball <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">participant =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">condition   =</span> <span class="fu">c</span>(<span class="st">"Exclusion"</span>, <span class="st">"Exclusion"</span>, <span class="st">"Exclusion"</span>, <span class="st">"Exclusion"</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Inclusion"</span>, <span class="st">"Inclusion"</span>, <span class="st">"Inclusion"</span>, <span class="st">"Inclusion"</span>),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">self_esteem =</span> <span class="fu">c</span>(<span class="fl">2.5</span>, <span class="fl">3.0</span>, <span class="fl">4.0</span>, <span class="fl">2.5</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">5.5</span>, <span class="fl">4.5</span>, <span class="fl">6.0</span>, <span class="fl">5.0</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>cyberball</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>When you open an R project, the working directory is set to the project folder automatically. This is one of the main practical benefits of using projects: file paths in your scripts can be relative to the project folder, which makes the scripts portable. A line like <code>read.csv("data/survey.csv")</code> will work on any computer that has the project folder, because the path is resolved relative to the project, not relative to a specific user’s hard drive.</p>
-<p>If you are not using a project, the working directory defaults to a system folder (your home directory on macOS and Linux, or “Documents” on Windows). You can change it manually:</p>
+<p>Eight participants, four per condition, one self-esteem score per participant. We will fit two competing models to these scores and compare how well each one fits.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"C:/Users/yourname/Documents/r_practice"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="14-mean-as-model_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
 </div>
-<p>We recommend not using <code>setwd()</code> in scripts. If a script contains an explicit path, the script becomes tied to that one computer. Use a project, and let the working directory be set by the project’s location.</p>
+</div>
+</div>
 </section>
-<section id="tutorial-practice-opening-restarting-and-switching" class="level2" data-number="4.7">
-<h2 data-number="4.7" class="anchored" data-anchor-id="tutorial-practice-opening-restarting-and-switching"><span class="header-section-number">4.7</span> Tutorial: practice opening, restarting, and switching</h2>
-<p>This tutorial assumes you completed the tutorial at the end of Chapter 3 (creating the <code>r_book_practice</code> project with a <code>setup.R</code> script and a <code>setup_state.RData</code> file).</p>
-<p><strong>Part A: Open a project from a file browser.</strong></p>
-<ol type="1">
-<li>Close RStudio entirely.</li>
-<li>Open your operating system’s file browser (Windows Explorer or macOS Finder).</li>
-<li>Navigate to the <code>r_book_practice</code> folder.</li>
-<li>Find the <code>.Rproj</code> file. Double-click it. RStudio opens, the project is loaded, and <code>setup.R</code> may already be open if you had it open last time.</li>
-<li>Look at the title bar of the RStudio window. It should display the project name. Look at the Files panel: it points at the project folder.</li>
-</ol>
-<p><strong>Part B: Confirm that the environment is empty in a new session.</strong></p>
-<ol type="1">
-<li>Look at the Environment panel. If you set “Restore .RData into workspace at startup” to unchecked (as recommended above), it should be empty. If it shows the objects from your previous session, your global options still allow restoration; revisit the steps in “Saving (and not saving) the environment” above.</li>
-</ol>
-<p><strong>Part C: Restart the session deliberately.</strong></p>
-<ol type="1">
-<li>Run your script: open <code>setup.R</code>, click “Source.” The three objects appear in the Environment panel.</li>
-<li>Click <strong>Session &gt; Restart R</strong>. The Console clears, the Environment panel empties, and a fresh session begins.</li>
-<li>Run the script again. The three objects reappear.</li>
-<li>This is the workflow you want as a default. Anything that exists in the environment exists because the script put it there.</li>
-</ol>
-<p><strong>Part D: Switch projects.</strong></p>
-<ol type="1">
-<li>Click <strong>File &gt; New Project &gt; New Directory &gt; New Project</strong>. Create a second project called <code>r_book_practice_two</code> somewhere convenient.</li>
-<li>RStudio shuts down the previous session, opens the new project, and starts a fresh session. The Environment panel is empty.</li>
-<li>Click <strong>File &gt; Open Project</strong> and navigate back to the original <code>r_book_practice</code> project. RStudio shuts down the second session and reopens the first. Notice that the Environment panel is empty again, even though you previously had objects in it: each open of a project starts a brand-new session.</li>
-<li>To recover the objects from the saved RData file: <code>load("setup_state.RData")</code>. The objects reappear.</li>
-</ol>
-<p>This pattern (open project, run script, restart when uncertain, save expensive intermediate results explicitly) is the foundation of a clean R workflow.</p>
+<section id="model-1-the-grand-mean-model" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="model-1-the-grand-mean-model"><span class="header-section-number">14.4</span> Model 1: the grand-mean model</h2>
+<p>The simplest model says: ignore which condition each participant was in; predict the grand mean of <code>self_esteem</code> for everyone.</p>
+<p>Compute the grand mean and store it. Then use <code>mutate()</code> (from Chapter 9) to add a column with the model’s prediction and a column with the residual:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>grand_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(cyberball<span class="sc">$</span>self_esteem)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>grand_mean</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># returns 4.125</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>cyberball <span class="ot">&lt;-</span> cyberball <span class="sc">|&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">predicted_grand =</span> grand_mean,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">residual_grand  =</span> self_esteem <span class="sc">-</span> predicted_grand)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>cyberball</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The resulting table contains the original three columns plus two new ones: every row has the same <code>predicted_grand</code> (4.125), and <code>residual_grand</code> is each participant’s distance from that single prediction.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">participant</th>
+<th style="text-align: left;">condition</th>
+<th style="text-align: right;">self_esteem</th>
+<th style="text-align: right;">predicted_grand</th>
+<th style="text-align: right;">residual_grand</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Exclusion</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">4.125</td>
+<td style="text-align: right;">-1.625</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Exclusion</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">4.125</td>
+<td style="text-align: right;">-1.125</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">Exclusion</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">4.125</td>
+<td style="text-align: right;">-0.125</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">Exclusion</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">4.125</td>
+<td style="text-align: right;">-1.625</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">Inclusion</td>
+<td style="text-align: right;">5.5</td>
+<td style="text-align: right;">4.125</td>
+<td style="text-align: right;">1.375</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">Inclusion</td>
+<td style="text-align: right;">4.5</td>
+<td style="text-align: right;">4.125</td>
+<td style="text-align: right;">0.375</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">Inclusion</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">4.125</td>
+<td style="text-align: right;">1.875</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">Inclusion</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">4.125</td>
+<td style="text-align: right;">0.875</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Two checks on this table.</p>
+<p><strong>The residuals sum to zero.</strong> This is always true of residuals from the mean: the mean is the value at which positive and negative deviations exactly cancel.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(cyberball<span class="sc">$</span>residual_grand)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># returns approximately 0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>The residuals are not small.</strong> Some participants are more than 1.5 points away from the grand-mean prediction. Visually:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="14-mean-as-model_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Each grey segment shows how far one participant’s actual score is from the model’s single prediction (the red line). The grey segments are the residuals. Visually, they are substantial, especially for the inclusion participants who all sit well above the grand mean and for several exclusion participants who sit well below.</p>
 </section>
-<section id="check-your-understanding" class="level2" data-number="4.8">
-<h2 data-number="4.8" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">4.8</span> Check your understanding</h2>
-<p><strong>1. What is an R session?</strong></p>
-<div id="radio_QOVPUUBJFS" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_QOVPUUBJFS" value=""> <span>A folder on the hard drive that R writes log files to.</span></label><label><input type="radio" autocomplete="off" name="radio_QOVPUUBJFS" value="answer"> <span>One running instance of R, which holds the environment, loaded packages, and current settings.</span></label><label><input type="radio" autocomplete="off" name="radio_QOVPUUBJFS" value=""> <span>A subscription service from RStudio.</span></label><label><input type="radio" autocomplete="off" name="radio_QOVPUUBJFS" value=""> <span>Another name for an R Markdown document.</span></label>
+<section id="why-we-cannot-just-sum-the-residuals-squaring" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="why-we-cannot-just-sum-the-residuals-squaring"><span class="header-section-number">14.5</span> Why we cannot just sum the residuals: squaring</h2>
+<p>We need a single number that quantifies how well the model fits, and the residuals are the obvious building blocks. But, as just noted, the residuals always sum to zero. The positive and negative deviations cancel out, and the sum tells you nothing about the size of the errors.</p>
+<p>The standard fix is to <strong>square each residual before summing</strong>:</p>
+<p><span class="math display">\[
+\text{SS} = \sum_{i=1}^{n} (\text{observed}_i - \text{predicted}_i)^2.
+\]</span></p>
+<p>This is the <strong>sum of squared residuals</strong> (or sum of squared errors), often abbreviated <em>SS</em>. You met it in Chapter 9 when you computed <code>SS_grand</code> and <code>SS_group</code> on the aggression data.</p>
+<p>Two reasons squaring is the standard choice:</p>
+<ul>
+<li><strong>Squaring removes the sign.</strong> Negative and positive residuals both contribute positively to the sum, so the cancellation problem disappears.</li>
+<li><strong>Squaring penalizes large residuals more than small ones.</strong> A residual of 2 contributes 4 to the <em>SS</em>; a residual of 1 contributes only 1. Being off by a lot is treated as much worse than being off by a little. For most modeling problems in psychology this matches the kind of error you want to minimize.</li>
+</ul>
+<p>In R, on the residuals we already computed:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>SS_grand <span class="ot">&lt;-</span> <span class="fu">sum</span>(cyberball<span class="sc">$</span>residual_grand<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>SS_grand</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># returns 12.875</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>2. What happens to the environment when an R session ends?</strong></p>
-<div id="radio_LVOCUELAJZ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_LVOCUELAJZ" value=""> <span>Saved to disk in the project folder.</span></label><label><input type="radio" autocomplete="off" name="radio_LVOCUELAJZ" value=""> <span>Compressed and emailed to you.</span></label><label><input type="radio" autocomplete="off" name="radio_LVOCUELAJZ" value="answer"> <span>Lost: the environment, loaded packages, and any in-memory state are all destroyed.</span></label><label><input type="radio" autocomplete="off" name="radio_LVOCUELAJZ" value=""> <span>Backed up automatically to the cloud.</span></label>
+<p>The number 12.875 is the total squared error of the grand-mean model on these eight observations. It has no natural interpretation in isolation; it is the comparison to the <em>SS</em> of another model that gives it meaning.</p>
+</section>
+<section id="model-2-the-group-means-model" class="level2" data-number="14.6">
+<h2 data-number="14.6" class="anchored" data-anchor-id="model-2-the-group-means-model"><span class="header-section-number">14.6</span> Model 2: the group-means model</h2>
+<p>A slightly less naive model uses two predictions instead of one: predict the mean of the exclusion condition for exclusion participants, and the mean of the inclusion condition for inclusion participants. The model is more complex (two numbers instead of one), and it uses information the previous model ignored (which condition each participant was in).</p>
+<p>Using the <code>group_by()</code> + <code>mutate()</code> + <code>ungroup()</code> pattern from Chapter 9 (the same pattern you used to add a per-group statistic as a column):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cyberball <span class="ot">&lt;-</span> cyberball <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condition) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">predicted_group =</span> <span class="fu">mean</span>(self_esteem)) <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">residual_group =</span> self_esteem <span class="sc">-</span> predicted_group)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>cyberball</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>3. Why do experienced R users recommend regularly restarting the session?</strong></p>
-<div id="radio_XUDDZTDYNO" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_XUDDZTDYNO" value=""> <span>Restarting clears the working directory but keeps all objects in memory.</span></label><label><input type="radio" autocomplete="off" name="radio_XUDDZTDYNO" value="answer"> <span>Restarting starts a fresh session, ensuring that your script works on its own without depending on stale objects accumulated during the session.</span></label><label><input type="radio" autocomplete="off" name="radio_XUDDZTDYNO" value=""> <span>Restarting reinstalls R, removing all packages.</span></label><label><input type="radio" autocomplete="off" name="radio_XUDDZTDYNO" value=""> <span>Restarting is a way to upgrade RStudio.</span></label>
+<p>The exclusion group’s mean is 3.00 and the inclusion group’s mean is 5.25, so <code>predicted_group</code> is 3.00 for the first four rows and 5.25 for the last four. The residuals are each participant’s distance from their own condition mean.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">participant</th>
+<th style="text-align: left;">condition</th>
+<th style="text-align: right;">self_esteem</th>
+<th style="text-align: right;">predicted_group</th>
+<th style="text-align: right;">residual_group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Exclusion</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">-0.50</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Exclusion</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">Exclusion</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">Exclusion</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">-0.50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">Inclusion</td>
+<td style="text-align: right;">5.5</td>
+<td style="text-align: right;">5.25</td>
+<td style="text-align: right;">0.25</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">Inclusion</td>
+<td style="text-align: right;">4.5</td>
+<td style="text-align: right;">5.25</td>
+<td style="text-align: right;">-0.75</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">Inclusion</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">5.25</td>
+<td style="text-align: right;">0.75</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">Inclusion</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">5.25</td>
+<td style="text-align: right;">-0.25</td>
+</tr>
+</tbody>
+</table>
 </div>
-<p><strong>4. Should you let RStudio automatically restore the previous workspace at startup?</strong></p>
-<div id="radio_NIXBBKIPKV" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_NIXBBKIPKV" value=""> <span>It is recommended, because it speeds up startup.</span></label><label><input type="radio" autocomplete="off" name="radio_NIXBBKIPKV" value="answer"> <span>It is discouraged, because it silently restores stale objects from the previous session, which can cause bugs and obscure the source of the objects in the environment.</span></label><label><input type="radio" autocomplete="off" name="radio_NIXBBKIPKV" value=""> <span>It is the only way to preserve your data between sessions.</span></label><label><input type="radio" autocomplete="off" name="radio_NIXBBKIPKV" value=""> <span>It is required by reproducibility journals.</span></label>
 </div>
-<p><strong>5. What is the working directory?</strong></p>
-<div id="radio_EMWVBGMVSD" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_EMWVBGMVSD" value=""> <span>It is the folder where R itself was installed.</span></label><label><input type="radio" autocomplete="off" name="radio_EMWVBGMVSD" value="answer"> <span>It is the folder R uses as the implicit current location for file operations that do not specify a full path.</span></label><label><input type="radio" autocomplete="off" name="radio_EMWVBGMVSD" value=""> <span>It is the folder where RStudio stores user account information.</span></label><label><input type="radio" autocomplete="off" name="radio_EMWVBGMVSD" value=""> <span>It is the folder where R Markdown files are automatically rendered.</span></label>
+<p>Compared to Model 1, the residuals are noticeably smaller. Visually:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="14-mean-as-model_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="624"></p>
+</figure>
 </div>
-<p><strong>6. Should you use <code>setwd()</code> to set the working directory in your scripts?</strong></p>
-<div id="radio_UUFQADFOAY" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_UUFQADFOAY" value=""> <span>Yes, every script should begin with <code>setwd("C:/Users/...")</code> to be safe.</span></label><label><input type="radio" autocomplete="off" name="radio_UUFQADFOAY" value="answer"> <span>No: hard-coding paths makes the script tied to one computer; using an R project lets paths be relative to the project folder.</span></label><label><input type="radio" autocomplete="off" name="radio_UUFQADFOAY" value=""> <span>It is irrelevant; R does not have a working directory.</span></label><label><input type="radio" autocomplete="off" name="radio_UUFQADFOAY" value=""> <span>Only on Linux.</span></label>
 </div>
-<p><strong>7. How costly is it to restart the R session?</strong></p>
-<div id="radio_TKTRKYSEDZ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_TKTRKYSEDZ" value=""> <span>Restarting is destructive: you should restart only after a crash.</span></label><label><input type="radio" autocomplete="off" name="radio_TKTRKYSEDZ" value="answer"> <span>Restarting is essentially free (a fresh session takes about a second), and a regular habit of restarting catches problems early.</span></label><label><input type="radio" autocomplete="off" name="radio_TKTRKYSEDZ" value=""> <span>Restarting requires re-installing all packages each time.</span></label><label><input type="radio" autocomplete="off" name="radio_TKTRKYSEDZ" value=""> <span>Restarting is reserved for emergencies.</span></label>
 </div>
+<p>Each green crossbar is a group mean (the prediction for that condition); the grey segments are the residuals from that prediction. Compared to the picture for Model 1, the grey segments are much shorter.</p>
+<p>The sum of squared residuals confirms this numerically:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>SS_group <span class="ot">&lt;-</span> <span class="fu">sum</span>(cyberball<span class="sc">$</span>residual_group<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>SS_group</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># returns 2.75</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="comparing-the-two-models" class="level2" data-number="14.7">
+<h2 data-number="14.7" class="anchored" data-anchor-id="comparing-the-two-models"><span class="header-section-number">14.7</span> Comparing the two models</h2>
+<p>We can now place the two numbers side by side and ask what they tell us.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>SS_grand</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 12.875</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>SS_group</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2.75</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>SS_grand <span class="sc">-</span> SS_group</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 10.125</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>SS_group</code> is smaller than <code>SS_grand</code> by 10.125. Using the group means as predictions reduces the total squared error by 10.125 compared to using the grand mean. Expressed as a proportion of the original <em>SS</em>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>(SS_grand <span class="sc">-</span> SS_group) <span class="sc">/</span> SS_grand</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.786</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>About <strong>78.6 percent</strong> of the total squared error of the grand-mean model is accounted for by knowing the condition. In other words, condition explains a large fraction of the variability in self-esteem scores. The remaining 21.4 percent (the <em>SS</em> that survives in Model 2) is variability <em>within</em> each condition that the group-means model still cannot explain.</p>
+<p>This is exactly the decomposition you saw in Chapter 9 with the aggression data, where the analogous proportion was about 20 percent. The arithmetic is the same; the conclusion is more dramatic here because the Cyberball example is constructed to have a strong condition effect.</p>
+<p>A general fact, true in every case: <code>SS_group</code> is at most equal to <code>SS_grand</code>, never larger. Adding information (group membership) cannot make the fit worse. It can leave it unchanged (if condition is unrelated to the outcome, the two group means are nearly identical and the two models are nearly the same), but it cannot make it worse.</p>
+</section>
+<section id="from-ss-to-variance-and-standard-deviation" class="level2" data-number="14.8">
+<h2 data-number="14.8" class="anchored" data-anchor-id="from-ss-to-variance-and-standard-deviation"><span class="header-section-number">14.8</span> From SS to variance and standard deviation</h2>
+<p>A small notational aside that connects this chapter to ideas you already know. The <strong>variance</strong> of a variable, computed with <code>var()</code> in R, is essentially the sum of squared residuals from the mean, divided by <em>n</em> − 1:</p>
+<p><span class="math display">\[
+\text{var}(x) = \frac{\sum (x_i - \bar{x})^2}{n - 1} = \frac{SS_{\text{grand}}}{n - 1}.
+\]</span></p>
+<p>The <strong>standard deviation</strong> (<code>sd()</code>) is the square root of the variance. So when you computed <code>sd(aggression)</code> in Chapters 6 and 9, you were implicitly summarizing the residuals of the grand-mean model on the <code>aggression</code> variable. Variance and <em>SS</em> differ only by a denominator; the conceptual content is the same.</p>
+<p>Navarro (2018, Section 5.2) discusses variance and standard deviation in detail and lays out several alternatives (range, interquartile range). The squared-error perspective is one choice among several. It is the dominant choice in statistical modeling because it has nice mathematical properties (the mean is the value that minimizes <em>SS</em>, the variance decomposition is additive across nested models, and so on), but other choices are sometimes more appropriate (for example, the <em>absolute</em> deviation is more robust to outliers).</p>
+</section>
+<section id="the-trap-of-perfect-fit" class="level2" data-number="14.9">
+<h2 data-number="14.9" class="anchored" data-anchor-id="the-trap-of-perfect-fit"><span class="header-section-number">14.9</span> The trap of “perfect fit”</h2>
+<p>A reader paying close attention might ask: if smaller <em>SS</em> is better, why not use a model that predicts each participant’s exact score and achieves <em>SS</em> = 0?</p>
+<p>The answer is that such a model would not be a model at all. It would have one parameter per observation (eight numbers for eight participants), which is the same amount of information as the data itself. It does not simplify. It does not reveal any pattern. It cannot generalize: if you collected a new participant, the model would have no prediction for them. It is a perfect description of <em>this</em> sample and an empty description of anything else.</p>
+<p>A good model trades fit for simplicity. The grand-mean model uses 1 number (high simplicity, mediocre fit). The group-means model uses 2 numbers (still simple, much better fit). A model with 8 numbers achieves perfect fit but at the cost of becoming the data. Where to stop on this continuum is the central question of statistical modeling, and Chapter 19 will introduce it formally as the <strong>bias-variance trade-off</strong>. For now, what matters is the principle: complexity is not free.</p>
+</section>
+<section id="recalling-chapter-9" class="level2" data-number="14.10">
+<h2 data-number="14.10" class="anchored" data-anchor-id="recalling-chapter-9"><span class="header-section-number">14.10</span> Recalling Chapter 9</h2>
+<p>You did this same arithmetic in Chapter 9, on the larger <code>vgames_study</code> dataset. Recall the result: <code>SS_grand</code> on the <code>aggression</code> variable was approximately 307; <code>SS_group</code> (using the two condition means as predictions) was approximately 245; the proportion of squared error explained by condition was about 0.20. Now you can read that result with a slightly richer vocabulary: the grand-mean model fit a single number to 120 observations; the group-means model added the experimental condition as a second piece of information; the second model fit better, but a large fraction of the variability remained unexplained by condition.</p>
+<p>In the chapters that follow, we keep adding information. Chapter 15 replaces the categorical “which group are you in?” predictor with a continuous predictor (one number per participant, like <code>hours_weekly</code>), and replaces the two-number group-means model with a <strong>line</strong> that can take any value as its prediction. Chapter 17 adds multiple predictors simultaneously. Each step is more complex than the last, and each step (in general) reduces the residual <em>SS</em>.</p>
+</section>
+<section id="looking-ahead" class="level2" data-number="14.11">
+<h2 data-number="14.11" class="anchored" data-anchor-id="looking-ahead"><span class="header-section-number">14.11</span> Looking ahead</h2>
+<p>By now you have:</p>
+<ul>
+<li>a working definition of a residual,</li>
+<li>a working definition of model fit (sum of squared residuals),</li>
+<li>the experience of comparing two competing models on the same data and seeing the better one win.</li>
+</ul>
+<p>Chapter 15 takes the same logic and applies it to a continuous predictor: from a flat line at the mean to a sloped line that predicts a different value for each participant based on the value of some other variable. The arithmetic is more involved, but the framework is identical: data, model, predictions, residuals, fit.</p>
+</section>
+<section id="check-your-understanding" class="level2" data-number="14.12">
+<h2 data-number="14.12" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">14.12</span> Check your understanding</h2>
+<p><strong>1. What is a residual?</strong></p>
+<div id="radio_DRTMHEIBZM" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_DRTMHEIBZM" value=""> <span>A typo, mistake, or error in the data.</span></label><label><input type="radio" autocomplete="off" name="radio_DRTMHEIBZM" value="answer"> <span>The difference between an observed value and the value the model predicted for that observation: <code>residual = observed - predicted</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_DRTMHEIBZM" value=""> <span>The mean of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_DRTMHEIBZM" value=""> <span>The slope of a regression line.</span></label>
+</div>
+<p><strong>2. What does the sum of the residuals from the grand mean always equal?</strong></p>
+<div id="radio_MSUIIBFDTR" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MSUIIBFDTR" value=""> <span>It is the variance of the dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_MSUIIBFDTR" value=""> <span>It is the size of the dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_MSUIIBFDTR" value="answer"> <span>Zero (exactly, up to floating-point rounding). The mean is the value at which positive and negative residuals exactly cancel.</span></label><label><input type="radio" autocomplete="off" name="radio_MSUIIBFDTR" value=""> <span>It is positive if the mean is positive and negative if the mean is negative.</span></label>
+</div>
+<p><strong>3. Why do we square the residuals before summing them to measure model fit?</strong></p>
+<div id="radio_GFRWJVAYQE" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_GFRWJVAYQE" value=""> <span>Because squaring is faster to compute than summing absolute values.</span></label><label><input type="radio" autocomplete="off" name="radio_GFRWJVAYQE" value=""> <span>Because the squared values are always smaller than the original residuals.</span></label><label><input type="radio" autocomplete="off" name="radio_GFRWJVAYQE" value="answer"> <span>Because the residuals sum to zero, summing them gives no information about the size of the errors. Squaring first removes the sign so positive and negative residuals do not cancel, and also penalizes large residuals more than small ones.</span></label><label><input type="radio" autocomplete="off" name="radio_GFRWJVAYQE" value=""> <span>Because R cannot compute negative numbers.</span></label>
+</div>
+<p><strong>4. What is the relationship between <code>SS_grand</code> (sum of squared residuals from the grand mean) and <code>SS_group</code> (sum of squared residuals from the group means) on the same dataset?</strong></p>
+<div id="radio_CVCSLFJNBA" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_CVCSLFJNBA" value=""> <span>It is always larger than <code>SS_grand</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_CVCSLFJNBA" value=""> <span>It is exactly equal to <code>SS_grand</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_CVCSLFJNBA" value="answer"> <span>It is less than or equal to <code>SS_grand</code>. Using more information about each participant (their condition) cannot make the fit worse, only better or the same.</span></label><label><input type="radio" autocomplete="off" name="radio_CVCSLFJNBA" value=""> <span>It can be either smaller or larger than <code>SS_grand</code>, depending on the sample.</span></label>
+</div>
+<p><strong>5. What is the relationship between the variance, the standard deviation, and the residuals from the mean?</strong></p>
+<div id="radio_LTOBELIDLE" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_LTOBELIDLE" value=""> <span>Variance is the standard deviation divided by the mean.</span></label><label><input type="radio" autocomplete="off" name="radio_LTOBELIDLE" value=""> <span>Variance is the same as the sum of squared residuals.</span></label><label><input type="radio" autocomplete="off" name="radio_LTOBELIDLE" value="answer"> <span>Variance is the sum of squared residuals from the mean divided by <code>n - 1</code>. Standard deviation is the square root of the variance.</span></label><label><input type="radio" autocomplete="off" name="radio_LTOBELIDLE" value=""> <span>Standard deviation has no relationship to residuals.</span></label>
+</div>
+<p><strong>6. Why is a model that achieves <code>SS</code> = 0 by predicting each observation exactly (using one parameter per observation) not a desirable model?</strong></p>
+<div id="radio_JYIHLXPMSS" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_JYIHLXPMSS" value=""> <span>It is the ideal model and should be used whenever possible.</span></label><label><input type="radio" autocomplete="off" name="radio_JYIHLXPMSS" value="answer"> <span>It is not a useful model: it has one parameter per observation, does not simplify the data, and cannot generalize to new observations. Achieving zero error by predicting each observation exactly is a sign that the model has become the data, not a description of it.</span></label><label><input type="radio" autocomplete="off" name="radio_JYIHLXPMSS" value=""> <span>It is required by reproducibility guidelines.</span></label><label><input type="radio" autocomplete="off" name="radio_JYIHLXPMSS" value=""> <span>It only fails when there are very few observations.</span></label>
+</div>
+<p><strong>7. In this chapter’s Cyberball example, condition explained about 78.6% of the squared error. In Chapter 9, on the <code>vgames_study</code> data, condition explained about 20% of the squared error in aggression. Why is the proportion so different in the two examples?</strong></p>
+<div id="radio_DXRBZHNCXY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_DXRBZHNCXY" value=""> <span>The dataset is much smaller in this chapter.</span></label><label><input type="radio" autocomplete="off" name="radio_DXRBZHNCXY" value=""> <span>Random sampling variability.</span></label><label><input type="radio" autocomplete="off" name="radio_DXRBZHNCXY" value="answer"> <span>The Cyberball example was constructed to have a strong condition effect, so a large fraction of the variability is between groups. In the <code>vgames_study</code> data, the condition effect on aggression is real but smaller relative to the within-condition variability, so the proportion explained by condition is smaller.</span></label><label><input type="radio" autocomplete="off" name="radio_DXRBZHNCXY" value=""> <span>The arithmetic is different in the two cases.</span></label>
+</div>
+</section>
+<section id="references" class="level2" data-number="14.13">
+<h2 data-number="14.13" class="anchored" data-anchor-id="references"><span class="header-section-number">14.13</span> References</h2>
+<p>Navarro, D. J. (2018). <em>Learning statistics with R: A tutorial for psychology students and other beginners</em> (Version 0.6). <a href="https://learningstatisticswithr.com" class="uri">https://learningstatisticswithr.com</a></p>
+<p>Williams, K. D., &amp; Jarvis, B. (2006). Cyberball: A program for use in research on interpersonal ostracism and acceptance. <em>Behavior Research Methods</em>, <em>38</em>(1), 174-180.</p>
 
 
 </section>
@@ -1232,14 +1509,11 @@ window.onload = function() {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./03-files-and-environment.html" class="pagination-link" aria-label="Scripts, RData, projects, environments, and R Markdown">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Scripts, RData, projects, environments, and R Markdown</span></span>
+      <a href="./13-data-and-models.html" class="pagination-link" aria-label="Data and the idea of a statistical model">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data and the idea of a statistical model</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./05-objects-and-functions.html" class="pagination-link" aria-label="Objects and functions">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Objects and functions</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -1247,4 +1521,4 @@ window.onload = function() {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/04-projects-and-sessions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/14-mean-as-model.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

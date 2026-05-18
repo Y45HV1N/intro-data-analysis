@@ -1248,5 +1248,159 @@
       "Section 3: Statistical Modeling — Regressions",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Data and the idea of a statistical model</span>"
     ]
+  },
+  {
+    "objectID": "14-mean-as-model.html",
+    "href": "14-mean-as-model.html",
+    "title": "14  The mean as a model: residuals, fit, and comparing models",
+    "section": "",
+    "text": "14.1 Overview\nChapter 13 introduced the idea that the mean of a dataset can be thought of as the simplest possible statistical model: it makes one prediction (the mean value) for every observation. This chapter takes that idea and turns it into something you can compute in R. By the end of the chapter you will have:\nThis is the same logic you applied to the aggression scores at the end of Chapter 9 (where you compared SS_grand to SS_group on the vgames_study dataset). The new thing here is the framing: each calculation is the fit of a specific model, and choosing between models is a comparison of how well each fits.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>The mean as a model: residuals, fit, and comparing models</span>"
+    ]
+  },
+  {
+    "objectID": "14-mean-as-model.html#overview",
+    "href": "14-mean-as-model.html#overview",
+    "title": "14  The mean as a model: residuals, fit, and comparing models",
+    "section": "",
+    "text": "computed the residuals of two competing models on a small dataset,\nquantified each model’s overall miss with the sum of squared residuals,\nshown that a model that makes a separate prediction for each experimental condition fits better than a model that makes one prediction for everyone.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>The mean as a model: residuals, fit, and comparing models</span>"
+    ]
+  },
+  {
+    "objectID": "14-mean-as-model.html#residuals-what-the-model-misses",
+    "href": "14-mean-as-model.html#residuals-what-the-model-misses",
+    "title": "14  The mean as a model: residuals, fit, and comparing models",
+    "section": "14.2 Residuals: what the model misses",
+    "text": "14.2 Residuals: what the model misses\nFor any model that makes a prediction for each observation, the residual of an observation is the simple difference\n\\[\n\\text{residual} = \\text{observed} - \\text{predicted}.\n\\]\nIf a participant scored 6 on a 1-10 scale and the model predicted 5, the residual is +1: the participant scored one point above what the model expected. If a participant scored 3 and the model predicted 5, the residual is -2: the participant scored two points below the model’s prediction. The residual is positive when the model under-predicts, negative when it over-predicts, and zero when the model is exactly right.\nResiduals are the central diagnostic quantity in statistical modeling. The sizes of the residuals tell you how well the model fits; the patterns in the residuals (across rows, across groups, across time) tell you whether the model is missing something systematic.\nFor the mean-only model from Chapter 13, every prediction is the same value (the mean). So every residual is just the observation’s distance from the mean.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>The mean as a model: residuals, fit, and comparing models</span>"
+    ]
+  },
+  {
+    "objectID": "14-mean-as-model.html#a-small-worked-example",
+    "href": "14-mean-as-model.html#a-small-worked-example",
+    "title": "14  The mean as a model: residuals, fit, and comparing models",
+    "section": "14.3 A small worked example",
+    "text": "14.3 A small worked example\nThe rest of this chapter uses a small fictional dataset inspired by a classic social-psychology paradigm called Cyberball, in which participants play a virtual ball-tossing game with other players. In the exclusion condition, the other players stop throwing the ball to the participant after a while; in the inclusion condition, the ball continues to be shared with everyone. After the game, participants rate their self-esteem on a 1-7 scale. The question is whether being excluded lowers self-esteem.\nWe construct the dataset by hand so that you can verify every calculation that follows. Type these lines into your R script:\n\nlibrary(tidyverse)\n\ncyberball &lt;- data.frame(\n  participant = 1:8,\n  condition   = c(\"Exclusion\", \"Exclusion\", \"Exclusion\", \"Exclusion\",\n                  \"Inclusion\", \"Inclusion\", \"Inclusion\", \"Inclusion\"),\n  self_esteem = c(2.5, 3.0, 4.0, 2.5,\n                  5.5, 4.5, 6.0, 5.0)\n)\n\ncyberball\n\nEight participants, four per condition, one self-esteem score per participant. We will fit two competing models to these scores and compare how well each one fits.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>The mean as a model: residuals, fit, and comparing models</span>"
+    ]
+  },
+  {
+    "objectID": "14-mean-as-model.html#model-1-the-grand-mean-model",
+    "href": "14-mean-as-model.html#model-1-the-grand-mean-model",
+    "title": "14  The mean as a model: residuals, fit, and comparing models",
+    "section": "14.4 Model 1: the grand-mean model",
+    "text": "14.4 Model 1: the grand-mean model\nThe simplest model says: ignore which condition each participant was in; predict the grand mean of self_esteem for everyone.\nCompute the grand mean and store it. Then use mutate() (from Chapter 9) to add a column with the model’s prediction and a column with the residual:\n\ngrand_mean &lt;- mean(cyberball$self_esteem)\ngrand_mean\n# returns 4.125\n\ncyberball &lt;- cyberball |&gt;\n  mutate(predicted_grand = grand_mean,\n         residual_grand  = self_esteem - predicted_grand)\n\ncyberball\n\nThe resulting table contains the original three columns plus two new ones: every row has the same predicted_grand (4.125), and residual_grand is each participant’s distance from that single prediction.\n\n\n\n\n\nparticipant\ncondition\nself_esteem\npredicted_grand\nresidual_grand\n\n\n\n\n1\nExclusion\n2.5\n4.125\n-1.625\n\n\n2\nExclusion\n3.0\n4.125\n-1.125\n\n\n3\nExclusion\n4.0\n4.125\n-0.125\n\n\n4\nExclusion\n2.5\n4.125\n-1.625\n\n\n5\nInclusion\n5.5\n4.125\n1.375\n\n\n6\nInclusion\n4.5\n4.125\n0.375\n\n\n7\nInclusion\n6.0\n4.125\n1.875\n\n\n8\nInclusion\n5.0\n4.125\n0.875\n\n\n\n\n\nTwo checks on this table.\nThe residuals sum to zero. This is always true of residuals from the mean: the mean is the value at which positive and negative deviations exactly cancel.\n\nsum(cyberball$residual_grand)\n# returns approximately 0\n\nThe residuals are not small. Some participants are more than 1.5 points away from the grand-mean prediction. Visually:\n\n\n\n\n\n\n\n\n\nEach grey segment shows how far one participant’s actual score is from the model’s single prediction (the red line). The grey segments are the residuals. Visually, they are substantial, especially for the inclusion participants who all sit well above the grand mean and for several exclusion participants who sit well below.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>The mean as a model: residuals, fit, and comparing models</span>"
+    ]
+  },
+  {
+    "objectID": "14-mean-as-model.html#why-we-cannot-just-sum-the-residuals-squaring",
+    "href": "14-mean-as-model.html#why-we-cannot-just-sum-the-residuals-squaring",
+    "title": "14  The mean as a model: residuals, fit, and comparing models",
+    "section": "14.5 Why we cannot just sum the residuals: squaring",
+    "text": "14.5 Why we cannot just sum the residuals: squaring\nWe need a single number that quantifies how well the model fits, and the residuals are the obvious building blocks. But, as just noted, the residuals always sum to zero. The positive and negative deviations cancel out, and the sum tells you nothing about the size of the errors.\nThe standard fix is to square each residual before summing:\n\\[\n\\text{SS} = \\sum_{i=1}^{n} (\\text{observed}_i - \\text{predicted}_i)^2.\n\\]\nThis is the sum of squared residuals (or sum of squared errors), often abbreviated SS. You met it in Chapter 9 when you computed SS_grand and SS_group on the aggression data.\nTwo reasons squaring is the standard choice:\n\nSquaring removes the sign. Negative and positive residuals both contribute positively to the sum, so the cancellation problem disappears.\nSquaring penalizes large residuals more than small ones. A residual of 2 contributes 4 to the SS; a residual of 1 contributes only 1. Being off by a lot is treated as much worse than being off by a little. For most modeling problems in psychology this matches the kind of error you want to minimize.\n\nIn R, on the residuals we already computed:\n\nSS_grand &lt;- sum(cyberball$residual_grand^2)\nSS_grand\n# returns 12.875\n\nThe number 12.875 is the total squared error of the grand-mean model on these eight observations. It has no natural interpretation in isolation; it is the comparison to the SS of another model that gives it meaning.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>The mean as a model: residuals, fit, and comparing models</span>"
+    ]
+  },
+  {
+    "objectID": "14-mean-as-model.html#model-2-the-group-means-model",
+    "href": "14-mean-as-model.html#model-2-the-group-means-model",
+    "title": "14  The mean as a model: residuals, fit, and comparing models",
+    "section": "14.6 Model 2: the group-means model",
+    "text": "14.6 Model 2: the group-means model\nA slightly less naive model uses two predictions instead of one: predict the mean of the exclusion condition for exclusion participants, and the mean of the inclusion condition for inclusion participants. The model is more complex (two numbers instead of one), and it uses information the previous model ignored (which condition each participant was in).\nUsing the group_by() + mutate() + ungroup() pattern from Chapter 9 (the same pattern you used to add a per-group statistic as a column):\n\ncyberball &lt;- cyberball |&gt;\n  group_by(condition) |&gt;\n  mutate(predicted_group = mean(self_esteem)) |&gt;\n  ungroup() |&gt;\n  mutate(residual_group = self_esteem - predicted_group)\n\ncyberball\n\nThe exclusion group’s mean is 3.00 and the inclusion group’s mean is 5.25, so predicted_group is 3.00 for the first four rows and 5.25 for the last four. The residuals are each participant’s distance from their own condition mean.\n\n\n\n\n\nparticipant\ncondition\nself_esteem\npredicted_group\nresidual_group\n\n\n\n\n1\nExclusion\n2.5\n3.00\n-0.50\n\n\n2\nExclusion\n3.0\n3.00\n0.00\n\n\n3\nExclusion\n4.0\n3.00\n1.00\n\n\n4\nExclusion\n2.5\n3.00\n-0.50\n\n\n5\nInclusion\n5.5\n5.25\n0.25\n\n\n6\nInclusion\n4.5\n5.25\n-0.75\n\n\n7\nInclusion\n6.0\n5.25\n0.75\n\n\n8\nInclusion\n5.0\n5.25\n-0.25\n\n\n\n\n\nCompared to Model 1, the residuals are noticeably smaller. Visually:\n\n\n\n\n\n\n\n\n\nEach green crossbar is a group mean (the prediction for that condition); the grey segments are the residuals from that prediction. Compared to the picture for Model 1, the grey segments are much shorter.\nThe sum of squared residuals confirms this numerically:\n\nSS_group &lt;- sum(cyberball$residual_group^2)\nSS_group\n# returns 2.75",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>The mean as a model: residuals, fit, and comparing models</span>"
+    ]
+  },
+  {
+    "objectID": "14-mean-as-model.html#comparing-the-two-models",
+    "href": "14-mean-as-model.html#comparing-the-two-models",
+    "title": "14  The mean as a model: residuals, fit, and comparing models",
+    "section": "14.7 Comparing the two models",
+    "text": "14.7 Comparing the two models\nWe can now place the two numbers side by side and ask what they tell us.\n\nSS_grand\n# 12.875\nSS_group\n# 2.75\nSS_grand - SS_group\n# 10.125\n\nSS_group is smaller than SS_grand by 10.125. Using the group means as predictions reduces the total squared error by 10.125 compared to using the grand mean. Expressed as a proportion of the original SS:\n\n(SS_grand - SS_group) / SS_grand\n# 0.786\n\nAbout 78.6 percent of the total squared error of the grand-mean model is accounted for by knowing the condition. In other words, condition explains a large fraction of the variability in self-esteem scores. The remaining 21.4 percent (the SS that survives in Model 2) is variability within each condition that the group-means model still cannot explain.\nThis is exactly the decomposition you saw in Chapter 9 with the aggression data, where the analogous proportion was about 20 percent. The arithmetic is the same; the conclusion is more dramatic here because the Cyberball example is constructed to have a strong condition effect.\nA general fact, true in every case: SS_group is at most equal to SS_grand, never larger. Adding information (group membership) cannot make the fit worse. It can leave it unchanged (if condition is unrelated to the outcome, the two group means are nearly identical and the two models are nearly the same), but it cannot make it worse.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>The mean as a model: residuals, fit, and comparing models</span>"
+    ]
+  },
+  {
+    "objectID": "14-mean-as-model.html#from-ss-to-variance-and-standard-deviation",
+    "href": "14-mean-as-model.html#from-ss-to-variance-and-standard-deviation",
+    "title": "14  The mean as a model: residuals, fit, and comparing models",
+    "section": "14.8 From SS to variance and standard deviation",
+    "text": "14.8 From SS to variance and standard deviation\nA small notational aside that connects this chapter to ideas you already know. The variance of a variable, computed with var() in R, is essentially the sum of squared residuals from the mean, divided by n − 1:\n\\[\n\\text{var}(x) = \\frac{\\sum (x_i - \\bar{x})^2}{n - 1} = \\frac{SS_{\\text{grand}}}{n - 1}.\n\\]\nThe standard deviation (sd()) is the square root of the variance. So when you computed sd(aggression) in Chapters 6 and 9, you were implicitly summarizing the residuals of the grand-mean model on the aggression variable. Variance and SS differ only by a denominator; the conceptual content is the same.\nNavarro (2018, Section 5.2) discusses variance and standard deviation in detail and lays out several alternatives (range, interquartile range). The squared-error perspective is one choice among several. It is the dominant choice in statistical modeling because it has nice mathematical properties (the mean is the value that minimizes SS, the variance decomposition is additive across nested models, and so on), but other choices are sometimes more appropriate (for example, the absolute deviation is more robust to outliers).",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>The mean as a model: residuals, fit, and comparing models</span>"
+    ]
+  },
+  {
+    "objectID": "14-mean-as-model.html#the-trap-of-perfect-fit",
+    "href": "14-mean-as-model.html#the-trap-of-perfect-fit",
+    "title": "14  The mean as a model: residuals, fit, and comparing models",
+    "section": "14.9 The trap of “perfect fit”",
+    "text": "14.9 The trap of “perfect fit”\nA reader paying close attention might ask: if smaller SS is better, why not use a model that predicts each participant’s exact score and achieves SS = 0?\nThe answer is that such a model would not be a model at all. It would have one parameter per observation (eight numbers for eight participants), which is the same amount of information as the data itself. It does not simplify. It does not reveal any pattern. It cannot generalize: if you collected a new participant, the model would have no prediction for them. It is a perfect description of this sample and an empty description of anything else.\nA good model trades fit for simplicity. The grand-mean model uses 1 number (high simplicity, mediocre fit). The group-means model uses 2 numbers (still simple, much better fit). A model with 8 numbers achieves perfect fit but at the cost of becoming the data. Where to stop on this continuum is the central question of statistical modeling, and Chapter 19 will introduce it formally as the bias-variance trade-off. For now, what matters is the principle: complexity is not free.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>The mean as a model: residuals, fit, and comparing models</span>"
+    ]
+  },
+  {
+    "objectID": "14-mean-as-model.html#recalling-chapter-9",
+    "href": "14-mean-as-model.html#recalling-chapter-9",
+    "title": "14  The mean as a model: residuals, fit, and comparing models",
+    "section": "14.10 Recalling Chapter 9",
+    "text": "14.10 Recalling Chapter 9\nYou did this same arithmetic in Chapter 9, on the larger vgames_study dataset. Recall the result: SS_grand on the aggression variable was approximately 307; SS_group (using the two condition means as predictions) was approximately 245; the proportion of squared error explained by condition was about 0.20. Now you can read that result with a slightly richer vocabulary: the grand-mean model fit a single number to 120 observations; the group-means model added the experimental condition as a second piece of information; the second model fit better, but a large fraction of the variability remained unexplained by condition.\nIn the chapters that follow, we keep adding information. Chapter 15 replaces the categorical “which group are you in?” predictor with a continuous predictor (one number per participant, like hours_weekly), and replaces the two-number group-means model with a line that can take any value as its prediction. Chapter 17 adds multiple predictors simultaneously. Each step is more complex than the last, and each step (in general) reduces the residual SS.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>The mean as a model: residuals, fit, and comparing models</span>"
+    ]
+  },
+  {
+    "objectID": "14-mean-as-model.html#looking-ahead",
+    "href": "14-mean-as-model.html#looking-ahead",
+    "title": "14  The mean as a model: residuals, fit, and comparing models",
+    "section": "14.11 Looking ahead",
+    "text": "14.11 Looking ahead\nBy now you have:\n\na working definition of a residual,\na working definition of model fit (sum of squared residuals),\nthe experience of comparing two competing models on the same data and seeing the better one win.\n\nChapter 15 takes the same logic and applies it to a continuous predictor: from a flat line at the mean to a sloped line that predicts a different value for each participant based on the value of some other variable. The arithmetic is more involved, but the framework is identical: data, model, predictions, residuals, fit.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>The mean as a model: residuals, fit, and comparing models</span>"
+    ]
+  },
+  {
+    "objectID": "14-mean-as-model.html#check-your-understanding",
+    "href": "14-mean-as-model.html#check-your-understanding",
+    "title": "14  The mean as a model: residuals, fit, and comparing models",
+    "section": "14.12 Check your understanding",
+    "text": "14.12 Check your understanding\n1. What is a residual?\n\n A typo, mistake, or error in the data. The difference between an observed value and the value the model predicted for that observation: residual = observed - predicted. The mean of the data. The slope of a regression line.\n\n2. What does the sum of the residuals from the grand mean always equal?\n\n It is the variance of the dataset. It is the size of the dataset. Zero (exactly, up to floating-point rounding). The mean is the value at which positive and negative residuals exactly cancel. It is positive if the mean is positive and negative if the mean is negative.\n\n3. Why do we square the residuals before summing them to measure model fit?\n\n Because squaring is faster to compute than summing absolute values. Because the squared values are always smaller than the original residuals. Because the residuals sum to zero, summing them gives no information about the size of the errors. Squaring first removes the sign so positive and negative residuals do not cancel, and also penalizes large residuals more than small ones. Because R cannot compute negative numbers.\n\n4. What is the relationship between SS_grand (sum of squared residuals from the grand mean) and SS_group (sum of squared residuals from the group means) on the same dataset?\n\n It is always larger than SS_grand. It is exactly equal to SS_grand. It is less than or equal to SS_grand. Using more information about each participant (their condition) cannot make the fit worse, only better or the same. It can be either smaller or larger than SS_grand, depending on the sample.\n\n5. What is the relationship between the variance, the standard deviation, and the residuals from the mean?\n\n Variance is the standard deviation divided by the mean. Variance is the same as the sum of squared residuals. Variance is the sum of squared residuals from the mean divided by n - 1. Standard deviation is the square root of the variance. Standard deviation has no relationship to residuals.\n\n6. Why is a model that achieves SS = 0 by predicting each observation exactly (using one parameter per observation) not a desirable model?\n\n It is the ideal model and should be used whenever possible. It is not a useful model: it has one parameter per observation, does not simplify the data, and cannot generalize to new observations. Achieving zero error by predicting each observation exactly is a sign that the model has become the data, not a description of it. It is required by reproducibility guidelines. It only fails when there are very few observations.\n\n7. In this chapter’s Cyberball example, condition explained about 78.6% of the squared error. In Chapter 9, on the vgames_study data, condition explained about 20% of the squared error in aggression. Why is the proportion so different in the two examples?\n\n The dataset is much smaller in this chapter. Random sampling variability. The Cyberball example was constructed to have a strong condition effect, so a large fraction of the variability is between groups. In the vgames_study data, the condition effect on aggression is real but smaller relative to the within-condition variability, so the proportion explained by condition is smaller. The arithmetic is different in the two cases.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>The mean as a model: residuals, fit, and comparing models</span>"
+    ]
+  },
+  {
+    "objectID": "14-mean-as-model.html#references",
+    "href": "14-mean-as-model.html#references",
+    "title": "14  The mean as a model: residuals, fit, and comparing models",
+    "section": "14.13 References",
+    "text": "14.13 References\nNavarro, D. J. (2018). Learning statistics with R: A tutorial for psychology students and other beginners (Version 0.6). https://learningstatisticswithr.com\nWilliams, K. D., & Jarvis, B. (2006). Cyberball: A program for use in research on interpersonal ostracism and acceptance. Behavior Research Methods, 38(1), 174-180.",
+    "crumbs": [
+      "Section 3: Statistical Modeling — Regressions",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>The mean as a model: residuals, fit, and comparing models</span>"
+    ]
   }
 ]
