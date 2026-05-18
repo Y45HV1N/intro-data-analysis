@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>8&nbsp; Data wrangling: basics – Understanding and analyzing social and behavioral data</title>
+<title>20&nbsp; Diagnostics, model fit, and the limits of your model – Understanding and analyzing social and behavioral data</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -68,8 +68,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./09-tidyverse-and-descriptives.html" rel="next">
-<link href="./07-recap.html" rel="prev">
+<link href="./19-bias-variance-assumptions.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -112,6 +111,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="include/webex.css">
 <link rel="stylesheet" href="include/custom.css">
@@ -288,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08-data-wrangling-basics.html">Section 2: Manipulating and Visualizing Data</a></li><li class="breadcrumb-item"><a href="./08-data-wrangling-basics.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data wrangling: basics</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./13-data-and-models.html">Section 3: Statistical Modeling — Regressions</a></li><li class="breadcrumb-item"><a href="./20-diagnostics-and-limits.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Diagnostics, model fit, and the limits of your model</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -387,7 +415,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./08-data-wrangling-basics.html" class="sidebar-item-text sidebar-link active">
+  <a href="./08-data-wrangling-basics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data wrangling: basics</span></span></a>
   </div>
 </li>
@@ -470,7 +498,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./20-diagnostics-and-limits.html" class="sidebar-item-text sidebar-link">
+  <a href="./20-diagnostics-and-limits.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Diagnostics, model fit, and the limits of your model</span></span></a>
   </div>
 </li>
@@ -486,30 +514,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">8.1</span> Overview</a></li>
-  <li><a href="#the-example-dataset" id="toc-the-example-dataset" class="nav-link" data-scroll-target="#the-example-dataset"><span class="header-section-number">8.2</span> The example dataset</a>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">20.1</span> Overview</a></li>
+  <li><a href="#diagnostic-plots-in-r" id="toc-diagnostic-plots-in-r" class="nav-link" data-scroll-target="#diagnostic-plots-in-r"><span class="header-section-number">20.2</span> Diagnostic plots in R</a>
   <ul class="collapse">
-  <li><a href="#getting-the-dataset" id="toc-getting-the-dataset" class="nav-link" data-scroll-target="#getting-the-dataset"><span class="header-section-number">8.2.1</span> Getting the dataset</a></li>
+  <li><a href="#plot-1-residuals-vs-fitted" id="toc-plot-1-residuals-vs-fitted" class="nav-link" data-scroll-target="#plot-1-residuals-vs-fitted"><span class="header-section-number">20.2.1</span> Plot 1: Residuals vs Fitted</a></li>
+  <li><a href="#plot-2-normal-q-q" id="toc-plot-2-normal-q-q" class="nav-link" data-scroll-target="#plot-2-normal-q-q"><span class="header-section-number">20.2.2</span> Plot 2: Normal Q-Q</a></li>
+  <li><a href="#plot-3-scale-location" id="toc-plot-3-scale-location" class="nav-link" data-scroll-target="#plot-3-scale-location"><span class="header-section-number">20.2.3</span> Plot 3: Scale-Location</a></li>
+  <li><a href="#plot-4-residuals-vs-leverage" id="toc-plot-4-residuals-vs-leverage" class="nav-link" data-scroll-target="#plot-4-residuals-vs-leverage"><span class="header-section-number">20.2.4</span> Plot 4: Residuals vs Leverage</a></li>
   </ul></li>
-  <li><a href="#loading-the-data" id="toc-loading-the-data" class="nav-link" data-scroll-target="#loading-the-data"><span class="header-section-number">8.3</span> Loading the data</a></li>
-  <li><a href="#accessing-one-variable-the-dollar-sign" id="toc-accessing-one-variable-the-dollar-sign" class="nav-link" data-scroll-target="#accessing-one-variable-the-dollar-sign"><span class="header-section-number">8.4</span> Accessing one variable: the dollar sign <code>$</code></a></li>
-  <li><a href="#creating-new-variables" id="toc-creating-new-variables" class="nav-link" data-scroll-target="#creating-new-variables"><span class="header-section-number">8.5</span> Creating new variables</a></li>
-  <li><a href="#subsetting-rows-filtering-by-a-logical-condition" id="toc-subsetting-rows-filtering-by-a-logical-condition" class="nav-link" data-scroll-target="#subsetting-rows-filtering-by-a-logical-condition"><span class="header-section-number">8.6</span> Subsetting rows: filtering by a logical condition</a></li>
-  <li><a href="#subsetting-columns-by-name" id="toc-subsetting-columns-by-name" class="nav-link" data-scroll-target="#subsetting-columns-by-name"><span class="header-section-number">8.7</span> Subsetting columns: by name</a></li>
-  <li><a href="#combining-filter-rows-and-select-columns-at-once" id="toc-combining-filter-rows-and-select-columns-at-once" class="nav-link" data-scroll-target="#combining-filter-rows-and-select-columns-at-once"><span class="header-section-number">8.8</span> Combining: filter rows and select columns at once</a></li>
-  <li><a href="#computing-summaries-by-group" id="toc-computing-summaries-by-group" class="nav-link" data-scroll-target="#computing-summaries-by-group"><span class="header-section-number">8.9</span> Computing summaries by group</a></li>
-  <li><a href="#looking-ahead-the-mean-as-a-model" id="toc-looking-ahead-the-mean-as-a-model" class="nav-link" data-scroll-target="#looking-ahead-the-mean-as-a-model"><span class="header-section-number">8.10</span> Looking ahead: the mean as a model</a></li>
-  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">8.11</span> Check your understanding</a></li>
+  <li><a href="#what-to-do-when-an-assumption-is-violated" id="toc-what-to-do-when-an-assumption-is-violated" class="nav-link" data-scroll-target="#what-to-do-when-an-assumption-is-violated"><span class="header-section-number">20.3</span> What to do when an assumption is violated</a></li>
+  <li><a href="#comparing-models-r-squared-adjusted-r-squared-and-beyond" id="toc-comparing-models-r-squared-adjusted-r-squared-and-beyond" class="nav-link" data-scroll-target="#comparing-models-r-squared-adjusted-r-squared-and-beyond"><span class="header-section-number">20.4</span> Comparing models: R-squared, adjusted R-squared, and beyond</a></li>
+  <li><a href="#when-the-linear-model-is-not-enough" id="toc-when-the-linear-model-is-not-enough" class="nav-link" data-scroll-target="#when-the-linear-model-is-not-enough"><span class="header-section-number">20.5</span> When the linear model is not enough</a></li>
+  <li><a href="#closing-section-3" id="toc-closing-section-3" class="nav-link" data-scroll-target="#closing-section-3"><span class="header-section-number">20.6</span> Closing Section 3</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">20.7</span> Check your understanding</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">20.8</span> References</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/08-data-wrangling-basics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/20-diagnostics-and-limits.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08-data-wrangling-basics.html">Section 2: Manipulating and Visualizing Data</a></li><li class="breadcrumb-item"><a href="./08-data-wrangling-basics.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data wrangling: basics</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./13-data-and-models.html">Section 3: Statistical Modeling — Regressions</a></li><li class="breadcrumb-item"><a href="./20-diagnostics-and-limits.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Diagnostics, model fit, and the limits of your model</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data wrangling: basics</span></h1>
+<h1 class="title"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Diagnostics, model fit, and the limits of your model</span></h1>
 </div>
 
 
@@ -526,229 +554,268 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="overview" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">8.1</span> Overview</h2>
-<p>Section 1 ended with you loading a real data file into R with <code>read.csv()</code>. The result was a data frame, and you saw how to inspect it (<code>head</code>, <code>str</code>, <code>summary</code>, <code>nrow</code>, <code>ncol</code>). What you have not yet done is <em>manipulate</em> the data: pull out specific columns, filter rows that meet a condition, create derived variables, or compute summaries for subgroups.</p>
-<p>This chapter covers those operations. Together they are usually called <strong>data wrangling</strong>: the work of turning a raw data file into the specific subsets and summaries you need to actually answer a research question. Good data wrangling is the foundation for everything that follows. Most of the time you spend on a real analysis is spent here, not on the statistical model itself.</p>
-<p>We will work with one dataset throughout the chapter, and continue to use it in the chapters that follow.</p>
+<section id="overview" class="level2" data-number="20.1">
+<h2 data-number="20.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">20.1</span> Overview</h2>
+<p>Chapter 19 introduced the bias-variance trade-off and the four LINE assumptions of OLS regression. This chapter takes the diagnostic side and makes it practical in R, then closes Section 3 by surveying when the linear model is not enough and where to go beyond it.</p>
+<p>By the end of the chapter you will:</p>
+<ul>
+<li>produce the four standard diagnostic plots that R generates automatically with <code>plot(model)</code>,</li>
+<li>read each plot and recognize the signature of each kind of assumption violation,</li>
+<li>compare models with <code>R-squared</code> and <code>adjusted R-squared</code>, and use the latter to penalize complexity,</li>
+<li>recognize the main extensions of the linear model (nonlinear, multilevel, latent-variable, categorical-outcome, Bayesian, robust), and know which kind of problem each one solves.</li>
+</ul>
+<p>This chapter is short on new prose and long on visuals. The point is to see what each diagnostic looks like and how to act on it.</p>
 </section>
-<section id="the-example-dataset" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="the-example-dataset"><span class="header-section-number">8.2</span> The example dataset</h2>
-<p>The dataset is called <code>vgames_study.csv</code>. It comes from a (fictional) study on the relationship between video-game playing habits and self-reported aggression. It has 120 participants and eight variables.</p>
+<section id="diagnostic-plots-in-r" class="level2" data-number="20.2">
+<h2 data-number="20.2" class="anchored" data-anchor-id="diagnostic-plots-in-r"><span class="header-section-number">20.2</span> Diagnostic plots in R</h2>
+<p>You fit a model with <code>lm()</code>, and then you check it. R provides four diagnostic plots automatically when you call <code>plot()</code> on a model object. In an interactive session, R will display them one at a time; in a script you usually want to see them together:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> trait_hostility <span class="sc">*</span> condition, <span class="at">data =</span> data)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))   <span class="co"># 2x2 layout</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))   <span class="co"># reset</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The four plots produced are:</p>
+<ol type="1">
+<li><strong>Residuals vs Fitted.</strong> Linearity and homoscedasticity.</li>
+<li><strong>Normal Q-Q.</strong> Normality of residuals.</li>
+<li><strong>Scale-Location.</strong> Another view of homoscedasticity.</li>
+<li><strong>Residuals vs Leverage.</strong> Influential observations.</li>
+</ol>
+<p>In what follows we walk through each one, with code you can run on your own.</p>
+<section id="plot-1-residuals-vs-fitted" class="level3" data-number="20.2.1">
+<h3 data-number="20.2.1" class="anchored" data-anchor-id="plot-1-residuals-vs-fitted"><span class="header-section-number">20.2.1</span> Plot 1: Residuals vs Fitted</h3>
+<p>This plot displays the residual of each observation (vertical axis) against the model’s predicted value for that observation (horizontal axis). It is the workhorse of diagnostic plots, because two of the four LINE assumptions show up here:</p>
+<ul>
+<li><strong>Linearity</strong>: the residuals should scatter randomly around zero, with no systematic curve. A U-shape or inverted-U indicates a nonlinear relationship the model is missing.</li>
+<li><strong>Homoscedasticity</strong>: the spread of the residuals should be roughly constant across the range of fitted values. A fan or cone shape indicates heteroscedasticity.</li>
+</ul>
+<p>On our <code>vgames</code> data, with an interaction model:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="20-diagnostics-and-limits_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The red curve is a smooth trend through the residuals. A nearly flat red curve at zero, like above, is what you want. A clear curve in the red line would indicate a linearity problem.</p>
+</section>
+<section id="plot-2-normal-q-q" class="level3" data-number="20.2.2">
+<h3 data-number="20.2.2" class="anchored" data-anchor-id="plot-2-normal-q-q"><span class="header-section-number">20.2.2</span> Plot 2: Normal Q-Q</h3>
+<p>A Q-Q plot orders the residuals from smallest to largest and compares them to the quantiles they <em>would</em> have if they were perfectly normally distributed. The plot is essentially a scatter where each point is one residual: the horizontal coordinate is what the residual would be under perfect normality, and the vertical coordinate is what the residual actually is.</p>
+<p>Points that fall along the diagonal mean the empirical and theoretical quantiles match, that is, the residuals are approximately normal. Points that curve away from the diagonal indicate deviation from normality, usually at the tails (heavy tails, light tails, or asymmetry).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="20-diagnostics-and-limits_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The points sit close to the diagonal across the middle and most of the tails, with small deviations at the very extremes (typical and usually fine). Approximately normal.</p>
+</section>
+<section id="plot-3-scale-location" class="level3" data-number="20.2.3">
+<h3 data-number="20.2.3" class="anchored" data-anchor-id="plot-3-scale-location"><span class="header-section-number">20.2.3</span> Plot 3: Scale-Location</h3>
+<p>This is the residuals-vs-fitted plot transformed slightly: instead of raw residuals, the vertical axis shows the square root of the absolute standardized residuals. The transformation makes any change in the <em>spread</em> of the residuals easier to spot.</p>
+<p>A horizontal smooth line with constant spread above and below it indicates homoscedasticity. An upward-sloping smooth line indicates heteroscedasticity (spread increases with fitted value); a downward slope means the opposite.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="20-diagnostics-and-limits_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A near-flat red line is what we want. A clear upward or downward slope would indicate heteroscedasticity.</p>
+</section>
+<section id="plot-4-residuals-vs-leverage" class="level3" data-number="20.2.4">
+<h3 data-number="20.2.4" class="anchored" data-anchor-id="plot-4-residuals-vs-leverage"><span class="header-section-number">20.2.4</span> Plot 4: Residuals vs Leverage</h3>
+<p>The first three plots look at the residuals to diagnose general patterns. The fourth plot is different: it identifies particular observations that have an unusually large effect on the fit of the model, called <strong>influential observations</strong>.</p>
+<p>Two ingredients are at work. <strong>Leverage</strong> measures how unusual an observation is in its predictor values: an observation far from the mean of the predictors has high leverage, because changing it would have a large impact on the slope. <strong>Residual</strong> measures whether the model fits that observation well. An observation with high leverage <em>and</em> a large residual is the dangerous combination; it can dominate the OLS estimate and pull the line away from where it would otherwise sit.</p>
+<p>R draws <strong>Cook’s distance</strong> contours on this plot (the dashed lines). Points outside the 0.5 or 1 contour are usually worth examining.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="20-diagnostics-and-limits_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In our data, no single observation has both high leverage and a very large residual. There is no point that dominates the fit. In a different dataset, an obvious outlier in the upper-right or lower-right corner of this plot would warrant a closer look.</p>
+</section>
+</section>
+<section id="what-to-do-when-an-assumption-is-violated" class="level2" data-number="20.3">
+<h2 data-number="20.3" class="anchored" data-anchor-id="what-to-do-when-an-assumption-is-violated"><span class="header-section-number">20.3</span> What to do when an assumption is violated</h2>
+<p>A short, practical decision tree:</p>
+<ul>
+<li><strong>Linearity violation.</strong> Try a polynomial term (e.g., <code>I(x^2)</code>), a log transformation of the predictor or outcome, or a generalized additive model (GAM) using the <code>mgcv</code> package.</li>
+<li><strong>Homoscedasticity violation.</strong> Use robust (heteroscedasticity-consistent) standard errors via the <code>sandwich</code> package, transform the outcome (often <code>log</code>), or use generalized least squares.</li>
+<li><strong>Normality violation, small sample.</strong> Consider bootstrapping the standard errors, or transforming the outcome.</li>
+<li><strong>Normality violation, large sample.</strong> Often tolerable for estimation. Be cautious with inference for extreme tails.</li>
+<li><strong>Independence violation.</strong> Switch to a model that respects the clustering, typically a <strong>multilevel model</strong> (the <code>lme4</code> package; <code>lmer()</code> is the most common function).</li>
+<li><strong>Influential observations.</strong> Examine the cases individually. If they reflect data-entry errors, correct them. If they reflect real but unusual participants, report results with and without the cases.</li>
+</ul>
+<p>The general advice: <strong>assumption violations are reasons to think more carefully, not reasons to panic.</strong> A mild violation is a reason to acknowledge a limitation in your report. A serious violation is a reason to use a different model.</p>
+</section>
+<section id="comparing-models-r-squared-adjusted-r-squared-and-beyond" class="level2" data-number="20.4">
+<h2 data-number="20.4" class="anchored" data-anchor-id="comparing-models-r-squared-adjusted-r-squared-and-beyond"><span class="header-section-number">20.4</span> Comparing models: R-squared, adjusted R-squared, and beyond</h2>
+<p>Once you have several candidate models, how do you compare them?</p>
+<p>The simplest comparison is by <strong>R-squared</strong>: the proportion of variance explained by each. As Chapter 19 noted, R-squared (almost) always goes up when you add predictors, even useless ones, which makes it a poor tool for comparing models with different numbers of predictors.</p>
+<p><strong>Adjusted R-squared</strong> penalizes each additional predictor. The formula is</p>
+<p><span class="math display">\[
+R^2_{\text{adj}} = 1 - (1 - R^2) \cdot \frac{n - 1}{n - p - 1},
+\]</span></p>
+<p>where <span class="math inline">\(n\)</span> is the number of observations and <span class="math inline">\(p\)</span> is the number of predictors. With more predictors, the denominator shrinks, the correction grows, and adjusted R-squared falls relative to R-squared. Only a predictor that improves the fit more than expected by chance will increase adjusted R-squared.</p>
+<p>Looking at the models we have built on <code>vgames_study.csv</code>, side by side:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> hours_weekly, <span class="at">data =</span> data)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> trait_hostility, <span class="at">data =</span> data)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> hours_weekly <span class="sc">+</span> trait_hostility, <span class="at">data =</span> data)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>m4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> trait_hostility <span class="sc">*</span> condition, <span class="at">data =</span> data)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>summary_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">Model =</span> <span class="fu">c</span>(<span class="st">"hours_weekly"</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"trait_hostility"</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"hours_weekly + trait_hostility"</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"trait_hostility * condition (interaction)"</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">Predictors =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),   <span class="co"># main + interaction count</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">R_squared          =</span> <span class="fu">c</span>(<span class="fu">summary</span>(m1)<span class="sc">$</span>r.squared,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m2)<span class="sc">$</span>r.squared,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m3)<span class="sc">$</span>r.squared,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m4)<span class="sc">$</span>r.squared),</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">Adj_R_squared      =</span> <span class="fu">c</span>(<span class="fu">summary</span>(m1)<span class="sc">$</span>adj.r.squared,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m2)<span class="sc">$</span>adj.r.squared,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m3)<span class="sc">$</span>adj.r.squared,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m4)<span class="sc">$</span>adj.r.squared)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>summary_table</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                      Model Predictors  R_squared Adj_R_squared
+1                              hours_weekly          1 0.07158788    0.06371998
+2                           trait_hostility          1 0.11636615    0.10887772
+3            hours_weekly + trait_hostility          2 0.19823192    0.18452648
+4 trait_hostility * condition (interaction)          3 0.39264041    0.37693283</code></pre>
+</div>
+</div>
+<p>The interaction model has the highest R-squared (about 0.39) <em>and</em> the highest adjusted R-squared. Adding <code>condition</code> and an interaction term improved the fit more than the penalty for the extra predictors took away. By this criterion, the interaction model is preferred.</p>
+<p>Two more measures worth knowing about but not detailing here.</p>
+<p><strong>AIC (Akaike Information Criterion)</strong> and <strong>BIC (Bayesian Information Criterion)</strong> are alternative model-comparison numbers. Both balance fit against complexity, with stronger penalties than adjusted R-squared. Smaller is better for both. The functions <code>AIC(model)</code> and <code>BIC(model)</code> return them. They are particularly useful when comparing non-nested models or models with many predictors.</p>
+<p><strong>Cross-validation</strong> is the gold standard for prediction-oriented model comparison: fit each model on part of the data, evaluate it on the held-out part, and pick the model that generalizes best. The <code>caret</code> and <code>tidymodels</code> packages provide implementations.</p>
+</section>
+<section id="when-the-linear-model-is-not-enough" class="level2" data-number="20.5">
+<h2 data-number="20.5" class="anchored" data-anchor-id="when-the-linear-model-is-not-enough"><span class="header-section-number">20.5</span> When the linear model is not enough</h2>
+<p>Linear regression is powerful and applies to a remarkable range of psychology research questions. It is not universal. Here is a map of common problems that go beyond the standard linear model, with the type of model that addresses each.</p>
+<p><strong>Problem 1: Nonlinear relationships.</strong> The true relationship between predictor and outcome is curved, not straight. <em>Tools:</em> polynomial regression (add <code>I(x^2)</code> to the formula), log or square-root transformations, generalized additive models (GAMs) via the <code>mgcv</code> package, splines.</p>
+<p><strong>Problem 2: Nested or grouped data.</strong> Participants are clustered: students in classrooms, employees in companies, measurements within people over time. <em>Tools:</em> multilevel models / mixed-effects models / hierarchical linear models. The <code>lme4</code> package (<code>lmer()</code>) is the standard.</p>
+<p><strong>Problem 3: Latent variables.</strong> You want to model constructs that are not directly observed (intelligence, motivation, anxiety) using several observed indicators. <em>Tools:</em> structural equation modeling (SEM), confirmatory factor analysis, exploratory factor analysis. The <code>lavaan</code> package in R.</p>
+<p><strong>Problem 4: Categorical outcomes.</strong> The outcome is a category (yes/no, survived/died, chose option A/B/C), not a number on a continuous scale. <em>Tools:</em> logistic regression for two categories, multinomial logistic regression for more. In R: <code>glm(... , family = binomial)</code> for logistic regression.</p>
+<p><strong>Problem 5: Small samples or unusual distributions.</strong> Very few observations, or seriously non-normal residuals, or unusual sampling structures. <em>Tools:</em> bootstrap methods, permutation tests, Bayesian estimation (the <code>brms</code> and <code>rstanarm</code> packages).</p>
+<p><strong>Problem 6: Outliers, leverage, robust estimation.</strong> A few extreme observations dominate the fit. <em>Tools:</em> robust regression (the <code>MASS::rlm()</code> function and the <code>robustbase</code> package), explicit outlier-handling strategies (Chapter 12).</p>
+<p>For each of these, the <em>modeling structure</em> changes, but the underlying pillars are the same: you describe data with a model, you fit the model, you check the fit, and (in inference) you test hypotheses. The vocabulary you have built in Section 3 transfers, even when the specific machinery is new.</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 40%">
-<col style="width: 24%">
-<col style="width: 36%">
+<col style="width: 20%">
+<col style="width: 46%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Variable</th>
-<th>Type</th>
-<th>Meaning</th>
+<th>Need</th>
+<th>Standard tool</th>
+<th>R package</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>participant_id</code></td>
-<td>integer</td>
-<td>Unique participant identifier (1 to 120)</td>
+<td>Curved relationships</td>
+<td>GAM</td>
+<td><code>mgcv</code></td>
 </tr>
 <tr class="even">
-<td><code>age</code></td>
-<td>integer</td>
-<td>Participant age in years</td>
+<td>Nested data</td>
+<td>Multilevel models</td>
+<td><code>lme4</code></td>
 </tr>
 <tr class="odd">
-<td><code>gender</code></td>
-<td>character</td>
-<td>Self-reported gender (<code>man</code>, <code>woman</code>, <code>non-binary</code>)</td>
+<td>Latent variables</td>
+<td>SEM</td>
+<td><code>lavaan</code></td>
 </tr>
 <tr class="even">
-<td><code>condition</code></td>
-<td>character</td>
-<td>Experimental condition (<code>violent</code> or <code>neutral</code> video game)</td>
+<td>Categorical outcomes</td>
+<td>Logistic regression</td>
+<td><code>stats::glm</code></td>
 </tr>
 <tr class="odd">
-<td><code>hours_weekly</code></td>
-<td>numeric</td>
-<td>Self-reported hours per week spent playing video games</td>
+<td>Small samples or non-normal residuals</td>
+<td>Bootstrap, Bayes</td>
+<td><code>boot</code>, <code>brms</code></td>
 </tr>
 <tr class="even">
-<td><code>trait_hostility</code></td>
-<td>numeric</td>
-<td>Score on a hostility trait scale, 1 to 7</td>
-</tr>
-<tr class="odd">
-<td><code>empathy</code></td>
-<td>numeric</td>
-<td>Score on an empathy scale, 1 to 7</td>
-</tr>
-<tr class="even">
-<td><code>aggression</code></td>
-<td>numeric</td>
-<td>Self-reported aggression after the experimental session, 1 to 10</td>
+<td>Outliers and influential points</td>
+<td>Robust regression</td>
+<td><code>MASS</code>, <code>robustbase</code></td>
 </tr>
 </tbody>
 </table>
-<p>The design is a between-participants experiment: 60 participants were randomly assigned to play a violent video game and 60 to play a neutral video game. After the session, all 120 reported their aggression. The other variables (age, gender, hours of weekly play, trait hostility, empathy) were measured before the experiment.</p>
-<p>This dataset is small and clean, which keeps the examples readable. The wrangling operations you will learn on it are exactly the same as on a real dataset of any size.</p>
-<section id="getting-the-dataset" class="level3" data-number="8.2.1">
-<h3 data-number="8.2.1" class="anchored" data-anchor-id="getting-the-dataset"><span class="header-section-number">8.2.1</span> Getting the dataset</h3>
-<p>Download the file from <a href="https://y45hv1n.github.io/intro-data-analysis/data/vgames_study.csv" class="uri">https://y45hv1n.github.io/intro-data-analysis/data/vgames_study.csv</a> and place it inside a folder called <code>data</code> in your R project. The path you will read from will then be <code>"data/vgames_study.csv"</code>.</p>
-<p>If you have not yet created an R project for this book, do that first (review Chapter 3 if you need to). For everything that follows, we assume you are inside an R project and that the file lives at <code>data/vgames_study.csv</code>.</p>
+<p>Knowing these tools exist is the goal. You do not need to learn them now; when you encounter a research problem that one of them solves, you have a starting point.</p>
 </section>
+<section id="closing-section-3" class="level2" data-number="20.6">
+<h2 data-number="20.6" class="anchored" data-anchor-id="closing-section-3"><span class="header-section-number">20.6</span> Closing Section 3</h2>
+<p>We started Section 3 with the idea that a model is a useful simplification of data, that the mean is the simplest possible model, and that everything else (regression, multiple regression, interactions) builds on the same logic of predictions and residuals. We end with a small set of practical habits:</p>
+<ul>
+<li><strong>Fit the model with <code>lm()</code></strong> and read the coefficients you care about (Chapters 16-18).</li>
+<li><strong>Check the assumptions with <code>plot(model)</code></strong> (this chapter), and either accept the mild violations or pick a different model for the serious ones (Chapter 19).</li>
+<li><strong>Compare models with adjusted R-squared, not raw R-squared</strong>, when they have different numbers of predictors (this chapter).</li>
+<li><strong>Remember that everything in Section 3 is description</strong>, not inference. The slopes and R-squared values describe <em>the dataset you have</em>. The question of whether the patterns generalize to a population, and the standard errors and p-values that try to answer that question, are a topic for a later section of the book.</li>
+</ul>
+<p>These habits are the entry to applied statistical modeling in psychology. The chapters that follow Section 3 take the same models and ask the inferential questions; later sections still take the same models and ask the causal questions. The modeling framework you have learned here is the engine that drives the rest.</p>
 </section>
-<section id="loading-the-data" class="level2" data-number="8.3">
-<h2 data-number="8.3" class="anchored" data-anchor-id="loading-the-data"><span class="header-section-number">8.3</span> Loading the data</h2>
-<p>Inside your R project, in a new script, load the data and take a quick look:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/vgames_study.csv"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="check-your-understanding" class="level2" data-number="20.7">
+<h2 data-number="20.7" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">20.7</span> Check your understanding</h2>
+<p><strong>1. What does <code>plot(model)</code> produce when <code>model</code> is a fitted <code>lm</code> object?</strong></p>
+<div id="radio_IOAMUACWHJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_IOAMUACWHJ" value=""> <span>It fits four separate regression models.</span></label><label><input type="radio" autocomplete="off" name="radio_IOAMUACWHJ" value="answer"> <span>It generates four diagnostic plots: Residuals vs Fitted, Normal Q-Q, Scale-Location, and Residuals vs Leverage. Together these are used to check the linear-model assumptions and identify influential observations.</span></label><label><input type="radio" autocomplete="off" name="radio_IOAMUACWHJ" value=""> <span>It plots the predictor and the outcome.</span></label><label><input type="radio" autocomplete="off" name="radio_IOAMUACWHJ" value=""> <span>It runs cross-validation on the model.</span></label>
 </div>
-<p><code>head(data)</code> prints the first six rows. <code>str(data)</code> prints a structural summary: 120 observations, 8 variables, the type of each variable. You should see <code>participant_id</code>, <code>age</code>, and <code>hours_weekly</code> as numeric, and <code>gender</code> and <code>condition</code> as character (text).</p>
-<p>The object <code>data</code> is now in your environment and you can refer to it by name.</p>
-<p>A note on the object name. Calling the object <code>data</code> is convenient and harmless in this chapter, but <code>data</code> is also the name of a base R function (<code>?data</code>). For larger projects, a more descriptive name is better, for example <code>vgames</code> or <code>study</code>. We use <code>data</code> here because it matches the homework conventions you may already have seen.</p>
+<p><strong>2. The “Residuals vs Fitted” plot is mainly used to check which assumptions?</strong></p>
+<div id="radio_RUIYQOSNIL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_RUIYQOSNIL" value=""> <span>Normality only.</span></label><label><input type="radio" autocomplete="off" name="radio_RUIYQOSNIL" value=""> <span>Independence only.</span></label><label><input type="radio" autocomplete="off" name="radio_RUIYQOSNIL" value="answer"> <span>Linearity and homoscedasticity (the spread of the residuals across fitted values).</span></label><label><input type="radio" autocomplete="off" name="radio_RUIYQOSNIL" value=""> <span>Influential observations only.</span></label>
+</div>
+<p><strong>3. What does the Normal Q-Q plot check?</strong></p>
+<div id="radio_VDLCVEMOWL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_VDLCVEMOWL" value=""> <span>Whether the raw outcome is normal.</span></label><label><input type="radio" autocomplete="off" name="radio_VDLCVEMOWL" value="answer"> <span>Whether the residuals are approximately normally distributed: points falling roughly on the diagonal indicate approximate normality; curving away (especially at the tails) indicates non-normality.</span></label><label><input type="radio" autocomplete="off" name="radio_VDLCVEMOWL" value=""> <span>Whether the slope is significantly different from zero.</span></label><label><input type="radio" autocomplete="off" name="radio_VDLCVEMOWL" value=""> <span>Whether the predictors are correlated with each other.</span></label>
+</div>
+<p><strong>4. What is an “influential observation”?</strong></p>
+<div id="radio_VFNMHQOYXF" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_VFNMHQOYXF" value=""> <span>An observation that has a small leverage but a very large residual.</span></label><label><input type="radio" autocomplete="off" name="radio_VFNMHQOYXF" value="answer"> <span>An observation with both unusual predictor values (high leverage) and a large residual. Such observations can disproportionately affect the fitted line. The Residuals vs Leverage plot, especially with Cook's distance contours, helps identify them.</span></label><label><input type="radio" autocomplete="off" name="radio_VFNMHQOYXF" value=""> <span>Any observation whose residual is positive.</span></label><label><input type="radio" autocomplete="off" name="radio_VFNMHQOYXF" value=""> <span>Any observation collected on a Tuesday.</span></label>
+</div>
+<p><strong>5. Why is adjusted R-squared usually preferred over raw R-squared for comparing models?</strong></p>
+<div id="radio_ZBMFSHCBDA" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ZBMFSHCBDA" value=""> <span>It is identical to R-squared.</span></label><label><input type="radio" autocomplete="off" name="radio_ZBMFSHCBDA" value="answer"> <span>It penalizes the model for each additional predictor. Unlike raw R-squared, it does not necessarily increase when you add a predictor; it only increases if the predictor improves the fit more than would be expected by chance. It is the natural tool for comparing models with different numbers of predictors.</span></label><label><input type="radio" autocomplete="off" name="radio_ZBMFSHCBDA" value=""> <span>It is always larger than R-squared.</span></label><label><input type="radio" autocomplete="off" name="radio_ZBMFSHCBDA" value=""> <span>It is the square of the adjusted slope.</span></label>
+</div>
+<p><strong>6. You have 200 students nested within 10 classrooms. Independence is violated. What is the standard fix?</strong></p>
+<div id="radio_YUMHQRCRPP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_YUMHQRCRPP" value=""> <span>Use a different programming language.</span></label><label><input type="radio" autocomplete="off" name="radio_YUMHQRCRPP" value="answer"> <span>Use a multilevel (mixed-effects) model that accounts for the clustering, typically via the <code>lmer()</code> function in the <code>lme4</code> package. Standard OLS standard errors will be misleadingly small if independence is violated.</span></label><label><input type="radio" autocomplete="off" name="radio_YUMHQRCRPP" value=""> <span>Use a logistic regression instead.</span></label><label><input type="radio" autocomplete="off" name="radio_YUMHQRCRPP" value=""> <span>Ignore it; OLS is robust to all violations.</span></label>
+</div>
+<p><strong>7. You want to model “intelligence” as a latent variable, measured by several test scores. Which family of models is most appropriate?</strong></p>
+<div id="radio_CZCLLQIPBA" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_CZCLLQIPBA" value=""> <span>Logistic regression.</span></label><label><input type="radio" autocomplete="off" name="radio_CZCLLQIPBA" value=""> <span>Multilevel models.</span></label><label><input type="radio" autocomplete="off" name="radio_CZCLLQIPBA" value="answer"> <span>Structural equation modeling (SEM), with software like <code>lavaan</code> in R. SEM is the standard tool for modeling latent variables (constructs measured indirectly through several indicators).</span></label><label><input type="radio" autocomplete="off" name="radio_CZCLLQIPBA" value=""> <span>Robust regression.</span></label>
+</div>
+<p><strong>8. What is the most important caveat to remember as Section 3 closes?</strong></p>
+<div id="radio_QSBFYFPSVE" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_QSBFYFPSVE" value=""> <span>The chapter has shown how to make causal claims from regression coefficients.</span></label><label><input type="radio" autocomplete="off" name="radio_QSBFYFPSVE" value="answer"> <span>Everything in Section 3 is description: fitting models and quantifying fit on the dataset you have. Whether the patterns generalize to a population, and the standard errors and p-values that try to answer that question, belong to statistical inference and will be covered in a later section.</span></label><label><input type="radio" autocomplete="off" name="radio_QSBFYFPSVE" value=""> <span>The linear model can be applied to any research question without modification.</span></label><label><input type="radio" autocomplete="off" name="radio_QSBFYFPSVE" value=""> <span>Adjusted R-squared replaces all other model-comparison measures.</span></label>
+</div>
 </section>
-<section id="accessing-one-variable-the-dollar-sign" class="level2" data-number="8.4">
-<h2 data-number="8.4" class="anchored" data-anchor-id="accessing-one-variable-the-dollar-sign"><span class="header-section-number">8.4</span> Accessing one variable: the dollar sign <code>$</code></h2>
-<p>Chapter 5 introduced the dollar sign <code>$</code> as the operator that pulls one component out of a composite object. On a data frame, <code>$</code> extracts a single column. The general form is <code>dataframe$column_name</code>.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>aggression</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>age</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>condition</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Each of these prints an entire column as a vector. <code>data$aggression</code> is a numeric vector of 120 aggression scores; <code>data$condition</code> is a character vector of 120 condition labels.</p>
-<p>Once you have a vector, you can do anything to it that you would do to any other vector. For example, the average aggression score across all 120 participants:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>aggression)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The expression is read inside-out: <code>data$aggression</code> produces a vector of 120 numbers, and <code>mean()</code> reduces that vector to a single number. The same inside-out logic applies whenever a function is called on a column.</p>
-</section>
-<section id="creating-new-variables" class="level2" data-number="8.5">
-<h2 data-number="8.5" class="anchored" data-anchor-id="creating-new-variables"><span class="header-section-number">8.5</span> Creating new variables</h2>
-<p>You can add a new column to a data frame by assigning into a name that does not yet exist on the right of <code>$</code>:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>aggression_doubled <span class="ot">&lt;-</span> data<span class="sc">$</span>aggression <span class="sc">*</span> <span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>After this line, <code>data</code> has nine variables instead of eight. The new column <code>aggression_doubled</code> contains every aggression score multiplied by two. Look at the Environment panel: the description of <code>data</code> should now read <code>120 obs. of 9 variables</code>.</p>
-<p>A more useful example. Compute each participant’s deviation from the mean aggression score. The mean is a single number; subtracting it from each value gives, for each participant, how far above or below the average they scored.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>aggression_deviation <span class="ot">&lt;-</span> data<span class="sc">$</span>aggression <span class="sc">-</span> <span class="fu">mean</span>(data<span class="sc">$</span>aggression)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>R applies the subtraction element-wise: for every row, it computes (this participant’s aggression) minus (the overall mean aggression). The result is a new column with 120 values, some positive (above the mean), some negative (below).</p>
-<p>To inspect the new column alongside the original, select both columns:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data[, <span class="fu">c</span>(<span class="st">"aggression"</span>, <span class="st">"aggression_deviation"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>This previews the next topic: subsetting columns by name. We come back to it shortly.</p>
-<p>The general pattern is <code>dataframe$new_column &lt;- expression</code>. The expression on the right can use other columns of the same data frame, scalar values, or any R operation that produces a vector of the right length. New variables defined this way persist for the rest of the session and become part of <code>data</code>.</p>
-</section>
-<section id="subsetting-rows-filtering-by-a-logical-condition" class="level2" data-number="8.6">
-<h2 data-number="8.6" class="anchored" data-anchor-id="subsetting-rows-filtering-by-a-logical-condition"><span class="header-section-number">8.6</span> Subsetting rows: filtering by a logical condition</h2>
-<p>You will frequently want to look at only a subset of your participants: those in the violent condition, those over 25, those with high trait hostility. The general tool for this is <strong>logical subsetting</strong>.</p>
-<p>Two-dimensional bracket indexing on a data frame uses the form <code>dataframe[rows, columns]</code>, where leaving a slot empty means “all.” Chapter 5 introduced this with positional indices (<code>data[1, ]</code> for the first row, <code>data[, 2]</code> for the second column). For real research, you will more often select rows by a <em>condition</em>.</p>
-<p>The condition uses the <strong>double-equals operator</strong> <code>==</code>, which means “is equal to.” (Single <code>=</code> is not a comparison in R; it is used inside function calls for named arguments. Confusing the two is a common early mistake.) For each row, R checks whether the condition is <code>TRUE</code> or <code>FALSE</code>, and the subsetting keeps only the rows where it is <code>TRUE</code>.</p>
-<p>To select only participants in the violent condition:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>violent_group <span class="ot">&lt;-</span> data[data<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"violent"</span>, ]</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(violent_group)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># returns 60</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Read the bracket from left to right. The expression <code>data$condition == "violent"</code> returns a logical vector of length 120 (<code>TRUE</code> for the 60 violent-condition participants, <code>FALSE</code> for the 60 neutral-condition participants). The bracket then keeps only the rows where the logical vector is <code>TRUE</code>. The empty slot after the comma means “all columns.”</p>
-<p>The result <code>violent_group</code> is a smaller data frame with 60 rows and the same 8 (or 9, if you added new variables) columns.</p>
-<p>Other comparisons work the same way. Some you will use often:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data[data<span class="sc">$</span>age <span class="sc">&gt;</span> <span class="dv">25</span>, ]                  <span class="co"># all rows where age is greater than 25</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>data[data<span class="sc">$</span>age <span class="sc">&gt;=</span> <span class="dv">25</span>, ]                 <span class="co"># age greater than or equal to 25</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>data[data<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">"non-binary"</span>, ]    <span class="co"># only non-binary participants</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>data[data<span class="sc">$</span>gender <span class="sc">!=</span> <span class="st">"man"</span>, ]           <span class="co"># everyone except those who reported "man"</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>data[data<span class="sc">$</span>hours_weekly <span class="sc">&lt;</span> <span class="dv">5</span>, ]          <span class="co"># participants who play fewer than 5 hours weekly</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The operators are the standard ones: <code>==</code> (equal to), <code>!=</code> (not equal to), <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>. The result of any of these comparisons is a logical vector of <code>TRUE</code> and <code>FALSE</code> values, the same length as the column being compared.</p>
-</section>
-<section id="subsetting-columns-by-name" class="level2" data-number="8.7">
-<h2 data-number="8.7" class="anchored" data-anchor-id="subsetting-columns-by-name"><span class="header-section-number">8.7</span> Subsetting columns: by name</h2>
-<p>You can also select specific columns. The general form, again, is <code>dataframe[rows, columns]</code>. To keep all rows but only some columns, leave the row slot empty and pass a character vector of column names in the column slot:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data_subset <span class="ot">&lt;-</span> data[, <span class="fu">c</span>(<span class="st">"aggression"</span>, <span class="st">"condition"</span>)]</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_subset)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p><code>c("aggression", "condition")</code> is a character vector with two names, so the bracket returns a data frame with all 120 rows and just those two columns, in that order.</p>
-<p>For a single column, you could write either:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data[, <span class="st">"aggression"</span>]    <span class="co"># bracket form, returns a vector</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>aggression         <span class="co"># $ form, returns the same vector</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Both work. The <code>$</code> form is shorter and is what you will use for one-off column access. The bracket form generalizes to multiple columns, which is why it is the right tool when you want a sub-data-frame.</p>
-</section>
-<section id="combining-filter-rows-and-select-columns-at-once" class="level2" data-number="8.8">
-<h2 data-number="8.8" class="anchored" data-anchor-id="combining-filter-rows-and-select-columns-at-once"><span class="header-section-number">8.8</span> Combining: filter rows and select columns at once</h2>
-<p>Both slots of the bracket can be filled at the same time. To get only the aggression scores of the violent-condition participants:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>violent_aggression <span class="ot">&lt;-</span> data[data<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"violent"</span>, <span class="st">"aggression"</span>]</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>violent_aggression</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The first slot filters rows (only <code>violent</code> condition); the second slot selects one column (<code>aggression</code>). Because we asked for a single column, R returns a vector, not a data frame. <code>violent_aggression</code> is a numeric vector of 60 aggression scores.</p>
-<p>This single-line idiom is one of the most useful patterns in base R for inspecting subgroups. Once you know it, many small questions about your data become one-liners.</p>
-</section>
-<section id="computing-summaries-by-group" class="level2" data-number="8.9">
-<h2 data-number="8.9" class="anchored" data-anchor-id="computing-summaries-by-group"><span class="header-section-number">8.9</span> Computing summaries by group</h2>
-<p>Putting the previous two pieces together, you can now compute summary statistics separately for each subgroup of interest. The first practical question of any experiment with two conditions: do the two conditions differ on the outcome?</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data[data<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"violent"</span>, <span class="st">"aggression"</span>])</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># returns 5.558333</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data[data<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"neutral"</span>, <span class="st">"aggression"</span>])</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># returns 4.213333</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Two lines. Two numbers. The participants who played the violent game reported, on average, an aggression score of about 5.56; those who played the neutral game reported about 4.21. The violent-condition mean is higher by roughly 1.35 points on the 1-to-10 scale.</p>
-<p>You can do the same with any other summary function (<code>sd</code>, <code>median</code>, <code>min</code>, <code>max</code>) and any other grouping variable. For example, the mean weekly playing hours separately by gender:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data[data<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">"man"</span>, <span class="st">"hours_weekly"</span>])</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data[data<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">"woman"</span>, <span class="st">"hours_weekly"</span>])</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data[data<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">"non-binary"</span>, <span class="st">"hours_weekly"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>If your dataset has many groups, this approach becomes repetitive and you will eventually want a function that does it for you in one line (we will introduce one in a later chapter). For two or three groups, the pattern above is short, transparent, and entirely sufficient.</p>
-</section>
-<section id="looking-ahead-the-mean-as-a-model" class="level2" data-number="8.10">
-<h2 data-number="8.10" class="anchored" data-anchor-id="looking-ahead-the-mean-as-a-model"><span class="header-section-number">8.10</span> Looking ahead: the mean as a model</h2>
-<p>Let us pause on what you just did. With two means, you summarized the responses of 120 people. Each of those participants is unique: a particular age, a particular hostility score, a particular history with video games. Those individual differences disappear into a single number. The mean tells you the typical aggression score for each condition, but it tells you nothing about the spread of scores within each condition, nothing about the shape of the distribution, and nothing about how individual participants varied.</p>
-<p>That tradeoff is general. Whenever you summarize a group of people with a single number, you compress information; whatever that number does not capture is lost (at least temporarily). The art of statistical analysis is choosing summaries that capture what you actually want to know, and being explicit about what they leave out.</p>
-<p>In the chapters that follow, we will treat the mean not as a number but as the simplest possible <strong>model</strong> of a dataset: a guess about each individual that is the same for everyone. Real models will use information about each participant (their condition, their age, their hostility) to make better, more individualized guesses. The starting point is always the mean, and the question is always: how much better can we do than the mean?</p>
-</section>
-<section id="check-your-understanding" class="level2" data-number="8.11">
-<h2 data-number="8.11" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">8.11</span> Check your understanding</h2>
-<p><strong>1. What does <code>data$aggression</code> do?</strong></p>
-<div id="radio_DDVLRTWVUV" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_DDVLRTWVUV" value=""> <span>It is the position-based index of the column.</span></label><label><input type="radio" autocomplete="off" name="radio_DDVLRTWVUV" value="answer"> <span>It extracts a single named column from the data frame as a vector.</span></label><label><input type="radio" autocomplete="off" name="radio_DDVLRTWVUV" value=""> <span>It declares a new data frame.</span></label><label><input type="radio" autocomplete="off" name="radio_DDVLRTWVUV" value=""> <span>It loads a column from a CSV file.</span></label>
-</div>
-<p><strong>2. What does <code>data$aggression_doubled &lt;- data$aggression * 2</code> do, assuming <code>aggression_doubled</code> did not previously exist in <code>data</code>?</strong></p>
-<div id="radio_MFYQUGCPKR" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_MFYQUGCPKR" value=""> <span>It changes the name of the column <code>aggression</code> in place.</span></label><label><input type="radio" autocomplete="off" name="radio_MFYQUGCPKR" value=""> <span>It produces an error because <code>aggression_doubled</code> does not exist yet.</span></label><label><input type="radio" autocomplete="off" name="radio_MFYQUGCPKR" value="answer"> <span>It creates a new column called <code>aggression_doubled</code> in <code>data</code>, containing each aggression score multiplied by two.</span></label><label><input type="radio" autocomplete="off" name="radio_MFYQUGCPKR" value=""> <span>It removes the original <code>aggression</code> column from <code>data</code>.</span></label>
-</div>
-<p><strong>3. Which operator do you use inside <code>[ ]</code> to test whether a value is equal to another value (e.g., to filter rows where <code>condition</code> is <code>"violent"</code>)?</strong></p>
-<div id="radio_YFUVTAWLXE" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_YFUVTAWLXE" value=""> <span><code>=</code> (single equals).</span></label><label><input type="radio" autocomplete="off" name="radio_YFUVTAWLXE" value="answer"> <span><code>==</code> (double equals).</span></label><label><input type="radio" autocomplete="off" name="radio_YFUVTAWLXE" value=""> <span><code>:=</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_YFUVTAWLXE" value=""> <span><code>equal()</code>.</span></label>
-</div>
-<p><strong>4. What does the expression <code>data[data$condition == "violent", ]</code> return?</strong></p>
-<div id="radio_QSNKSMDOTH" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_QSNKSMDOTH" value=""> <span>It returns the logical vector of length 120 used inside the bracket.</span></label><label><input type="radio" autocomplete="off" name="radio_QSNKSMDOTH" value=""> <span>It returns the entire <code>data</code> data frame unchanged.</span></label><label><input type="radio" autocomplete="off" name="radio_QSNKSMDOTH" value="answer"> <span>It returns a data frame with only the rows where the condition <code>data$condition == "violent"</code> is <code>TRUE</code>, and all columns.</span></label><label><input type="radio" autocomplete="off" name="radio_QSNKSMDOTH" value=""> <span>It returns a data frame with one column called <code>"violent"</code>.</span></label>
-</div>
-<p><strong>5. What does the expression <code>data[, c("aggression", "condition")]</code> return?</strong></p>
-<div id="radio_POJTPLWUJR" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_POJTPLWUJR" value=""> <span>A character vector of values from the <code>aggression</code> column.</span></label><label><input type="radio" autocomplete="off" name="radio_POJTPLWUJR" value="answer"> <span>A data frame with all 120 rows and only the two named columns, <code>aggression</code> and <code>condition</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_POJTPLWUJR" value=""> <span>A single number summarizing both columns.</span></label><label><input type="radio" autocomplete="off" name="radio_POJTPLWUJR" value=""> <span>An error: you cannot select two columns at once.</span></label>
-</div>
-<p><strong>6. What does the expression <code>data[data$condition == "violent", "aggression"]</code> return?</strong></p>
-<div id="radio_DOTWBBFCUB" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_DOTWBBFCUB" value=""> <span>A data frame of 60 rows and all columns.</span></label><label><input type="radio" autocomplete="off" name="radio_DOTWBBFCUB" value="answer"> <span>A numeric vector of length 60, containing the aggression scores of the 60 participants in the violent condition.</span></label><label><input type="radio" autocomplete="off" name="radio_DOTWBBFCUB" value=""> <span>A single number, the mean aggression of the violent condition.</span></label><label><input type="radio" autocomplete="off" name="radio_DOTWBBFCUB" value=""> <span>A logical vector of length 120.</span></label>
-</div>
-<p><strong>7. You computed the mean aggression score for each of the two conditions and reported the two numbers. What is the most important thing those two numbers do <em>not</em> tell you?</strong></p>
-<div id="radio_VSVUXIYCVT" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_VSVUXIYCVT" value=""> <span>It saves a great deal of typing for an analysis that has only one or two groups.</span></label><label><input type="radio" autocomplete="off" name="radio_VSVUXIYCVT" value=""> <span>It is more accurate than computing the mean of the whole dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_VSVUXIYCVT" value="answer"> <span>It compresses 120 individual scores into a single number per group; what the number does not encode (such as spread, shape, individual differences) is lost.</span></label><label><input type="radio" autocomplete="off" name="radio_VSVUXIYCVT" value=""> <span>It guarantees that the difference between groups is statistically significant.</span></label>
-</div>
+<section id="references" class="level2" data-number="20.8">
+<h2 data-number="20.8" class="anchored" data-anchor-id="references"><span class="header-section-number">20.8</span> References</h2>
+<p>Aiken, L. S., &amp; West, S. G. (1991). <em>Multiple regression: Testing and interpreting interactions</em>. Sage.</p>
+<p>Cohen, J., Cohen, P., West, S. G., &amp; Aiken, L. S. (2003). <em>Applied multiple regression/correlation analysis for the behavioral sciences</em> (3rd ed.). Lawrence Erlbaum.</p>
+<p>Navarro, D. J. (2018). <em>Learning statistics with R: A tutorial for psychology students and other beginners</em> (Version 0.6), Chapter 15.5. <a href="https://learningstatisticswithr.com" class="uri">https://learningstatisticswithr.com</a></p>
 
 
 </section>
@@ -1375,14 +1442,11 @@ window.onload = function() {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./07-recap.html" class="pagination-link" aria-label="Recap and getting data into R">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Recap and getting data into R</span></span>
+      <a href="./19-bias-variance-assumptions.html" class="pagination-link" aria-label="Bias, variance, and the assumptions of the linear model">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Bias, variance, and the assumptions of the linear model</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./09-tidyverse-and-descriptives.html" class="pagination-link" aria-label="Wrangling and describing data with the tidyverse">
-        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wrangling and describing data with the tidyverse</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -1390,4 +1454,4 @@ window.onload = function() {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/08-data-wrangling-basics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/20-diagnostics-and-limits.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

@@ -33,6 +33,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./16-fitting-regression.html" rel="next">
 <link href="./14-mean-as-model.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -437,6 +438,36 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">From the mean to the line: the simple linear model</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-fitting-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Fitting and interpreting simple regression in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-multiple-and-categorical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Multiple regression and categorical predictors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-moderation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Moderation: when one predictor depends on another</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-bias-variance-assumptions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Bias, variance, and the assumptions of the linear model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-diagnostics-and-limits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Diagnostics, model fit, and the limits of your model</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -457,9 +488,17 @@ window.Quarto = {
   <li><a href="#a-prediction-for-any-value-of-x" id="toc-a-prediction-for-any-value-of-x" class="nav-link" data-scroll-target="#a-prediction-for-any-value-of-x"><span class="header-section-number">15.6</span> A prediction for any value of <span class="math inline">\(X\)</span></a></li>
   <li><a href="#residuals-from-the-line" id="toc-residuals-from-the-line" class="nav-link" data-scroll-target="#residuals-from-the-line"><span class="header-section-number">15.7</span> Residuals from the line</a></li>
   <li><a href="#how-is-the-best-line-chosen" id="toc-how-is-the-best-line-chosen" class="nav-link" data-scroll-target="#how-is-the-best-line-chosen"><span class="header-section-number">15.8</span> How is “the best” line chosen?</a></li>
-  <li><a href="#looking-ahead" id="toc-looking-ahead" class="nav-link" data-scroll-target="#looking-ahead"><span class="header-section-number">15.9</span> Looking ahead</a></li>
-  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">15.10</span> Check your understanding</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">15.11</span> References</a></li>
+  <li><a href="#going-under-the-hood-how-the-line-is-actually-computed" id="toc-going-under-the-hood-how-the-line-is-actually-computed" class="nav-link" data-scroll-target="#going-under-the-hood-how-the-line-is-actually-computed"><span class="header-section-number">15.9</span> Going under the hood: how the line is actually computed</a>
+  <ul class="collapse">
+  <li><a href="#the-formula-by-hand" id="toc-the-formula-by-hand" class="nav-link" data-scroll-target="#the-formula-by-hand"><span class="header-section-number">15.9.1</span> The formula, by hand</a></li>
+  <li><a href="#a-worked-example-with-three-students" id="toc-a-worked-example-with-three-students" class="nav-link" data-scroll-target="#a-worked-example-with-three-students"><span class="header-section-number">15.9.2</span> A worked example with three students</a></li>
+  <li><a href="#why-a-formula-exists-at-all-the-bowl" id="toc-why-a-formula-exists-at-all-the-bowl" class="nav-link" data-scroll-target="#why-a-formula-exists-at-all-the-bowl"><span class="header-section-number">15.9.3</span> Why a formula exists at all: the bowl</a></li>
+  <li><a href="#what-r-does-with-several-predictors" id="toc-what-r-does-with-several-predictors" class="nav-link" data-scroll-target="#what-r-does-with-several-predictors"><span class="header-section-number">15.9.4</span> What R does with several predictors</a></li>
+  <li><a href="#three-ways-of-thinking-about-the-same-answer" id="toc-three-ways-of-thinking-about-the-same-answer" class="nav-link" data-scroll-target="#three-ways-of-thinking-about-the-same-answer"><span class="header-section-number">15.9.5</span> Three ways of thinking about the same answer</a></li>
+  </ul></li>
+  <li><a href="#looking-ahead" id="toc-looking-ahead" class="nav-link" data-scroll-target="#looking-ahead"><span class="header-section-number">15.10</span> Looking ahead</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">15.11</span> Check your understanding</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">15.12</span> References</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/15-simple-linear-model.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -630,8 +669,178 @@ Y_i = b_0 + b_1 X_i + \varepsilon_i.
 <p>The OLS line is the unique line that makes the sum of squared vertical distances from the points to the line as small as possible. R does this calculation for you automatically: the function <code>lm()</code> (introduced in the next chapter) takes a dataset and a formula and returns the OLS intercept and slope. You do not need to know the closed-form formulas for <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> to use the model; you need to know what they mean and what criterion produced them.</p>
 <p>A worthwhile fact about OLS. The mean-only model from Chapter 14 is itself an OLS estimate: the single number that minimizes the sum of squared residuals from a constant prediction is exactly the mean (this is a theorem from a first calculus course). So the framework in this chapter is not a different framework. It is the same one, applied to a slightly more flexible class of predictions.</p>
 </section>
-<section id="looking-ahead" class="level2" data-number="15.9">
-<h2 data-number="15.9" class="anchored" data-anchor-id="looking-ahead"><span class="header-section-number">15.9</span> Looking ahead</h2>
+<section id="going-under-the-hood-how-the-line-is-actually-computed" class="level2" data-number="15.9">
+<h2 data-number="15.9" class="anchored" data-anchor-id="going-under-the-hood-how-the-line-is-actually-computed"><span class="header-section-number">15.9</span> Going under the hood: how the line is actually computed</h2>
+<p>A reader paying close attention might ask: if OLS picks the line with the smallest sum of squared residuals, does R try out lots of candidate lines until it finds the one with the smallest <em>SS</em>?</p>
+<p>The answer is no. Nobody, including R, finds the line by searching through possibilities. The OLS line can be calculated directly, in one step, from a short formula. The visual intuition we just built (try many lines and pick the best) is the right <em>idea</em>, but it is not the actual procedure. Both by hand (before computers) and inside R, the line is computed, not searched.</p>
+<section id="the-formula-by-hand" class="level3" data-number="15.9.1">
+<h3 data-number="15.9.1" class="anchored" data-anchor-id="the-formula-by-hand"><span class="header-section-number">15.9.1</span> The formula, by hand</h3>
+<p>Before computers, statisticians computed the OLS slope and intercept with two short formulas. They are worth seeing once.</p>
+<p>The slope is</p>
+<p><span class="math display">\[
+b_1 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2}.
+\]</span></p>
+<p>In words: it is the sum of the products of each observation’s deviations from its respective means, divided by the sum of the squared deviations of <span class="math inline">\(x\)</span> from its mean. The numerator measures how <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> move together; the denominator measures how much <span class="math inline">\(x\)</span> varies on its own.</p>
+<p>The intercept is then</p>
+<p><span class="math display">\[
+b_0 = \bar{y} - b_1 \bar{x}.
+\]</span></p>
+<p>This equation says: the OLS line always passes through the point <span class="math inline">\((\bar{x}, \bar{y})\)</span>, the center of the data. Once you know the slope, the intercept is whatever value puts the line through that center point.</p>
+</section>
+<section id="a-worked-example-with-three-students" class="level3" data-number="15.9.2">
+<h3 data-number="15.9.2" class="anchored" data-anchor-id="a-worked-example-with-three-students"><span class="header-section-number">15.9.2</span> A worked example with three students</h3>
+<p>To make the formulas concrete, suppose we have three students with the following data on hours studied (<span class="math inline">\(X\)</span>) and test score (<span class="math inline">\(Y\)</span>):</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Student</th>
+<th>Hours studied (<span class="math inline">\(x\)</span>)</th>
+<th>Test score (<span class="math inline">\(y\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>3</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 1: compute the means.</strong></p>
+<p><span class="math display">\[\bar{x} = (1 + 2 + 3) / 3 = 2 \qquad \bar{y} = (2 + 4 + 5) / 3 \approx 3.67\]</span></p>
+<p><strong>Step 2: build a deviation table.</strong> For each student, compute the deviations from the means, their product, and the squared deviation of <span class="math inline">\(x\)</span>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 30%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Student</th>
+<th><span class="math inline">\(x\)</span></th>
+<th><span class="math inline">\(y\)</span></th>
+<th><span class="math inline">\(x - \bar{x}\)</span></th>
+<th><span class="math inline">\(y - \bar{y}\)</span></th>
+<th><span class="math inline">\((x - \bar{x})(y - \bar{y})\)</span></th>
+<th><span class="math inline">\((x - \bar{x})^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>−1</td>
+<td>−1.67</td>
+<td>1.67</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>2</td>
+<td>4</td>
+<td>0</td>
+<td>0.33</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>3</td>
+<td>5</td>
+<td>1</td>
+<td>1.33</td>
+<td>1.33</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td><strong>Sum</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>3.00</strong></td>
+<td><strong>2.00</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 3: plug into the formulas.</strong></p>
+<p><span class="math display">\[
+b_1 = \frac{3.00}{2.00} = 1.5 \qquad b_0 = 3.67 - 1.5 \times 2 = 0.67.
+\]</span></p>
+<p>The best-fitting line is <span class="math inline">\(\hat{y} = 0.67 + 1.5x\)</span>. Each additional hour studied is associated with a predicted increase of 1.5 points in test score. No search, no trial and error: two sums, one division, one subtraction.</p>
+</section>
+<section id="why-a-formula-exists-at-all-the-bowl" class="level3" data-number="15.9.3">
+<h3 data-number="15.9.3" class="anchored" data-anchor-id="why-a-formula-exists-at-all-the-bowl"><span class="header-section-number">15.9.3</span> Why a formula exists at all: the bowl</h3>
+<p>The reason a closed-form formula exists is geometric. Imagine plotting the sum of squared residuals as a function of the two parameters <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span>: every choice of intercept and slope gives one value of the <em>SS</em>. The resulting surface (one <em>SS</em> value for each combination of intercept and slope) is a smooth bowl with a single lowest point.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="15-simple-linear-model_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The picture above plots the <em>SS</em> for the three-student dataset across a range of intercept and slope values. Each colored point represents one candidate line; the <em>SS</em> value of the line is shown by color. The red dot marks the unique combination <span class="math inline">\((b_0 = 0.67, b_1 = 1.5)\)</span> that gives the smallest <em>SS</em>. The bowl has a single bottom, smooth on all sides, which is why a formula can find it directly rather than having to search.</p>
+</section>
+<section id="what-r-does-with-several-predictors" class="level3" data-number="15.9.4">
+<h3 data-number="15.9.4" class="anchored" data-anchor-id="what-r-does-with-several-predictors"><span class="header-section-number">15.9.4</span> What R does with several predictors</h3>
+<p>The slope-and-intercept formulas above work for the case of one predictor. With several predictors at once (a topic of Chapter 17), there are more coefficients to estimate, and the formulas generalize. R uses a piece of matrix algebra called <strong>QR decomposition</strong> that solves for all the coefficients in a single calculation, regardless of how many predictors you have. You will not need to know how QR decomposition works to use the model; what matters at this point is that R is calculating an exact answer, not searching for one.</p>
+</section>
+<section id="three-ways-of-thinking-about-the-same-answer" class="level3" data-number="15.9.5">
+<h3 data-number="15.9.5" class="anchored" data-anchor-id="three-ways-of-thinking-about-the-same-answer"><span class="header-section-number">15.9.5</span> Three ways of thinking about the same answer</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 36%">
+<col style="width: 44%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Level</th>
+<th>Description</th>
+<th>Where it lives</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Visual intuition</td>
+<td>“Try many lines; pick the one with the smallest sum of squared residuals.”</td>
+<td>The mental picture you use to understand OLS.</td>
+</tr>
+<tr class="even">
+<td>By hand</td>
+<td>Compute <span class="math inline">\(b_1 = \sum(x_i - \bar{x})(y_i - \bar{y}) / \sum(x_i - \bar{x})^2\)</span>, then <span class="math inline">\(b_0 = \bar{y} - b_1 \bar{x}\)</span>.</td>
+<td>What people did before computers. Works for one predictor.</td>
+</tr>
+<tr class="odd">
+<td>By computer</td>
+<td>R uses QR decomposition to solve for all coefficients at once.</td>
+<td>What <code>lm()</code> actually does in Chapter 16, no matter how many predictors.</td>
+</tr>
+</tbody>
+</table>
+<p>All three descriptions produce the same OLS line. The first is the mental model. The second is the calculation you could do on paper. The third is what R does under the hood when you call <code>lm()</code> in the next chapter.</p>
+</section>
+</section>
+<section id="looking-ahead" class="level2" data-number="15.10">
+<h2 data-number="15.10" class="anchored" data-anchor-id="looking-ahead"><span class="header-section-number">15.10</span> Looking ahead</h2>
 <p>We now have a richer model than the mean: the simple linear model, with two parameters (<span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span>) and the OLS criterion for choosing them. We have spent this chapter on what the model is, how to read its parameters, and how to think about its predictions and residuals. We have not yet computed any of these quantities in R. That is the topic of the next chapter.</p>
 <p>Chapter 16 will:</p>
 <ul>
@@ -643,43 +852,43 @@ Y_i = b_0 + b_1 X_i + \varepsilon_i.
 </ul>
 <p>By the end of Chapter 16 you will be fitting and interpreting your first regression models.</p>
 </section>
-<section id="check-your-understanding" class="level2" data-number="15.10">
-<h2 data-number="15.10" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">15.10</span> Check your understanding</h2>
+<section id="check-your-understanding" class="level2" data-number="15.11">
+<h2 data-number="15.11" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">15.11</span> Check your understanding</h2>
 <p><strong>1. What is a simple linear model?</strong></p>
-<div id="radio_PHFTKWNFYR" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_PHFTKWNFYR" value=""> <span>It is the same as the mean-only model from Chapter 14.</span></label><label><input type="radio" autocomplete="off" name="radio_PHFTKWNFYR" value=""> <span>It uses a different prediction for each observation, ignoring any predictor.</span></label><label><input type="radio" autocomplete="off" name="radio_PHFTKWNFYR" value="answer"> <span>It uses a continuous predictor <span class="math inline">\(X\)</span> to make a different prediction for each observation; the predictions form a line with two parameters: an intercept (<span class="math inline">\(b_0\)</span>) and a slope (<span class="math inline">\(b_1\)</span>).</span></label><label><input type="radio" autocomplete="off" name="radio_PHFTKWNFYR" value=""> <span>It guarantees a perfect fit to the data.</span></label>
+<div id="radio_LUBWXDDYVL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_LUBWXDDYVL" value=""> <span>It is the same as the mean-only model from Chapter 14.</span></label><label><input type="radio" autocomplete="off" name="radio_LUBWXDDYVL" value=""> <span>It uses a different prediction for each observation, ignoring any predictor.</span></label><label><input type="radio" autocomplete="off" name="radio_LUBWXDDYVL" value="answer"> <span>It uses a continuous predictor <span class="math inline">\(X\)</span> to make a different prediction for each observation; the predictions form a line with two parameters: an intercept (<span class="math inline">\(b_0\)</span>) and a slope (<span class="math inline">\(b_1\)</span>).</span></label><label><input type="radio" autocomplete="off" name="radio_LUBWXDDYVL" value=""> <span>It guarantees a perfect fit to the data.</span></label>
 </div>
 <p><strong>2. What does the intercept (<span class="math inline">\(b_0\)</span>) of a simple linear model represent?</strong></p>
-<div id="radio_GRATUDEZHB" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_GRATUDEZHB" value=""> <span>The predicted value of <span class="math inline">\(X\)</span> when <span class="math inline">\(Y = 0\)</span>.</span></label><label><input type="radio" autocomplete="off" name="radio_GRATUDEZHB" value="answer"> <span>The predicted value of <span class="math inline">\(Y\)</span> when <span class="math inline">\(X = 0\)</span>; the height at which the line crosses the y-axis.</span></label><label><input type="radio" autocomplete="off" name="radio_GRATUDEZHB" value=""> <span>The average of all <span class="math inline">\(Y\)</span> values.</span></label><label><input type="radio" autocomplete="off" name="radio_GRATUDEZHB" value=""> <span>The slope of the line.</span></label>
+<div id="radio_HICRQGZBUY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_HICRQGZBUY" value=""> <span>The predicted value of <span class="math inline">\(X\)</span> when <span class="math inline">\(Y = 0\)</span>.</span></label><label><input type="radio" autocomplete="off" name="radio_HICRQGZBUY" value="answer"> <span>The predicted value of <span class="math inline">\(Y\)</span> when <span class="math inline">\(X = 0\)</span>; the height at which the line crosses the y-axis.</span></label><label><input type="radio" autocomplete="off" name="radio_HICRQGZBUY" value=""> <span>The average of all <span class="math inline">\(Y\)</span> values.</span></label><label><input type="radio" autocomplete="off" name="radio_HICRQGZBUY" value=""> <span>The slope of the line.</span></label>
 </div>
 <p><strong>3. What does the slope (<span class="math inline">\(b_1\)</span>) of a simple linear model represent?</strong></p>
-<div id="radio_CCXGZORYKL" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_CCXGZORYKL" value=""> <span>How much <span class="math inline">\(X\)</span> changes for a one-unit increase in <span class="math inline">\(Y\)</span>.</span></label><label><input type="radio" autocomplete="off" name="radio_CCXGZORYKL" value="answer"> <span>How much <span class="math inline">\(Y\)</span> changes for a one-unit increase in <span class="math inline">\(X\)</span>. A positive slope means <span class="math inline">\(Y\)</span> increases as <span class="math inline">\(X\)</span> increases; a negative slope means <span class="math inline">\(Y\)</span> decreases as <span class="math inline">\(X\)</span> increases.</span></label><label><input type="radio" autocomplete="off" name="radio_CCXGZORYKL" value=""> <span>The correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>.</span></label><label><input type="radio" autocomplete="off" name="radio_CCXGZORYKL" value=""> <span>The intercept of the line.</span></label>
+<div id="radio_HQMWUTTLLO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_HQMWUTTLLO" value=""> <span>How much <span class="math inline">\(X\)</span> changes for a one-unit increase in <span class="math inline">\(Y\)</span>.</span></label><label><input type="radio" autocomplete="off" name="radio_HQMWUTTLLO" value="answer"> <span>How much <span class="math inline">\(Y\)</span> changes for a one-unit increase in <span class="math inline">\(X\)</span>. A positive slope means <span class="math inline">\(Y\)</span> increases as <span class="math inline">\(X\)</span> increases; a negative slope means <span class="math inline">\(Y\)</span> decreases as <span class="math inline">\(X\)</span> increases.</span></label><label><input type="radio" autocomplete="off" name="radio_HQMWUTTLLO" value=""> <span>The correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>.</span></label><label><input type="radio" autocomplete="off" name="radio_HQMWUTTLLO" value=""> <span>The intercept of the line.</span></label>
 </div>
 <p><strong>4. What happens when you plug a value of <span class="math inline">\(X\)</span> into the model equation <span class="math inline">\(\\hat{Y} = b_0 + b_1 X\)</span>?</strong></p>
-<div id="radio_JWXQHCCUXE" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_JWXQHCCUXE" value=""> <span>It produces an exact, deterministic, fully accurate prediction.</span></label><label><input type="radio" autocomplete="off" name="radio_JWXQHCCUXE" value="answer"> <span>It produces a prediction <span class="math inline">\(\hat{Y} = b_0 + b_1 X\)</span>; the actual observed <span class="math inline">\(Y_i\)</span> for that participant will typically differ from the prediction by some residual <span class="math inline">\(\varepsilon_i = Y_i - \hat{Y}_i\)</span>.</span></label><label><input type="radio" autocomplete="off" name="radio_JWXQHCCUXE" value=""> <span>It produces the same prediction for every participant.</span></label><label><input type="radio" autocomplete="off" name="radio_JWXQHCCUXE" value=""> <span>It does not produce a prediction; only the mean-only model does.</span></label>
+<div id="radio_GFUETXMRYZ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_GFUETXMRYZ" value=""> <span>It produces an exact, deterministic, fully accurate prediction.</span></label><label><input type="radio" autocomplete="off" name="radio_GFUETXMRYZ" value="answer"> <span>It produces a prediction <span class="math inline">\(\hat{Y} = b_0 + b_1 X\)</span>; the actual observed <span class="math inline">\(Y_i\)</span> for that participant will typically differ from the prediction by some residual <span class="math inline">\(\varepsilon_i = Y_i - \hat{Y}_i\)</span>.</span></label><label><input type="radio" autocomplete="off" name="radio_GFUETXMRYZ" value=""> <span>It produces the same prediction for every participant.</span></label><label><input type="radio" autocomplete="off" name="radio_GFUETXMRYZ" value=""> <span>It does not produce a prediction; only the mean-only model does.</span></label>
 </div>
 <p><strong>5. How does Ordinary Least Squares (OLS) choose the best-fitting line?</strong></p>
-<div id="radio_RYTBGOREPO" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_RYTBGOREPO" value=""> <span>Pick the line that passes through the most data points.</span></label><label><input type="radio" autocomplete="off" name="radio_RYTBGOREPO" value=""> <span>Pick the line that has the steepest slope.</span></label><label><input type="radio" autocomplete="off" name="radio_RYTBGOREPO" value="answer"> <span>Pick the intercept and slope that minimize the sum of squared residuals (the sum of squared vertical distances from the observations to the line). This is called Ordinary Least Squares (OLS).</span></label><label><input type="radio" autocomplete="off" name="radio_RYTBGOREPO" value=""> <span>Pick the line that has slope = 0.</span></label>
+<div id="radio_XNCTGVMZGN" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_XNCTGVMZGN" value=""> <span>Pick the line that passes through the most data points.</span></label><label><input type="radio" autocomplete="off" name="radio_XNCTGVMZGN" value=""> <span>Pick the line that has the steepest slope.</span></label><label><input type="radio" autocomplete="off" name="radio_XNCTGVMZGN" value="answer"> <span>Pick the intercept and slope that minimize the sum of squared residuals (the sum of squared vertical distances from the observations to the line). This is called Ordinary Least Squares (OLS).</span></label><label><input type="radio" autocomplete="off" name="radio_XNCTGVMZGN" value=""> <span>Pick the line that has slope = 0.</span></label>
 </div>
 <p><strong>6. The mean-only model is a special case of the simple linear model. Which value of the slope makes them equivalent?</strong></p>
-<div id="radio_GTHYMXJKIS" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_GTHYMXJKIS" value=""> <span>Slope of zero means the line is vertical.</span></label><label><input type="radio" autocomplete="off" name="radio_GTHYMXJKIS" value="answer"> <span>Slope of zero means the line is flat, the model predicts the same value (the intercept) for every observation, and the simple linear model reduces to the mean-only model from Chapter 14.</span></label><label><input type="radio" autocomplete="off" name="radio_GTHYMXJKIS" value=""> <span>Slope of zero is impossible in OLS regression.</span></label><label><input type="radio" autocomplete="off" name="radio_GTHYMXJKIS" value=""> <span>Slope of zero means <span class="math inline">\(Y\)</span> is always zero.</span></label>
+<div id="radio_ADETHQODNE" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ADETHQODNE" value=""> <span>Slope of zero means the line is vertical.</span></label><label><input type="radio" autocomplete="off" name="radio_ADETHQODNE" value="answer"> <span>Slope of zero means the line is flat, the model predicts the same value (the intercept) for every observation, and the simple linear model reduces to the mean-only model from Chapter 14.</span></label><label><input type="radio" autocomplete="off" name="radio_ADETHQODNE" value=""> <span>Slope of zero is impossible in OLS regression.</span></label><label><input type="radio" autocomplete="off" name="radio_ADETHQODNE" value=""> <span>Slope of zero means <span class="math inline">\(Y\)</span> is always zero.</span></label>
 </div>
 <p><strong>7. What is “extrapolation,” and why is it a concern in simple regression?</strong></p>
-<div id="radio_AOUQGFJQNB" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_AOUQGFJQNB" value=""> <span>It is the safest place to make predictions because it lies outside the data.</span></label><label><input type="radio" autocomplete="off" name="radio_AOUQGFJQNB" value="answer"> <span>It is making predictions for values of the predictor outside the range of the observed data, and such predictions should be treated with caution because we have no evidence the linear relationship continues that far.</span></label><label><input type="radio" autocomplete="off" name="radio_AOUQGFJQNB" value=""> <span>It is the same thing as interpolation.</span></label><label><input type="radio" autocomplete="off" name="radio_AOUQGFJQNB" value=""> <span>It always produces correct predictions.</span></label>
+<div id="radio_CYNWCEMKAN" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_CYNWCEMKAN" value=""> <span>It is the safest place to make predictions because it lies outside the data.</span></label><label><input type="radio" autocomplete="off" name="radio_CYNWCEMKAN" value="answer"> <span>It is making predictions for values of the predictor outside the range of the observed data, and such predictions should be treated with caution because we have no evidence the linear relationship continues that far.</span></label><label><input type="radio" autocomplete="off" name="radio_CYNWCEMKAN" value=""> <span>It is the same thing as interpolation.</span></label><label><input type="radio" autocomplete="off" name="radio_CYNWCEMKAN" value=""> <span>It always produces correct predictions.</span></label>
 </div>
 <p><strong>8. Suppose your simple linear model has a slope of <span class="math inline">\(b_1 = 0.5\)</span>, meaning each unit increase in <span class="math inline">\(X\)</span> is associated with a 0.5-unit increase in <span class="math inline">\(Y\)</span>. Can you conclude from this slope alone that <span class="math inline">\(X\)</span> causes <span class="math inline">\(Y\)</span>?</strong></p>
-<div id="radio_MPXKLBHOAY" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_MPXKLBHOAY" value=""> <span>Yes: a positive slope and a strong relationship together imply a causal effect.</span></label><label><input type="radio" autocomplete="off" name="radio_MPXKLBHOAY" value="answer"> <span>No: a slope describes a statistical association in a sample. Concluding that <span class="math inline">\(X\)</span> causes <span class="math inline">\(Y\)</span> requires a different argument (causal inference) that the simple linear model itself does not provide.</span></label><label><input type="radio" autocomplete="off" name="radio_MPXKLBHOAY" value=""> <span>Yes: the OLS estimator was designed to recover causal effects.</span></label><label><input type="radio" autocomplete="off" name="radio_MPXKLBHOAY" value=""> <span>It depends only on the sample size.</span></label>
+<div id="radio_DCGPQMGRHY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_DCGPQMGRHY" value=""> <span>Yes: a positive slope and a strong relationship together imply a causal effect.</span></label><label><input type="radio" autocomplete="off" name="radio_DCGPQMGRHY" value="answer"> <span>No: a slope describes a statistical association in a sample. Concluding that <span class="math inline">\(X\)</span> causes <span class="math inline">\(Y\)</span> requires a different argument (causal inference) that the simple linear model itself does not provide.</span></label><label><input type="radio" autocomplete="off" name="radio_DCGPQMGRHY" value=""> <span>Yes: the OLS estimator was designed to recover causal effects.</span></label><label><input type="radio" autocomplete="off" name="radio_DCGPQMGRHY" value=""> <span>It depends only on the sample size.</span></label>
 </div>
 </section>
-<section id="references" class="level2" data-number="15.11">
-<h2 data-number="15.11" class="anchored" data-anchor-id="references"><span class="header-section-number">15.11</span> References</h2>
+<section id="references" class="level2" data-number="15.12">
+<h2 data-number="15.12" class="anchored" data-anchor-id="references"><span class="header-section-number">15.12</span> References</h2>
 <p>Navarro, D. J. (2018). <em>Learning statistics with R: A tutorial for psychology students and other beginners</em> (Version 0.6), Chapter 15. <a href="https://learningstatisticswithr.com" class="uri">https://learningstatisticswithr.com</a></p>
 
 
@@ -1312,6 +1521,9 @@ window.onload = function() {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./16-fitting-regression.html" class="pagination-link" aria-label="Fitting and interpreting simple regression in R">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Fitting and interpreting simple regression in R</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

@@ -444,6 +444,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">From the mean to the line: the simple linear model</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-fitting-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Fitting and interpreting simple regression in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-multiple-and-categorical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Multiple regression and categorical predictors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-moderation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Moderation: when one predictor depends on another</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-bias-variance-assumptions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Bias, variance, and the assumptions of the linear model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-diagnostics-and-limits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Diagnostics, model fit, and the limits of your model</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -710,36 +740,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="check-your-understanding" class="level2" data-number="5.9">
 <h2 data-number="5.9" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">5.9</span> Check your understanding</h2>
 <p><strong>1. What is a vector in R?</strong></p>
-<div id="radio_LNVQUHPCBA" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_LNVQUHPCBA" value=""> <span>A vector with mixed types: numbers, strings, and logicals together.</span></label><label><input type="radio" autocomplete="off" name="radio_LNVQUHPCBA" value=""> <span>Another name for the working directory.</span></label><label><input type="radio" autocomplete="off" name="radio_LNVQUHPCBA" value="answer"> <span>An ordered sequence of values of the same type, created with <code>c()</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_LNVQUHPCBA" value=""> <span>A built-in plotting function.</span></label>
+<div id="radio_FTARZEZTPB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_FTARZEZTPB" value=""> <span>A vector with mixed types: numbers, strings, and logicals together.</span></label><label><input type="radio" autocomplete="off" name="radio_FTARZEZTPB" value=""> <span>Another name for the working directory.</span></label><label><input type="radio" autocomplete="off" name="radio_FTARZEZTPB" value="answer"> <span>An ordered sequence of values of the same type, created with <code>c()</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_FTARZEZTPB" value=""> <span>A built-in plotting function.</span></label>
 </div>
 <p><strong>2. At what index is the first element of a vector in R?</strong></p>
-<div id="radio_EFBFYYRLBH" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_EFBFYYRLBH" value=""> <span>Index 0.</span></label><label><input type="radio" autocomplete="off" name="radio_EFBFYYRLBH" value="answer"> <span>Index 1.</span></label><label><input type="radio" autocomplete="off" name="radio_EFBFYYRLBH" value=""> <span>Index -1.</span></label><label><input type="radio" autocomplete="off" name="radio_EFBFYYRLBH" value=""> <span>It depends on the operating system.</span></label>
+<div id="radio_TOYTMRINWS" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_TOYTMRINWS" value=""> <span>Index 0.</span></label><label><input type="radio" autocomplete="off" name="radio_TOYTMRINWS" value="answer"> <span>Index 1.</span></label><label><input type="radio" autocomplete="off" name="radio_TOYTMRINWS" value=""> <span>Index -1.</span></label><label><input type="radio" autocomplete="off" name="radio_TOYTMRINWS" value=""> <span>It depends on the operating system.</span></label>
 </div>
 <p><strong>3. What is a data frame?</strong></p>
-<div id="radio_UTXHVIPQVA" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_UTXHVIPQVA" value=""> <span>A spreadsheet file saved in CSV format.</span></label><label><input type="radio" autocomplete="off" name="radio_UTXHVIPQVA" value="answer"> <span>A two-dimensional structure where rows are observations and columns are variables, holding vectors of equal length.</span></label><label><input type="radio" autocomplete="off" name="radio_UTXHVIPQVA" value=""> <span>A list of installed packages.</span></label><label><input type="radio" autocomplete="off" name="radio_UTXHVIPQVA" value=""> <span>A graphical representation of a dataset.</span></label>
+<div id="radio_GOHHRSOACI" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_GOHHRSOACI" value=""> <span>A spreadsheet file saved in CSV format.</span></label><label><input type="radio" autocomplete="off" name="radio_GOHHRSOACI" value="answer"> <span>A two-dimensional structure where rows are observations and columns are variables, holding vectors of equal length.</span></label><label><input type="radio" autocomplete="off" name="radio_GOHHRSOACI" value=""> <span>A list of installed packages.</span></label><label><input type="radio" autocomplete="off" name="radio_GOHHRSOACI" value=""> <span>A graphical representation of a dataset.</span></label>
 </div>
 <p><strong>4. Which expression extracts the column <code>age</code> from a data frame called <code>participants_data</code>?</strong></p>
-<div id="radio_RGVQQLUZTX" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_RGVQQLUZTX" value=""> <span><code>participants_data[age]</code></span></label><label><input type="radio" autocomplete="off" name="radio_RGVQQLUZTX" value=""> <span><code>participants_data#age</code></span></label><label><input type="radio" autocomplete="off" name="radio_RGVQQLUZTX" value="answer"> <span><code>participants_data$age</code></span></label><label><input type="radio" autocomplete="off" name="radio_RGVQQLUZTX" value=""> <span><code>participants_data-&gt;age</code></span></label>
+<div id="radio_MEZHTQFVNI" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MEZHTQFVNI" value=""> <span><code>participants_data[age]</code></span></label><label><input type="radio" autocomplete="off" name="radio_MEZHTQFVNI" value=""> <span><code>participants_data#age</code></span></label><label><input type="radio" autocomplete="off" name="radio_MEZHTQFVNI" value="answer"> <span><code>participants_data$age</code></span></label><label><input type="radio" autocomplete="off" name="radio_MEZHTQFVNI" value=""> <span><code>participants_data-&gt;age</code></span></label>
 </div>
 <p><strong>5. What is a function?</strong></p>
-<div id="radio_RRVQCOTGAO" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_RRVQCOTGAO" value=""> <span>A type of file used to save analyses.</span></label><label><input type="radio" autocomplete="off" name="radio_RRVQCOTGAO" value=""> <span>A panel in the RStudio interface.</span></label><label><input type="radio" autocomplete="off" name="radio_RRVQCOTGAO" value="answer"> <span>A piece of R that takes objects as input and produces a new object as output.</span></label><label><input type="radio" autocomplete="off" name="radio_RRVQCOTGAO" value=""> <span>A specific kind of vector.</span></label>
+<div id="radio_AEPPFFBPEH" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_AEPPFFBPEH" value=""> <span>A type of file used to save analyses.</span></label><label><input type="radio" autocomplete="off" name="radio_AEPPFFBPEH" value=""> <span>A panel in the RStudio interface.</span></label><label><input type="radio" autocomplete="off" name="radio_AEPPFFBPEH" value="answer"> <span>A piece of R that takes objects as input and produces a new object as output.</span></label><label><input type="radio" autocomplete="off" name="radio_AEPPFFBPEH" value=""> <span>A specific kind of vector.</span></label>
 </div>
 <p><strong>6. What does <code>round(23.14286, digits = 2)</code> do?</strong></p>
-<div id="radio_ZCMNZZOFLY" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_ZCMNZZOFLY" value=""> <span>Add a new column called <code>digits</code> to the data frame.</span></label><label><input type="radio" autocomplete="off" name="radio_ZCMNZZOFLY" value="answer"> <span>Round 23.14286 to two decimals, returning 23.14.</span></label><label><input type="radio" autocomplete="off" name="radio_ZCMNZZOFLY" value=""> <span>Round 23.14286 to two significant figures, returning 23.</span></label><label><input type="radio" autocomplete="off" name="radio_ZCMNZZOFLY" value=""> <span>Multiply 23.14286 by 2.</span></label>
+<div id="radio_VMDPBYGRVF" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_VMDPBYGRVF" value=""> <span>Add a new column called <code>digits</code> to the data frame.</span></label><label><input type="radio" autocomplete="off" name="radio_VMDPBYGRVF" value="answer"> <span>Round 23.14286 to two decimals, returning 23.14.</span></label><label><input type="radio" autocomplete="off" name="radio_VMDPBYGRVF" value=""> <span>Round 23.14286 to two significant figures, returning 23.</span></label><label><input type="radio" autocomplete="off" name="radio_VMDPBYGRVF" value=""> <span>Multiply 23.14286 by 2.</span></label>
 </div>
 <p><strong>7. If <code>ages</code> is a vector of length 7, what does <code>length(ages)</code> return?</strong></p>
-<div id="radio_QCASAMITIQ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_QCASAMITIQ" value=""> <span>It returns 0 because R indexes from 0.</span></label><label><input type="radio" autocomplete="off" name="radio_QCASAMITIQ" value=""> <span>It returns 1 because there is one element.</span></label><label><input type="radio" autocomplete="off" name="radio_QCASAMITIQ" value="answer"> <span>It returns 7, the length of the original vector.</span></label><label><input type="radio" autocomplete="off" name="radio_QCASAMITIQ" value=""> <span>It causes an error.</span></label>
+<div id="radio_VBDFMZMHKJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_VBDFMZMHKJ" value=""> <span>It returns 0 because R indexes from 0.</span></label><label><input type="radio" autocomplete="off" name="radio_VBDFMZMHKJ" value=""> <span>It returns 1 because there is one element.</span></label><label><input type="radio" autocomplete="off" name="radio_VBDFMZMHKJ" value="answer"> <span>It returns 7, the length of the original vector.</span></label><label><input type="radio" autocomplete="off" name="radio_VBDFMZMHKJ" value=""> <span>It causes an error.</span></label>
 </div>
 <p><strong>8. What does typing <code>?mean</code> in the Console do?</strong></p>
-<div id="radio_IHOZXHUDLK" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_IHOZXHUDLK" value=""> <span>Open the documentation for the <code>mean</code> package.</span></label><label><input type="radio" autocomplete="off" name="radio_IHOZXHUDLK" value="answer"> <span>Open the help page for the <code>mean</code> function, listing its arguments and examples.</span></label><label><input type="radio" autocomplete="off" name="radio_IHOZXHUDLK" value=""> <span>Calculate the mean of all objects in the environment.</span></label><label><input type="radio" autocomplete="off" name="radio_IHOZXHUDLK" value=""> <span>Print the source code of the <code>mean</code> function.</span></label>
+<div id="radio_HDRDXEAIZB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_HDRDXEAIZB" value=""> <span>Open the documentation for the <code>mean</code> package.</span></label><label><input type="radio" autocomplete="off" name="radio_HDRDXEAIZB" value="answer"> <span>Open the help page for the <code>mean</code> function, listing its arguments and examples.</span></label><label><input type="radio" autocomplete="off" name="radio_HDRDXEAIZB" value=""> <span>Calculate the mean of all objects in the environment.</span></label><label><input type="radio" autocomplete="off" name="radio_HDRDXEAIZB" value=""> <span>Print the source code of the <code>mean</code> function.</span></label>
 </div>
 
 
