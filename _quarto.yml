@@ -31,6 +31,9 @@ book:
     - 10-data-visualization-principles.qmd
     - 11-wrangling-for-psychology.qmd
     - 12-advanced-wrangling-optional.qmd
+  - part: 'Section 3: Statistical Modeling — Regressions'
+    chapters:
+    - 13-data-and-models.qmd
 format:
   html:
     theme:
