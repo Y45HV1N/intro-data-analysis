@@ -81,9 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d186ee71915d1414126d49a598f8905e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-c4efc3651f5e6d4e0b99c9ac99b5cdab.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-d186ee71915d1414126d49a598f8905e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-2a10d0346db92f4f4683709d27f46b3b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-663e73f9dec64fbea7d0ce06426dad2b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-2a10d0346db92f4f4683709d27f46b3b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -417,6 +417,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 3: Statistical Modeling — Regressions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-data-and-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data and the idea of a statistical model</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -548,28 +565,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="check-your-understanding" class="level2" data-number="2.7">
 <h2 data-number="2.7" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">2.7</span> Check your understanding</h2>
 <p><strong>1. Which of the following best describes the relationship between R and RStudio?</strong></p>
-<div id="radio_OWZCEWDPBA" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_OWZCEWDPBA" value=""> <span>R is the dashboard you click on, and RStudio is the engine that performs computations.</span></label><label><input type="radio" autocomplete="off" name="radio_OWZCEWDPBA" value=""> <span>R and RStudio are two names for the same program.</span></label><label><input type="radio" autocomplete="off" name="radio_OWZCEWDPBA" value="answer"> <span>R is the engine that performs computations, and RStudio is a dashboard that provides a comfortable working environment around R.</span></label><label><input type="radio" autocomplete="off" name="radio_OWZCEWDPBA" value=""> <span>RStudio includes its own version of R and replaces the need to install R separately.</span></label>
+<div id="radio_VZAZDQXHBC" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_VZAZDQXHBC" value=""> <span>R is the dashboard you click on, and RStudio is the engine that performs computations.</span></label><label><input type="radio" autocomplete="off" name="radio_VZAZDQXHBC" value=""> <span>R and RStudio are two names for the same program.</span></label><label><input type="radio" autocomplete="off" name="radio_VZAZDQXHBC" value="answer"> <span>R is the engine that performs computations, and RStudio is a dashboard that provides a comfortable working environment around R.</span></label><label><input type="radio" autocomplete="off" name="radio_VZAZDQXHBC" value=""> <span>RStudio includes its own version of R and replaces the need to install R separately.</span></label>
 </div>
 <p><strong>2. Which piece of software actually performs the statistical computations?</strong></p>
-<div id="radio_QUTZFEUDBW" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_QUTZFEUDBW" value=""> <span>RStudio.</span></label><label><input type="radio" autocomplete="off" name="radio_QUTZFEUDBW" value="answer"> <span>R.</span></label><label><input type="radio" autocomplete="off" name="radio_QUTZFEUDBW" value=""> <span>Microsoft Excel.</span></label><label><input type="radio" autocomplete="off" name="radio_QUTZFEUDBW" value=""> <span>The web browser used to download the installer.</span></label>
+<div id="radio_ACEIBRVGQT" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ACEIBRVGQT" value=""> <span>RStudio.</span></label><label><input type="radio" autocomplete="off" name="radio_ACEIBRVGQT" value="answer"> <span>R.</span></label><label><input type="radio" autocomplete="off" name="radio_ACEIBRVGQT" value=""> <span>Microsoft Excel.</span></label><label><input type="radio" autocomplete="off" name="radio_ACEIBRVGQT" value=""> <span>The web browser used to download the installer.</span></label>
 </div>
 <p><strong>3. What happens if you install RStudio without first installing R?</strong></p>
-<div id="radio_VUXVLAZEHD" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_VUXVLAZEHD" value=""> <span>RStudio works without R, because RStudio comes with its own statistical engine built in.</span></label><label><input type="radio" autocomplete="off" name="radio_VUXVLAZEHD" value=""> <span>RStudio refuses to start.</span></label><label><input type="radio" autocomplete="off" name="radio_VUXVLAZEHD" value="answer"> <span>RStudio opens, but it has no engine to talk to, so commands cannot be executed.</span></label><label><input type="radio" autocomplete="off" name="radio_VUXVLAZEHD" value=""> <span>R is automatically downloaded by RStudio the first time it is launched.</span></label>
+<div id="radio_ZTOEPILPXQ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ZTOEPILPXQ" value=""> <span>RStudio works without R, because RStudio comes with its own statistical engine built in.</span></label><label><input type="radio" autocomplete="off" name="radio_ZTOEPILPXQ" value=""> <span>RStudio refuses to start.</span></label><label><input type="radio" autocomplete="off" name="radio_ZTOEPILPXQ" value="answer"> <span>RStudio opens, but it has no engine to talk to, so commands cannot be executed.</span></label><label><input type="radio" autocomplete="off" name="radio_ZTOEPILPXQ" value=""> <span>R is automatically downloaded by RStudio the first time it is launched.</span></label>
 </div>
 <p><strong>4. Where does R itself come from when you install it?</strong></p>
-<div id="radio_MBOKLWTMQT" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_MBOKLWTMQT" value="answer"> <span>CRAN, the Comprehensive R Archive Network.</span></label><label><input type="radio" autocomplete="off" name="radio_MBOKLWTMQT" value=""> <span>The Apple App Store and the Microsoft Store.</span></label><label><input type="radio" autocomplete="off" name="radio_MBOKLWTMQT" value=""> <span>GitHub.</span></label><label><input type="radio" autocomplete="off" name="radio_MBOKLWTMQT" value=""> <span>The RStudio website.</span></label>
+<div id="radio_RTVNDYYOWL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_RTVNDYYOWL" value="answer"> <span>CRAN, the Comprehensive R Archive Network.</span></label><label><input type="radio" autocomplete="off" name="radio_RTVNDYYOWL" value=""> <span>The Apple App Store and the Microsoft Store.</span></label><label><input type="radio" autocomplete="off" name="radio_RTVNDYYOWL" value=""> <span>GitHub.</span></label><label><input type="radio" autocomplete="off" name="radio_RTVNDYYOWL" value=""> <span>The RStudio website.</span></label>
 </div>
 <p><strong>5. Is installing RStudio required to use R?</strong></p>
-<div id="radio_COXUOKZVBR" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_COXUOKZVBR" value=""> <span>It is mandatory: R cannot be used without RStudio.</span></label><label><input type="radio" autocomplete="off" name="radio_COXUOKZVBR" value=""> <span>It is discouraged: most experienced users avoid RStudio in favor of the bare console.</span></label><label><input type="radio" autocomplete="off" name="radio_COXUOKZVBR" value="answer"> <span>It is the standard practice for most users, although other environments such as Positron, VS Code, and Jupyter also exist.</span></label><label><input type="radio" autocomplete="off" name="radio_COXUOKZVBR" value=""> <span>It is only useful for users on Windows; macOS users should not install it.</span></label>
+<div id="radio_VDRNCQISTR" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_VDRNCQISTR" value=""> <span>It is mandatory: R cannot be used without RStudio.</span></label><label><input type="radio" autocomplete="off" name="radio_VDRNCQISTR" value=""> <span>It is discouraged: most experienced users avoid RStudio in favor of the bare console.</span></label><label><input type="radio" autocomplete="off" name="radio_VDRNCQISTR" value="answer"> <span>It is the standard practice for most users, although other environments such as Positron, VS Code, and Jupyter also exist.</span></label><label><input type="radio" autocomplete="off" name="radio_VDRNCQISTR" value=""> <span>It is only useful for users on Windows; macOS users should not install it.</span></label>
 </div>
 <p><strong>6. Which RStudio panel will list the objects you have created during a session?</strong></p>
-<div id="radio_ONLXQFDQYK" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_ONLXQFDQYK" value=""> <span>The Help panel.</span></label><label><input type="radio" autocomplete="off" name="radio_ONLXQFDQYK" value=""> <span>The Plots panel.</span></label><label><input type="radio" autocomplete="off" name="radio_ONLXQFDQYK" value="answer"> <span>The Environment panel.</span></label><label><input type="radio" autocomplete="off" name="radio_ONLXQFDQYK" value=""> <span>The Files panel.</span></label>
+<div id="radio_RQYZQRUIQB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_RQYZQRUIQB" value=""> <span>The Help panel.</span></label><label><input type="radio" autocomplete="off" name="radio_RQYZQRUIQB" value=""> <span>The Plots panel.</span></label><label><input type="radio" autocomplete="off" name="radio_RQYZQRUIQB" value="answer"> <span>The Environment panel.</span></label><label><input type="radio" autocomplete="off" name="radio_RQYZQRUIQB" value=""> <span>The Files panel.</span></label>
 </div>
 
 

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>7&nbsp; Recap and getting data into R – Understanding and analyzing social and behavioral data</title>
+<title>13&nbsp; Data and the idea of a statistical model – Understanding and analyzing social and behavioral data</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,41 +23,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -68,8 +33,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./08-data-wrangling-basics.html" rel="next">
-<link href="./06-operations-and-packages.html" rel="prev">
+<link href="./12-advanced-wrangling-optional.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -288,7 +252,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-basics-r.html">Section 1: Getting Started Properly</a></li><li class="breadcrumb-item"><a href="./07-recap.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Recap and getting data into R</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./13-data-and-models.html">Section 3: Statistical Modeling — Regressions</a></li><li class="breadcrumb-item"><a href="./13-data-and-models.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data and the idea of a statistical model</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -370,7 +334,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./07-recap.html" class="sidebar-item-text sidebar-link active">
+  <a href="./07-recap.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Recap and getting data into R</span></span></a>
   </div>
 </li>
@@ -428,7 +392,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./13-data-and-models.html" class="sidebar-item-text sidebar-link">
+  <a href="./13-data-and-models.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data and the idea of a statistical model</span></span></a>
   </div>
 </li>
@@ -444,28 +408,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#where-you-are-now" id="toc-where-you-are-now" class="nav-link active" data-scroll-target="#where-you-are-now"><span class="header-section-number">7.1</span> Where you are now</a></li>
-  <li><a href="#what-you-have-learned" id="toc-what-you-have-learned" class="nav-link" data-scroll-target="#what-you-have-learned"><span class="header-section-number">7.2</span> What you have learned</a></li>
-  <li><a href="#what-this-means-for-the-rest-of-the-book" id="toc-what-this-means-for-the-rest-of-the-book" class="nav-link" data-scroll-target="#what-this-means-for-the-rest-of-the-book"><span class="header-section-number">7.3</span> What this means for the rest of the book</a></li>
-  <li><a href="#a-final-missing-piece-getting-data-into-r" id="toc-a-final-missing-piece-getting-data-into-r" class="nav-link" data-scroll-target="#a-final-missing-piece-getting-data-into-r"><span class="header-section-number">7.4</span> A final missing piece: getting data into R</a>
+  <li><a href="#where-we-are-now" id="toc-where-we-are-now" class="nav-link active" data-scroll-target="#where-we-are-now"><span class="header-section-number">13.1</span> Where we are now</a></li>
+  <li><a href="#what-is-data" id="toc-what-is-data" class="nav-link" data-scroll-target="#what-is-data"><span class="header-section-number">13.2</span> What is data?</a>
   <ul class="collapse">
-  <li><a href="#reading-csv-files" id="toc-reading-csv-files" class="nav-link" data-scroll-target="#reading-csv-files"><span class="header-section-number">7.4.1</span> Reading CSV files</a></li>
-  <li><a href="#reading-excel-files" id="toc-reading-excel-files" class="nav-link" data-scroll-target="#reading-excel-files"><span class="header-section-number">7.4.2</span> Reading Excel files</a></li>
-  <li><a href="#point-and-click-import-in-rstudio" id="toc-point-and-click-import-in-rstudio" class="nav-link" data-scroll-target="#point-and-click-import-in-rstudio"><span class="header-section-number">7.4.3</span> Point-and-click import in RStudio</a></li>
-  <li><a href="#why-coding-the-import-is-better" id="toc-why-coding-the-import-is-better" class="nav-link" data-scroll-target="#why-coding-the-import-is-better"><span class="header-section-number">7.4.4</span> Why coding the import is better</a></li>
-  <li><a href="#a-practical-pattern" id="toc-a-practical-pattern" class="nav-link" data-scroll-target="#a-practical-pattern"><span class="header-section-number">7.4.5</span> A practical pattern</a></li>
+  <li><a href="#the-structure-of-a-dataset" id="toc-the-structure-of-a-dataset" class="nav-link" data-scroll-target="#the-structure-of-a-dataset"><span class="header-section-number">13.2.1</span> The structure of a dataset</a></li>
+  <li><a href="#the-type-of-each-variable-matters" id="toc-the-type-of-each-variable-matters" class="nav-link" data-scroll-target="#the-type-of-each-variable-matters"><span class="header-section-number">13.2.2</span> The type of each variable matters</a></li>
   </ul></li>
-  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">7.5</span> Check your understanding</a></li>
+  <li><a href="#what-is-a-model" id="toc-what-is-a-model" class="nav-link" data-scroll-target="#what-is-a-model"><span class="header-section-number">13.3</span> What is a model?</a></li>
+  <li><a href="#the-mean-as-the-simplest-model" id="toc-the-mean-as-the-simplest-model" class="nav-link" data-scroll-target="#the-mean-as-the-simplest-model"><span class="header-section-number">13.4</span> The mean as the simplest model</a>
+  <ul class="collapse">
+  <li><a href="#why-this-matters" id="toc-why-this-matters" class="nav-link" data-scroll-target="#why-this-matters"><span class="header-section-number">13.4.1</span> Why this matters</a></li>
+  </ul></li>
+  <li><a href="#looking-ahead" id="toc-looking-ahead" class="nav-link" data-scroll-target="#looking-ahead"><span class="header-section-number">13.5</span> Looking ahead</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">13.6</span> Further reading</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">13.7</span> Check your understanding</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">13.8</span> References</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/07-recap.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/13-data-and-models.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-basics-r.html">Section 1: Getting Started Properly</a></li><li class="breadcrumb-item"><a href="./07-recap.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Recap and getting data into R</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./13-data-and-models.html">Section 3: Statistical Modeling — Regressions</a></li><li class="breadcrumb-item"><a href="./13-data-and-models.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data and the idea of a statistical model</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Recap and getting data into R</span></h1>
+<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data and the idea of a statistical model</span></h1>
 </div>
 
 
@@ -482,149 +449,142 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="where-you-are-now" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="where-you-are-now"><span class="header-section-number">7.1</span> Where you are now</h2>
-<p>The previous six chapters introduced R from the ground up. You have not yet analyzed any real data, and that is intentional: most of the difficulty new users encounter with R is not statistical but environmental. People struggle not because regression is hard but because they cannot tell the difference between an R script and an R project, or because they do not know that an R session has been silently inheriting state from yesterday. By the end of Section 1, those obstacles are behind you.</p>
-<p>This chapter has three purposes. The first is to recap the six earlier chapters in compact form. The second is to introduce one practical step that Section 1 has not yet covered: how to load data from a file into R. The third is to point you toward what comes next. The questions at the end consolidate concepts across all six earlier chapters and the new material on data import.</p>
+<section id="where-we-are-now" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="where-we-are-now"><span class="header-section-number">13.1</span> Where we are now</h2>
+<p>Section 1 taught you how R works. Section 2 taught you how to take a raw data file and turn it into the specific summaries and plots you need to actually look at the data. Together, those two sections covered the work that precedes any analysis.</p>
+<p>Section 3 is about analysis itself, and specifically about a single, unifying framework that organizes most of the statistics you will use as a researcher in psychology and the social sciences. That framework is <strong>statistical modeling</strong>. It is not a single technique; it is a way of thinking that connects descriptive statistics (which you already know) to linear regression, ANOVA, t-tests, multiple regression, and beyond. Once you see the framework, the techniques fall into place as small variations on a single theme.</p>
+<p>This chapter is the first of eight chapters on statistical modeling and regression. It is purely conceptual; it has no regression code. The goal is to install three ideas firmly enough that the rest of Section 3 can build on them: what data is, what a model is, and why the mean (which you have computed many times by now) can be thought of as the simplest possible model of a dataset. The next chapter will put those ideas to work with R code.</p>
 </section>
-<section id="what-you-have-learned" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="what-you-have-learned"><span class="header-section-number">7.2</span> What you have learned</h2>
-<p><strong>Chapter 1</strong> introduced R and the case for working with code. R is a free, open-source programming language designed for statistics. The reasons to use it rather than SPSS or Excel are reproducibility (the script is a complete record of what you did), error detection (every step is inspectable), and scaling (operations defined once can be applied to many variables). R is “object-based” in the sense that almost everything you work with is a named object, created by you, that can be passed into functions to produce new objects.</p>
-<p><strong>Chapter 2</strong> distinguished R the engine from RStudio the dashboard. R performs the computations; RStudio provides the working environment around it. You install both, and the standard environment for new users is RStudio Desktop (Open Source Edition). Alternatives exist (Positron, VS Code with the R extension, Jupyter), but RStudio remains the easiest entry point.</p>
-<p><strong>Chapter 3</strong> mapped out the relevant kinds of files and one in-memory state. The <strong>environment</strong> holds your objects while R is running and disappears when R closes. An <strong>R script</strong> (<code>.R</code>) is a saved record of code. An <strong>RData file</strong> (<code>.RData</code>) is a saved snapshot of objects. An <strong>R project</strong> (<code>.Rproj</code>) is a folder formally designated as a project, which sets the working directory and groups related files. <strong>R Markdown</strong> (<code>.Rmd</code>) files mix prose and code to produce finished documents. The script is the authoritative record; everything else is for convenience or for reporting.</p>
-<p><strong>Chapter 4</strong> examined R sessions and how they relate to projects. A session is one running instance of R; opening a project starts a session, closing or restarting the session destroys the in-memory state. The recommended habit is to restart the session frequently and re-run the script from the top, so that no object exists in the environment for reasons other than your script. The corresponding RStudio settings (“Restore .RData into workspace at startup” and “Save workspace to .RData on exit”) should be turned off, because they silently preserve state across sessions in a way that obscures bugs.</p>
-<p><strong>Chapter 5</strong> introduced the main object types: single values (numbers, strings, logicals), vectors (ordered sequences of values of the same type), and data frames (rows are observations, columns are variables, each column a vector). It introduced the indexing rules, including 1-based indexing, the <code>$</code> for column extraction, and the <code>[rows, columns]</code> two-dimensional bracket form. It also introduced functions: pieces of R that take objects as input and return objects as output, with a small toolkit (<code>class</code>, <code>length</code>, <code>str</code>, <code>head</code>, <code>summary</code>, <code>nrow</code>, <code>ncol</code>, <code>colnames</code>) that you will use to inspect almost any unfamiliar object.</p>
-<p><strong>Chapter 6</strong> covered the basic operations of arithmetic and summary statistics, gave a first illustration of writing a custom function (with <code>if</code> and <code>else</code>), and worked through a substantive example in which a survey dataset with many distorted variables was corrected three ways: manually, with a function applied repeatedly, and with a function applied to all variables in one line. The third approach is the one that pays off in practice. The chapter ended with packages: how to install them, how to load them, how to find documentation, with <code>psych::describe()</code> and <code>psych::describeBy()</code> as concrete examples, and the <code>::</code> notation as an alternative to loading.</p>
+<section id="what-is-data" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="what-is-data"><span class="header-section-number">13.2</span> What is data?</h2>
+<p>You have already worked with data throughout this book, especially in Section 2. We pause here to state explicitly the small set of facts about data that the rest of Section 3 will rely on.</p>
+<section id="the-structure-of-a-dataset" class="level3" data-number="13.2.1">
+<h3 data-number="13.2.1" class="anchored" data-anchor-id="the-structure-of-a-dataset"><span class="header-section-number">13.2.1</span> The structure of a dataset</h3>
+<p>You met this in Chapter 5 and reinforced it in Chapter 8: a dataset is a rectangular table.</p>
+<ul>
+<li>Each <strong>row</strong> is one <strong>case</strong>, <strong>observation</strong>, or <strong>unit of analysis</strong>. In <code>vgames_study.csv</code>, each row is one participant.</li>
+<li>Each <strong>column</strong> is one <strong>variable</strong>. In <code>vgames_study.csv</code>, the columns are <code>participant_id</code>, <code>age</code>, <code>gender</code>, <code>condition</code>, <code>hours_weekly</code>, <code>trait_hostility</code>, <code>empathy</code>, and <code>aggression</code>.</li>
+</ul>
+<p>This is the standard structure that statistical procedures expect. Almost all of the techniques in the rest of this book assume your data is organized this way (sometimes called <strong>tidy</strong> data, in the tidyverse sense). When raw data does not look like this, the work of Chapters 8 through 12 turns it into something that does.</p>
 </section>
-<section id="what-this-means-for-the-rest-of-the-book" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="what-this-means-for-the-rest-of-the-book"><span class="header-section-number">7.3</span> What this means for the rest of the book</h2>
-<p>You now have everything you need to start using R for actual data analysis. The remaining sections of the book will introduce specific kinds of analysis and operations relevant to the <span style="color: red;"><strong>4 other pillars</strong></span> (<span style="color: orange;"><strong>data visualization</strong></span>, <span style="color: orange;"><strong>statistical modeling</strong></span>, <span style="color: orange;"><strong>statistical inference</strong></span>, <span style="color: orange;"><strong>causal inference</strong></span>) in combination with R coding (i.e., the <span style="color: red;"><strong>5th pillar</strong></span>), and the corresponding R workflow for each. Where Section 1 was about setting up the environment, the remaining sections will be about doing things with it.</p>
-<p>Two pieces of advice for the transition.</p>
-<p>The first is that you should expect to consult the help system constantly. Even researchers with decades of R experience read help pages routinely. The skill that distinguishes someone fluent in R is not memorizing every function but knowing how to find the right one.</p>
-<p>The second is that the workflow you have learned (project, restart, script, save explicitly when needed) is more important than any specific analysis you will run later. Statistical operations come and go; methods evolve; specific R functions are sometimes superseded by better ones. The discipline of organizing a project, restarting cleanly, and writing a script that reproduces an analysis from start to finish will serve you regardless of which analyses you eventually run.</p>
-</section>
-<section id="a-final-missing-piece-getting-data-into-r" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="a-final-missing-piece-getting-data-into-r"><span class="header-section-number">7.4</span> A final missing piece: getting data into R</h2>
-<p>There is one practical step we have not yet covered. You know how to create objects from scratch, but in actual research projects your data does not arrive in your R script as hand-typed vectors; it arrives as a file on your computer, exported from a survey platform, an experimental software, a spreadsheet a collaborator sent you, or a database. Before you can analyze it, you have to load it into R.</p>
-<p>This section covers the most common cases: comma-separated values (CSV) files, Excel files, and the point-and-click import feature in RStudio. We then return to the same comparison the rest of Section 1 has been building toward: code-based imports versus click-based imports, and why the code-based approach is the one to make your default.</p>
-<p>For all the examples below, we assume you are working inside an R project (Chapter 4), so that the working directory is set to the project folder and you can refer to data files by paths relative to that folder. A common convention is to place data files in a subfolder called <code>data</code> inside the project, so that paths look like <code>"data/survey_2024.csv"</code>.</p>
-<section id="reading-csv-files" class="level3" data-number="7.4.1">
-<h3 data-number="7.4.1" class="anchored" data-anchor-id="reading-csv-files"><span class="header-section-number">7.4.1</span> Reading CSV files</h3>
-<p>A CSV file is a plain-text file in which rows of a table are stored as lines, and columns are separated by commas. CSV is the most common format for sharing tabular data because it is human-readable, software-agnostic, and supported by every statistical tool.</p>
-<p>Base R has the function <code>read.csv()</code> for this:</p>
+<section id="the-type-of-each-variable-matters" class="level3" data-number="13.2.2">
+<h3 data-number="13.2.2" class="anchored" data-anchor-id="the-type-of-each-variable-matters"><span class="header-section-number">13.2.2</span> The type of each variable matters</h3>
+<p>The kind of variable a column contains determines what you can do with it. The three types you will see most often in psychology:</p>
+<p><strong>Continuous variables</strong> (also called numeric or quantitative) take values on a numeric scale. The differences between values are meaningful. In our dataset: <code>age</code> (in years), <code>hours_weekly</code> (hours per week), <code>trait_hostility</code> (1 to 7), <code>empathy</code> (1 to 7), <code>aggression</code> (1 to 10). You can compute means, standard deviations, and correlations on continuous variables.</p>
+<p><strong>Categorical variables</strong> (also called nominal or qualitative) take values that represent groups or categories, with no natural numeric scale. In our dataset: <code>condition</code> (<code>"violent"</code> or <code>"neutral"</code>), <code>gender</code> (<code>"man"</code>, <code>"woman"</code>, <code>"non-binary"</code>). The “mean” of these values is meaningless: there is no average of <code>"violent"</code> and <code>"neutral"</code>. What you compute on categorical variables are counts and proportions.</p>
+<p><strong>Ordinal variables</strong> take values that have a natural order but where the differences between values are not necessarily equal. A common example is education level (high school, bachelor’s, master’s, doctorate): there is an order, but the gap between “high school” and “bachelor’s” is not necessarily the same as the gap between “master’s” and “doctorate.” For this book, we treat ordinal variables simply, often analyzing them as if they were continuous when there are enough categories to support that.</p>
+<p>A useful preview of why this matters: in the regression models you will fit in the rest of Section 3, R needs to know which kind of variable each predictor is. Treating a categorical variable as if it were continuous, or vice versa, produces wrong answers. We will see in Chapter 17 how R handles categorical predictors automatically, using the factor variables you met in Chapter 11.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>survey <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/survey_2024.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="13-data-and-models_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="624"></p>
+</figure>
 </div>
-<p>After this line, <code>survey</code> is a data frame with the contents of the file. You can inspect it with <code>head(survey)</code>, <code>str(survey)</code>, or <code>summary(survey)</code> as introduced in Chapter 5.</p>
-<p>Three practical points about CSV files.</p>
-<p>The first point is the <strong>separator</strong>. The “C” in CSV stands for “comma,” but in many European locales (including Austria, Germany, France) the convention is to use a semicolon instead, because the comma is already used as the decimal separator. If you open a CSV with <code>read.csv()</code> and the entire file ends up in a single column, the separator is probably a semicolon. Use <code>read.csv2()</code> instead, which assumes semicolon separators and comma decimals:</p>
+</div>
+</div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>survey <span class="ot">&lt;-</span> <span class="fu">read.csv2</span>(<span class="st">"data/survey_2024.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="13-data-and-models_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="624"></p>
+</figure>
 </div>
-<p>Or pass the separator explicitly to <code>read.csv()</code>:</p>
+</div>
+</div>
+<p>The two pictures above use the same dataset but answer different questions. For the categorical variable <code>condition</code>, we ask “how many participants are in each category?” and the answer is a count per bar. For the continuous variable <code>aggression</code>, we ask “what is the shape of the distribution?” and the answer is a histogram. The natural summary in the first case is a count; the natural summary in the second is something like a mean, accompanied by a measure of spread.</p>
+</section>
+</section>
+<section id="what-is-a-model" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="what-is-a-model"><span class="header-section-number">13.3</span> What is a model?</h2>
+<p>Statistics borrows the word <strong>model</strong> from everyday life, where it means roughly the same thing.</p>
+<p>A <strong>map</strong> is a model of a territory. The map of the Vienna U-Bahn does not show every building, every park, every cobblestone. It shows only the train lines and stops. The map is “wrong” in a strict sense, in that it omits almost everything in the city. But it is <strong>useful</strong> for a specific purpose: getting around the subway. A map that showed every brick in every building would not be useful at all; it would be as complex as the city itself.</p>
+<p>A <strong>caricature</strong> is a model of a face. It exaggerates a few features (a prominent chin, a large pair of eyebrows) and ignores the rest. It captures something essential about the person while leaving out detail.</p>
+<p>A <strong>weather forecast</strong> is a model of the atmosphere. It compresses the enormously complex dynamics of pressure, temperature, humidity, wind, terrain, and ocean temperatures into “tomorrow will be 18 degrees and partly cloudy.” It is not a complete description of what the air will do tomorrow; it is a useful summary.</p>
+<p>All models share two features:</p>
+<ol type="1">
+<li>They <strong>simplify</strong>: they leave things out.</li>
+<li>They are <strong>useful for specific purposes</strong>, but not for everything.</li>
+</ol>
+<p>The statistician George Box, who worked on industrial quality control and is widely cited in this context, summarized this with a now-famous sentence:</p>
+<blockquote class="blockquote">
+<p>All models are wrong, but some are useful.</p>
+</blockquote>
+<p>The point is not that “wrong” is a problem to be avoided. The point is that simplification is the whole job of a model. A model that did not simplify would be the data itself, restated in slightly different words. There would be no insight in it.</p>
+<p>In statistics, a <strong>model</strong> is a precise, mathematical, simplified description of the data. Like the map, it leaves things out. Like the map, it is useful for some purposes (predicting, summarizing, comparing groups, testing hypotheses) and not others. And like the map, simpler is sometimes better, even if a more complex model would technically describe the data more accurately.</p>
+</section>
+<section id="the-mean-as-the-simplest-model" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="the-mean-as-the-simplest-model"><span class="header-section-number">13.4</span> The mean as the simplest model</h2>
+<p>We can now state something you have already used many times in a new way. You have been computing means since Chapter 6 (where <code>mean()</code> was introduced as a summary function). You computed group means in Chapter 8 and again in Chapter 9 (where you also computed residuals from the mean and saw that the sum of squared residuals shrank when you used the group means instead of the grand mean).</p>
+<p>Here is the new way to think about all of that work:</p>
+<p><strong>The mean is a statistical model.</strong> It is the simplest possible model of a dataset. The model says: “if you had to predict any participant’s score on this variable, predict the mean.”</p>
+<p>Consider the aggression scores of the 120 participants in <code>vgames_study</code>. The mean is approximately 4.89. We can describe a model that uses this single number:</p>
+<blockquote class="blockquote">
+<p><em>Model 1: every participant’s predicted aggression score is 4.89.</em></p>
+</blockquote>
+<p>This model is obviously wrong for most participants: participant 5 scored 6.7, participant 12 scored 5.7, participant 1 scored 4.2. None of them scored exactly 4.89. But the model is also obviously useful: it gives a single, communicable summary of the 120 numbers. If someone asked “about how aggressive were participants in this study?” the answer “around 4.89 on a 1 to 10 scale” is far more useful than handing them all 120 raw scores.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>survey <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/survey_2024.csv"</span>, <span class="at">sep =</span> <span class="st">";"</span>, <span class="at">dec =</span> <span class="st">","</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="13-data-and-models_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="624"></p>
+</figure>
 </div>
-<p>The second point is the <strong>header row</strong>. By default, <code>read.csv()</code> assumes the first line of the file contains the column names. If your file has no header row, set <code>header = FALSE</code>.</p>
-<p>The third point is <strong>alternatives in packages</strong>. The <code>readr</code> package (part of the tidyverse) provides <code>read_csv()</code>, which is faster on large files and gives clearer messages about how each column was interpreted. It returns a slightly different object (a “tibble,” which is a data frame with a few cosmetic differences). For Section 1 the base R <code>read.csv()</code> is sufficient.</p>
-</section>
-<section id="reading-excel-files" class="level3" data-number="7.4.2">
-<h3 data-number="7.4.2" class="anchored" data-anchor-id="reading-excel-files"><span class="header-section-number">7.4.2</span> Reading Excel files</h3>
-<p>Excel files have the extension <code>.xlsx</code> (modern Excel) or <code>.xls</code> (older Excel). Base R does not include a function to read them, so you need a package. The standard choice is <code>readxl</code>:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"readxl"</span>)  <span class="co"># only once, per computer</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>survey <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/survey_2024.xlsx"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><code>read_excel()</code> handles both <code>.xlsx</code> and <code>.xls</code>. By default it reads the first sheet of the workbook. To read a specific sheet:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>survey <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/survey_2024.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"responses"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The argument <code>sheet</code> accepts either the sheet name as a string or its position as a number (<code>sheet = 2</code> for the second sheet).</p>
-<p>Two notes worth flagging.</p>
-<p>First, Excel files often contain things that do not translate well to a data frame: merged cells, formatting, formulas, multiple tables on one sheet, headers spanning several rows. If your Excel file is structured cleanly (one table per sheet, one header row, one variable per column), <code>read_excel()</code> works without further argument. If it is not, you may need to use <code>range = "A3:F50"</code> or similar to specify which cells to read. When you have control over the file, exporting it as a CSV first usually saves time.</p>
-<p>Second, <code>readxl</code> reads from Excel files without needing Excel installed. The package parses the file format directly. This is a real advantage on machines that do not have Microsoft Office.</p>
-</section>
-<section id="point-and-click-import-in-rstudio" class="level3" data-number="7.4.3">
-<h3 data-number="7.4.3" class="anchored" data-anchor-id="point-and-click-import-in-rstudio"><span class="header-section-number">7.4.3</span> Point-and-click import in RStudio</h3>
-<p>RStudio includes a graphical import feature that handles both CSV and Excel files. To use it, click in the <strong>Files</strong> panel on the file you want to import, or go to <strong>File &gt; Import Dataset</strong> in the menu and choose “From Text (base),” “From Text (readr),” or “From Excel.”</p>
-<p>A dialog opens. It shows a preview of the data, lets you adjust options (delimiter, decimal separator, sheet for Excel files, header row, column types), and previews the result.</p>
-<p>This is genuinely useful for one important reason: at the bottom of the dialog there is a <strong>Code Preview</strong> box that shows the R code corresponding to your current settings. Once you have the preview looking right, you can copy that code and paste it into your script.</p>
-<p>If you simply click “Import,” the code runs once and the data appears, but the code is not added to your script. You will not be able to reproduce the import without going through the dialog again. The good practice is to use the dialog as a way to <em>generate</em> the code, copy it into your script, and then close the dialog.</p>
-</section>
-<section id="why-coding-the-import-is-better" class="level3" data-number="7.4.4">
-<h3 data-number="7.4.4" class="anchored" data-anchor-id="why-coding-the-import-is-better"><span class="header-section-number">7.4.4</span> Why coding the import is better</h3>
-<p>The reason to put the import in your script is the same reason to put any other step in your script. We have made this argument repeatedly in Section 1; in the context of data import it has four specific consequences.</p>
-<p>The first is <strong>reproducibility</strong>. The import is the very first step of any analysis. If the import is in your script, then re-running the script from a clean session loads the data automatically; you do not need to remember which menu options you chose. If the import is not in your script, then your analysis is not reproducible: a colleague running your script will get an error on the very first line, because their environment does not contain the data.</p>
-<p>The second is <strong>transparency</strong>. Reading <code>read.csv("data/survey_2024.csv")</code> tells the reader exactly which file is being loaded, with which separator, with which decimal convention. A click-through history tells nobody anything.</p>
-<p>The third is <strong>portability</strong>. A scripted import using a relative path (<code>"data/survey_2024.csv"</code>, not <code>"C:/Users/yourname/Downloads/.../survey_2024.csv"</code>) works on any computer that has the project folder. You can email the project folder to a collaborator, or push it to a repository, and the same script will run.</p>
-<p>The fourth is <strong>error correction</strong>. If the file’s structure changes (a new column is added, a separator changes, the file is renamed), you adjust one line of code. With a click-through workflow, you redo the entire dialog walkthrough, hoping to remember every setting you previously chose.</p>
-<p>Use the import dialog as a <em>helper</em> that produces the code, then keep the code. The dialog is a good way to discover the right arguments for an unfamiliar file format; it is not a substitute for the script.</p>
-</section>
-<section id="a-practical-pattern" class="level3" data-number="7.4.5">
-<h3 data-number="7.4.5" class="anchored" data-anchor-id="a-practical-pattern"><span class="header-section-number">7.4.5</span> A practical pattern</h3>
-<p>A typical first script in a project loads the data, inspects it, and assigns it to a clean object. For example:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the raw data</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>survey <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/survey_2024.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"responses"</span>)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(survey)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(survey)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(survey)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>You now have everything you need to begin analyzing real data, and you have a script that any future reader (yourself, a collaborator, a reviewer) can run from start to finish.</p>
+<p>The red vertical line is the model’s single prediction. The grey bars are the 120 observed scores. The distance between each bar and the red line, for each participant, is what the model misses. Those distances will be the topic of the next chapter.</p>
+<section id="why-this-matters" class="level3" data-number="13.4.1">
+<h3 data-number="13.4.1" class="anchored" data-anchor-id="why-this-matters"><span class="header-section-number">13.4.1</span> Why this matters</h3>
+<p>Once you accept that the mean is a model, three things follow.</p>
+<p><strong>First, all other statistical techniques are extensions of this idea.</strong> In the next chapter we will look at the differences between observed and predicted scores (residuals) and at a way to quantify how badly the model misses (sum of squared residuals). In Chapter 15 we will replace the single mean with a <strong>line</strong>: a model that predicts a different value for each participant depending on a continuous predictor. In Chapter 17 we will replace the line with a model that uses several predictors at once. In every case, the structure is the same: data, a model that makes a prediction for each observation, residuals (what the model misses), and a measure of how well the model fits.</p>
+<p><strong>Second, a more complex model is not automatically better.</strong> A model that predicted each participant’s exact score (using 120 numbers, one per participant) would have zero residuals. It would be a “perfect fit.” It would also be useless: it would not simplify anything, it would not reveal any pattern, and it would not generalize to participants you have not yet measured. The art is to choose a model simple enough to be informative and complex enough to capture the patterns you care about. This trade-off has a formal name, the <strong>bias-variance trade-off</strong>, and it will appear explicitly in Chapter 19.</p>
+<p><strong>Third, modeling and inference are different activities.</strong> Everything described in this chapter, and in the rest of Section 3 up to Chapter 18, is <strong>descriptive</strong>. We describe data; we fit models; we compare how well they fit. We do not make claims about whether an effect is “statistically significant,” whether the slope in a population is different from zero, or whether the result generalizes to people we did not sample. Those are questions of <strong>statistical inference</strong>, a separate set of ideas that will appear in a later section of the book. Keeping description and inference separate in your mind is, in our view, one of the most useful intellectual habits in statistics.</p>
 </section>
 </section>
-<section id="check-your-understanding" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">7.5</span> Check your understanding</h2>
-<p><strong>1. Which best describes the relationship between R and RStudio?</strong></p>
-<div id="radio_VSEODKLUXB" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_VSEODKLUXB" value="answer"> <span>R is the engine that performs computations; RStudio is a dashboard providing a working environment around it.</span></label><label><input type="radio" autocomplete="off" name="radio_VSEODKLUXB" value=""> <span>RStudio includes its own copy of R, so installing R separately is unnecessary.</span></label><label><input type="radio" autocomplete="off" name="radio_VSEODKLUXB" value=""> <span>R and RStudio are the same program, just with different names.</span></label><label><input type="radio" autocomplete="off" name="radio_VSEODKLUXB" value=""> <span>RStudio is a paid add-on that performs the statistics, while R only provides the user interface.</span></label>
+<section id="looking-ahead" class="level2" data-number="13.5">
+<h2 data-number="13.5" class="anchored" data-anchor-id="looking-ahead"><span class="header-section-number">13.5</span> Looking ahead</h2>
+<p>Chapter 14 takes the same ideas and makes them concrete in R. You will compute residuals from the grand mean and from group means on a small dataset; you will compute the sum of squared residuals for each; and you will see that the group-means model has a smaller sum of squared residuals, exactly as you did with the aggression data in Chapter 9. This time the framing is different: you are not just computing a sum, you are evaluating the <strong>fit</strong> of a <strong>model</strong>.</p>
+<p>Then Chapter 15 introduces the simple linear model, which replaces the one-number-per-group structure with a continuous predictor and a line. By the end of Chapter 16 you will be fitting and interpreting your first regression models in R.</p>
+</section>
+<section id="further-reading" class="level2" data-number="13.6">
+<h2 data-number="13.6" class="anchored" data-anchor-id="further-reading"><span class="header-section-number">13.6</span> Further reading</h2>
+<p>Danielle Navarro’s free textbook <em>Learning Statistics with R</em> (version 0.6) is an excellent companion reference. Chapter 5 (“Descriptive statistics”) covers central tendency and variability from a more traditional descriptive-statistics perspective, and Chapter 2 (“A brief introduction to research design,” especially Section 2.2 on scales of measurement) goes deeper into variable types. The book is available at <a href="https://learningstatisticswithr.com" class="uri">https://learningstatisticswithr.com</a>.</p>
+</section>
+<section id="check-your-understanding" class="level2" data-number="13.7">
+<h2 data-number="13.7" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">13.7</span> Check your understanding</h2>
+<p><strong>1. What is a “dataset” in the form most statistical procedures expect?</strong></p>
+<div id="radio_WBTIHGATDN" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_WBTIHGATDN" value=""> <span>A folder containing the script and the data files for an analysis.</span></label><label><input type="radio" autocomplete="off" name="radio_WBTIHGATDN" value="answer"> <span>A rectangular table in which each row is one observation (one case, e.g., one participant) and each column is one variable. This is sometimes called “tidy” data.</span></label><label><input type="radio" autocomplete="off" name="radio_WBTIHGATDN" value=""> <span>A single number summarizing many observations.</span></label><label><input type="radio" autocomplete="off" name="radio_WBTIHGATDN" value=""> <span>Any file in the project, regardless of its structure.</span></label>
 </div>
-<p><strong>2. Which file type is the authoritative record of an analysis?</strong></p>
-<div id="radio_CUTEBJKVXY" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_CUTEBJKVXY" value=""> <span>An R project, because it stores objects on disk.</span></label><label><input type="radio" autocomplete="off" name="radio_CUTEBJKVXY" value="answer"> <span>An R script, because it is the complete written record of every step of the analysis.</span></label><label><input type="radio" autocomplete="off" name="radio_CUTEBJKVXY" value=""> <span>An RData file, because it preserves the entire environment.</span></label><label><input type="radio" autocomplete="off" name="radio_CUTEBJKVXY" value=""> <span>The Environment panel in RStudio.</span></label>
+<p><strong>2. Why does the type of a variable (continuous, categorical, ordinal) matter?</strong></p>
+<div id="radio_OEMICTSRAW" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_OEMICTSRAW" value=""> <span>It is purely cosmetic; the type of a variable does not affect what you can do with it in R.</span></label><label><input type="radio" autocomplete="off" name="radio_OEMICTSRAW" value="answer"> <span>The type determines which operations and summaries make sense. The mean of a continuous variable is meaningful; the “mean” of a categorical variable is not, and R's statistical procedures treat categorical and continuous variables differently.</span></label><label><input type="radio" autocomplete="off" name="radio_OEMICTSRAW" value=""> <span>Only continuous variables can be analyzed in R.</span></label><label><input type="radio" autocomplete="off" name="radio_OEMICTSRAW" value=""> <span>Categorical variables and continuous variables are treated identically.</span></label>
 </div>
-<p><strong>3. Why is restarting the R session a recommended habit?</strong></p>
-<div id="radio_ULKSDMDTZW" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_ULKSDMDTZW" value=""> <span>It saves the environment to disk in case of a crash.</span></label><label><input type="radio" autocomplete="off" name="radio_ULKSDMDTZW" value=""> <span>It reinstalls all loaded packages from CRAN.</span></label><label><input type="radio" autocomplete="off" name="radio_ULKSDMDTZW" value="answer"> <span>It clears the environment and unloads packages, ensuring that running the script from the top depends only on the script itself, not on accumulated session state.</span></label><label><input type="radio" autocomplete="off" name="radio_ULKSDMDTZW" value=""> <span>It is a slow operation that should only be performed at the end of the day.</span></label>
+<p><strong>3. What is a statistical model?</strong></p>
+<div id="radio_ABBSHLXXVS" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ABBSHLXXVS" value=""> <span>It is a perfect, exact description of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_ABBSHLXXVS" value=""> <span>It is a single number summarizing the data.</span></label><label><input type="radio" autocomplete="off" name="radio_ABBSHLXXVS" value="answer"> <span>A simplified, useful representation of something complex. Models leave things out; the simplification is the point. “All models are wrong, but some are useful.”</span></label><label><input type="radio" autocomplete="off" name="radio_ABBSHLXXVS" value=""> <span>It is the dataset itself, viewed in a different form.</span></label>
 </div>
-<p><strong>4. How often do you need to call <code>library(packagename)</code>?</strong></p>
-<div id="radio_PRGKRSFSBU" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_PRGKRSFSBU" value=""> <span>Once: the package is permanently active on your computer.</span></label><label><input type="radio" autocomplete="off" name="radio_PRGKRSFSBU" value="answer"> <span>Every R session in which you want to use the package's functions.</span></label><label><input type="radio" autocomplete="off" name="radio_PRGKRSFSBU" value=""> <span>Never: <code>install.packages()</code> already loads the package.</span></label><label><input type="radio" autocomplete="off" name="radio_PRGKRSFSBU" value=""> <span>Only when the package's authors release a new version.</span></label>
+<p><strong>4. What is the meaning of George Box’s statement “All models are wrong, but some are useful”?</strong></p>
+<div id="radio_OBGHXTBFCO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_OBGHXTBFCO" value=""> <span>It means a good model is one that perfectly reproduces every data point.</span></label><label><input type="radio" autocomplete="off" name="radio_OBGHXTBFCO" value="answer"> <span>It captures the idea that all models simplify, and therefore are imperfect descriptions of reality, but a well-chosen model is still useful for a specific purpose.</span></label><label><input type="radio" autocomplete="off" name="radio_OBGHXTBFCO" value=""> <span>It means statistics is unreliable.</span></label><label><input type="radio" autocomplete="off" name="radio_OBGHXTBFCO" value=""> <span>It means we should avoid using models when possible.</span></label>
 </div>
-<p><strong>5. Which expression extracts the column <code>age</code> from a data frame called <code>survey</code>?</strong></p>
-<div id="radio_RKYXVBZVLE" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_RKYXVBZVLE" value=""> <span><code>survey[age]</code></span></label><label><input type="radio" autocomplete="off" name="radio_RKYXVBZVLE" value="answer"> <span><code>survey$age</code></span></label><label><input type="radio" autocomplete="off" name="radio_RKYXVBZVLE" value=""> <span><code>survey.age</code></span></label><label><input type="radio" autocomplete="off" name="radio_RKYXVBZVLE" value=""> <span><code>survey-&gt;age</code></span></label>
+<p><strong>5. In what sense is the mean of a dataset a statistical model?</strong></p>
+<div id="radio_ZKSQYRULPD" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ZKSQYRULPD" value=""> <span>It is too simple to be considered a model.</span></label><label><input type="radio" autocomplete="off" name="radio_ZKSQYRULPD" value="answer"> <span>It is a model: it makes a single prediction (the mean value) for every observation, simplifying the dataset into one number. Subsequent chapters build on this idea by introducing more elaborate models that make different predictions for different observations.</span></label><label><input type="radio" autocomplete="off" name="radio_ZKSQYRULPD" value=""> <span>It is the same as a regression.</span></label><label><input type="radio" autocomplete="off" name="radio_ZKSQYRULPD" value=""> <span>It is too complex to be useful as a model.</span></label>
 </div>
-<p><strong>6. At what position is the first element of a vector in R?</strong></p>
-<div id="radio_XGUGGMRZUF" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_XGUGGMRZUF" value=""> <span>Position 0: R indexes from zero.</span></label><label><input type="radio" autocomplete="off" name="radio_XGUGGMRZUF" value="answer"> <span>Position 1: R indexes from one.</span></label><label><input type="radio" autocomplete="off" name="radio_XGUGGMRZUF" value=""> <span>Position -1: R indexes from the end backwards.</span></label><label><input type="radio" autocomplete="off" name="radio_XGUGGMRZUF" value=""> <span>It depends on whether the vector is numeric or character.</span></label>
+<p><strong>6. What is the trade-off between simple and complex models?</strong></p>
+<div id="radio_UZZHFKCMEA" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_UZZHFKCMEA" value=""> <span>The model is automatically better as it gets more complex.</span></label><label><input type="radio" autocomplete="off" name="radio_UZZHFKCMEA" value=""> <span>There is no trade-off; simplicity is always better.</span></label><label><input type="radio" autocomplete="off" name="radio_UZZHFKCMEA" value="answer"> <span>A more complex model can fit the observed data more closely (smaller residuals) but tends to capture noise as well as signal; an overly simple model misses real patterns. The art is choosing a model simple enough to be informative and complex enough to capture the patterns of interest.</span></label><label><input type="radio" autocomplete="off" name="radio_UZZHFKCMEA" value=""> <span>Complex models are easier to interpret than simple ones.</span></label>
 </div>
-<p><strong>7. If <code>x</code> is a numeric vector containing one <code>NA</code>, what does <code>mean(x)</code> return?</strong></p>
-<div id="radio_EYRMVNCULR" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_EYRMVNCULR" value=""> <span>The mean of the entire vector regardless of NA.</span></label><label><input type="radio" autocomplete="off" name="radio_EYRMVNCULR" value="answer"> <span><code>NA</code>, because at least one value is missing; you would need <code>na.rm = TRUE</code> to compute the mean of the non-missing values.</span></label><label><input type="radio" autocomplete="off" name="radio_EYRMVNCULR" value=""> <span>An error message that stops execution.</span></label><label><input type="radio" autocomplete="off" name="radio_EYRMVNCULR" value=""> <span>Zero, by convention.</span></label>
+<p><strong>7. What is the difference between modeling and inference, as introduced in this chapter?</strong></p>
+<div id="radio_XZKABCEBFJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_XZKABCEBFJ" value=""> <span>Inference is a more advanced form of modeling that always uses the same equations.</span></label><label><input type="radio" autocomplete="off" name="radio_XZKABCEBFJ" value="answer"> <span>Modeling means describing a dataset with a simplified representation (and is the topic of Section 3). Inference is the separate set of activities concerned with making claims about populations or testing hypotheses from sample data. Keeping the two activities mentally separate is a useful habit.</span></label><label><input type="radio" autocomplete="off" name="radio_XZKABCEBFJ" value=""> <span>Modeling and inference are synonyms.</span></label><label><input type="radio" autocomplete="off" name="radio_XZKABCEBFJ" value=""> <span>Modeling uses sample data; inference uses population data.</span></label>
 </div>
-<p><strong>8. What is the main practical benefit of writing a custom function and applying it to many variables at once, rather than performing the operation manually on each variable?</strong></p>
-<div id="radio_JYBNNPEZIM" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_JYBNNPEZIM" value=""> <span>Faster computation.</span></label><label><input type="radio" autocomplete="off" name="radio_JYBNNPEZIM" value=""> <span>Automatic generation of APA-formatted output.</span></label><label><input type="radio" autocomplete="off" name="radio_JYBNNPEZIM" value="answer"> <span>It scales to large numbers of variables, makes the operation defined in one place easy to correct, and keeps the intent of the code transparent.</span></label><label><input type="radio" autocomplete="off" name="radio_JYBNNPEZIM" value=""> <span>It produces graphical menus for the analysis.</span></label>
-</div>
-<p><strong>9. Which base R function reads a comma-separated values (CSV) file into a data frame?</strong></p>
-<div id="radio_YSUGWVNITX" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_YSUGWVNITX" value=""> <span><code>load.csv()</code></span></label><label><input type="radio" autocomplete="off" name="radio_YSUGWVNITX" value=""> <span><code>import.csv()</code></span></label><label><input type="radio" autocomplete="off" name="radio_YSUGWVNITX" value="answer"> <span><code>read.csv()</code></span></label><label><input type="radio" autocomplete="off" name="radio_YSUGWVNITX" value=""> <span><code>open.csv()</code></span></label>
-</div>
-<p><strong>10. You receive a CSV file from a European colleague. When you open it with <code>read.csv()</code>, the entire file ends up in a single column. What is the most likely cause and fix?</strong></p>
-<div id="radio_JGPLCPFJHH" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_JGPLCPFJHH" value=""> <span>Use <code>read.csv()</code> with no extra arguments and trust R to detect the format.</span></label><label><input type="radio" autocomplete="off" name="radio_JGPLCPFJHH" value="answer"> <span>Use <code>read.csv2()</code>, or pass <code>sep = ";"</code> and <code>dec = ","</code> to <code>read.csv()</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_JGPLCPFJHH" value=""> <span>Convert the file to JSON before importing.</span></label><label><input type="radio" autocomplete="off" name="radio_JGPLCPFJHH" value=""> <span>Open the file in Excel and re-save it; nothing else can be done.</span></label>
-</div>
-<p><strong>11. What is the recommended way to use RStudio’s “Import Dataset” dialog?</strong></p>
-<div id="radio_GGVBPKDZQJ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_GGVBPKDZQJ" value=""> <span>It is faster than coding the import.</span></label><label><input type="radio" autocomplete="off" name="radio_GGVBPKDZQJ" value=""> <span>It is the only way to read Excel files in R.</span></label><label><input type="radio" autocomplete="off" name="radio_GGVBPKDZQJ" value="answer"> <span>Clicking 'Import' loads the data once, but the code is not added to your script, so the import is not reproducible. The good practice is to use the dialog to generate code, then copy that code into your script.</span></label><label><input type="radio" autocomplete="off" name="radio_GGVBPKDZQJ" value=""> <span>The dialog cannot read CSV files, only Excel files.</span></label>
-</div>
+</section>
+<section id="references" class="level2" data-number="13.8">
+<h2 data-number="13.8" class="anchored" data-anchor-id="references"><span class="header-section-number">13.8</span> References</h2>
+<p>Box, G. E. P. (1979). Robustness in the strategy of scientific model building. In R. L. Launer &amp; G. N. Wilkinson (Eds.), <em>Robustness in statistics</em> (pp.&nbsp;201-236). Academic Press.</p>
+<p>Navarro, D. J. (2018). <em>Learning statistics with R: A tutorial for psychology students and other beginners</em> (Version 0.6). <a href="https://learningstatisticswithr.com" class="uri">https://learningstatisticswithr.com</a></p>
 
 
 </section>
@@ -1251,14 +1211,11 @@ window.onload = function() {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./06-operations-and-packages.html" class="pagination-link" aria-label="Basic operations, custom functions, and packages">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Basic operations, custom functions, and packages</span></span>
+      <a href="./12-advanced-wrangling-optional.html" class="pagination-link" aria-label="Advanced wrangling (optional)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Advanced wrangling (optional)</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./08-data-wrangling-basics.html" class="pagination-link" aria-label="Data wrangling: basics">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data wrangling: basics</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -1266,4 +1223,4 @@ window.onload = function() {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/07-recap.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/13-data-and-models.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
