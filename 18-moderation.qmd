@@ -1,0 +1,289 @@
+---
+title: "Moderation: when one predictor depends on another"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(webexercises)
+library(ggplot2)
+library(dplyr)
+theme_set(theme_minimal(base_size = 12))
+data <- read.csv("data/vgames_study.csv")
+```
+
+## Overview
+
+Chapter 17 added multiple predictors to the regression model. The model in Chapter 17 still assumed that the effect of each predictor was the same for everyone: the slope of `trait_hostility` was the same number whether the participant was in the violent or the neutral condition; the slope of `hours_weekly` was the same number for low-hostility and high-hostility participants. The model produced parallel lines.
+
+This chapter relaxes that assumption. In many research questions, the effect of one predictor *depends on* the value of another. Maybe violent video games increase aggression, but only for participants who are already high in trait hostility. Maybe a persuasion technique works on inattentive listeners but not on attentive ones. These are claims about **moderation** (also called an **interaction effect**), and they are handled by adding one more term to the regression equation.
+
+By the end of the chapter you will:
+
+- understand what an interaction term is and what it captures,
+- fit an interaction model in R with the `*` operator in the formula,
+- unpack the model into separate equations for each value of the moderator,
+- interpret an interaction plot visually,
+- distinguish **moderation** (X-Y depends on M) from **mediation** (X affects Y through M), which is a different concept and beyond the scope of this book.
+
+## What an interaction looks like
+
+Recall the model from the end of Chapter 17:
+
+$$
+\widehat{\text{aggression}} = b_0 + b_1 \times \text{trait\_hostility} + b_2 \times \text{conditionviolent}.
+$$
+
+It produced two parallel lines, one per condition, with the same slope of `trait_hostility`. That single slope says: hostility predicts aggression in exactly the same way regardless of which video game the participant played.
+
+But this might not match reality. A natural psychological hypothesis is that violent video games **amplify** the effect of trait hostility: high-hostility participants get pushed even further toward aggression after playing a violent game than they would after a neutral one, while low-hostility participants are not much affected by which game they played.
+
+If this is the case, the slope of `trait_hostility` should be *different* in the two conditions: steeper in the violent condition than in the neutral one. The two regression lines on the plot would not be parallel; they would diverge. That divergence is what an **interaction** captures.
+
+## Adding an interaction term
+
+The way to allow a different slope per condition is to add an **interaction term**: the product of the two predictors.
+
+$$
+\widehat{\text{aggression}} = b_0 + b_1 \times \text{trait\_hostility} + b_2 \times \text{conditionviolent} + b_3 \times (\text{trait\_hostility} \times \text{conditionviolent}).
+$$
+
+There are now four coefficients:
+
+- $b_0$ (intercept),
+- $b_1$ (the slope of `trait_hostility` when `conditionviolent = 0`, i.e., in the neutral condition),
+- $b_2$ (the difference in intercept between violent and neutral),
+- $b_3$ (the **interaction term**: how much the slope of `trait_hostility` changes when moving from the neutral condition to the violent condition).
+
+This last coefficient is the new thing. If $b_3$ is zero, the slope of hostility is the same in both conditions and we are back to Chapter 17's model. If $b_3$ is positive, the slope of hostility is *larger* (steeper) in the violent condition. If $b_3$ is negative, the slope is *smaller* in the violent condition.
+
+In R, you write an interaction with the `*` operator in the formula. Writing `a * b` is shorthand for "include `a`, include `b`, and include their interaction." So the model above is:
+
+```{r}
+model_int <- lm(aggression ~ trait_hostility * condition, data = data)
+summary(model_int)
+```
+
+The Coefficients block now has four rows. Reading the Estimate column:
+
+- **`(Intercept)` ≈ 3.08.** Predicted aggression for someone in the neutral condition (`conditionviolent = 0`) with `trait_hostility = 0`.
+- **`trait_hostility` ≈ 0.31.** The slope of hostility *in the neutral condition*: in the neutral group, each one-point increase in trait hostility is associated with a 0.31-point increase in aggression.
+- **`conditionviolent` ≈ −0.49.** The difference in intercept between the violent and neutral conditions, evaluated *at trait_hostility = 0*. (This is not the average difference between groups; it is the difference at one specific value of hostility, and we will return to this.)
+- **`trait_hostility:conditionviolent` ≈ 0.60.** The interaction. The slope of hostility in the violent condition is 0.60 *larger* than in the neutral condition.
+
+Note that R denotes interaction terms with a colon: `trait_hostility:conditionviolent`. The colon means "the interaction of these two."
+
+R-squared has jumped from about 0.20 in the additive model of Chapter 17 to about 0.39 here. Allowing the slope of hostility to differ between conditions explains substantially more variance than forcing it to be the same.
+
+## Unpacking the interaction: separate equations per condition
+
+The most reliable way to interpret an interaction is to compute the model's equation separately for each value of the moderator. The moderator here is the categorical variable `condition`; the other predictor (`trait_hostility`) is continuous.
+
+**In the neutral condition**, `conditionviolent = 0`, so the model equation becomes
+
+$$
+\widehat{\text{aggression}} = 3.08 + 0.31 \times \text{trait\_hostility} + (-0.49) \times 0 + 0.60 \times \text{trait\_hostility} \times 0
+$$
+
+which simplifies to
+
+$$
+\widehat{\text{aggression}} = 3.08 + 0.31 \times \text{trait\_hostility}.
+$$
+
+**In the violent condition**, `conditionviolent = 1`, so the equation becomes
+
+$$
+\widehat{\text{aggression}} = 3.08 + 0.31 \times \text{trait\_hostility} + (-0.49) \times 1 + 0.60 \times \text{trait\_hostility} \times 1
+$$
+
+which simplifies to
+
+$$
+\widehat{\text{aggression}} = (3.08 - 0.49) + (0.31 + 0.60) \times \text{trait\_hostility} = 2.59 + 0.91 \times \text{trait\_hostility}.
+$$
+
+Now the picture is clear:
+
+- In the neutral condition, the slope of hostility is 0.31.
+- In the violent condition, the slope of hostility is 0.91.
+
+The slope is about three times larger in the violent condition. Each one-point increase in trait hostility is associated with about three times more increase in aggression after playing a violent game compared with a neutral game. That is the interaction.
+
+## Visualizing the interaction
+
+The visual fingerprint of an interaction is that the regression lines for the two groups are *not parallel*. Plotting the data with `condition` mapped to color and a separate regression line per color makes the interaction immediate:
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 6.7
+#| fig.height: 3.8
+ggplot(data, aes(x = trait_hostility, y = aggression, color = condition)) +
+  geom_point(alpha = 0.55, size = 1.6) +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 1) +
+  scale_color_manual(values = c("neutral" = "#1E88E5", "violent" = "#FFA500"),
+                     name = "Condition") +
+  labs(x = "Trait hostility (1-7)",
+       y = "Aggression (1-10)")
+```
+
+The orange line (violent condition) is noticeably steeper than the blue line (neutral condition). At low values of trait hostility (say, 2), the two lines are nearly on top of each other: condition matters little for low-hostility participants. At high values of trait hostility (say, 6), the orange line sits well above the blue one: condition matters a lot for high-hostility participants.
+
+A small table of model-predicted values makes the same point numerically:
+
+| Trait hostility | Neutral predicted | Violent predicted | Difference (violent − neutral) |
+|-----------------|-------------------|--------------------|------------------------------|
+| 2               | 3.70              | 4.41               | 0.71                         |
+| 4               | 4.32              | 6.23               | 1.91                         |
+| 6               | 4.94              | 8.05               | 3.11                         |
+
+The "Difference" column grows with trait hostility. That growing difference *is* the interaction.
+
+## A general recipe for interpreting an interaction
+
+The model above had a categorical moderator (condition) and a continuous predictor (hostility). The same recipe works in other combinations.
+
+**Continuous × continuous.** If both `trait_hostility` and `hours_weekly` are continuous and you want to test whether the effect of one depends on the other, fit
+
+```{r}
+#| eval: false
+lm(aggression ~ trait_hostility * hours_weekly, data = data)
+```
+
+The interpretation is the same in spirit: the slope of one predictor changes with the value of the other. Unpacking is slightly more involved because you have to pick particular values of the moderator (often the mean, plus one SD above and one SD below) to compute predicted slopes.
+
+**Categorical × categorical.** If both are categorical (say, `condition` and `gender`), the interaction tests whether the difference between conditions depends on gender. The output will show one interaction term per combination of non-reference categories.
+
+In all cases, the rule is the same: when the formula contains an interaction term, the slope of each predictor depends on the value of the others, and the safest interpretation comes from writing the equation out for specific values of the moderator and comparing.
+
+## Centering predictors before fitting
+
+A practical pitfall worth flagging. When you fit an interaction model, the coefficients for the main effects (the "non-interaction" terms) are interpreted *at the reference values of the other predictors*. The slope of `trait_hostility` in our output (0.31) is the slope when `conditionviolent = 0`, that is, in the neutral condition. The intercept (3.08) is the predicted outcome when both `trait_hostility = 0` and the participant is in the neutral condition.
+
+For categorical moderators, this is fine: "neutral condition" is a meaningful reference. For continuous moderators, the reference is `value = 0`, which is often outside the observed range and not meaningful. A standard fix is to **mean-center** continuous predictors before including them in an interaction model: subtract the mean from each, so that 0 corresponds to the average participant. Then the "main effect" coefficients describe the average slope across the dataset, not the slope at zero. Chapter 12 covered the practical mechanics of centering with `scale()` and `mutate(x_centered = x - mean(x))`. We will not dwell on this here; we mention it so you know what is going on if you read older textbook regression output where the main effects look odd before centering.
+
+## Moderation is not mediation
+
+Two words that sound similar but mean different things in this context.
+
+**Moderation** (this chapter) asks: does the effect of X on Y *depend on* a third variable M? The moderator changes the strength or direction of the X-Y relationship. The model contains an interaction term `X * M`. Examples:
+
+- The effect of violent video games on aggression depends on trait hostility.
+- The effect of social media use on loneliness depends on baseline self-esteem.
+- The effect of intergroup contact on prejudice depends on the contact being friendly.
+
+**Mediation** asks: does X affect Y *through* M? The mediator is a step in a causal chain: X causes M, and M causes Y. Mediation is a model of a *mechanism*, not a *condition*. Examples:
+
+- Social exclusion increases aggression *because* it generates negative emotion.
+- Intergroup contact reduces prejudice *because* it increases empathy toward the outgroup.
+
+The two are different questions with different statistical machinery. Mediation requires either explicit causal assumptions (which we will treat in a later section of the book) or specialized models. We will not cover mediation in this book.
+
+A quick rule of thumb: if the third variable is a *condition that changes the strength of an effect*, you are dealing with moderation. If it is a *step in a causal chain* (X causes M, which then causes Y), you are dealing with mediation. A common mnemonic: moderation answers *when*; mediation answers *how* or *why*.
+
+## Looking ahead
+
+You have now built up the linear-model framework step by step: one number (the mean), one line (one predictor), one plane (multiple predictors), and parallel or non-parallel lines (categorical predictors and interactions). The same fitting machinery (`lm()`), the same interpretation logic (slopes and intercepts), and the same fit criterion (sum of squared residuals, R-squared) handle all of it.
+
+Chapter 19 turns to a question we have set aside up to now: when can we trust what the model is telling us? Adding predictors and interactions always lowers the *SS* of residuals, but at what point does the model start fitting noise rather than signal? And what assumptions does OLS make about the data, and what happens when those assumptions are violated? This is the **bias-variance trade-off**, and the linear-model **assumptions**.
+
+## Check your understanding
+
+```{r}
+#| echo: false
+opts_q1 <- c(
+  "When the outcome variable is categorical instead of continuous.",
+  answer = "When the effect of one predictor on the outcome depends on the value of another predictor (the moderator). Equivalently: the slope of one predictor is not the same across values of the other.",
+  "When two predictors are highly correlated.",
+  "When the residuals are not normally distributed."
+)
+
+opts_q2 <- c(
+  "The model becomes nonlinear in the predictors.",
+  "The number of observations needed to fit the model doubles.",
+  answer = "The model includes the product of two predictors as an additional term: `b3 * (X1 * X2)`. The coefficient on the interaction term measures how the slope of one predictor changes per unit increase in the other.",
+  "The intercept changes meaning entirely."
+)
+
+opts_q3 <- c(
+  "Use `+` between the two predictors.",
+  "Use `:` between the predictors but list each one only inside the colon.",
+  answer = "Use `*` in the formula: `lm(y ~ x1 * x2, data = ...)`. This expands to `x1 + x2 + x1:x2` (each main effect plus the interaction).",
+  "Fit a separate regression for each value of the moderator."
+)
+
+opts_q4 <- c(
+  "Compute the average slope of `trait_hostility` across all participants.",
+  answer = "Write the model's equation separately for `condition = neutral` and `condition = violent`. The slope of `trait_hostility` for the neutral group is the simple slope; the slope for the violent group is the simple slope plus the interaction term. Compare the two slopes.",
+  "Add the slopes of all predictors in the model.",
+  "Test whether the two predictors have equal means."
+)
+
+opts_q5 <- c(
+  "The slope of `trait_hostility` averaged across conditions.",
+  answer = "The slope of `trait_hostility` evaluated *at the reference value* of condition (i.e., for participants in the neutral condition). To get the slope in the violent condition, add the interaction term to it.",
+  "The change in aggression for a one-unit increase in condition.",
+  "The correlation between trait hostility and condition."
+)
+
+opts_q6 <- c(
+  "Two parallel lines (one per condition), with the same slope.",
+  answer = "Two non-parallel lines (one per condition): they have different slopes, reflecting the interaction. The lines may or may not cross within the observed range of the predictor.",
+  "A single line that crosses both conditions diagonally.",
+  "No lines at all; interactions cannot be visualized."
+)
+
+opts_q7 <- c(
+  "Moderation and mediation are different names for the same idea.",
+  answer = "Moderation asks whether the effect of X on Y *depends on* a third variable M (a condition). Mediation asks whether X affects Y *through* M (a mechanism, a causal chain). They are different questions with different models; this book covers moderation but not mediation.",
+  "Mediation is moderation with a continuous moderator.",
+  "Moderation requires causal claims; mediation does not."
+)
+
+opts_q8 <- c(
+  "Because the simple model has too many predictors.",
+  answer = "Because allowing the slope of `trait_hostility` to differ between conditions captures real variation that the simpler additive model forced into the residuals. The interaction model fits the data better (smaller residuals), and that improvement shows up directly in a higher R-squared.",
+  "Because R-squared always increases when the sample size grows.",
+  "It is a coincidence; the two values are unrelated."
+)
+```
+
+**1. What is moderation (or an interaction effect)?**
+
+`r longmcq(opts_q1)`
+
+**2. What changes about the regression equation when you add an interaction between two predictors?**
+
+`r longmcq(opts_q2)`
+
+**3. How do you specify an interaction model in R's `lm()` formula syntax?**
+
+`r longmcq(opts_q3)`
+
+**4. Given an interaction model `lm(aggression ~ trait_hostility * condition, data = data)`, what is the recommended way to interpret the interaction in plain English?**
+
+`r longmcq(opts_q4)`
+
+**5. In the output of `lm(aggression ~ trait_hostility * condition, data = data)`, what does the coefficient labeled `trait_hostility` (without the colon) represent?**
+
+`r longmcq(opts_q5)`
+
+**6. What does an interaction look like in a scatterplot with two regression lines (one per group)?**
+
+`r longmcq(opts_q6)`
+
+**7. What is the difference between moderation and mediation?**
+
+`r longmcq(opts_q7)`
+
+**8. R-squared rose from about 0.20 in the additive model (Chapter 17) to about 0.39 in the interaction model (this chapter). Why?**
+
+`r longmcq(opts_q8)`
+
+## References
+
+Hayes, A. F. (2022). *Introduction to mediation, moderation, and conditional process analysis: A regression-based approach* (3rd ed.). Guilford Press.
+
+Navarro, D. J. (2018). *Learning statistics with R: A tutorial for psychology students and other beginners* (Version 0.6), Chapter 16. <https://learningstatisticswithr.com>

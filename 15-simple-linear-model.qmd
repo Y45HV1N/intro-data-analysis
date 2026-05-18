@@ -233,6 +233,107 @@ The OLS line is the unique line that makes the sum of squared vertical distances
 
 A worthwhile fact about OLS. The mean-only model from Chapter 14 is itself an OLS estimate: the single number that minimizes the sum of squared residuals from a constant prediction is exactly the mean (this is a theorem from a first calculus course). So the framework in this chapter is not a different framework. It is the same one, applied to a slightly more flexible class of predictions.
 
+## Going under the hood: how the line is actually computed
+
+A reader paying close attention might ask: if OLS picks the line with the smallest sum of squared residuals, does R try out lots of candidate lines until it finds the one with the smallest *SS*?
+
+The answer is no. Nobody, including R, finds the line by searching through possibilities. The OLS line can be calculated directly, in one step, from a short formula. The visual intuition we just built (try many lines and pick the best) is the right *idea*, but it is not the actual procedure. Both by hand (before computers) and inside R, the line is computed, not searched.
+
+### The formula, by hand
+
+Before computers, statisticians computed the OLS slope and intercept with two short formulas. They are worth seeing once.
+
+The slope is
+
+$$
+b_1 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2}.
+$$
+
+In words: it is the sum of the products of each observation's deviations from its respective means, divided by the sum of the squared deviations of $x$ from its mean. The numerator measures how $x$ and $y$ move together; the denominator measures how much $x$ varies on its own.
+
+The intercept is then
+
+$$
+b_0 = \bar{y} - b_1 \bar{x}.
+$$
+
+This equation says: the OLS line always passes through the point $(\bar{x}, \bar{y})$, the center of the data. Once you know the slope, the intercept is whatever value puts the line through that center point.
+
+### A worked example with three students
+
+To make the formulas concrete, suppose we have three students with the following data on hours studied ($X$) and test score ($Y$):
+
+| Student | Hours studied ($x$) | Test score ($y$) |
+|---------|---------------------|------------------|
+| 1       | 1                   | 2                |
+| 2       | 2                   | 4                |
+| 3       | 3                   | 5                |
+
+**Step 1: compute the means.**
+
+$$\bar{x} = (1 + 2 + 3) / 3 = 2 \qquad \bar{y} = (2 + 4 + 5) / 3 \approx 3.67$$
+
+**Step 2: build a deviation table.** For each student, compute the deviations from the means, their product, and the squared deviation of $x$.
+
+| Student | $x$ | $y$ | $x - \bar{x}$ | $y - \bar{y}$ | $(x - \bar{x})(y - \bar{y})$ | $(x - \bar{x})^2$ |
+|---------|-----|-----|---------------|---------------|------------------------------|-------------------|
+| 1       | 1   | 2   | −1            | −1.67         | 1.67                         | 1                 |
+| 2       | 2   | 4   | 0             | 0.33          | 0                            | 0                 |
+| 3       | 3   | 5   | 1             | 1.33          | 1.33                         | 1                 |
+| **Sum** |     |     |               |               | **3.00**                     | **2.00**          |
+
+**Step 3: plug into the formulas.**
+
+$$
+b_1 = \frac{3.00}{2.00} = 1.5 \qquad b_0 = 3.67 - 1.5 \times 2 = 0.67.
+$$
+
+The best-fitting line is $\hat{y} = 0.67 + 1.5x$. Each additional hour studied is associated with a predicted increase of 1.5 points in test score. No search, no trial and error: two sums, one division, one subtraction.
+
+### Why a formula exists at all: the bowl
+
+The reason a closed-form formula exists is geometric. Imagine plotting the sum of squared residuals as a function of the two parameters $b_0$ and $b_1$: every choice of intercept and slope gives one value of the *SS*. The resulting surface (one *SS* value for each combination of intercept and slope) is a smooth bowl with a single lowest point.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 5.5
+#| fig.height: 4
+x <- c(1, 2, 3)
+y <- c(2, 4, 5)
+b0_grid <- seq(-1, 2.5, length.out = 80)
+b1_grid <- seq(0, 3, length.out = 80)
+grid <- expand.grid(b0 = b0_grid, b1 = b1_grid)
+grid$ssr <- mapply(function(b0v, b1v) sum((y - (b0v + b1v * x))^2), grid$b0, grid$b1)
+ggplot(grid, aes(x = b0, y = b1, z = ssr, fill = ssr)) +
+  geom_raster(interpolate = TRUE) +
+  geom_contour(color = "white", alpha = 0.5, linewidth = 0.3) +
+  scale_fill_viridis_c(name = "Sum of\nsquared\nresiduals", option = "C") +
+  annotate("point", x = 0.67, y = 1.5, color = "red", size = 4) +
+  annotate("text", x = 0.67, y = 1.7, label = "OLS line",
+           color = "red", fontface = "bold", vjust = 0) +
+  labs(x = expression(b[0]~"(intercept)"),
+       y = expression(b[1]~"(slope)"),
+       title = "The 'bowl' of squared error")
+```
+
+The picture above plots the *SS* for the three-student dataset across a range of intercept and slope values. Each colored point represents one candidate line; the *SS* value of the line is shown by color. The red dot marks the unique combination $(b_0 = 0.67, b_1 = 1.5)$ that gives the smallest *SS*. The bowl has a single bottom, smooth on all sides, which is why a formula can find it directly rather than having to search.
+
+### What R does with several predictors
+
+The slope-and-intercept formulas above work for the case of one predictor. With several predictors at once (a topic of Chapter 17), there are more coefficients to estimate, and the formulas generalize. R uses a piece of matrix algebra called **QR decomposition** that solves for all the coefficients in a single calculation, regardless of how many predictors you have. You will not need to know how QR decomposition works to use the model; what matters at this point is that R is calculating an exact answer, not searching for one.
+
+### Three ways of thinking about the same answer
+
+| Level | Description | Where it lives |
+|-------|-------------|----------------|
+| Visual intuition | "Try many lines; pick the one with the smallest sum of squared residuals." | The mental picture you use to understand OLS. |
+| By hand | Compute $b_1 = \sum(x_i - \bar{x})(y_i - \bar{y}) / \sum(x_i - \bar{x})^2$, then $b_0 = \bar{y} - b_1 \bar{x}$. | What people did before computers. Works for one predictor. |
+| By computer | R uses QR decomposition to solve for all coefficients at once. | What `lm()` actually does in Chapter 16, no matter how many predictors. |
+
+All three descriptions produce the same OLS line. The first is the mental model. The second is the calculation you could do on paper. The third is what R does under the hood when you call `lm()` in the next chapter.
+
 ## Looking ahead
 
 We now have a richer model than the mean: the simple linear model, with two parameters ($b_0$ and $b_1$) and the OLS criterion for choosing them. We have spent this chapter on what the model is, how to read its parameters, and how to think about its predictions and residuals. We have not yet computed any of these quantities in R. That is the topic of the next chapter.

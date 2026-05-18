@@ -1,0 +1,318 @@
+---
+title: "Multiple regression and categorical predictors"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(webexercises)
+library(ggplot2)
+library(dplyr)
+theme_set(theme_minimal(base_size = 12))
+data <- read.csv("data/vgames_study.csv")
+```
+
+## Overview
+
+The simple linear model from Chapters 15 and 16 used a single continuous predictor. Real research questions usually involve more than one. We may want to predict aggression from gaming hours *and* trait hostility simultaneously. We may also want to use a categorical predictor (which experimental condition each participant was in), not just continuous ones.
+
+This chapter extends the simple linear model in two directions:
+
+1. **Multiple regression**: more than one predictor in the same model. Each slope reports the effect of its predictor *holding the others constant*.
+2. **Categorical predictors**: how a category (like `condition`) enters the regression equation as a 0/1 dummy variable; why the slope of that dummy is the difference between two group means; and why **a t-test is a regression with one dummy predictor**.
+
+The framework is the same as in Chapters 15 and 16. The model still has the form *outcome = intercept + slopes × predictors + residual*. The way we fit it (`lm()`), interpret the coefficients, and judge fit (R-squared) is also the same. The only new thing is that the equation has more terms.
+
+## Multiple regression: more than one predictor
+
+The simple model from Chapter 16 was
+
+$$
+\widehat{\text{aggression}} = b_0 + b_1 \times \text{hours\_weekly}.
+$$
+
+Suppose we also want to use `trait_hostility` as a second predictor. The model becomes
+
+$$
+\widehat{\text{aggression}} = b_0 + b_1 \times \text{hours\_weekly} + b_2 \times \text{trait\_hostility}.
+$$
+
+Now the equation has three coefficients: the intercept $b_0$, the slope of hours $b_1$, and the slope of hostility $b_2$. Geometrically, the line of Chapter 15 has become a plane in three dimensions (one for each predictor, plus the outcome). We do not need to visualize the plane to use the model; the equation is enough.
+
+To fit the model in R, you list the predictors with `+`:
+
+```{r}
+model_multi <- lm(aggression ~ hours_weekly + trait_hostility, data = data)
+summary(model_multi)
+```
+
+The Coefficients block now has three rows: the intercept and the two slopes. Read only the Estimate column for this chapter (the others, again, belong to inference).
+
+- **`(Intercept)` Estimate ≈ 2.38.** The predicted aggression for someone with `hours_weekly = 0` *and* `trait_hostility = 0`. As before, the intercept is the prediction when every predictor takes the value zero; it may or may not have substantive meaning depending on whether zero is a plausible value for each predictor.
+- **`hours_weekly` Estimate ≈ 0.09.** Each additional hour of weekly gaming is associated with a 0.09-point increase in aggression, *holding trait hostility constant*.
+- **`trait_hostility` Estimate ≈ 0.51.** Each one-point increase in trait hostility is associated with a 0.51-point increase in aggression, *holding gaming hours constant*.
+- **Multiple R-squared ≈ 0.20.** Together, the two predictors explain about 20 percent of the variability in aggression.
+
+### What "holding constant" means
+
+The phrase "holding [the other predictors] constant" is essential to interpreting multiple regression and worth understanding well.
+
+In Chapter 16, the slope of `hours_weekly` (in a one-predictor model) was 0.08. In the multiple-regression model, the slope of `hours_weekly` is 0.09. The numbers differ slightly. The interpretation also differs in a subtle but important way.
+
+- In simple regression, the 0.08 slope describes the relationship between hours and aggression in the dataset, period. People who play more hours tend to be more aggressive by 0.08 points per hour on average; some of that association may be because heavy gamers also tend to have higher hostility, which is itself associated with aggression.
+- In multiple regression, the 0.09 slope describes the relationship between hours and aggression **among people with the same trait hostility**. The model has effectively asked: if I compare two participants who have identical trait hostility but who differ by one hour in weekly gaming, how much higher is the heavier gamer's predicted aggression? The answer is 0.09 points.
+
+This is what makes multiple regression more useful than running several simple regressions side by side. The slope of each predictor in a multiple regression is its **unique contribution**, after the model has accounted for what the other predictors do.
+
+### A note on overlapping predictors
+
+The model's overall R-squared (0.20) is more than each predictor alone but less than the sum of their simple-regression R-squareds (7.2 percent for hours alone, 11.6 percent for hostility alone; together that would be 18.8 percent if they were independent, but the joint R-squared is 19.8 percent... close but not the same). The arithmetic does not simply add up because the two predictors are themselves correlated. Some of the variance that `hours_weekly` "explains" overlaps with what `trait_hostility` "explains." Multiple regression apportions the overlapping variance carefully so that no piece is double-counted.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 6.5
+#| fig.height: 3.5
+ggplot(data, aes(x = trait_hostility, y = hours_weekly)) +
+  geom_point(alpha = 0.55, color = "#1F2937") +
+  geom_smooth(method = "lm", se = FALSE, color = "#3B82F6", linewidth = 0.7) +
+  labs(title = "The two predictors are themselves slightly correlated",
+       x = "Trait hostility",
+       y = "Weekly playing hours")
+```
+
+The picture above shows that participants higher on trait hostility also tend to play slightly more hours of video games. This overlap is what the "holding constant" interpretation deals with. Predictors that are very strongly correlated produce a problem called **multicollinearity**, which makes the individual slopes unstable; we will mention it again in Chapter 20.
+
+## Adding more predictors
+
+The same logic extends to any number of predictors. With three predictors,
+
+$$
+\hat{y} = b_0 + b_1 x_1 + b_2 x_2 + b_3 x_3,
+$$
+
+each slope is the effect of its predictor holding the other two constant. Adding a predictor (in R, use `+` to list it in the formula) typically increases R-squared, because the model has more flexibility to fit the data. Whether the increase is meaningful or just noise is a question we will return to in Chapter 19, where adjusted R-squared and the bias-variance trade-off enter.
+
+For the moment, the practical recipe is straightforward. To add a third predictor (say, `empathy`):
+
+```{r}
+model_three <- lm(aggression ~ hours_weekly + trait_hostility + empathy, data = data)
+summary(model_three)
+```
+
+Same output structure: four coefficients (intercept + three slopes), one R-squared. Each slope is interpreted holding the other predictors constant.
+
+## Categorical predictors
+
+So far every predictor we have used has been continuous (numbers). What about a categorical variable like `condition` (`"violent"` or `"neutral"`) or `gender` (`"man"`, `"woman"`, `"non-binary"`)? You cannot multiply a coefficient by `"violent"` and expect a number.
+
+R handles this for you behind the scenes. When you put a character vector or a factor into the regression formula, R automatically converts it into one or more **dummy variables**: numeric 0/1 indicators for category membership.
+
+For a two-level categorical variable like `condition`, R creates one dummy:
+
+- **`conditionviolent` = 0** if the participant is in the neutral condition (the **reference category**).
+- **`conditionviolent` = 1** if the participant is in the violent condition.
+
+The reference category is the one R picks alphabetically by default, unless you tell it otherwise using the factor tools from Chapter 11 (`fct_relevel` and friends).
+
+The regression equation with a single dummy predictor is
+
+$$
+\widehat{\text{aggression}} = b_0 + b_1 \times \text{conditionviolent}.
+$$
+
+For a neutral participant (`conditionviolent = 0`), the prediction is $b_0$. For a violent participant (`conditionviolent = 1`), the prediction is $b_0 + b_1$. So $b_1$ is the difference between the two predicted values: violent minus neutral.
+
+In R:
+
+```{r}
+model_cat <- lm(aggression ~ condition, data = data)
+summary(model_cat)
+```
+
+Reading the output:
+
+- **`(Intercept)` ≈ 4.21.** The predicted aggression in the neutral condition (where the dummy is 0). This is the mean of the neutral group.
+- **`conditionviolent` ≈ 1.35.** The difference in predicted aggression between violent and neutral. The mean of the violent group is therefore $4.21 + 1.35 = 5.56$.
+
+Verify against the direct group means you computed in earlier chapters:
+
+```{r}
+data |>
+  group_by(condition) |>
+  summarize(mean_aggression = mean(aggression))
+```
+
+The numbers match: the regression with a dummy predictor is doing the same arithmetic as comparing two group means.
+
+### A t-test is a regression
+
+This equivalence is not a coincidence. In a classical Student t-test, you compare two group means and ask whether their difference is meaningful. In a regression with one dummy predictor, the slope of the dummy *is* the difference between the two group means. The two analyses report the same quantity, by construction. We will return to the t-test as a special case of regression in a later section; for now, the point is that "group comparison" and "regression with a categorical predictor" are not separate techniques.
+
+### Categorical variables with more than two levels
+
+`gender` has three levels (`"man"`, `"woman"`, `"non-binary"`). When you put it in the formula, R creates **two** dummies (one fewer than the number of levels), each indicating membership in one non-reference category. Suppose `man` is the reference category (alphabetical default). Then R creates:
+
+- **`gendernon-binary` = 1** if the participant is non-binary, else 0.
+- **`genderwoman` = 1** if the participant is a woman, else 0.
+
+(Participants who are men have both dummies equal to 0.)
+
+The regression equation becomes
+
+$$
+\hat{y} = b_0 + b_1 \times \text{non-binary} + b_2 \times \text{woman}.
+$$
+
+- $b_0$ is the predicted outcome for the reference group (men).
+- $b_1$ is the difference between non-binary and men.
+- $b_2$ is the difference between women and men.
+
+The general rule: a categorical variable with $k$ levels enters the regression as $k - 1$ dummies, each contrast against the reference. If you want a different reference group, change the factor's reference level with `fct_relevel()` (Chapter 11), then refit the model.
+
+## Combining continuous and categorical predictors
+
+The whole point of multiple regression is that you can mix and match. To fit a model that uses both `trait_hostility` (continuous) and `condition` (categorical):
+
+```{r}
+model_mixed <- lm(aggression ~ trait_hostility + condition, data = data)
+summary(model_mixed)
+```
+
+This model has three coefficients: the intercept, the slope of `trait_hostility`, and the slope of `conditionviolent`. Each is interpreted holding the others constant.
+
+- **`(Intercept)`** is the predicted aggression for a participant in the neutral condition with `trait_hostility = 0`.
+- **`trait_hostility`** is the effect of hostility, holding condition constant.
+- **`conditionviolent`** is the effect of being in the violent condition, holding trait hostility constant.
+
+The model fits a separate line for each condition, but it forces the two lines to have the *same* slope (only the intercepts differ between conditions). When we get to Chapter 18 (moderation), we will let the slope itself differ between conditions.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 7
+#| fig.height: 3.7
+b <- coef(model_mixed)
+intercept_neutral <- b[1]
+intercept_violent <- b[1] + b[3]
+slope <- b[2]
+ggplot(data, aes(x = trait_hostility, y = aggression, color = condition)) +
+  geom_point(alpha = 0.5, size = 1.6) +
+  geom_abline(intercept = intercept_neutral, slope = slope, color = "#1E88E5", linewidth = 0.9) +
+  geom_abline(intercept = intercept_violent, slope = slope, color = "#FFA500", linewidth = 0.9) +
+  scale_color_manual(values = c("neutral" = "#1E88E5", "violent" = "#FFA500"),
+                     name = "Condition") +
+  labs(x = "Trait hostility (1-7)",
+       y = "Aggression (1-10)")
+```
+
+The two parallel lines are what this model predicts: the same slope for both conditions, but one line sitting above the other. Notice that the violent condition's line is higher than the neutral condition's line, by exactly the value of the `conditionviolent` coefficient.
+
+## Looking ahead
+
+The pattern of every chapter so far in Section 3 has been the same: fit a model, read the coefficients, judge the fit, recall that we are still in modeling and not in inference. The chapters have differed only in the structure of the model:
+
+- Chapter 14: one number for everyone (the mean).
+- Chapters 15-16: one continuous predictor (a line).
+- Chapter 17: multiple predictors (a plane or hyperplane); each slope is "holding constant" all the others; categorical predictors enter as dummies; a t-test is a special case.
+
+Chapter 18 adds one more piece: **moderation** (also called **interaction**), where the effect of one predictor depends on the value of another. The change to the equation is small (one extra term, written as a product), but the interpretation requires care.
+
+## Check your understanding
+
+```{r}
+#| echo: false
+opts_q1 <- c(
+  "It returns the average effect of the predictor across all observations.",
+  answer = "It returns the effect of that predictor on the outcome, *holding the other predictors constant*: the predicted change in the outcome per one-unit change in this predictor, comparing observations that are identical on the other predictors.",
+  "It returns the simple-regression slope of the predictor.",
+  "It is undefined when there are several predictors in the model."
+)
+
+opts_q2 <- c(
+  "Multiple regression always uses fewer predictors than simple regression.",
+  "Multiple regression cannot use continuous predictors.",
+  answer = "Multiple regression fits one model with several predictors at once, and each slope reports the unique contribution of its predictor *after the others have been accounted for*. Running several simple regressions side by side gives the marginal slopes without that adjustment, and these are typically slightly different from the multiple-regression slopes when the predictors are correlated.",
+  "There is no difference; the two approaches give identical results."
+)
+
+opts_q3 <- c(
+  "R cannot include categorical variables in a regression.",
+  "It treats every level as a separate continuous variable.",
+  answer = "It automatically converts the variable into one or more 0/1 dummy variables, one fewer than the number of levels. The level alphabetically first (by default) becomes the reference category; the dummies indicate membership in each of the other categories.",
+  "It computes a one-way ANOVA instead of a regression."
+)
+
+opts_q4 <- c(
+  "It is the predicted outcome for the violent condition.",
+  answer = "It is the difference between the predicted outcome for the violent condition and the predicted outcome for the neutral (reference) condition. Equivalently, it is the mean of the violent group minus the mean of the neutral group when the dummy is the only predictor.",
+  "It is the correlation between condition and the outcome.",
+  "It is the average of the two group means."
+)
+
+opts_q5 <- c(
+  "A regression with a single continuous predictor.",
+  "A categorical regression with three or more levels.",
+  answer = "A simple linear regression with one dummy-coded predictor representing two groups; the slope of the dummy equals the difference between the two group means, and the standard t-test reports the same difference.",
+  "An ANOVA with several factors."
+)
+
+opts_q6 <- c(
+  "Three dummies, one per level.",
+  "One dummy that takes the values 0, 1, and 2.",
+  answer = "Two dummies (one fewer than the number of levels): each indicates membership in one of the two non-reference categories, with the reference category represented by both dummies being zero.",
+  "No dummies; the variable is used directly."
+)
+
+opts_q7 <- c(
+  "R-squared always equals the sum of the simple R-squareds for each predictor.",
+  "R-squared is always less than 7 percent.",
+  answer = "Adding predictors generally increases R-squared (or leaves it unchanged), because the model has more flexibility to fit the data. Whether the increase is meaningful or just noise is a separate question that we will examine in Chapter 19.",
+  "R-squared is always exactly 1 with two predictors."
+)
+
+opts_q8 <- c(
+  "It fits two completely separate lines, one for each condition.",
+  answer = "It fits two parallel lines (one per condition) with the same slope on `trait_hostility`. The two lines differ only in their intercepts: the value of the `conditionviolent` coefficient is the vertical distance between them.",
+  "It ignores `condition` and fits a single line.",
+  "It fits a single line that crosses both conditions diagonally."
+)
+```
+
+**1. What does the slope of a predictor in a multiple regression represent?**
+
+`r longmcq(opts_q1)`
+
+**2. What is the difference between multiple regression and running several simple regressions side by side?**
+
+`r longmcq(opts_q2)`
+
+**3. How does R handle a categorical variable in a regression formula?**
+
+`r longmcq(opts_q3)`
+
+**4. In `lm(aggression ~ condition, data = data)`, the row labeled `conditionviolent` has an Estimate of about 1.35. What does this number represent?**
+
+`r longmcq(opts_q4)`
+
+**5. What is a t-test, expressed in the language of regression?**
+
+`r longmcq(opts_q5)`
+
+**6. How many dummy variables does a categorical predictor with three levels (e.g., `gender` with `man`, `woman`, `non-binary`) generate in a regression model?**
+
+`r longmcq(opts_q6)`
+
+**7. What happens to R-squared when you add a predictor to a regression model?**
+
+`r longmcq(opts_q7)`
+
+**8. The model `lm(aggression ~ trait_hostility + condition, data = data)` is fitted on the video-games data. What does its prediction look like graphically (with `trait_hostility` on the x-axis and `aggression` on the y-axis, and `condition` shown by color)?**
+
+`r longmcq(opts_q8)`
+
+## References
+
+Navarro, D. J. (2018). *Learning statistics with R: A tutorial for psychology students and other beginners* (Version 0.6), Chapters 13-15. <https://learningstatisticswithr.com>

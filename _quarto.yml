@@ -37,6 +37,11 @@ book:
     - 13-data-and-models.qmd
     - 14-mean-as-model.qmd
     - 15-simple-linear-model.qmd
+    - 16-fitting-regression.qmd
+    - 17-multiple-and-categorical.qmd
+    - 18-moderation.qmd
+    - 19-bias-variance-assumptions.qmd
+    - 20-diagnostics-and-limits.qmd
 format:
   html:
     theme:

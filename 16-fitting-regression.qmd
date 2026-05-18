@@ -1,0 +1,386 @@
+---
+title: "Fitting and interpreting simple regression in R"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(webexercises)
+library(ggplot2)
+library(dplyr)
+theme_set(theme_minimal(base_size = 12))
+data <- read.csv("data/vgames_study.csv")
+```
+
+## Overview
+
+Chapter 15 introduced the simple linear model conceptually: a line with an intercept and a slope, chosen by Ordinary Least Squares so that the sum of squared residuals is as small as possible. This chapter fits and interprets such models in R, with code you can run on your own machine. By the end you will have:
+
+- fitted a regression model with `lm()`,
+- read the most important parts of the `summary()` output,
+- extracted coefficients, predictions, and residuals from the model object,
+- computed and interpreted **R-squared** as a measure of how much better the line is than the mean,
+- and seen that the **correlation** coefficient is the square root of R-squared in simple regression.
+
+The chapter assumes you have the tidyverse loaded and `data/vgames_study.csv` available:
+
+```{r}
+#| eval: false
+library(tidyverse)
+data <- read.csv("data/vgames_study.csv")
+```
+
+## Fitting a model with `lm()`
+
+The R function that fits a linear model is `lm()`, which stands for **linear model**. Its basic syntax is
+
+```r
+model <- lm(outcome ~ predictor, data = your_data)
+```
+
+The tilde `~` is R's notation for "is modeled as a function of." The expression `aggression ~ hours_weekly` reads aloud as "aggression as a function of weekly playing hours." The function returns a model object, which we typically save to a name.
+
+Fit a model predicting `aggression` from `hours_weekly`:
+
+```{r}
+model1 <- lm(aggression ~ hours_weekly, data = data)
+```
+
+Nothing prints. The model object is stored in `model1`. To see the results, use `summary()`:
+
+```{r}
+summary(model1)
+```
+
+The output has several sections. We walk through them in turn, but with a strict focus on what this chapter cares about. The columns labeled `Std. Error`, `t value`, and `Pr(>|t|)`, and the line about the F-statistic at the bottom, all belong to **statistical inference**: they tell you whether the relationship you see in this sample is likely to hold in a broader population. Inference is a topic for a later section of the book, not this one. For now, ignore those columns. Focus only on the **Estimate** column and on R-squared.
+
+### Reading the Call and the Residuals
+
+The "Call" line restates the model you fit. It is useful when you have many models in a script and want to verify which one you are looking at.
+
+The "Residuals" block reports the min, the quartiles, and the max of the residuals. The median should be near zero (it is approximately −0.05 in our case), and the min and max give a sense of the largest misses. In our data the largest positive residual is about 3.77, meaning one participant scored about 3.77 points higher than the model predicted.
+
+### Reading the Coefficients
+
+This is the part of the output you will use most:
+
+```
+Coefficients:
+             Estimate ...
+(Intercept)  4.1962   ...
+hours_weekly 0.0816   ...
+```
+
+- **`(Intercept)` Estimate = 4.20** is the intercept $b_0$: the predicted aggression score when `hours_weekly` equals 0. Someone who plays zero hours per week is predicted to score about 4.20 on aggression.
+- **`hours_weekly` Estimate = 0.08** is the slope $b_1$: the change in predicted aggression for each one-unit increase in `hours_weekly`. Each additional hour of weekly gaming is associated with a 0.08-point increase in aggression.
+
+The regression equation in our notation is
+
+$$
+\widehat{\text{aggression}} = 4.20 + 0.08 \times \text{hours\_weekly}.
+$$
+
+You read this directly off the Estimate column. The R output and the equation contain exactly the same information.
+
+### Reading R-squared
+
+Below the Coefficients block is the line
+
+```
+Multiple R-squared:  0.0716,  Adjusted R-squared:  0.0637
+```
+
+**R-squared** is the proportion of variance in the outcome that the model explains. It runs from 0 (the model is no better than the mean-only model from Chapter 14) to 1 (every observation lies exactly on the line). Multiple R-squared in our output is 0.0716, which we read as 7.2 percent: the model with `hours_weekly` as a predictor explains about 7.2 percent of the variability in aggression scores.
+
+Equivalently, R-squared is defined in terms of two sums of squared residuals: $SS_{\text{total}}$, the *SS* of the mean-only model from Chapter 14 (which is 307.76 on this dataset), and $SS_{\text{residual}}$, the *SS* of the regression model (which is 285.73 here). Then
+
+$$
+R^2 = 1 - \frac{SS_{\text{residual}}}{SS_{\text{total}}} = 1 - \frac{285.73}{307.76} \approx 0.072.
+$$
+
+This is the same comparison you did in Chapter 14 with `SS_grand` and `SS_group`, now expressed as a proportion. The interpretation is the same: how much of the squared error of the mean-only model has the new model removed? Here, about 7.2 percent. The relationship is real but weak; 92.8 percent of the variability remains unexplained.
+
+The "Adjusted R-squared" applies a small penalty for the number of predictors in the model. With one predictor the correction is tiny (0.0637 vs 0.0716). It will matter more in Chapter 17, where models gain predictors, and in Chapter 19, where we discuss why this correction exists.
+
+## Extracting components from the model
+
+The full `summary()` output is useful for reading, but when you want to use the numbers in further calculations you usually extract them with helper functions.
+
+### Coefficients
+
+```{r}
+coef(model1)
+```
+
+The result is a named vector with two elements. To use them individually:
+
+```{r}
+b0 <- coef(model1)[1]   # intercept
+b1 <- coef(model1)[2]   # slope
+b0
+b1
+```
+
+With $b_0$ and $b_1$ saved, you can plug values of the predictor into the equation directly. For someone who plays 15 hours per week:
+
+```{r}
+b0 + b1 * 15
+```
+
+About 5.4. For someone who plays 30 hours per week:
+
+```{r}
+b0 + b1 * 30
+```
+
+About 6.6. These are the model's predictions; they are not the actual aggression scores of any specific person.
+
+### Predicted values and residuals
+
+The functions `predict()` and `resid()` return the prediction and residual for every observation in the dataset that the model was fitted to (one value per row).
+
+```{r}
+predicted <- predict(model1)
+residuals <- resid(model1)
+
+head(predicted)
+head(residuals)
+```
+
+A quick sanity check. The first participant has `hours_weekly = 6.1`. The model's prediction is
+
+```{r}
+b0 + b1 * 6.1
+```
+
+which matches `predicted[1]` up to rounding. The first participant scored `aggression = 4.2`, so the residual is
+
+```{r}
+4.2 - predict(model1)[1]
+```
+
+which matches `residuals[1]`.
+
+Two important checks on the residuals:
+
+```{r}
+sum(residuals)         # should be approximately 0
+sum(residuals^2)       # the SS_residual; should be about 285.73
+```
+
+The residuals sum to (essentially) zero, exactly as in Chapter 14. The sum of squared residuals is 285.73, the same number we used above to compute R-squared.
+
+### Adding predictions and residuals to your data
+
+In practice it is often useful to attach these as new columns of the original data frame, using the `mutate()` function you learned in Chapter 9:
+
+```{r}
+data <- data |>
+  mutate(predicted = predict(model1),
+         residual  = resid(model1))
+
+data |>
+  select(participant_id, hours_weekly, aggression, predicted, residual) |>
+  head(5)
+```
+
+Now every row carries the model's prediction and the participant's residual. This makes it easy to find unusual cases, plot residuals, or compute further quantities from them.
+
+## A second model
+
+The choice of predictor is up to you. Suppose, instead of `hours_weekly`, we use `trait_hostility`:
+
+```{r}
+model2 <- lm(aggression ~ trait_hostility, data = data)
+summary(model2)
+```
+
+Reading the same lines as before:
+
+- **Intercept = 2.45.** The model predicts an aggression score of about 2.45 for someone with `trait_hostility = 0`. (Zero is outside the scale's range of 1-7, so this is an extrapolation; the intercept is mathematically necessary but does not correspond to a real person.)
+- **Slope of `trait_hostility` = 0.61.** Each one-point increase in trait hostility is associated with a 0.61-point increase in aggression.
+- **Multiple R-squared = 0.116.** Trait hostility explains about 11.6 percent of the variability in aggression.
+
+Trait hostility is a stronger predictor of aggression than weekly playing hours (11.6 percent of variance explained vs. 7.2 percent). The slope (0.61) is also much larger than the slope of `hours_weekly` (0.08), though strictly speaking the two slopes are on different scales (per point of a 1-7 trait vs per hour per week of gaming) and so a direct numerical comparison of slopes is not meaningful. The R-squared values are directly comparable, however, and tell the same story.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 6.5
+#| fig.height: 3.5
+ggplot(data, aes(x = trait_hostility, y = aggression)) +
+  geom_point(alpha = 0.55, color = "#1F2937") +
+  geom_smooth(method = "lm", se = FALSE, color = "#3B82F6", linewidth = 0.9) +
+  labs(x = "Trait hostility (1-7)",
+       y = "Aggression (1-10)")
+```
+
+The scatterplot shows the upward trend more clearly than the analogous picture for `hours_weekly`: the cloud tilts upward more sharply, and R-squared confirms this numerically.
+
+## Correlation as a special case of regression
+
+You may have heard of the **correlation coefficient**, usually written $r$, before this book. It is the standardized measure of linear association between two continuous variables, running from −1 (perfect negative linear relationship) to +1 (perfect positive linear relationship), with 0 meaning no linear relationship.
+
+A useful fact: **in simple regression, the correlation coefficient equals the square root of R-squared, with the sign of the slope**. To see this:
+
+```{r}
+cor(data$aggression, data$hours_weekly)
+sqrt(0.0716)            # R-squared from model1
+```
+
+The two numbers agree (up to rounding). The same for the trait-hostility model:
+
+```{r}
+cor(data$aggression, data$trait_hostility)
+sqrt(0.116)
+```
+
+This means correlation and simple regression are not different techniques. They are the same machinery, presented in two different ways. When you compute a correlation, you are implicitly fitting a line. The intercept and slope are not reported because they are not in standardized form, but the line is there.
+
+This identity holds exactly for *simple* regression (one predictor). Once you add a second predictor (Chapter 17), the connection becomes more subtle, and R-squared is no longer the square of any single correlation.
+
+## Worked example: an outside dataset
+
+To consolidate the workflow, here is a worked example on a small, made-up dataset. A researcher recruits 10 participants, measures their **perspective-taking ability** on a 1-7 scale (higher means better perspective-taking), and measures their **prejudice** on a 1-9 scale.
+
+```{r}
+example <- data.frame(
+  participant         = 1:10,
+  perspective_taking  = c(2, 3, 1, 5, 4, 6, 3, 7, 5, 4),
+  prejudice           = c(6.6, 5.6, 7.4, 5.6, 4.9, 3.7, 6.8, 3.8, 4.2, 5.5)
+)
+
+fit <- lm(prejudice ~ perspective_taking, data = example)
+summary(fit)
+```
+
+Reading the output:
+
+- **Intercept ≈ 7.97.** Predicted prejudice for a participant scoring 0 on perspective-taking (an extrapolation outside the 1-7 scale; the model gives an answer, but it is not a meaningful prediction).
+- **Slope ≈ −0.64.** Each one-point increase in perspective-taking is associated with a *decrease* of 0.64 points in prejudice. The negative slope tells us this is an inverse relationship: better perspective-taking, lower prejudice.
+- **R-squared ≈ 0.84.** Perspective-taking explains 84 percent of the variance in prejudice in this (very small) sample. By any standard, that is a strong relationship.
+
+A prediction for a participant with `perspective_taking = 5`:
+
+```{r}
+coef(fit)[1] + coef(fit)[2] * 5
+```
+
+About 4.77. If that participant actually scored 5.6 on prejudice (as participant 4 in the data), their residual is 5.6 − 4.77 ≈ 0.83: they were more prejudiced than the model predicted, given their perspective-taking score.
+
+A scatterplot makes the relationship visible:
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 6
+#| fig.height: 3.5
+ggplot(example, aes(x = perspective_taking, y = prejudice)) +
+  geom_point(size = 2.5, color = "#1F2937") +
+  geom_smooth(method = "lm", se = FALSE, color = "#3B82F6", linewidth = 0.9) +
+  labs(x = "Perspective-taking (1-7)",
+       y = "Prejudice (1-9)")
+```
+
+## Looking ahead
+
+You can now fit and interpret a simple regression: one outcome, one continuous predictor. Chapter 17 generalizes this in two directions: adding more predictors (multiple regression) and allowing predictors to be categorical (a t-test will turn out to be a regression with one dummy-coded predictor). Chapter 18 then introduces **moderation**, where the slope of one predictor depends on the value of another, and shows how to read interaction terms in the `lm()` output.
+
+## Check your understanding
+
+```{r}
+#| echo: false
+opts_q1 <- c(
+  "It computes the correlation between two variables.",
+  answer = "It fits a linear model: it estimates the OLS intercept and slope (and any other coefficients) for the formula you specify. The result is stored in a model object that you can pass to `summary()`, `coef()`, `predict()`, and `resid()`.",
+  "It tests whether the predictor is significantly related to the outcome.",
+  "It draws a scatterplot of the predictor against the outcome."
+)
+
+opts_q2 <- c(
+  "It is what the predictor's value is at zero.",
+  answer = "It is the OLS estimate of the slope: the predicted change in the outcome for a one-unit change in the predictor.",
+  "It is the correlation between the predictor and the outcome.",
+  "It is the residual standard error."
+)
+
+opts_q3 <- c(
+  answer = "The proportion of variance in the outcome that the model explains; equivalently, 1 − (residual SS) / (total SS). R-squared = 0 means the model is no better than the mean; R-squared = 1 means every observation lies on the line.",
+  "The square of the correlation between two arbitrary variables.",
+  "The proportion of the predictor's values that fall on the line.",
+  "The sum of squared residuals."
+)
+
+opts_q4 <- c(
+  "`summary(model)`",
+  "`predict(model)`",
+  answer = "`coef(model)` (returns the intercept and slope as a named vector); you can also read the Estimate column of `summary(model)`.",
+  "`residuals(model)`"
+)
+
+opts_q5 <- c(
+  "It returns the predictor values stored in the model.",
+  answer = "It returns the predicted value of the outcome for each observation that the model was fit to: $\\hat{y}_i = b_0 + b_1 x_i$. You can also use it to predict for new data with the `newdata` argument.",
+  "It tests whether the prediction is statistically significant.",
+  "It returns the residuals."
+)
+
+opts_q6 <- c(
+  "They sum to one.",
+  "They equal the predictor's values minus the predictor's mean.",
+  answer = "They sum to (essentially) zero. The sum of squared residuals is the model's `SS_residual`, used to compute R-squared.",
+  "They are always positive."
+)
+
+opts_q7 <- c(
+  "Correlation and regression have completely different mathematics.",
+  answer = "The correlation coefficient `r` equals the square root of R-squared, with the sign of the slope. Correlation is a special case (and equivalent presentation) of simple regression.",
+  "Correlation is for categorical variables; regression is for continuous variables.",
+  "Correlation requires more data than regression."
+)
+
+opts_q8 <- c(
+  "It is a synonym for R-squared.",
+  answer = "It is R-squared adjusted by a small penalty for the number of predictors in the model. With one predictor the correction is tiny; it matters more when comparing models with different numbers of predictors.",
+  "It is the residual standard error.",
+  "It is the correlation between predicted and observed values."
+)
+```
+
+**1. What does `lm()` do?**
+
+`r longmcq(opts_q1)`
+
+**2. In the row of the `summary()` output corresponding to a predictor, what does the **Estimate** column report?**
+
+`r longmcq(opts_q2)`
+
+**3. What does R-squared measure?**
+
+`r longmcq(opts_q3)`
+
+**4. Which function gives you the intercept and slope from a fitted model object?**
+
+`r longmcq(opts_q4)`
+
+**5. What does `predict(model)` return when called with no `newdata` argument?**
+
+`r longmcq(opts_q5)`
+
+**6. What is true of the residuals from an OLS regression?**
+
+`r longmcq(opts_q6)`
+
+**7. What is the relationship between correlation `r` and R-squared in simple regression?**
+
+`r longmcq(opts_q7)`
+
+**8. What is "Adjusted R-squared"?**
+
+`r longmcq(opts_q8)`
+
+## References
+
+Navarro, D. J. (2018). *Learning statistics with R: A tutorial for psychology students and other beginners* (Version 0.6), Chapter 15. <https://learningstatisticswithr.com>
