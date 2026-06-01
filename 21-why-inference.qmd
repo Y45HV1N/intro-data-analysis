@@ -314,11 +314,26 @@ A demonstration helps. Suppose the underlying data were not normal at all, but w
 #| message: false
 #| warning: false
 #| fig.width: 8.5
-#| fig.height: 5
+#| fig.height: 2.4
 set.seed(2025)
 pop_values <- rchisq(100000, df = 3) + 2   # Skewed population
 true_mean <- mean(pop_values)
 
+pop_df <- data.frame(value = sample(pop_values, 2000))
+
+ggplot(pop_df, aes(x = value)) +
+  geom_histogram(binwidth = 0.4, fill = "#9CA3AF", color = "white") +
+  coord_cartesian(xlim = c(0, 16)) +
+  labs(title = "Population (heavily skewed, not normal)",
+       x = "Value", y = "Count")
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 8.5
+#| fig.height: 2.7
 n_values <- c(2, 5, 30, 200)
 all_means <- lapply(n_values, function(n) {
   data.frame(
@@ -327,15 +342,7 @@ all_means <- lapply(n_values, function(n) {
   )
 }) |> bind_rows()
 
-pop_df <- data.frame(value = sample(pop_values, 2000))
-
-p_pop <- ggplot(pop_df, aes(x = value)) +
-  geom_histogram(binwidth = 0.4, fill = "#9CA3AF", color = "white") +
-  coord_cartesian(xlim = c(0, 16)) +
-  labs(title = "Population (heavily skewed, not normal)",
-       x = "Value", y = "Count")
-
-p_sd <- ggplot(all_means, aes(x = mean, fill = n)) +
+ggplot(all_means, aes(x = mean, fill = n)) +
   geom_histogram(binwidth = 0.15, alpha = 0.8, color = "white", position = "identity") +
   geom_vline(xintercept = true_mean, color = "#EF4444", linewidth = 0.5, linetype = "dashed") +
   facet_wrap(~ n, nrow = 1) +
@@ -346,14 +353,9 @@ p_sd <- ggplot(all_means, aes(x = mean, fill = n)) +
        subtitle = "Dashed red = true population mean",
        x = "Sample mean", y = "Count") +
   theme(legend.position = "none", strip.text = element_text(face = "bold"))
-
-# stack vertically
-library(grid)
-grid::grid.newpage()
-grid::grid.draw(rbind(ggplotGrob(p_pop), ggplotGrob(p_sd), size = "last"))
 ```
 
-The top panel shows the population, which is heavily skewed to the right. Most values are low, but a long tail extends to the right. The bottom panel shows what the sampling distribution of the mean looks like for that population at four sample sizes.
+The first picture above shows the population, which is heavily skewed to the right. Most values are low, but a long tail extends to the right. The second picture shows what the sampling distribution of the mean looks like for that population at four sample sizes.
 
 - With **n = 2**, the sampling distribution still looks skewed: averaging just two values is not enough to smooth out the population's asymmetry.
 - With **n = 5**, the skew is much weaker but visible.
