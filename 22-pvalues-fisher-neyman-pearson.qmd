@@ -330,7 +330,7 @@ opts_q6 <- c(
 )
 
 opts_q7 <- c(
-  "It tells you nothing about effect size, because effect size and sample size both contribute to the p-value; a tiny effect with a huge sample can also produce a very small p-value.",
+  answer = "It tells you nothing about effect size, because effect size and sample size both contribute to the p-value; a tiny effect with a huge sample can also produce a very small p-value.",
   "It tells you that the result is unlikely to be replicated, because such small p-values usually indicate an overfitted model that will not generalize.",
   "It tells you the effect is exactly five times larger than a result with p of .005, because p-values scale linearly with effect magnitude.",
   "It tells you the result is statistically significant, that the null hypothesis is false in the population, and that the practical importance of the effect is large."
