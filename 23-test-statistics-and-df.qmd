@@ -1,0 +1,422 @@
+---
+title: "The inferential machinery: test statistics, z/t/F, and degrees of freedom"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(webexercises)
+library(ggplot2)
+library(dplyr)
+theme_set(theme_minimal(base_size = 12))
+set.seed(2025)
+```
+
+## Where we are
+
+Chapter 21 introduced the sampling distribution and the standard error. Chapter 22 introduced the p-value and the two philosophies of testing (Fisher's continuous evidence and Neyman-Pearson's calibrated decision procedure). In both chapters we treated the sampling distribution as a known object whose shape we could appeal to: roughly normal for the mean, in particular.
+
+This chapter fills in what we glossed over: how does R *actually* turn your sample data into a p-value? What is the universal mathematical machinery that lets the same software handle a mean, a regression slope, a difference between two groups, an ANOVA, and a chi-squared test? The answer involves three new ideas that work together:
+
+- the **test statistic**, a way of converting raw sample values into a standardized "distance from the null,"
+- the **z, t, and F distributions**, which are the universal reference shapes the test statistic is compared against,
+- **degrees of freedom**, the bookkeeping device that says how much information you have left after estimating things from the data.
+
+By the end of the chapter you will be able to read the "t value," "Pr(>|t|)," and the F-statistic at the bottom of `summary(lm(...))`. The mystery of the inferential machinery will turn out to be a smaller mystery than it first looks.
+
+## A motivating example: did Hannah's bakery shortchange us?
+
+We borrow a small story (used in many statistics textbooks, including Lakens 2022) to make the ideas concrete.
+
+Imagine a bakery called Hannah's that advertises 100-gram brownies. You are suspicious that Hannah's brownies are systematically lighter than advertised. To check, you buy 25 brownies over a few weeks, weigh each one at home, and find an average of 95 grams across your 25 brownies. You also compute the sample standard deviation: 8 grams.
+
+The question is essentially the same one that motivates every test in this book. Is 95 grams *suspicious* given that Hannah claims 100? Or is 95 a result we could easily get by chance because of sampling variability, even if Hannah's true mean is really 100?
+
+To answer this, we need three things:
+
+1. A null hypothesis. We will entertain Hannah's claim: H₀ says the population mean weight of Hannah's brownies is exactly 100.
+2. A statistic that summarizes the sample's evidence against H₀.
+3. A reference distribution that tells us how that statistic would behave across samples *if* H₀ were true.
+
+For the rest of the chapter we use this story to build up each piece of machinery in turn.
+
+## The test statistic: distance from the null, in standard-error units
+
+Our sample mean is 95 g; the null value is 100 g; the difference is 5 g. That number alone is hard to interpret. Is 5 grams a lot or a little? It depends on how much sample means *typically* wobble across samples like ours, which is captured by the standard error.
+
+The trick is to express the distance from the null **in units of the standard error**. That converts an unfamiliar 5-gram difference into a generic "this far from the null in standard-error units" measure that we can compare against a universal reference curve.
+
+This standardized distance is the **test statistic**. For a one-sample mean, it takes the form:
+
+$$
+t = \frac{\bar{x} - \mu_0}{\text{SE}_{\bar{x}}}
+$$
+
+with the standard error estimated as $\text{SE}_{\bar{x}} = s / \sqrt{n}$ where $s$ is the sample SD. For Hannah's brownies:
+
+```{r}
+x_bar <- 95
+mu0   <- 100
+s     <- 8
+n     <- 25
+
+SE <- s / sqrt(n)
+SE
+t_stat <- (x_bar - mu0) / SE
+t_stat
+```
+
+So our sample mean is $-3.125$ standard errors away from the null value. The minus sign tells us we are on the "less than 100" side; the magnitude tells us we are three-and-a-bit SEs out from the null.
+
+That is the key conceptual move. **The test statistic is the standardized distance from the null.** Once we have it, we can compare it to a universal reference curve that tells us how often a value of that size would occur by chance under H₀.
+
+A few practical points about this move:
+
+- Every classical statistical test follows the same template. Sample value → null value → standard error → standardized distance → reference distribution → p-value. The pattern repeats for means, slopes, group differences, correlations, variances. What changes is which specific formulas apply at each step.
+- The shape of the reference distribution depends on what we know about the data. If the population SD were known exactly, we would compare the test statistic to a standard normal curve (a **z** distribution). Because in practice we estimate the SD from the sample (we used $s$, not a known $\sigma$), the test statistic compares against a **t** distribution, whose shape depends on the sample size.
+
+We unpack these reference curves next.
+
+## Three reference distributions: z, t, F
+
+The reference distribution is the known shape that the test statistic takes under H₀ given a particular set of assumptions. Three families appear most often.
+
+### The z distribution: the standard normal
+
+The **z distribution** is the standard normal: mean 0, standard deviation 1. It is the reference curve when the test statistic is a sample mean (or anything that can be standardized into one) **and** the population SD is known exactly. In practice, the population SD is almost never known, so the pure z test is rarely used for one-sample problems. But the z distribution is what every other reference curve in this section converges to as sample sizes grow, so it is the natural starting point.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 6.5
+#| fig.height: 3.4
+xs <- seq(-4, 4, length.out = 600)
+ggplot(data.frame(x = xs, y = dnorm(xs)), aes(x, y)) +
+  geom_area(fill = "#3B82F6", alpha = 0.25) +
+  geom_line(color = "#3B82F6", linewidth = 0.9) +
+  geom_vline(xintercept = 0, color = "#1F2937", linetype = "dashed") +
+  labs(title = "The z distribution: standard normal, mean 0, SD 1",
+       x = "Standard-error units from the null",
+       y = "Density")
+```
+
+The z distribution is symmetric and bell-shaped, with about 95% of its mass between $-1.96$ and $1.96$. A z-statistic outside that range corresponds to a two-tailed p-value smaller than .05. The same 95% / .05 reference is what underlies the rule of thumb "results within roughly $\pm 2$ standard errors are unsurprising under H₀."
+
+### The t distribution: corrects for estimating the SD from the sample
+
+When we have to estimate the population SD from our sample (which is the realistic case), the test statistic does not quite follow a z distribution. Estimating the SD adds extra uncertainty: with small samples, the sample SD can be far from the true SD, and an extreme-looking test statistic might come from a sample whose SD estimate happened to be unusually small. The **t distribution** accounts for this by having heavier tails than the z. With a small sample, the t distribution says "be more cautious": an apparently large test statistic might be less surprising than it would be under z.
+
+The t distribution has a parameter called **degrees of freedom (df)**, which controls its shape. With small df the tails are fat; with large df the tails are thinner, and the t distribution converges to z. The intuition is that a larger sample gives a more reliable SD estimate, so the correction matters less.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 7.5
+#| fig.height: 3.7
+xs <- seq(-5, 5, length.out = 600)
+dfs <- c(2, 5, 30)
+df_curves <- bind_rows(lapply(dfs, function(d)
+  data.frame(x = xs, y = dt(xs, df = d), df = factor(paste0("df = ", d), levels = paste0("df = ", dfs)))))
+z_curve <- data.frame(x = xs, y = dnorm(xs), df = factor("z (df = infinity)",
+                                                          levels = c("z (df = infinity)", paste0("df = ", dfs))))
+all_curves <- bind_rows(z_curve, df_curves)
+ggplot(all_curves, aes(x, y, color = df, linetype = df)) +
+  geom_line(linewidth = 0.9) +
+  scale_color_manual(values = c("z (df = infinity)" = "#1F2937",
+                                "df = 2"  = "#EF4444",
+                                "df = 5"  = "#F59E0B",
+                                "df = 30" = "#3B82F6"),
+                     name = NULL) +
+  scale_linetype_manual(values = c("z (df = infinity)" = "dashed",
+                                   "df = 2"  = "solid",
+                                   "df = 5"  = "solid",
+                                   "df = 30" = "solid"),
+                        name = NULL) +
+  labs(title = "The t distribution at three values of df, plus the z reference",
+       subtitle = "As df grows, t approaches z",
+       x = "Standard-error units from the null",
+       y = "Density") +
+  theme(legend.position = "right")
+```
+
+Notice how the three t curves (red, orange, blue) become indistinguishable from the dashed z line as df increases. At df = 30 the difference is already small; at df = 100 it would be invisible at this scale.
+
+For our Hannah example, the t statistic was $-3.125$ with df = $n - 1 = 24$. We can compute the corresponding two-tailed p-value directly:
+
+```{r}
+2 * pt(-3.125, df = 24)
+```
+
+About 0.0046, or roughly 0.5%. Under H₀ (Hannah's claim of 100 g), results as extreme as ours (95 g or more extreme on either side) would occur less than half a percent of the time. The data are very surprising under H₀.
+
+### The F distribution: a ratio of two variance estimates
+
+When we want to compare two variance estimates against each other (as in ANOVA or in the overall test of a regression model), the test statistic is no longer a standardized mean; it is a *ratio* of variances. Under H₀, the ratio of two variance estimates follows the **F distribution**. The F has **two** degrees-of-freedom parameters, one for the numerator and one for the denominator.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 7
+#| fig.height: 3.5
+xs <- seq(0.01, 6, length.out = 600)
+f_curves <- bind_rows(
+  data.frame(x = xs, y = df(xs, 1, 30),  curve = "df1 = 1, df2 = 30"),
+  data.frame(x = xs, y = df(xs, 5, 30),  curve = "df1 = 5, df2 = 30"),
+  data.frame(x = xs, y = df(xs, 10, 30), curve = "df1 = 10, df2 = 30")
+) |> mutate(curve = factor(curve, levels = c("df1 = 1, df2 = 30",
+                                              "df1 = 5, df2 = 30",
+                                              "df1 = 10, df2 = 30")))
+ggplot(f_curves, aes(x, y, color = curve)) +
+  geom_line(linewidth = 0.9) +
+  scale_color_manual(values = c("df1 = 1, df2 = 30"  = "#EF4444",
+                                "df1 = 5, df2 = 30"  = "#F59E0B",
+                                "df1 = 10, df2 = 30" = "#3B82F6"),
+                     name = NULL) +
+  labs(title = "The F distribution at three combinations of df1 and df2",
+       x = "Test statistic (F)",
+       y = "Density") +
+  theme(legend.position = "right")
+```
+
+The F is right-skewed and runs from 0 to infinity (a ratio of squared things cannot be negative). The exact shape depends on the two df values. F appears in two main places in this book: the overall F-statistic at the bottom of `summary(lm(...))` (testing whether the model as a whole explains anything), and ANOVA (Chapter to come).
+
+### Three rulers, one logic
+
+The big takeaway about z, t, and F is that they are three different *rulers* for three different kinds of standardized statistics, but the logic is the same: we compute a test statistic, look up its position on the universal reference curve, and read off a tail area (the p-value). The math is universal because mathematicians once computed each reference curve, and now we just look up the answer.
+
+| Situation | Test statistic | Reference distribution |
+|-----------|---------------|------------------------|
+| One mean, population SD known | $(\bar{x} - \mu_0) / (\sigma / \sqrt{n})$ | z |
+| One mean, population SD estimated | $(\bar{x} - \mu_0) / (s / \sqrt{n})$ | t with df = n − 1 |
+| Two means, separate samples | difference of means / SE of the difference | t |
+| Slope in a simple regression | slope / SE of slope | t |
+| Overall regression model | mean-square ratio | F |
+| Several group means (ANOVA) | mean-square ratio | F |
+
+These are not separate tests; they are different specific cases of the same single logic.
+
+## Degrees of freedom: the information budget
+
+The shape of the t (and F) distribution depends on degrees of freedom. We should be explicit about what df actually means, because most introductions present it as a magic formula and most students leave with no intuition for what it is.
+
+The right way to think about it: **degrees of freedom are an information budget**. You start with n independent pieces of information (your n observations). Every time you estimate a parameter from the data, you spend one piece of that information. The df is what is left.
+
+A small example. With Hannah's 25 brownies, we started with 25 pieces of information. To compute the sample standard deviation, we first needed to compute the sample mean. That one calculation "spent" one piece of the information: once you know the mean, you only need 24 of the 25 deviations from the mean to determine the 25th (the deviations have to sum to zero). So the sample SD is computed using df = 25 - 1 = 24 effective pieces of information. That is why df for a one-sample t-test is n - 1.
+
+The pattern generalizes. Each parameter estimated from the data costs one piece of information.
+
+| Test or model | df expended | df left |
+|---------------|-------------|---------|
+| One-sample t-test | 1 (the mean) | n − 1 |
+| Two-sample t-test | 2 (two group means) | n − 2 |
+| Simple regression slope test | 2 (intercept and slope) | n − 2 |
+| Multiple regression with k predictors | k + 1 (intercept + k slopes) | n − k − 1 |
+
+This explains why df matters mechanically: a smaller df makes the t distribution heavier-tailed, which means a given test statistic produces a larger p-value. When you have few observations and have estimated several parameters, your estimates of the SE are unreliable, and the reference distribution should be more cautious. Df captures this exactly.
+
+A concrete consequence: the same observed test statistic of, say, t = 2.5 corresponds to different p-values at different df.
+
+```{r}
+2 * pt(-2.5, df = 5)   # df = 5
+2 * pt(-2.5, df = 30)  # df = 30
+2 * pt(-2.5, df = 200) # df = 200
+```
+
+With df = 5 the p-value is about 0.05; with df = 30 it is about 0.018; with df = 200 it is about 0.013. The same test statistic, but the conclusion depends on how reliable your SD estimate was. Larger df, more reliable estimate, smaller p-value.
+
+## Putting it all together: what R is doing under the hood
+
+You will rarely compute a test statistic by hand. R has built-in functions for every standard test:
+
+- `t.test()` for one- and two-sample t-tests.
+- `cor.test()` for correlations.
+- `chisq.test()` for chi-squared tests.
+- `aov()` for ANOVA.
+- `summary(lm(...))` reports t-statistics and an overall F.
+
+When R reports a p-value, it has done the following in order:
+
+1. Computed the appropriate test statistic from your data: the standardized distance from the null.
+2. Identified the correct reference distribution and its df from the design.
+3. Looked up the tail area beyond your test statistic on the reference distribution.
+4. Reported that tail area as the p-value.
+
+For Hannah's brownies, the t-test would look like this in R:
+
+```{r}
+# Simulate 25 brownies with mean 95, SD 8 to recreate the example
+set.seed(7)
+brownies <- rnorm(25, mean = 95, sd = 8)
+t.test(brownies, mu = 100)
+```
+
+The output reports the t-statistic, the df, and the two-tailed p-value, exactly as we computed them by hand. The 95% confidence interval is a different (related) inferential output we will not develop here.
+
+The most important thing this whole chapter does for you, in practice, is the following. Look back at the `summary(lm(...))` output from Chapter 16:
+
+```
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)
+(Intercept)   4.1962    0.2827   14.843  < 2e-16
+hours_weekly  0.0816    0.0271    3.016   0.00313
+
+Residual standard error: 1.556 on 118 degrees of freedom
+F-statistic: 9.1 on 1 and 118 DF, p-value: 0.003133
+```
+
+You now know what every column means.
+
+- **Estimate** is the parameter value (intercept or slope), as in Section 3.
+- **Std. Error** is the estimated standard deviation of the sampling distribution of that parameter (Chapter 21).
+- **t value** is the test statistic: Estimate / Std. Error, i.e., the standardized distance from the null value of zero. For `hours_weekly`: 0.0816 / 0.0271 ≈ 3.016.
+- **Pr(>|t|)** is the p-value, computed by looking up the t-statistic on a t-distribution with 118 df (the n − 2 from the simple regression).
+- **F-statistic and its p-value** at the bottom test the model as a whole: is at least one slope different from zero? In simple regression with one predictor, this is exactly the same test as the t-test on the slope (and gives the same p-value, .003).
+- **Residual standard error** is the typical size of the residuals; 118 df because we estimated 2 parameters (intercept and slope) from the n = 120 observations.
+
+Everything you politely ignored in Chapter 16 is now interpretable.
+
+## The role of assumptions
+
+The reference distributions (z, t, F) deliver correct p-values *only when* the assumptions of the test are reasonable. We have already seen most of these assumptions in Chapter 19, but they show up again here because they are what makes the inferential machinery work.
+
+For a one-sample t-test, the assumptions are essentially:
+
+- **Independence.** Observations are independent of each other (no clustering, no repeated measures from the same person).
+- **Random sampling.** The sample is drawn at random from the population we want to make claims about.
+- **Approximate normality of the data, or large enough n that the CLT applies.** The sampling distribution of the mean is approximately normal under one of these conditions.
+
+For a regression, the LINE assumptions from Chapter 19 (Linearity, Independence, Normality of residuals, Equal variance) play the same role.
+
+When assumptions are violated, the reference distribution is no longer guaranteed to match the actual sampling distribution of the test statistic. R will still print a p-value; the p-value just may not mean what we want it to mean. Lakens (2022, Chapter 1) emphasizes this point repeatedly: a p-value is part of a *calibrated procedure*, and the calibration requires the assumptions to hold.
+
+## Looking ahead
+
+You can now read every column of standard regression output, t-test output, and ANOVA output. You can also explain what R is computing when it returns a p-value, and you can answer the question "what changes when df changes."
+
+Chapter 24 turns from the *computation* of p-values to the *decision-theoretic structure* that surrounds them. What happens when the procedure is wrong? What is the trade-off between Type I and Type II errors? What does it mean to "have 80% power," and why is that claim meaningless without an anchor like SESOI (the Smallest Effect Size of Interest)?
+
+Chapter 25 then returns to the philosophical issues raised at the end of Chapter 22: the distinction between exploratory and confirmatory work, the multiple-testing problem, the practical discipline of pre-registration, and the famous Ioannidis observation that under realistic conditions a large fraction of published "significant" findings may be false.
+
+## Check your understanding
+
+```{r}
+#| echo: false
+opts_q1 <- c(
+  "It is the average of the sample minus the null value, expressed in the original units of measurement and reported directly without further transformation.",
+  answer = "It is the standardized distance from the null hypothesis: the difference between the sample value and the null, divided by the standard error of the sample value.",
+  "It is the probability that the null hypothesis is true given the observed sample, computed using the reference distribution and the sample size.",
+  "It is the difference between two consecutive sample means computed across replications of the study under identical conditions."
+)
+
+opts_q2 <- c(
+  "It is the difference in sample size between two competing experimental groups divided by the smaller group's standard deviation as estimated from the pilot study.",
+  "It is the residual standard error of a linear regression model divided by the square root of the F-statistic for the same regression coefficient.",
+  "It is the sample variance divided by the population variance, used when one of the two is known and the other has to be estimated from the dataset.",
+  answer = "It is the standard error of the sample mean, equal to the sample standard deviation divided by the square root of the sample size, used when the population SD is estimated from the sample."
+)
+
+opts_q3 <- c(
+  "It is the difference between the z and the t distributions caused by sample size effects on the dispersion of the sampling distribution under H0.",
+  answer = "It is a parameter of the t (and F) distribution that controls its shape; intuitively, it is the amount of independent information left in the sample after estimating parameters from the data.",
+  "It is the number of statistical tests run by the researcher across all the analyses performed on the dataset, including supplementary and follow-up analyses.",
+  "It is the difference between observed and predicted values in a regression model, used in the formula for the residual standard error and the model R-squared."
+)
+
+opts_q4 <- c(
+  "The z distribution applies when the data are normal, the t distribution applies when the data are non-normal, and the F distribution applies when the data are heavily skewed.",
+  "The z distribution applies when the sample size is large, the t distribution applies when it is small, and the F distribution applies when there is a single categorical predictor with two levels.",
+  answer = "The z distribution applies when the population SD is known, the t distribution applies when the SD is estimated from the sample (its shape depending on df), and the F distribution applies to ratios of variance estimates such as in ANOVA or the overall regression test.",
+  "The z, t, and F distributions are interchangeable when the sample size is at least 30; the choice depends only on whether the test is two-tailed or one-tailed and on the convention of the software package."
+)
+
+opts_q5 <- c(
+  "The t distribution has lighter tails than the z, meaning extreme test statistics are less likely under the t and produce smaller p-values for any given test statistic at moderate df.",
+  answer = "The t distribution has heavier tails than the z at small df; an extreme test statistic is therefore less surprising under the t than under the z, and yields a larger p-value at small df; as df grows the t converges to the z.",
+  "The t and z are identical at all values of df; the apparent difference seen in textbook figures is a visual artifact of how the curves are drawn on the standardized scale.",
+  "The z always has wider tails than the t, regardless of df, because the z accounts for additional uncertainty introduced by sampling whereas the t assumes the variance is fixed."
+)
+
+opts_q6 <- c(
+  "The Pr(>|t|) column reports the probability that the slope is exactly zero in the population given the observed data, calculated by Bayesian inversion of the t-statistic on the t reference distribution.",
+  "The t value column is the standardized residual of the prediction made by the regression model for the participant whose observed value deviates most from the model's predicted value.",
+  "The Std. Error column is the residual standard error of the regression model around the fitted line, identical for every coefficient and equal to the square root of the model's mean squared residual.",
+  answer = "The t value is the coefficient divided by its Std. Error, the standardized distance from the null of zero; the Pr(>|t|) is the two-tailed p-value computed by looking up |t value| on a t distribution with the residual degrees of freedom (n − k − 1)."
+)
+
+opts_q7 <- c(
+  "At df = 5 the p-value is larger because the procedure has less power to detect a real effect; the difference is purely about power and not about the shape of the reference distribution.",
+  "At df = 200 the p-value is larger because the t distribution at high df becomes wider in the tails, making any given test statistic relatively less surprising than at small df.",
+  "The p-values are essentially equal because the t and z distributions converge in the tails, regardless of the value of df chosen for the comparison procedure.",
+  answer = "At df = 5 the t distribution has heavier tails, so a |t| of 2.5 is more likely under H0 than at df = 200; the same test statistic therefore yields a larger p-value at df = 5 (about 0.05) than at df = 200 (about 0.01)."
+)
+
+opts_q8 <- c(
+  "An F distribution describes the sampling distribution of a single regression coefficient under the null that the population value of that coefficient is exactly zero across all replications.",
+  "An F distribution describes the sampling distribution of the residuals of a fitted regression model around the OLS line, accounting for the model's degrees of freedom.",
+  answer = "An F distribution describes the sampling distribution of a ratio of two variance estimates under the null; it is right-skewed and is parameterized by two df values (numerator and denominator).",
+  "An F distribution describes the joint sampling distribution of all the residuals in a multilevel model and is used to derive standard errors for the random-effect variance components."
+)
+
+opts_q9 <- c(
+  "Assumptions are administrative paperwork required by some journals, with no real effect on the validity of the p-value computed by the software.",
+  answer = "The reference distributions z, t, F are derived under specific assumptions; when those assumptions are violated, the reference distribution may not match the actual sampling distribution of the test statistic, and the reported p-value may not mean what the formula says it means.",
+  "Assumptions matter only for small samples; for samples of any reasonable size, the law of large numbers makes the p-value valid regardless of how the data were collected.",
+  "Assumptions are only relevant for Bayesian inference; in frequentist hypothesis testing the test statistic and the reference distribution are robust to any kind of assumption violation."
+)
+
+opts_q10 <- c(
+  "Each parameter estimated from the data adds to the available pool of information, so the model with more predictors always has more df left over for inference about each parameter.",
+  answer = "Each parameter estimated from the data spends one piece of the original independent information; df is what is left, controls the shape of the reference distribution, and shrinks as more parameters are estimated.",
+  "Df is fixed at n - 1 for any analysis that uses the sample mean, regardless of how many additional parameters such as slopes or interaction terms are estimated by the model.",
+  "Df is the same as the standard error in modern statistical software, and reporting one of the two is sufficient when describing the precision of a coefficient in a research paper."
+)
+```
+
+**1. What is a "test statistic"?**
+
+`r longmcq(opts_q1)`
+
+**2. In a one-sample t-test of the mean, what is the denominator of the test statistic?**
+
+`r longmcq(opts_q2)`
+
+**3. What is "degrees of freedom" (df)?**
+
+`r longmcq(opts_q3)`
+
+**4. When does each of the z, t, and F reference distributions apply?**
+
+`r longmcq(opts_q4)`
+
+**5. How does the t distribution differ from the z distribution, and why?**
+
+`r longmcq(opts_q5)`
+
+**6. In `summary(lm(...))` output, what do the "Std. Error," "t value," and "Pr(>|t|)" columns represent for a coefficient?**
+
+`r longmcq(opts_q6)`
+
+**7. Why does the same observed |t| = 2.5 give a smaller p-value at df = 200 than at df = 5?**
+
+`r longmcq(opts_q7)`
+
+**8. In what sense is the F distribution a "ratio" distribution?**
+
+`r longmcq(opts_q8)`
+
+**9. Why do the assumptions of a test matter for the validity of its p-value?**
+
+`r longmcq(opts_q9)`
+
+**10. What is the "information budget" view of degrees of freedom?**
+
+`r longmcq(opts_q10)`
+
+## References
+
+Lakens, D. (2022). *Improving your statistical inferences*. Chapter 1, "Using p-values to test a hypothesis." <https://lakens.github.io/statistical_inferences/01-pvalue.html>
+
+Navarro, D. J. (2018). *Learning statistics with R: A tutorial for psychology students and other beginners* (Version 0.6), Chapter 13 ("Comparing two means"). <https://learningstatisticswithr.com>

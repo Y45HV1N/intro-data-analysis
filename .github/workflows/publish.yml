@@ -35,6 +35,7 @@ jobs:
             any::tidyr
             any::forcats
             any::stringr
+            any::pwr
 
       - name: Render and Publish to gh-pages
         uses: quarto-dev/quarto-actions/publish@v2

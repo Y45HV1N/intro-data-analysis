@@ -45,6 +45,10 @@ book:
   - part: 'Section 4: Statistical Inference'
     chapters:
     - 21-why-inference.qmd
+    - 22-pvalues-fisher-neyman-pearson.qmd
+    - 23-test-statistics-and-df.qmd
+    - 24-decisions-errors-power-sesoi.qmd
+    - 25-two-roles-multiple-testing.qmd
 format:
   html:
     theme:
