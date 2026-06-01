@@ -534,7 +534,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./24-decisions-errors-power-sesoi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and SESOI</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and the SESOI</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -573,6 +573,7 @@ window.Quarto = {
   <li><a href="#holm-same-control-less-conservative" id="toc-holm-same-control-less-conservative" class="nav-link" data-scroll-target="#holm-same-control-less-conservative"><span class="header-section-number">25.5.2</span> Holm: same control, less conservative</a></li>
   <li><a href="#benjamini-hochberg-a-different-target" id="toc-benjamini-hochberg-a-different-target" class="nav-link" data-scroll-target="#benjamini-hochberg-a-different-target"><span class="header-section-number">25.5.3</span> Benjamini-Hochberg: a different target</a></li>
   <li><a href="#which-correction-to-use-summarized" id="toc-which-correction-to-use-summarized" class="nav-link" data-scroll-target="#which-correction-to-use-summarized"><span class="header-section-number">25.5.4</span> Which correction to use, summarized</a></li>
+  <li><a href="#a-common-confusion-do-you-correct-for-all-tests-you-will-ever-run" id="toc-a-common-confusion-do-you-correct-for-all-tests-you-will-ever-run" class="nav-link" data-scroll-target="#a-common-confusion-do-you-correct-for-all-tests-you-will-ever-run"><span class="header-section-number">25.5.5</span> A common confusion: do you correct for all tests you will ever run?</a></li>
   </ul></li>
   <li><a href="#ioannidis-and-the-positive-predictive-value" id="toc-ioannidis-and-the-positive-predictive-value" class="nav-link" data-scroll-target="#ioannidis-and-the-positive-predictive-value"><span class="header-section-number">25.6</span> Ioannidis and the positive predictive value</a></li>
   <li><a href="#exploratory-vs-confirmatory-analysis-in-full" id="toc-exploratory-vs-confirmatory-analysis-in-full" class="nav-link" data-scroll-target="#exploratory-vs-confirmatory-analysis-in-full"><span class="header-section-number">25.7</span> Exploratory vs confirmatory analysis, in full</a>
@@ -821,6 +822,12 @@ P(\text{at least one false positive}) = 1 - (1 - \alpha)^k.
 </table>
 <p>The choice depends on the cost of false positives. If a single false positive is costly (a clinical recommendation, a primary outcome in a trial), use Holm or Bonferroni. If you are screening many candidates and a small false-positive rate among rejections is acceptable, use BH.</p>
 </section>
+<section id="a-common-confusion-do-you-correct-for-all-tests-you-will-ever-run" class="level3" data-number="25.5.5">
+<h3 data-number="25.5.5" class="anchored" data-anchor-id="a-common-confusion-do-you-correct-for-all-tests-you-will-ever-run"><span class="header-section-number">25.5.5</span> A common confusion: do you correct for all tests you will ever run?</h3>
+<p>A frequent worry, especially among students newly aware of alpha inflation, is whether they should correct for every test they will run in their career. If every test contributes to the family-wise rate, should not the appropriate alpha for any given study be α divided by the total number of tests over a lifetime?</p>
+<p>Lakens (2022, Chapter 2.6) addresses this directly, and the answer is no. The relevant “family” of tests is the set of tests that are <em>jointly used to make a single inference</em>. If a paper tests one primary outcome to make one substantive claim, that is a family of one and no correction is needed. If a paper tests five outcomes and uses any of them to support the same substantive claim, that is a family of five and correction is appropriate. If the same researcher runs an unrelated study a year later, that is a different family. The unit of correction is the inference, not the researcher’s lifetime workload.</p>
+<p>This is why pre-specifying which tests are confirmatory (and therefore “joint”) matters so much. A researcher who pre-registers two confirmatory tests should correct for two; the dozens of exploratory tests they run alongside are labeled as exploratory and reported as such, without claiming a calibrated family-wise rate. This is also why a published paper can legitimately report, in separate sections, a small set of corrected confirmatory tests and a larger set of uncorrected exploratory ones, without contradiction.</p>
+</section>
 </section>
 <section id="ioannidis-and-the-positive-predictive-value" class="level2" data-number="25.6">
 <h2 data-number="25.6" class="anchored" data-anchor-id="ioannidis-and-the-positive-predictive-value"><span class="header-section-number">25.6</span> Ioannidis and the positive predictive value</h2>
@@ -860,6 +867,19 @@ P(\text{at least one false positive}) = 1 - (1 - \alpha)^k.
 <li><strong>Publication bias.</strong> Significant results are more likely to be published than non-significant ones. This selectively elevates false positives in the published record.</li>
 <li><strong>Researcher degrees of freedom.</strong> Choices made after seeing the data (which variables to include, which exclusion rules to apply) inflate the actual false-positive rate beyond .05.</li>
 </ul>
+<p>To see how dramatic the effect of these factors can be, consider a slightly worse case: R = 0.05 (1 in 20 hypotheses tested is true, a not unreasonable estimate for highly speculative research), power = 0.30 (a value Lakens cites as typical for older psychology studies), and the effective α inflated to 0.10 due to undisclosed multiple testing:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>power <span class="ot">&lt;-</span> <span class="fl">0.30</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.10</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>ppv_worse <span class="ot">&lt;-</span> (power <span class="sc">*</span> R) <span class="sc">/</span> (power <span class="sc">*</span> R <span class="sc">+</span> alpha)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>ppv_worse</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1304348</code></pre>
+</div>
+</div>
+<p>Only about 13% of “significant” findings reflect real effects in this scenario. <strong>Most published positives are false</strong>. Ioannidis used calculations like these, with realistic-looking inputs, to argue that the published literature in many fields is heavily polluted by false positives.</p>
+<p>What this tells you, practically: it is misleading to treat a single published “p &lt; .05” finding as strong evidence of truth. The strength of that evidence depends on three quantities the published paper rarely makes explicit: the prior plausibility of the hypothesis, the power of the study to detect a real effect, and whether the procedure that produced the p-value was actually pre-specified or shaped by the data. Lakens (2022, Chapter 2.2) develops these arguments in detail, with simulation code and additional worked examples.</p>
 <p>The PPV framework is a useful lens. The headline number is not the per-test α; it is the proportion of published “significant” results that actually reflect a real effect, and that proportion depends on power, on the prior plausibility of the hypotheses, and on the discipline of the procedures used.</p>
 <p>A short video by Veritasium summarizes the basics of PPV and the Ioannidis argument; it is a useful complement to the formal treatment above.</p>
 <div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/42QuXLucH3Q" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
@@ -1651,8 +1671,8 @@ window.onload = function() {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./24-decisions-errors-power-sesoi.html" class="pagination-link" aria-label="Decisions, errors, power, and SESOI">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and SESOI</span></span>
+      <a href="./24-decisions-errors-power-sesoi.html" class="pagination-link" aria-label="Decisions, errors, power, and the SESOI">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and the SESOI</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

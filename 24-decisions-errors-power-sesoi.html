@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>24&nbsp; Decisions, errors, power, and SESOI – Understanding and analyzing social and behavioral data</title>
+<title>24&nbsp; Decisions, errors, power, and the SESOI – Understanding and analyzing social and behavioral data</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -112,6 +112,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="include/webex.css">
 <link rel="stylesheet" href="include/custom.css">
@@ -288,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21-why-inference.html">Section 4: Statistical Inference</a></li><li class="breadcrumb-item"><a href="./24-decisions-errors-power-sesoi.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and SESOI</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21-why-inference.html">Section 4: Statistical Inference</a></li><li class="breadcrumb-item"><a href="./24-decisions-errors-power-sesoi.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and the SESOI</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -506,7 +535,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./24-decisions-errors-power-sesoi.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and SESOI</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and the SESOI</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -535,13 +564,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-four-factors-that-determine-power" id="toc-the-four-factors-that-determine-power" class="nav-link" data-scroll-target="#the-four-factors-that-determine-power"><span class="header-section-number">24.4.1</span> The four factors that determine power</a></li>
   </ul></li>
   <li><a href="#a-four-quantity-system-pick-three-get-the-fourth" id="toc-a-four-quantity-system-pick-three-get-the-fourth" class="nav-link" data-scroll-target="#a-four-quantity-system-pick-three-get-the-fourth"><span class="header-section-number">24.5</span> A four-quantity system: pick three, get the fourth</a></li>
-  <li><a href="#what-is-missing-from-this-picture-sesoi" id="toc-what-is-missing-from-this-picture-sesoi" class="nav-link" data-scroll-target="#what-is-missing-from-this-picture-sesoi"><span class="header-section-number">24.6</span> What is missing from this picture: SESOI</a>
+  <li><a href="#what-is-missing-from-this-picture-the-sesoi" id="toc-what-is-missing-from-this-picture-the-sesoi" class="nav-link" data-scroll-target="#what-is-missing-from-this-picture-the-sesoi"><span class="header-section-number">24.6</span> What is missing from this picture: the SESOI</a>
   <ul class="collapse">
   <li><a href="#a-concrete-example" id="toc-a-concrete-example" class="nav-link" data-scroll-target="#a-concrete-example"><span class="header-section-number">24.6.1</span> A concrete example</a></li>
-  <li><a href="#why-80-power-is-meaningless-without-sesoi" id="toc-why-80-power-is-meaningless-without-sesoi" class="nav-link" data-scroll-target="#why-80-power-is-meaningless-without-sesoi"><span class="header-section-number">24.6.2</span> Why “80% power” is meaningless without SESOI</a></li>
-  <li><a href="#how-sesoi-changes-the-interpretation-of-results" id="toc-how-sesoi-changes-the-interpretation-of-results" class="nav-link" data-scroll-target="#how-sesoi-changes-the-interpretation-of-results"><span class="header-section-number">24.6.3</span> How SESOI changes the interpretation of results</a></li>
+  <li><a href="#why-80-power-is-meaningless-without-the-sesoi" id="toc-why-80-power-is-meaningless-without-the-sesoi" class="nav-link" data-scroll-target="#why-80-power-is-meaningless-without-the-sesoi"><span class="header-section-number">24.6.2</span> Why “80% power” is meaningless without the SESOI</a></li>
+  <li><a href="#how-the-sesoi-changes-the-interpretation-of-results" id="toc-how-the-sesoi-changes-the-interpretation-of-results" class="nav-link" data-scroll-target="#how-the-sesoi-changes-the-interpretation-of-results"><span class="header-section-number">24.6.3</span> How the SESOI changes the interpretation of results</a></li>
   </ul></li>
-  <li><a href="#equivalence-testing-a-quick-look" id="toc-equivalence-testing-a-quick-look" class="nav-link" data-scroll-target="#equivalence-testing-a-quick-look"><span class="header-section-number">24.7</span> Equivalence testing: a quick look</a></li>
+  <li><a href="#equivalence-testing-and-the-tost-procedure" id="toc-equivalence-testing-and-the-tost-procedure" class="nav-link" data-scroll-target="#equivalence-testing-and-the-tost-procedure"><span class="header-section-number">24.7</span> Equivalence testing and the TOST procedure</a>
+  <ul class="collapse">
+  <li><a href="#the-intuition-flipping-the-question" id="toc-the-intuition-flipping-the-question" class="nav-link" data-scroll-target="#the-intuition-flipping-the-question"><span class="header-section-number">24.7.1</span> The intuition: flipping the question</a></li>
+  <li><a href="#a-picture-of-the-equivalence-band" id="toc-a-picture-of-the-equivalence-band" class="nav-link" data-scroll-target="#a-picture-of-the-equivalence-band"><span class="header-section-number">24.7.2</span> A picture of the equivalence band</a></li>
+  <li><a href="#running-tost-in-r-with-the-toster-package" id="toc-running-tost-in-r-with-the-toster-package" class="nav-link" data-scroll-target="#running-tost-in-r-with-the-toster-package"><span class="header-section-number">24.7.3</span> Running TOST in R with the <code>TOSTER</code> package</a></li>
+  <li><a href="#how-to-choose-the-sesoi-for-an-equivalence-test" id="toc-how-to-choose-the-sesoi-for-an-equivalence-test" class="nav-link" data-scroll-target="#how-to-choose-the-sesoi-for-an-equivalence-test"><span class="header-section-number">24.7.4</span> How to choose the SESOI for an equivalence test</a></li>
+  <li><a href="#equivalence-testing-combined-with-the-standard-test" id="toc-equivalence-testing-combined-with-the-standard-test" class="nav-link" data-scroll-target="#equivalence-testing-combined-with-the-standard-test"><span class="header-section-number">24.7.5</span> Equivalence testing combined with the standard test</a></li>
+  </ul></li>
   <li><a href="#power-analysis-in-practice-the-pwr-package" id="toc-power-analysis-in-practice-the-pwr-package" class="nav-link" data-scroll-target="#power-analysis-in-practice-the-pwr-package"><span class="header-section-number">24.8</span> Power analysis in practice: the <code>pwr</code> package</a></li>
   <li><a href="#what-serious-frequentist-practice-looks-like" id="toc-what-serious-frequentist-practice-looks-like" class="nav-link" data-scroll-target="#what-serious-frequentist-practice-looks-like"><span class="header-section-number">24.9</span> What “serious” frequentist practice looks like</a></li>
   <li><a href="#looking-ahead" id="toc-looking-ahead" class="nav-link" data-scroll-target="#looking-ahead"><span class="header-section-number">24.10</span> Looking ahead</a></li>
@@ -554,9 +590,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21-why-inference.html">Section 4: Statistical Inference</a></li><li class="breadcrumb-item"><a href="./24-decisions-errors-power-sesoi.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and SESOI</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21-why-inference.html">Section 4: Statistical Inference</a></li><li class="breadcrumb-item"><a href="./24-decisions-errors-power-sesoi.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and the SESOI</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and SESOI</span></h1>
+<h1 class="title"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and the SESOI</span></h1>
 </div>
 
 
@@ -582,7 +618,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>the two ways a decision procedure can be wrong (Type I and Type II errors), and what controls them,</li>
 <li>what <strong>statistical power</strong> is, and why it is always defined <em>relative to an effect size</em>,</li>
 <li>how α, β, n, and effect size lock together in a four-quantity system: pick any three and the fourth is determined,</li>
-<li>what the <strong>Smallest Effect Size of Interest</strong> (SESOI) is, and why it is the anchor that gives “80% power” a meaning,</li>
+<li>what the <strong>Smallest Effect Size of Interest</strong> (the SESOI) is, and why it is the anchor that gives “80% power” a meaning,</li>
 <li>a brief look at <strong>equivalence testing</strong>, which lets you make positive claims about there being no meaningful effect, and</li>
 <li>how to run a power analysis in R with the <code>pwr</code> package.</li>
 </ul>
@@ -625,13 +661,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <p>Power = the probability of correctly rejecting H₀, <strong>given that the true effect size is some specific value δ.</strong></p>
 </blockquote>
-<p>When researchers say “my study has 80% power,” they always mean <em>for a specific effect size that they cared about</em>. Without that anchor, the claim is undefined. We will return to this point in detail when we get to SESOI.</p>
+<p>When researchers say “my study has 80% power,” they always mean <em>for a specific effect size that they cared about</em>. Without that anchor, the claim is undefined. We will return to this point in detail when we get to the SESOI.</p>
 <p>A picture helps. Imagine the sampling distribution of the test statistic under H₀ (centered at 0) and the sampling distribution under H₁ (centered at the true effect size, in test-statistic units). The decision rule is “reject if the test statistic falls beyond the critical value.” The probabilities of Type I error and Type II error correspond to specific areas under those two curves.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="24-decisions-errors-power-sesoi_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="24-decisions-errors-power-sesoi_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="816"></p>
 </figure>
 </div>
 </div>
@@ -697,8 +733,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The curve rises as n grows. To get from 50% power to 80% power requires roughly a doubling of sample size. Power increases with diminishing returns: getting from 80% to 95% costs more than getting from 50% to 80%.</p>
 <p>The same logic applies to other test types: t-tests, F-tests, correlations, chi-squared tests, all have analogous power-vs-n curves, which the <code>pwr</code> package can produce.</p>
 </section>
-<section id="what-is-missing-from-this-picture-sesoi" class="level2" data-number="24.6">
-<h2 data-number="24.6" class="anchored" data-anchor-id="what-is-missing-from-this-picture-sesoi"><span class="header-section-number">24.6</span> What is missing from this picture: SESOI</h2>
+<section id="what-is-missing-from-this-picture-the-sesoi" class="level2" data-number="24.6">
+<h2 data-number="24.6" class="anchored" data-anchor-id="what-is-missing-from-this-picture-the-sesoi"><span class="header-section-number">24.6</span> What is missing from this picture: the SESOI</h2>
 <p>Everything in the previous section assumed we knew the effect size we wanted to detect. We picked d = 0.5 essentially arbitrarily. But where does that number come from in a real study?</p>
 <p>Three options are common in practice:</p>
 <ol type="1">
@@ -706,75 +742,207 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>An effect size from a prior study.</strong> The trouble: prior published effect sizes are typically biased upward because of publication bias, optional stopping, and other forms of selective reporting. Building your power analysis on a biased estimate gives you a biased target.</li>
 <li><strong>The smallest effect you would actually care about.</strong> This is the right anchor. And it has a name.</li>
 </ol>
-<p>The <strong>Smallest Effect Size of Interest</strong> (SESOI) is the smallest effect size that you, the researcher, would care about. Below SESOI, you would not change your behavior, your conclusions, or your recommendations, even if the effect were demonstrably real. SESOI is a value chosen <em>in advance</em>, based on:</p>
+<p>The <strong>Smallest Effect Size of Interest</strong> (the SESOI) is the smallest effect size that you, the researcher, would care about. Below the SESOI, you would not change your behavior, your conclusions, or your recommendations, even if the effect were demonstrably real. The SESOI is a value chosen <em>in advance</em>, based on:</p>
 <ul>
 <li><strong>Practical relevance.</strong> What is the smallest effect that would justify acting on the result? For a clinical intervention, the smallest improvement that would change the recommendation. For a brief priming experiment, the smallest priming effect that would change the theoretical interpretation.</li>
-<li><strong>Theoretical relevance.</strong> What is the smallest effect that the theory would predict? A theory that predicts effects of d ≥ 0.3 implicitly says SESOI = 0.3.</li>
+<li><strong>Theoretical relevance.</strong> What is the smallest effect that the theory would predict? A theory that predicts effects of d ≥ 0.3 implicitly says the SESOI is 0.3.</li>
 <li><strong>Decision-relevance.</strong> What is the smallest difference that, if real, would change the choice between two practical alternatives?</li>
 </ul>
-<p>SESOI is not the effect you <em>expect</em>. It is the effect you would <em>care about</em>. The two are different.</p>
+<p>The SESOI is not the effect you <em>expect</em>. It is the effect you would <em>care about</em>. The two are different.</p>
 <section id="a-concrete-example" class="level3" data-number="24.6.1">
 <h3 data-number="24.6.1" class="anchored" data-anchor-id="a-concrete-example"><span class="header-section-number">24.6.1</span> A concrete example</h3>
-<p>In the Hannah’s brownies example from Chapter 23, suppose Hannah advertises 100-gram brownies. Would a true average of 99.5 grams matter? Probably not; that is a half-gram deviation, well below anyone’s threshold of complaint. What about 99 grams? Still probably not. What about 95 grams? Yes; that is a 5% shortfall, which most people would consider a meaningful underweight. We might set SESOI = 5 grams: anything smaller than 5 g of underweight is not worth caring about, anything larger is.</p>
-<p>The corresponding design question becomes: how many brownies must we weigh to detect a true 5-gram shortfall with 80% power and α = .05? The math gives a specific number, which we can run with <code>pwr</code>:</p>
+<p>In the Hannah’s Bakery example from Chapter 23, suppose Hannah advertises 100-gram scones. Would a true average of 99.5 grams matter? Probably not; that is a half-gram deviation, well below anyone’s threshold of complaint. What about 99 grams? Still probably not. What about 95 grams? Yes; that is a 5% shortfall, which most people would consider a meaningful underweight. We might set the SESOI at 5 grams: anything smaller than 5 g of underweight is not worth caring about, anything larger is.</p>
+<p>The corresponding design question becomes: how many scones must we weigh to detect a true 5-gram shortfall with 80% power and α = .05? The math gives a specific number, which we can run with <code>pwr</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Suppose population SD of brownie weights is 8 g. To detect a difference of 5 g:</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Suppose population SD of scone weights is 8 g. To detect a difference of 5 g:</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.t.test</span>(<span class="at">d =</span> <span class="dv">5</span><span class="sc">/</span><span class="dv">8</span>, <span class="at">sig.level =</span> .<span class="dv">05</span>, <span class="at">power =</span> .<span class="dv">80</span>, <span class="at">type =</span> <span class="st">"one.sample"</span>)<span class="sc">$</span>n</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 22.09069</code></pre>
 </div>
 </div>
-<p>We would need to weigh about 22 brownies to have 80% power to detect a true 5-gram shortfall.</p>
+<p>We would need to weigh about 22 scones to have 80% power to detect a true 5-gram shortfall.</p>
 </section>
-<section id="why-80-power-is-meaningless-without-sesoi" class="level3" data-number="24.6.2">
-<h3 data-number="24.6.2" class="anchored" data-anchor-id="why-80-power-is-meaningless-without-sesoi"><span class="header-section-number">24.6.2</span> Why “80% power” is meaningless without SESOI</h3>
+<section id="why-80-power-is-meaningless-without-the-sesoi" class="level3" data-number="24.6.2">
+<h3 data-number="24.6.2" class="anchored" data-anchor-id="why-80-power-is-meaningless-without-the-sesoi"><span class="header-section-number">24.6.2</span> Why “80% power” is meaningless without the SESOI</h3>
 <p>Now we can be precise about why “I designed the study for 80% power” is incomplete. Power is conditional on an effect size, so the claim is missing the second half of the sentence. Two researchers can both say “my study has 80% power” and mean completely different things.</p>
 <ul>
 <li>Researcher A: 80% power to detect d = 0.1 (a tiny effect; needs n ≈ 1571 per group).</li>
 <li>Researcher B: 80% power to detect d = 1.0 (a huge effect; needs n ≈ 17 per group).</li>
 </ul>
 <p>These are extremely different studies with extremely different implications. The first one is set up to catch nearly any meaningful effect, real or theoretical; the second is set up only to catch effects so large they would be obvious in casual inspection. Without naming the effect size, “80% power” is empty.</p>
-<p>The remedy is <strong>SESOI</strong>. State the smallest effect you care about, derive the sample size you need to detect it with adequate power, and report both quantities. Then the reader can evaluate whether your study was actually designed to test the claim it ends up making.</p>
+<p>The remedy is <strong>the SESOI</strong>. State the smallest effect you care about, derive the sample size you need to detect it with adequate power, and report both quantities. Then the reader can evaluate whether your study was actually designed to test the claim it ends up making.</p>
 </section>
-<section id="how-sesoi-changes-the-interpretation-of-results" class="level3" data-number="24.6.3">
-<h3 data-number="24.6.3" class="anchored" data-anchor-id="how-sesoi-changes-the-interpretation-of-results"><span class="header-section-number">24.6.3</span> How SESOI changes the interpretation of results</h3>
-<p>SESOI changes not only the design of the study but also how the results are read.</p>
-<p><strong>Scenario 1: significant but smaller than SESOI.</strong> Suppose you designed a study with 80% power to detect SESOI = 0.2, and you find p = .002 with an observed effect of 0.05. The effect is statistically significant. But the observed effect is smaller than SESOI. The right interpretation: there may be a real effect, but it is too small to matter for the decision you cared about. Statistical significance does not rescue practical irrelevance.</p>
-<p><strong>Scenario 2: non-significant but larger than SESOI.</strong> Same design. You find p = .15 with an observed effect of 0.4. The effect is not statistically significant. But the observed effect is larger than SESOI, and you had adequate power. The right interpretation: your data did not provide strong enough evidence to reject the null, but the observed effect is larger than what you would have called meaningful. This is genuinely inconclusive: you cannot confidently call the effect zero (it might just be that the noise was high) and you cannot confidently confirm the predicted effect.</p>
-<p><strong>Scenario 3: non-significant and smaller than SESOI.</strong> Same design. You find p = .25 with an observed effect of 0.05. The effect is not statistically significant <em>and</em> the observed effect is smaller than SESOI. With adequate power, this is meaningful evidence that the effect, if it exists, is smaller than what you would have called interesting. We can do better than just “fail to reject”; we can construct a test that directly evaluates whether the effect is below SESOI. That test is equivalence testing.</p>
+<section id="how-the-sesoi-changes-the-interpretation-of-results" class="level3" data-number="24.6.3">
+<h3 data-number="24.6.3" class="anchored" data-anchor-id="how-the-sesoi-changes-the-interpretation-of-results"><span class="header-section-number">24.6.3</span> How the SESOI changes the interpretation of results</h3>
+<p>The SESOI changes not only the design of the study but also how the results are read.</p>
+<p><strong>Scenario 1: significant but smaller than the SESOI.</strong> Suppose you designed a study with 80% power to detect a SESOI of 0.2, and you find p = .002 with an observed effect of 0.05. The effect is statistically significant. But the observed effect is smaller than the SESOI. The right interpretation: there may be a real effect, but it is too small to matter for the decision you cared about. Statistical significance does not rescue practical irrelevance.</p>
+<p><strong>Scenario 2: non-significant but larger than the SESOI.</strong> Same design. You find p = .15 with an observed effect of 0.4. The effect is not statistically significant. But the observed effect is larger than the SESOI, and you had adequate power. The right interpretation: your data did not provide strong enough evidence to reject the null, but the observed effect is larger than what you would have called meaningful. This is genuinely inconclusive: you cannot confidently call the effect zero (it might just be that the noise was high) and you cannot confidently confirm the predicted effect.</p>
+<p><strong>Scenario 3: non-significant and smaller than the SESOI.</strong> Same design. You find p = .25 with an observed effect of 0.05. The effect is not statistically significant <em>and</em> the observed effect is smaller than the SESOI. With adequate power, this is meaningful evidence that the effect, if it exists, is smaller than what you would have called interesting. We can do better than just “fail to reject”; we can construct a test that directly evaluates whether the effect is below the SESOI. That test is equivalence testing, the topic of the next section.</p>
 </section>
 </section>
-<section id="equivalence-testing-a-quick-look" class="level2" data-number="24.7">
-<h2 data-number="24.7" class="anchored" data-anchor-id="equivalence-testing-a-quick-look"><span class="header-section-number">24.7</span> Equivalence testing: a quick look</h2>
-<p>We have stressed that “p &gt; .05” does not mean “there is no effect.” But sometimes you genuinely want to argue that an effect is small enough to be practically negligible. That argument needs its own test.</p>
-<p><strong>Equivalence testing</strong> reframes the question. Instead of testing “is the effect different from zero,” you test “is the effect <em>smaller than SESOI</em>.” The procedure (often the <em>Two One-Sided Tests</em>, or TOST, procedure) splits the test into two one-sided tests against the SESOI bounds:</p>
+<section id="equivalence-testing-and-the-tost-procedure" class="level2" data-number="24.7">
+<h2 data-number="24.7" class="anchored" data-anchor-id="equivalence-testing-and-the-tost-procedure"><span class="header-section-number">24.7</span> Equivalence testing and the TOST procedure</h2>
+<p>We have stressed several times that “p &gt; .05” does not mean “there is no effect.” A non-significant standard hypothesis test only tells you that you cannot reject the null; it never confirms the null. But sometimes you <em>want</em> to argue, on positive grounds, that an effect is small enough to be practically negligible. A pharmaceutical company wants to claim their cheaper drug works as well as the expensive one. A replicator wants to claim that an effect originally reported as large is in fact too small to matter. A theorist wants to claim that the predicted moderator does not actually moderate. None of these claims can be supported by a non-significant <em>p</em>-value in a standard test. They need a different statistical machinery.</p>
+<p>That machinery is <strong>equivalence testing</strong>, and the most common version of it is the <strong>Two One-Sided Tests (TOST)</strong> procedure. Lakens (2017, 2022) is the standard modern reference for the technique in psychology and we draw on those sources here.</p>
+<section id="the-intuition-flipping-the-question" class="level3" data-number="24.7.1">
+<h3 data-number="24.7.1" class="anchored" data-anchor-id="the-intuition-flipping-the-question"><span class="header-section-number">24.7.1</span> The intuition: flipping the question</h3>
+<p>In a standard hypothesis test, the null is “the effect is exactly zero” and the alternative is “the effect is not zero.” If you reject the null, you conclude there is an effect; if you do not reject, you cannot conclude either way. The asymmetry is built in: you can support “effect exists” but not “effect does not exist.”</p>
+<p>Equivalence testing flips this asymmetry. It starts with a SESOI: a value <span class="math inline">\(\delta\)</span> such that effects smaller than <span class="math inline">\(\delta\)</span> are considered too small to matter. The new null becomes “the effect is at least as large as the SESOI (in either direction).” The new alternative becomes “the effect is smaller than the SESOI.” Rejecting the new null means concluding that the effect is too small to matter, which is a positive claim of practical equivalence.</p>
+<p>In symbols, suppose we want to argue that the true difference between two means is within <span class="math inline">\(\pm\delta\)</span>. We set up two one-sided tests:</p>
 <ul>
-<li>One test checks whether the effect is significantly less than +SESOI.</li>
-<li>The other test checks whether the effect is significantly greater than -SESOI.</li>
+<li><span class="math inline">\(H_{0,\text{lower}}\)</span>: the true difference is <span class="math inline">\(\leq -\delta\)</span>. Reject if the observed difference is significantly <em>greater than</em> <span class="math inline">\(-\delta\)</span>.</li>
+<li><span class="math inline">\(H_{0,\text{upper}}\)</span>: the true difference is <span class="math inline">\(\geq +\delta\)</span>. Reject if the observed difference is significantly <em>less than</em> <span class="math inline">\(+\delta\)</span>.</li>
 </ul>
-<p>If both one-sided tests reject, you can claim equivalence: the effect is within ±SESOI of zero, which means it is too small to matter under your declared SESOI.</p>
-<p>Equivalence testing is the modern way to make a positive “no meaningful effect” claim. It is in routine use in pharmacology, exercise science, and increasingly in psychology. Lakens (2017, 2022) develops the machinery in detail. We will not develop the full TOST procedure here, but you should know that “this effect is practically negligible” is a claim that can be tested formally, given an SESOI; it is not just an inference from a non-significant p-value.</p>
+<p>If we reject <strong>both</strong> one-sided nulls, then we have evidence that the true difference is both above <span class="math inline">\(-\delta\)</span> AND below <span class="math inline">\(+\delta\)</span>, that is, within the equivalence band <span class="math inline">\((-\delta, +\delta)\)</span>. This is the TOST procedure.</p>
+</section>
+<section id="a-picture-of-the-equivalence-band" class="level3" data-number="24.7.2">
+<h3 data-number="24.7.2" class="anchored" data-anchor-id="a-picture-of-the-equivalence-band"><span class="header-section-number">24.7.2</span> A picture of the equivalence band</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="24-decisions-errors-power-sesoi_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The shaded green band shows the region of practically negligible effects: anything between <span class="math inline">\(-\)</span>SESOI and <span class="math inline">\(+\)</span>SESOI is considered “equivalent to zero” by our pre-specified standard. The three bars are 90% confidence intervals from three hypothetical studies.</p>
+<ul>
+<li><strong>Top row.</strong> The estimated effect is 0.05; the CI is <span class="math inline">\([-0.20, 0.30]\)</span>, which sits entirely inside the green band. We have evidence of equivalence: the true effect is plausibly within <span class="math inline">\(\pm\)</span>SESOI of zero.</li>
+<li><strong>Middle row.</strong> The estimated effect is 0.35; the CI is <span class="math inline">\([-0.05, 0.75]\)</span>, which crosses both the band and zero. The result is inconclusive; we have neither evidence of equivalence nor evidence against the null.</li>
+<li><strong>Bottom row.</strong> The estimated effect is 0.80; the CI is <span class="math inline">\([0.45, 1.15]\)</span>, which sits entirely outside the band on the positive side. The effect is detected and is larger than the SESOI.</li>
+</ul>
+<p>This visual rule of thumb is, in fact, exactly equivalent to running the TOST procedure with the corresponding alpha level (with the standard convention of using a 90% CI for <span class="math inline">\(\alpha = .05\)</span>, because the two one-sided tests “spend” alpha on each side).</p>
+</section>
+<section id="running-tost-in-r-with-the-toster-package" class="level3" data-number="24.7.3">
+<h3 data-number="24.7.3" class="anchored" data-anchor-id="running-tost-in-r-with-the-toster-package"><span class="header-section-number">24.7.3</span> Running TOST in R with the <code>TOSTER</code> package</h3>
+<p>The <code>TOSTER</code> package by Lakens and Caldwell makes this very easy. The main function we will use is <code>t_TOST()</code> for two-sample, paired, or one-sample equivalence tests on raw data.</p>
+<p>A worked example on our running dataset. In <code>vgames_study.csv</code>, <code>empathy</code> was measured <em>before</em> the experimental manipulation (which game participants were assigned to play). Random assignment to violent vs neutral conditions should produce groups with very similar pre-treatment empathy. We can ask: are the two condition means <em>equivalent</em> to each other on empathy, within a tolerance we declare in advance?</p>
+<p>Suppose we decide that a SESOI of <span class="math inline">\(\pm 0.5\)</span> points on the 1-7 empathy scale would be the smallest difference we would consider meaningful (a half-point shift is a substantial fraction of a one-unit category).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TOSTER)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t_TOST</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> empathy <span class="sc">~</span> condition,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">hypothesis =</span> <span class="st">"EQU"</span>,       <span class="co"># equivalence</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">eqb =</span> <span class="fl">0.5</span>,                <span class="co"># SESOI; equivalence bound of +/- 0.5</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">eqbound_type =</span> <span class="st">"raw"</span>,     <span class="co"># bound is in raw outcome units (not standardized)</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.05</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Welch Two Sample t-test
+
+The equivalence test was non-significant, t(118) = 0.0091, p = 0.5
+The null hypothesis test was significant, t(118) = -2.71, p &lt; 0.01
+NHST: reject null significance hypothesis that the effect is equal to zero 
+TOST: don't reject null equivalence hypothesis
+
+TOST Results 
+                   t  df p.value
+t-test     -2.707442 118   0.008
+TOST Lower  0.009055 118   0.496
+TOST Upper -5.423939 118 &lt; 0.001
+
+Effect Sizes 
+               Estimate     SE               C.I. Conf. Level
+Raw             -0.4983 0.1841 [-0.8035, -0.1932]         0.9
+Hedges's g(av)  -0.4912 0.1869 [-0.7931, -0.1872]         0.9
+Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").</code></pre>
+</div>
+</div>
+<p>The output reports:</p>
+<ul>
+<li>The observed group difference (empathy in the neutral group minus empathy in the violent group).</li>
+<li>The two one-sided tests, each with its own t-statistic, df, and p-value.</li>
+<li>A decision: equivalent? rejected? inconclusive?</li>
+<li>A 90% confidence interval on the difference (since TOST at <span class="math inline">\(\alpha = .05\)</span> corresponds to the 90% CI rule).</li>
+</ul>
+<p>The standard reporting rule is straightforward: if <strong>both</strong> one-sided p-values are below your <span class="math inline">\(\alpha\)</span>, declare equivalence. If neither is, you do not have evidence of equivalence (but you also do not have evidence against equivalence; you just have an inconclusive result). If one is below alpha and the other is not, your CI partially overlaps the bound, and again the result is inconclusive in the strict TOST sense.</p>
+<p>A small variant of the function call uses Cohen’s <em>d</em> as the SESOI metric, which is convenient when the original scale is hard to interpret:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t_TOST</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> empathy <span class="sc">~</span> condition,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">hypothesis =</span> <span class="st">"EQU"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">eqb =</span> <span class="fl">0.4</span>,                <span class="co"># SESOI = 0.4 standardized units</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">eqbound_type =</span> <span class="st">"SMD"</span>,     <span class="co"># standardized mean difference</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.05</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="how-to-choose-the-sesoi-for-an-equivalence-test" class="level3" data-number="24.7.4">
+<h3 data-number="24.7.4" class="anchored" data-anchor-id="how-to-choose-the-sesoi-for-an-equivalence-test"><span class="header-section-number">24.7.4</span> How to choose the SESOI for an equivalence test</h3>
+<p>The same logic from the earlier section applies, but the choice is now central rather than incidental. Anvari and Lakens (2021) discuss in detail how to justify a SESOI for psychology research; their summary is that the choice should be driven by <em>what would change a decision</em>, not by convention. For empathy on a 1-7 scale, a half-point difference is roughly half a response-category unit, which most researchers would treat as a meaningful shift. For aggression on a 1-10 scale, a SESOI of 0.5 to 1.0 is plausible. For a clinical outcome where 1 point on a depression scale corresponds to a measurable improvement in functioning, the SESOI would be even smaller. None of this is arbitrary; the SESOI is a declared, defensible value, chosen before data collection, that the equivalence test then uses as its target.</p>
+</section>
+<section id="equivalence-testing-combined-with-the-standard-test" class="level3" data-number="24.7.5">
+<h3 data-number="24.7.5" class="anchored" data-anchor-id="equivalence-testing-combined-with-the-standard-test"><span class="header-section-number">24.7.5</span> Equivalence testing combined with the standard test</h3>
+<p>A common (and recommended) practice in modern psychology methodology is to run <strong>both</strong> a standard test and an equivalence test on the same data. The two tests together address two questions:</p>
+<ul>
+<li>The standard test asks “is there evidence of any effect?”</li>
+<li>The equivalence test asks “is there evidence that the effect is too small to matter?”</li>
+</ul>
+<p>Four combinations are possible:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 36%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Standard test</th>
+<th>Equivalence test</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Significant</td>
+<td>Equivalent</td>
+<td>Effect detected, but smaller than the SESOI; statistically present but practically negligible.</td>
+</tr>
+<tr class="even">
+<td>Significant</td>
+<td>Not equivalent</td>
+<td>Effect detected and large enough to matter (the standard case for a “meaningful” finding).</td>
+</tr>
+<tr class="odd">
+<td>Not significant</td>
+<td>Equivalent</td>
+<td>No detectable effect, and the data are consistent with effects too small to matter (a positive null result).</td>
+</tr>
+<tr class="even">
+<td>Not significant</td>
+<td>Not equivalent</td>
+<td>Inconclusive: we have neither detected an effect nor ruled out a meaningful one.</td>
+</tr>
+</tbody>
+</table>
+<p>Lakens (2017) argues that the bottom-left cell, “non-significant + equivalent,” is the appropriate way to communicate a positive null finding, and the bottom-right cell, “not significant + not equivalent,” is the result that most often gets mistakenly written up as “no effect” when it is actually inconclusive. The discipline of running both tests together prevents that confusion.</p>
+<p>For more on equivalence testing, including extensions to correlations, ANOVA, and meta-analysis, Lakens (2017) is the most accessible primer, and Lakens (2022) Chapter 9 is a comprehensive treatment.</p>
+</section>
 </section>
 <section id="power-analysis-in-practice-the-pwr-package" class="level2" data-number="24.8">
 <h2 data-number="24.8" class="anchored" data-anchor-id="power-analysis-in-practice-the-pwr-package"><span class="header-section-number">24.8</span> Power analysis in practice: the <code>pwr</code> package</h2>
 <p>For the kinds of analyses you will run in psychology research, the <code>pwr</code> package in R is a sufficient tool. Common entry points:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pwr)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># t-test</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.t.test</span>(<span class="at">d =</span> <span class="fl">0.5</span>, <span class="at">sig.level =</span> .<span class="dv">05</span>, <span class="at">power =</span> .<span class="dv">80</span>, <span class="at">type =</span> <span class="st">"two.sample"</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># correlation</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.r.test</span>(<span class="at">r =</span> <span class="fl">0.3</span>, <span class="at">sig.level =</span> .<span class="dv">05</span>, <span class="at">power =</span> .<span class="dv">80</span>)</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># one-way ANOVA</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.anova.test</span>(<span class="at">k =</span> <span class="dv">3</span>, <span class="at">f =</span> <span class="fl">0.25</span>, <span class="at">sig.level =</span> .<span class="dv">05</span>, <span class="at">power =</span> .<span class="dv">80</span>)</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co"># chi-squared</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.chisq.test</span>(<span class="at">w =</span> <span class="fl">0.3</span>, <span class="at">df =</span> <span class="dv">4</span>, <span class="at">sig.level =</span> .<span class="dv">05</span>, <span class="at">power =</span> .<span class="dv">80</span>)</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co"># multiple regression</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.f2.test</span>(<span class="at">u =</span> <span class="dv">3</span>, <span class="at">f2 =</span> <span class="fl">0.10</span>, <span class="at">sig.level =</span> .<span class="dv">05</span>, <span class="at">power =</span> .<span class="dv">80</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pwr)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># t-test</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.t.test</span>(<span class="at">d =</span> <span class="fl">0.5</span>, <span class="at">sig.level =</span> .<span class="dv">05</span>, <span class="at">power =</span> .<span class="dv">80</span>, <span class="at">type =</span> <span class="st">"two.sample"</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># correlation</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.r.test</span>(<span class="at">r =</span> <span class="fl">0.3</span>, <span class="at">sig.level =</span> .<span class="dv">05</span>, <span class="at">power =</span> .<span class="dv">80</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># one-way ANOVA</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.anova.test</span>(<span class="at">k =</span> <span class="dv">3</span>, <span class="at">f =</span> <span class="fl">0.25</span>, <span class="at">sig.level =</span> .<span class="dv">05</span>, <span class="at">power =</span> .<span class="dv">80</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co"># chi-squared</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.chisq.test</span>(<span class="at">w =</span> <span class="fl">0.3</span>, <span class="at">df =</span> <span class="dv">4</span>, <span class="at">sig.level =</span> .<span class="dv">05</span>, <span class="at">power =</span> .<span class="dv">80</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co"># multiple regression</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.f2.test</span>(<span class="at">u =</span> <span class="dv">3</span>, <span class="at">f2 =</span> <span class="fl">0.10</span>, <span class="at">sig.level =</span> .<span class="dv">05</span>, <span class="at">power =</span> .<span class="dv">80</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Each of these takes three of the four quantities (effect size, α, power, n) and returns the fourth. The effect size argument is parameterized in the conventional metric for each test (Cohen’s d for t-tests, r for correlations, f for ANOVA, w for chi-squared, f² for multiple regression). The principle is identical across tests.</p>
 <p>For more elaborate designs (multilevel models, mixed designs, structural equation models) the <code>simr</code> package and Monte Carlo simulation are the standard tools. They are beyond the scope of this chapter, but the workflow is the same: specify the design, specify the smallest effect you would care about, simulate many data sets, and count how often the procedure correctly rejects.</p>
@@ -784,9 +952,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We now have all the pieces to describe the version of Neyman-Pearson hypothesis testing that Lakens, Cohen, and several generations of methodologists have advocated. It is more disciplined than the casual hybrid most researchers use, but it pays off in interpretability.</p>
 <ol type="1">
 <li><strong>Pre-specify the test.</strong> Decide before data collection: what hypothesis, what statistic, what α, what test (one-tailed or two), what exclusion rules.</li>
-<li><strong>Anchor n to SESOI.</strong> Choose the smallest effect size that would matter, and compute the required sample size from a power analysis.</li>
+<li><strong>Anchor n to the SESOI.</strong> Choose the smallest effect size that would matter, and compute the required sample size from a power analysis.</li>
 <li><strong>Run the test once.</strong> No peeking, no optional stopping, no swapping the analysis after seeing the data.</li>
-<li><strong>Report the result.</strong> Statistical significance is one piece. Whether the observed effect is larger or smaller than SESOI is another. Confidence intervals make both visible.</li>
+<li><strong>Report the result.</strong> Statistical significance is one piece. Whether the observed effect is larger or smaller than the SESOI is another. Confidence intervals make both visible.</li>
 <li><strong>Accept the long-run error rates.</strong> Your individual decision might be wrong. The procedure is calibrated, not infallible. The calibration is the point.</li>
 </ol>
 <p>This is what Neyman-Pearson originally proposed. It requires more commitment up-front than the hybrid most researchers use, but it produces decisions that are honestly calibrated and that connect to real-world consequences.</p>
@@ -819,15 +987,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><strong>6. What is the problem with a claim like “my study has 80% power” when no effect size is named?</strong></p>
 <div id="radio_SIPVPRQQHY" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_SIPVPRQQHY" value=""> <span>Without SESOI the conventional rule of thumb at d = 0.5 still applies, so any claim of 80% power can be interpreted as referring to that medium effect size by default.</span></label><label><input type="radio" autocomplete="off" name="radio_SIPVPRQQHY" value="answer"> <span>Without SESOI the claim does not specify which effect size the power refers to, and two researchers can both say 80% power while one means d = 0.1 and the other means d = 1.0, two designs with completely different implications.</span></label><label><input type="radio" autocomplete="off" name="radio_SIPVPRQQHY" value=""> <span>Without SESOI any computed power is purely speculative and cannot be used in any formal way to determine the sample size required for the planned hypothesis test.</span></label><label><input type="radio" autocomplete="off" name="radio_SIPVPRQQHY" value=""> <span>Without SESOI the claim still has a precise meaning because the long-run false-positive rate alpha is fixed and the procedure remains calibrated regardless of the effect size.</span></label>
+<label><input type="radio" autocomplete="off" name="radio_SIPVPRQQHY" value=""> <span>Without the SESOI the conventional rule of thumb at d = 0.5 still applies, so any claim of 80% power can be interpreted as referring to that medium effect size by default.</span></label><label><input type="radio" autocomplete="off" name="radio_SIPVPRQQHY" value="answer"> <span>Without the SESOI the claim does not specify which effect size the power refers to, and two researchers can both say 80% power while one means d = 0.1 and the other means d = 1.0, two designs with completely different implications.</span></label><label><input type="radio" autocomplete="off" name="radio_SIPVPRQQHY" value=""> <span>Without the SESOI any computed power is purely speculative and cannot be used in any formal way to determine the sample size required for the planned hypothesis test.</span></label><label><input type="radio" autocomplete="off" name="radio_SIPVPRQQHY" value=""> <span>Without the SESOI the claim still has a precise meaning because the long-run false-positive rate alpha is fixed and the procedure remains calibrated regardless of the effect size.</span></label>
 </div>
-<p><strong>7. A study designed with 80% power to detect SESOI = 0.2 finds p = .002 with an observed effect of d = 0.05. How should this be interpreted?</strong></p>
+<p><strong>7. A study designed with 80% power to detect a SESOI of 0.2 finds p = .002 with an observed effect of d = 0.05. How should this be interpreted?</strong></p>
 <div id="radio_FXRPDXQEBO" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_FXRPDXQEBO" value=""> <span>Statistical significance with a tiny effect is always strong evidence that the effect is real in the population, because a small effect with a small p-value indicates a precise estimate of a real difference.</span></label><label><input type="radio" autocomplete="off" name="radio_FXRPDXQEBO" value=""> <span>The effect being smaller than SESOI is irrelevant for the interpretation of the result, since SESOI plays no role once the test has already been run and the p-value has been computed and reported.</span></label><label><input type="radio" autocomplete="off" name="radio_FXRPDXQEBO" value="answer"> <span>The effect is statistically detectable but practically negligible; statistical significance does not rescue practical irrelevance, and the appropriate interpretation is that there may be a real effect but one too small to change any decision based on the study.</span></label><label><input type="radio" autocomplete="off" name="radio_FXRPDXQEBO" value=""> <span>The result is uninterpretable because a small effect with a small p-value indicates a violation of the assumptions of the t-test or of the regression model used to compute the test statistic.</span></label>
+<label><input type="radio" autocomplete="off" name="radio_FXRPDXQEBO" value=""> <span>Statistical significance with a tiny effect is always strong evidence that the effect is real in the population, because a small effect with a small p-value indicates a precise estimate of a real difference.</span></label><label><input type="radio" autocomplete="off" name="radio_FXRPDXQEBO" value=""> <span>The effect being smaller than the SESOI is irrelevant for the interpretation of the result, since the SESOI plays no role once the test has already been run and the p-value has been computed and reported.</span></label><label><input type="radio" autocomplete="off" name="radio_FXRPDXQEBO" value="answer"> <span>The effect is statistically detectable but practically negligible; statistical significance does not rescue practical irrelevance, and the appropriate interpretation is that there may be a real effect but one too small to change any decision based on the study.</span></label><label><input type="radio" autocomplete="off" name="radio_FXRPDXQEBO" value=""> <span>The result is uninterpretable because a small effect with a small p-value indicates a violation of the assumptions of the t-test or of the regression model used to compute the test statistic.</span></label>
 </div>
 <p><strong>8. What does equivalence testing do, and why is it useful?</strong></p>
 <div id="radio_EPVKIVXWHO" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_EPVKIVXWHO" value=""> <span>Equivalence testing computes a Bayesian posterior probability that the null hypothesis is exactly true, given the observed data and a prior centered at zero with variance equal to SESOI squared.</span></label><label><input type="radio" autocomplete="off" name="radio_EPVKIVXWHO" value=""> <span>Equivalence testing changes the alpha threshold of the standard hypothesis test to 0.5 so that the null hypothesis is rejected less often, producing claims of equivalence from non-significant results.</span></label><label><input type="radio" autocomplete="off" name="radio_EPVKIVXWHO" value="answer"> <span>Equivalence testing reframes the question as 'is the effect smaller than SESOI?' rather than 'is the effect different from zero?' and uses two one-sided tests against the SESOI bounds; rejecting both supports a positive claim of practical equivalence.</span></label><label><input type="radio" autocomplete="off" name="radio_EPVKIVXWHO" value=""> <span>Equivalence testing computes the same p-value as a standard hypothesis test but interprets a non-significant result as a positive demonstration that the population effect is exactly equal to zero.</span></label>
+<label><input type="radio" autocomplete="off" name="radio_EPVKIVXWHO" value=""> <span>Equivalence testing computes a Bayesian posterior probability that the null hypothesis is exactly true, given the observed data and a prior centered at zero with variance equal to the SESOI squared.</span></label><label><input type="radio" autocomplete="off" name="radio_EPVKIVXWHO" value=""> <span>Equivalence testing changes the alpha threshold of the standard hypothesis test to 0.5 so that the null hypothesis is rejected less often, producing claims of equivalence from non-significant results.</span></label><label><input type="radio" autocomplete="off" name="radio_EPVKIVXWHO" value="answer"> <span>Equivalence testing reframes the question as 'is the effect smaller than the SESOI?' rather than 'is the effect different from zero?' and uses two one-sided tests against the SESOI bounds; rejecting both supports a positive claim of practical equivalence.</span></label><label><input type="radio" autocomplete="off" name="radio_EPVKIVXWHO" value=""> <span>Equivalence testing computes the same p-value as a standard hypothesis test but interprets a non-significant result as a positive demonstration that the population effect is exactly equal to zero.</span></label>
 </div>
 <p><strong>9. How does the <code>pwr</code> package in R perform power analysis?</strong></p>
 <div id="radio_TLFUCLHHWH" class="webex-radiogroup">
@@ -835,11 +1003,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><strong>10. What does “serious” frequentist practice (in the Neyman-Pearson sense, as developed by Lakens and others) look like?</strong></p>
 <div id="radio_BBZMJPIGQO" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_BBZMJPIGQO" value=""> <span>The serious frequentist practice begins with the data and adapts the procedure to whatever the data look like, with the goal of maximizing the apparent statistical significance of the most interesting finding.</span></label><label><input type="radio" autocomplete="off" name="radio_BBZMJPIGQO" value="answer"> <span>The serious frequentist practice pre-specifies the procedure (test, alpha, design, exclusion rules), anchors the sample size to SESOI, runs the test once as specified, reports the result honestly, and accepts the calibrated long-run error rates as the basis for the inference.</span></label><label><input type="radio" autocomplete="off" name="radio_BBZMJPIGQO" value=""> <span>The serious frequentist practice never reports a p-value; instead it relies entirely on Bayes factors and posterior probabilities to communicate the evidence in favor of each hypothesis under consideration.</span></label><label><input type="radio" autocomplete="off" name="radio_BBZMJPIGQO" value=""> <span>The serious frequentist practice runs many candidate tests on the data and reports only the smallest p-value, while applying Bonferroni correction to keep the family-wise error rate at a conventional level.</span></label>
+<label><input type="radio" autocomplete="off" name="radio_BBZMJPIGQO" value=""> <span>The serious frequentist practice begins with the data and adapts the procedure to whatever the data look like, with the goal of maximizing the apparent statistical significance of the most interesting finding.</span></label><label><input type="radio" autocomplete="off" name="radio_BBZMJPIGQO" value="answer"> <span>The serious frequentist practice pre-specifies the procedure (test, alpha, design, exclusion rules), anchors the sample size to the SESOI, runs the test once as specified, reports the result honestly, and accepts the calibrated long-run error rates as the basis for the inference.</span></label><label><input type="radio" autocomplete="off" name="radio_BBZMJPIGQO" value=""> <span>The serious frequentist practice never reports a p-value; instead it relies entirely on Bayes factors and posterior probabilities to communicate the evidence in favor of each hypothesis under consideration.</span></label><label><input type="radio" autocomplete="off" name="radio_BBZMJPIGQO" value=""> <span>The serious frequentist practice runs many candidate tests on the data and reports only the smallest p-value, while applying Bonferroni correction to keep the family-wise error rate at a conventional level.</span></label>
 </div>
 </section>
 <section id="references" class="level2" data-number="24.12">
 <h2 data-number="24.12" class="anchored" data-anchor-id="references"><span class="header-section-number">24.12</span> References</h2>
+<p>Anvari, F., &amp; Lakens, D. (2021). Using anchor-based methods to determine the smallest effect size of interest. <em>Journal of Experimental Social Psychology</em>, 96, 104159. <a href="https://doi.org/10.1016/j.jesp.2021.104159" class="uri">https://doi.org/10.1016/j.jesp.2021.104159</a></p>
 <p>Lakens, D. (2017). Equivalence tests: A practical primer for t-tests, correlations, and meta-analyses. <em>Social Psychological and Personality Science</em>, 8(4), 355-362. <a href="https://doi.org/10.1177/1948550617697177" class="uri">https://doi.org/10.1177/1948550617697177</a></p>
 <p>Lakens, D. (2022). <em>Improving your statistical inferences</em>. Chapter 2, “Error control.” <a href="https://lakens.github.io/statistical_inferences/02-errorcontrol.html" class="uri">https://lakens.github.io/statistical_inferences/02-errorcontrol.html</a></p>
 <p>Navarro, D. J. (2018). <em>Learning statistics with R: A tutorial for psychology students and other beginners</em> (Version 0.6), Chapter 11.8 (“Effect size, sample size and power”). <a href="https://learningstatisticswithr.com" class="uri">https://learningstatisticswithr.com</a></p>

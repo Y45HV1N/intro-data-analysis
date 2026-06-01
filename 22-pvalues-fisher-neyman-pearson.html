@@ -471,7 +471,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./24-decisions-errors-power-sesoi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and SESOI</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and the SESOI</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -580,8 +580,9 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>There is no automatic decision rule.</strong> Fisher famously refused to say “always reject if p &lt; .05.” He treated the p-value as evidence to be combined with judgment, prior knowledge, and other studies. The famous α = .05 threshold is, in Fisher’s writing, a casually suggested convention, not a law.</p>
 <p><strong>It is a tool for the individual study.</strong> The p-value is computed for one study, and tells you something about that study’s evidence against the null. Fisher did not frame statistics around long-run error rates; he framed it around appraising a single body of evidence at a time.</p>
 <blockquote class="blockquote">
-<p><strong>Fisher’s analogy.</strong> Imagine someone shuffles a deck of cards and deals you a perfect royal flush. It is not impossible; a royal flush can happen in a fair shuffle. But it is very unlikely. The probability of that deal, under the assumption that the deck is fair, is very small. If you got that hand, you might reasonably start to suspect that the deck was not fairly shuffled. The p-value is like the probability of that deal. A very small probability under H₀ should make you reluctant to keep believing H₀. (Lakens, 2022, Chapter 1, describes this same intuition in some detail.)</p>
+<p><strong>Fisher’s analogy.</strong> Imagine someone shuffles a deck of cards and deals you a perfect royal flush. It is not impossible; a royal flush can happen in a fair shuffle. But it is very unlikely. The probability of that deal, under the assumption that the deck is fair, is very small. If you got that hand, you might reasonably start to suspect that the deck was not fairly shuffled. The p-value is like the probability of that deal. A very small probability under H₀ should make you reluctant to keep believing H₀.</p>
 </blockquote>
+<p>Fisher himself, writing in 1956, described p-values not as probability claims about the world but as “a rational and well-defined measure of reluctance to the acceptance of the hypotheses they test” (quoted in Lakens, 2022, Chapter 1). The lower the p-value, the greater that reluctance. Crucially, there is no formal threshold at which reluctance becomes rejection: Fisher’s p-value is a measure, not a decision rule. Lakens (2022) calls this view <strong>significance testing</strong>, in contrast to the <em>hypothesis testing</em> of Neyman and Pearson that we develop next. The two terms are often used interchangeably in textbooks, but they refer to importantly different conceptions of what statistical testing is for.</p>
 <p>This is the Fisher view in one line: <strong>the p-value is a continuous measure of how surprising the data are under the null hypothesis</strong>.</p>
 </section>
 <section id="neyman-and-pearsons-approach-a-decision-procedure-with-calibrated-error-rates" class="level2" data-number="22.4">
@@ -605,6 +606,7 @@ ul.task-list li input[type="checkbox"] {
 <blockquote class="blockquote">
 <p><strong>Neyman’s analogy.</strong> Picture a quality-control inspector on an assembly line. They examine items, decide “accept” or “reject,” and move on. Occasionally they accept a defective item (Type II error); occasionally they reject a good item (Type I error). They cannot eliminate errors. What they can do is design the inspection procedure so that its long-run error rates are acceptable: at most 5% bad items pass, at most 10% good items get rejected, or whatever is required. No single inspection proves anything; the procedure works because it is right most of the time.</p>
 </blockquote>
+<p>The philosopher Zoltan Dienes summarizes the situation bluntly: the Neyman-Pearson framework, despite often being mistaken for Fisher’s, is, as he puts it, “the logic underlying all the statistics you see in the professional journals of psychology” (Dienes, 2008, quoted in Lakens 2022). When you see “p &lt; .05” reported in a journal article, the calibration claim attached to that number, even if implicitly, is the Neyman-Pearson long-run-rate claim, not Fisher’s measure-of-evidence claim. The two are routinely conflated, but the actual reporting conventions of psychology come from Neyman and Pearson.</p>
 <section id="the-two-dimensions-of-the-neyman-pearson-framework" class="level3" data-number="22.4.1">
 <h3 data-number="22.4.1" class="anchored" data-anchor-id="the-two-dimensions-of-the-neyman-pearson-framework"><span class="header-section-number">22.4.1</span> The two dimensions of the Neyman-Pearson framework</h3>
 <p>A subtle and important point that gets lost in many textbooks. The Neyman-Pearson framework is not really one thing; it is two things, sitting on top of each other, that need to be distinguished carefully.</p>
@@ -612,16 +614,43 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Dimension 2: the qualitative judgment of a predicted claim.</strong> Before you run the test, you have a hypothesis derived from some rationale: a theory, a literature, a piece of mechanism. The alternative hypothesis is the formal expression of that rationale. After the test, the decision (reject or not) maps onto whether the predicted claim is <em>corroborated</em>, <em>refuted</em>, or <em>inconclusive</em>. This second dimension is not statistical; it is epistemic. It is about whether a substantive claim about the world stood up to a test.</p>
 <p>A study that runs through the Neyman-Pearson framework “correctly” uses both dimensions at once. There is a calibrated procedure (Dimension 1) and there is a predicted claim derived from a rationale (Dimension 2). When the test is run, you simultaneously make a calibrated decision and learn something epistemic about the claim.</p>
 <p>These two dimensions can come apart, and this fact will matter a great deal in this chapter and the next.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="22-pvalues-fisher-neyman-pearson_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="720"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>We will see in a few sections that the existence of these two dimensions explains a lot of the controversy around exploratory research, “p-hacking,” and pre-registration, all of which become subtle once you see that statistical procedures can satisfy Dimension 1 without saying anything about Dimension 2.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 32%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dimension</th>
+<th>What it is</th>
+<th>What it promises</th>
+<th>Type of claim</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Quantitative</strong></td>
+<td>A calibrated procedure with controlled long-run error rates</td>
+<td>If you run <em>this</em> procedure many times, you reject H₀ falsely about α of the time</td>
+<td>Mathematical / statistical</td>
+</tr>
+<tr class="even">
+<td><strong>Qualitative</strong></td>
+<td>A predicted claim from a rationale, corroborated or refuted by the result</td>
+<td>If the prediction holds up despite adequate power to detect failure, it is corroborated; if it fails, it is refuted</td>
+<td>Epistemic / about the world</td>
+</tr>
+</tbody>
+</table>
+<p>It is worth emphasizing that these two dimensions are <em>separable</em>. A study can satisfy Dimension 1 without engaging Dimension 2 at all (an exploratory test with no pre-specified prediction). Conversely, a study can have a beautifully precise predicted claim (Dimension 2) but break Dimension 1 by running the test on data that was already used to formulate the prediction. The four combinations of “satisfied or not” on each dimension generate four kinds of study, and recognizing which kind a given paper actually is, is the central interpretive task when reading research.</p>
+<p>To make the framework concrete, consider these four scenarios.</p>
+<p><strong>Scenario A: confirmatory study.</strong> A researcher derives the prediction “violent video games increase aggression” from a theory of priming and desensitization. They commit before data collection to a single test (a two-sample t-test of aggression in violent vs neutral condition), an α level (.05), and a sample size justified by a power analysis. They run the experiment once. The result corroborates or refutes the predicted claim with calibrated error rates. Both dimensions are present and satisfied. This is the case the Neyman-Pearson framework was designed for.</p>
+<p><strong>Scenario B: exploratory study with a single test.</strong> A researcher receives a new dataset and runs a single test of “violent gaming vs aggression,” without a pre-specified prediction. The procedure is calibrated (the test is run as specified, no peeking, only one test). Dimension 1 is satisfied: the p-value has the meaning its formula claims, and the long-run false-positive rate is α. But there is no Dimension 2: no predicted claim was at stake, so the result is a <em>discovery</em>, an observation about this sample, not a confirmation of anything. This is fine if labeled honestly. The reader takes the result as suggestive and would want a separate confirmatory study to support it.</p>
+<p><strong>Scenario C: exploratory study with many tests, reported as one.</strong> A researcher runs twenty different tests on the dataset (different outcomes, different subgroups, different exclusion rules) and reports only the one with the smallest p-value, framed as if it had been the only test. Both dimensions are now broken. Dimension 1 is broken because the actual false-positive rate of the procedure is much higher than the reported α (we will derive how much higher in Chapter 25). Dimension 2 is broken because the reported “predicted claim” was not predicted at all; it was selected after seeing the data. This is the problematic case, and it is what most modern methodological work targets.</p>
+<p><strong>Scenario D: theoretically motivated study without calibration.</strong> A researcher has a clear predicted claim from theory (Dimension 2 present), but they peek at the data multiple times during collection, adjust the analysis based on what they see, or change the test after observing the result. Dimension 2 has not been violated in spirit, but Dimension 1 has been: the procedure was not run as specified, so the reported p-value does not have its calibrated meaning. The substantive claim might still be true; the <em>statistical</em> basis for believing it has been weakened.</p>
+<p>The exercise of placing real studies into these four scenarios is one of the most useful things you can do as a critical reader of research. Scenarios A and B are both legitimate (when labeled honestly). Scenarios C and D are the failure modes that drive most of the methodological controversies in psychology, and we will return to them in Chapter 25.</p>
 </section>
 </section>
 <section id="the-hybrid-psychology-uses-and-what-it-gets-wrong" class="level2" data-number="22.5">
@@ -652,7 +681,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="22-pvalues-fisher-neyman-pearson_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="22-pvalues-fisher-neyman-pearson_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -715,8 +744,18 @@ ul.task-list li input[type="checkbox"] {
 <section id="where-hypotheses-come-from" class="level3" data-number="22.8.4">
 <h3 data-number="22.8.4" class="anchored" data-anchor-id="where-hypotheses-come-from"><span class="header-section-number">22.8.4</span> Where hypotheses come from</h3>
 <p>A natural question follows: if confirmatory analysis requires a predicted claim derived from a rationale, how do those predicted claims get made in the first place? They have to come from somewhere. The standard answer is theory; the realistic answer is theory plus prior data plus reasoning.</p>
-<p>Mesquida, Warne, and Lakens (2025) develop this point in detail in a sport-science context. They argue that many hypothesis tests in their field, as in psychology, fail to test the hypothesis the authors think they are testing because the predicted claim is not specified precisely enough. They identify five common misalignments between the stated hypothesis and the actual statistical test, and they propose the <strong>PICO framework</strong> (Population, Intervention, Comparator, Outcome) as a tool for stating hypotheses with enough precision that the corresponding test can be derived unambiguously. Though the paper appears in a sport-science venue, Lakens is a psychology methodologist; the issues they document are the same ones that affect psychology and behavioral research more broadly.</p>
-<p>The lesson for our purposes: hypotheses do not arrive ready-made for testing. Turning a theoretical idea into a statistical hypothesis takes care, and that care is the substance of what makes a study confirmatory rather than just calibrated. We will return to this in Chapter 25, when we discuss pre-registration as the technology for committing to a predicted claim before data collection.</p>
+<p>Mesquida, Warne, and Lakens (2025), in their paper <em>What is your hypothesis?</em>, develop this point in detail. They start from a striking observation: a great many published hypothesis tests do not, on close inspection, actually test the hypothesis the authors think they are testing. They identify five common <strong>misalignments</strong> between the stated hypothesis and the actual statistical procedure. Three of these misalignments produce situations where the stated hypothesis is in fact never tested at all (it is replaced by a different, weaker hypothesis); the other two inflate Type I and Type II errors above their stated rates. The result, in either case, is a paper that <em>appears</em> to deliver a calibrated decision about a substantive claim while actually doing something else.</p>
+<p>The remedy they propose, drawing on a tradition from evidence-based medicine, is the <strong>PICO</strong> framework: a structured way to specify a hypothesis with enough precision that the corresponding statistical test can be derived unambiguously. PICO stands for:</p>
+<ul>
+<li><strong>P</strong>opulation: who are the participants?</li>
+<li><strong>I</strong>ntervention or condition: what is being manipulated or measured?</li>
+<li><strong>C</strong>omparator: against what comparison group or baseline?</li>
+<li><strong>O</strong>utcome: what variable is measured, and on what scale?</li>
+</ul>
+<p>A hypothesis stated in PICO form is concrete enough that there is one and only one statistical test that follows from it. Vague claims like “violent video games affect aggression” can be turned, via PICO, into precise testable hypotheses such as: <em>in the population of 18-25 year-old gamers (P), playing a violent shooter for 30 minutes (I) compared to playing a non-violent puzzle game for 30 minutes (C) leads to a difference of at least 0.5 points in self-reported aggression on a 1-10 scale (O).</em></p>
+<p>The Mesquida-Warne-Lakens paper is published in a sport-science venue (<em>SportRxiv</em>), but Daniel Lakens is a psychology methodologist at Eindhoven, and the misalignments they document are exactly the ones that show up in psychology. The PICO framework is equally applicable to psychological research. The paper is freely available and the example dissections of common misaligned hypotheses are worth reading.</p>
+<p>The lesson for our purposes is twofold. First, hypotheses do not arrive ready-made for testing; turning a theoretical idea into a statistical hypothesis requires deliberate specification, and the absence of that specification is a major source of methodological problems. Second, the <em>act</em> of specifying a hypothesis in PICO form, before data collection, is itself a substantial discipline that protects the qualitative dimension (Dimension 2) of the Neyman-Pearson framework. We return to this in Chapter 25 when we discuss pre-registration.</p>
+<p>In the older literature, this idea has been expressed in slightly different language. Lakens (2022, Chapter 1), drawing on the philosopher Carl Hempel (1966), describes confirmatory studies as relying on <strong>auxiliary hypotheses</strong>: the additional assumptions that must be true in order for the test to actually test the substantive claim. A study testing whether intergroup contact reduces prejudice has, as auxiliary hypotheses, that the contact-manipulation actually produced contact, that the prejudice measure actually measured prejudice, that participants were not aware of the experimental hypothesis, and so on. If any of these auxiliary hypotheses fails, the test does not test what we wanted it to test, regardless of the p-value. Pre-specifying a hypothesis in PICO form is one way to make these auxiliary commitments explicit and inspectable.</p>
 </section>
 </section>
 <section id="looking-ahead" class="level2" data-number="22.9">
@@ -769,6 +808,9 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="references" class="level2" data-number="22.11">
 <h2 data-number="22.11" class="anchored" data-anchor-id="references"><span class="header-section-number">22.11</span> References</h2>
+<p>Dienes, Z. (2008). <em>Understanding psychology as a science: An introduction to scientific and statistical inference</em>. Palgrave Macmillan.</p>
+<p>Fisher, R. A. (1956). <em>Statistical methods and scientific inference</em>. Oliver and Boyd.</p>
+<p>Hempel, C. G. (1966). <em>Philosophy of natural science</em>. Prentice-Hall.</p>
 <p>Lakens, D. (2022). <em>Improving your statistical inferences</em>. Chapter 1, “Using p-values to test a hypothesis.” <a href="https://lakens.github.io/statistical_inferences/01-pvalue.html" class="uri">https://lakens.github.io/statistical_inferences/01-pvalue.html</a></p>
 <p>Mesquida, C., Warne, J., &amp; Lakens, D. (2025). What is your hypothesis? On the importance of knowing your hypothesis before conducting a hypothesis test. <em>SportRxiv</em>. <a href="https://doi.org/10.51224/SRXIV.577" class="uri">https://doi.org/10.51224/SRXIV.577</a></p>
 <p>Murphy, S. L., Merz, R., Reimann, L.-E., &amp; Fernández, A. (2025). Nonsignificance misinterpreted as an effect’s absence in psychology: Prevalence and temporal analyses. <em>Royal Society Open Science</em>, 12(3), 242167.</p>

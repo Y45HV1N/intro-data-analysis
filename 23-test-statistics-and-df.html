@@ -535,7 +535,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./24-decisions-errors-power-sesoi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and SESOI</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and the SESOI</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -557,7 +557,7 @@ window.Quarto = {
    
   <ul>
   <li><a href="#where-we-are" id="toc-where-we-are" class="nav-link active" data-scroll-target="#where-we-are"><span class="header-section-number">23.1</span> Where we are</a></li>
-  <li><a href="#a-motivating-example-did-hannahs-bakery-shortchange-us" id="toc-a-motivating-example-did-hannahs-bakery-shortchange-us" class="nav-link" data-scroll-target="#a-motivating-example-did-hannahs-bakery-shortchange-us"><span class="header-section-number">23.2</span> A motivating example: did Hannah’s bakery shortchange us?</a></li>
+  <li><a href="#a-motivating-example-did-hannahs-bakery-shortchange-us" id="toc-a-motivating-example-did-hannahs-bakery-shortchange-us" class="nav-link" data-scroll-target="#a-motivating-example-did-hannahs-bakery-shortchange-us"><span class="header-section-number">23.2</span> A motivating example: did Hannah’s Bakery shortchange us?</a></li>
   <li><a href="#the-test-statistic-distance-from-the-null-in-standard-error-units" id="toc-the-test-statistic-distance-from-the-null-in-standard-error-units" class="nav-link" data-scroll-target="#the-test-statistic-distance-from-the-null-in-standard-error-units"><span class="header-section-number">23.3</span> The test statistic: distance from the null, in standard-error units</a></li>
   <li><a href="#three-reference-distributions-z-t-f" id="toc-three-reference-distributions-z-t-f" class="nav-link" data-scroll-target="#three-reference-distributions-z-t-f"><span class="header-section-number">23.4</span> Three reference distributions: z, t, F</a>
   <ul class="collapse">
@@ -610,13 +610,13 @@ window.Quarto = {
 <p>By the end of the chapter you will be able to read the “t value,” “Pr(&gt;|t|),” and the F-statistic at the bottom of <code>summary(lm(...))</code>. The mystery of the inferential machinery will turn out to be a smaller mystery than it first looks.</p>
 </section>
 <section id="a-motivating-example-did-hannahs-bakery-shortchange-us" class="level2" data-number="23.2">
-<h2 data-number="23.2" class="anchored" data-anchor-id="a-motivating-example-did-hannahs-bakery-shortchange-us"><span class="header-section-number">23.2</span> A motivating example: did Hannah’s bakery shortchange us?</h2>
-<p>We borrow a small story (used in many statistics textbooks, including Lakens 2022) to make the ideas concrete.</p>
-<p>Imagine a bakery called Hannah’s that advertises 100-gram brownies. You are suspicious that Hannah’s brownies are systematically lighter than advertised. To check, you buy 25 brownies over a few weeks, weigh each one at home, and find an average of 95 grams across your 25 brownies. You also compute the sample standard deviation: 8 grams.</p>
+<h2 data-number="23.2" class="anchored" data-anchor-id="a-motivating-example-did-hannahs-bakery-shortchange-us"><span class="header-section-number">23.2</span> A motivating example: did Hannah’s Bakery shortchange us?</h2>
+<p>We borrow a small story to make the ideas concrete.</p>
+<p>Imagine a place called Hannah’s Bakery that advertises 100-gram scones. You are suspicious that Hannah’s scones are systematically lighter than advertised. To check, you buy 25 scones over a few weeks, weigh each one at home, and find an average of 95 grams across your 25 scones. You also compute the sample standard deviation: 8 grams.</p>
 <p>The question is essentially the same one that motivates every test in this book. Is 95 grams <em>suspicious</em> given that Hannah claims 100? Or is 95 a result we could easily get by chance because of sampling variability, even if Hannah’s true mean is really 100?</p>
 <p>To answer this, we need three things:</p>
 <ol type="1">
-<li>A null hypothesis. We will entertain Hannah’s claim: H₀ says the population mean weight of Hannah’s brownies is exactly 100.</li>
+<li>A null hypothesis. We will entertain Hannah’s claim: H₀ says the population mean weight of Hannah’s scones is exactly 100.</li>
 <li>A statistic that summarizes the sample’s evidence against H₀.</li>
 <li>A reference distribution that tells us how that statistic would behave across samples <em>if</em> H₀ were true.</li>
 </ol>
@@ -630,7 +630,7 @@ window.Quarto = {
 <p><span class="math display">\[
 t = \frac{\bar{x} - \mu_0}{\text{SE}_{\bar{x}}}
 \]</span></p>
-<p>with the standard error estimated as <span class="math inline">\(\text{SE}_{\bar{x}} = s / \sqrt{n}\)</span> where <span class="math inline">\(s\)</span> is the sample SD. For Hannah’s brownies:</p>
+<p>with the standard error estimated as <span class="math inline">\(\text{SE}_{\bar{x}} = s / \sqrt{n}\)</span> where <span class="math inline">\(s\)</span> is the sample SD. For Hannah’s scones:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x_bar <span class="ot">&lt;-</span> <span class="dv">95</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mu0   <span class="ot">&lt;-</span> <span class="dv">100</span></span>
@@ -767,7 +767,7 @@ t = \frac{\bar{x} - \mu_0}{\text{SE}_{\bar{x}}}
 <h2 data-number="23.5" class="anchored" data-anchor-id="degrees-of-freedom-the-information-budget"><span class="header-section-number">23.5</span> Degrees of freedom: the information budget</h2>
 <p>The shape of the t (and F) distribution depends on degrees of freedom. We should be explicit about what df actually means, because most introductions present it as a magic formula and most students leave with no intuition for what it is.</p>
 <p>The right way to think about it: <strong>degrees of freedom are an information budget</strong>. You start with n independent pieces of information (your n observations). Every time you estimate a parameter from the data, you spend one piece of that information. The df is what is left.</p>
-<p>A small example. With Hannah’s 25 brownies, we started with 25 pieces of information. To compute the sample standard deviation, we first needed to compute the sample mean. That one calculation “spent” one piece of the information: once you know the mean, you only need 24 of the 25 deviations from the mean to determine the 25th (the deviations have to sum to zero). So the sample SD is computed using df = 25 - 1 = 24 effective pieces of information. That is why df for a one-sample t-test is n - 1.</p>
+<p>A small example. With Hannah’s 25 scones, we started with 25 pieces of information. To compute the sample standard deviation, we first needed to compute the sample mean. That one calculation “spent” one piece of the information: once you know the mean, you only need 24 of the 25 deviations from the mean to determine the 25th (the deviations have to sum to zero). So the sample SD is computed using df = 25 - 1 = 24 effective pieces of information. That is why df for a one-sample t-test is n - 1.</p>
 <p>The pattern generalizes. Each parameter estimated from the data costs one piece of information.</p>
 <table class="caption-top table">
 <colgroup>
@@ -840,17 +840,17 @@ t = \frac{\bar{x} - \mu_0}{\text{SE}_{\bar{x}}}
 <li>Looked up the tail area beyond your test statistic on the reference distribution.</li>
 <li>Reported that tail area as the p-value.</li>
 </ol>
-<p>For Hannah’s brownies, the t-test would look like this in R:</p>
+<p>For Hannah’s scones, the t-test would look like this in R:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate 25 brownies with mean 95, SD 8 to recreate the example</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate 25 scones with mean 95, SD 8 to recreate the example</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>brownies <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">25</span>, <span class="at">mean =</span> <span class="dv">95</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(brownies, <span class="at">mu =</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>scones <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">25</span>, <span class="at">mean =</span> <span class="dv">95</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(scones, <span class="at">mu =</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     One Sample t-test
 
-data:  brownies
+data:  scones
 t = -0.67498, df = 24, p-value = 0.5061
 alternative hypothesis: true mean is not equal to 100
 95 percent confidence interval:
@@ -1576,8 +1576,8 @@ window.onload = function() {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./24-decisions-errors-power-sesoi.html" class="pagination-link" aria-label="Decisions, errors, power, and SESOI">
-        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and SESOI</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./24-decisions-errors-power-sesoi.html" class="pagination-link" aria-label="Decisions, errors, power, and the SESOI">
+        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and the SESOI</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
