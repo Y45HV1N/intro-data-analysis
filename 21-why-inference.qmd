@@ -332,8 +332,8 @@ ggplot(pop_df, aes(x = value)) +
 #| echo: false
 #| message: false
 #| warning: false
-#| fig.width: 8.5
-#| fig.height: 2.7
+#| fig.width: 9
+#| fig.height: 3
 n_values <- c(2, 5, 30, 200)
 all_means <- lapply(n_values, function(n) {
   data.frame(
@@ -343,16 +343,20 @@ all_means <- lapply(n_values, function(n) {
 }) |> bind_rows()
 
 ggplot(all_means, aes(x = mean, fill = n)) +
-  geom_histogram(binwidth = 0.15, alpha = 0.8, color = "white", position = "identity") +
-  geom_vline(xintercept = true_mean, color = "#EF4444", linewidth = 0.5, linetype = "dashed") +
-  facet_wrap(~ n, nrow = 1) +
-  scale_fill_manual(values = c("n = 2" = "#FCA5A5", "n = 5" = "#FBBF24",
-                               "n = 30" = "#34D399", "n = 200" = "#60A5FA")) +
-  coord_cartesian(xlim = c(0, 16)) +
+  geom_histogram(binwidth = 0.3, color = NA) +
+  geom_vline(xintercept = true_mean, color = "#EF4444",
+             linewidth = 0.6, linetype = "dashed") +
+  facet_wrap(~ n, nrow = 1, scales = "free_y") +
+  scale_fill_manual(values = c("n = 2"  = "#EF4444",
+                               "n = 5"  = "#F59E0B",
+                               "n = 30" = "#10B981",
+                               "n = 200" = "#3B82F6")) +
+  coord_cartesian(xlim = c(0, 12)) +
   labs(title = "Sampling distribution of the mean for the same population",
        subtitle = "Dashed red = true population mean",
        x = "Sample mean", y = "Count") +
-  theme(legend.position = "none", strip.text = element_text(face = "bold"))
+  theme(legend.position = "none",
+        strip.text = element_text(face = "bold"))
 ```
 
 The first picture above shows the population, which is heavily skewed to the right. Most values are low, but a long tail extends to the right. The second picture shows what the sampling distribution of the mean looks like for that population at four sample sizes.
