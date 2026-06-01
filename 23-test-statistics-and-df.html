@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>14&nbsp; The mean as a model: residuals, fit, and comparing models – Understanding and analyzing social and behavioral data</title>
+<title>23&nbsp; The inferential machinery: test statistics, z/t/F, and degrees of freedom – Understanding and analyzing social and behavioral data</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -68,8 +68,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./15-simple-linear-model.html" rel="next">
-<link href="./13-data-and-models.html" rel="prev">
+<link href="./24-decisions-errors-power-sesoi.html" rel="next">
+<link href="./22-pvalues-fisher-neyman-pearson.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -317,7 +317,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./13-data-and-models.html">Section 3: Statistical Modeling — Regressions</a></li><li class="breadcrumb-item"><a href="./14-mean-as-model.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The mean as a model: residuals, fit, and comparing models</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21-why-inference.html">Section 4: Statistical Inference</a></li><li class="breadcrumb-item"><a href="./23-test-statistics-and-df.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The inferential machinery: test statistics, z/t/F, and degrees of freedom</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -463,7 +463,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./14-mean-as-model.html" class="sidebar-item-text sidebar-link active">
+  <a href="./14-mean-as-model.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The mean as a model: residuals, fit, and comparing models</span></span></a>
   </div>
 </li>
@@ -528,7 +528,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./23-test-statistics-and-df.html" class="sidebar-item-text sidebar-link">
+  <a href="./23-test-statistics-and-df.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The inferential machinery: test statistics, z/t/F, and degrees of freedom</span></span></a>
   </div>
 </li>
@@ -556,29 +556,32 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">14.1</span> Overview</a></li>
-  <li><a href="#residuals-what-the-model-misses" id="toc-residuals-what-the-model-misses" class="nav-link" data-scroll-target="#residuals-what-the-model-misses"><span class="header-section-number">14.2</span> Residuals: what the model misses</a></li>
-  <li><a href="#a-small-worked-example" id="toc-a-small-worked-example" class="nav-link" data-scroll-target="#a-small-worked-example"><span class="header-section-number">14.3</span> A small worked example</a></li>
-  <li><a href="#model-1-the-grand-mean-model" id="toc-model-1-the-grand-mean-model" class="nav-link" data-scroll-target="#model-1-the-grand-mean-model"><span class="header-section-number">14.4</span> Model 1: the grand-mean model</a></li>
-  <li><a href="#why-we-cannot-just-sum-the-residuals-squaring" id="toc-why-we-cannot-just-sum-the-residuals-squaring" class="nav-link" data-scroll-target="#why-we-cannot-just-sum-the-residuals-squaring"><span class="header-section-number">14.5</span> Why we cannot just sum the residuals: squaring</a></li>
-  <li><a href="#model-2-the-group-means-model" id="toc-model-2-the-group-means-model" class="nav-link" data-scroll-target="#model-2-the-group-means-model"><span class="header-section-number">14.6</span> Model 2: the group-means model</a></li>
-  <li><a href="#comparing-the-two-models" id="toc-comparing-the-two-models" class="nav-link" data-scroll-target="#comparing-the-two-models"><span class="header-section-number">14.7</span> Comparing the two models</a></li>
-  <li><a href="#from-ss-to-variance-and-standard-deviation" id="toc-from-ss-to-variance-and-standard-deviation" class="nav-link" data-scroll-target="#from-ss-to-variance-and-standard-deviation"><span class="header-section-number">14.8</span> From SS to variance and standard deviation</a></li>
-  <li><a href="#the-trap-of-perfect-fit" id="toc-the-trap-of-perfect-fit" class="nav-link" data-scroll-target="#the-trap-of-perfect-fit"><span class="header-section-number">14.9</span> The trap of “perfect fit”</a></li>
-  <li><a href="#recalling-chapter-9" id="toc-recalling-chapter-9" class="nav-link" data-scroll-target="#recalling-chapter-9"><span class="header-section-number">14.10</span> Recalling Chapter 9</a></li>
-  <li><a href="#looking-ahead" id="toc-looking-ahead" class="nav-link" data-scroll-target="#looking-ahead"><span class="header-section-number">14.11</span> Looking ahead</a></li>
-  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">14.12</span> Check your understanding</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">14.13</span> References</a></li>
+  <li><a href="#where-we-are" id="toc-where-we-are" class="nav-link active" data-scroll-target="#where-we-are"><span class="header-section-number">23.1</span> Where we are</a></li>
+  <li><a href="#a-motivating-example-did-hannahs-bakery-shortchange-us" id="toc-a-motivating-example-did-hannahs-bakery-shortchange-us" class="nav-link" data-scroll-target="#a-motivating-example-did-hannahs-bakery-shortchange-us"><span class="header-section-number">23.2</span> A motivating example: did Hannah’s bakery shortchange us?</a></li>
+  <li><a href="#the-test-statistic-distance-from-the-null-in-standard-error-units" id="toc-the-test-statistic-distance-from-the-null-in-standard-error-units" class="nav-link" data-scroll-target="#the-test-statistic-distance-from-the-null-in-standard-error-units"><span class="header-section-number">23.3</span> The test statistic: distance from the null, in standard-error units</a></li>
+  <li><a href="#three-reference-distributions-z-t-f" id="toc-three-reference-distributions-z-t-f" class="nav-link" data-scroll-target="#three-reference-distributions-z-t-f"><span class="header-section-number">23.4</span> Three reference distributions: z, t, F</a>
+  <ul class="collapse">
+  <li><a href="#the-z-distribution-the-standard-normal" id="toc-the-z-distribution-the-standard-normal" class="nav-link" data-scroll-target="#the-z-distribution-the-standard-normal"><span class="header-section-number">23.4.1</span> The z distribution: the standard normal</a></li>
+  <li><a href="#the-t-distribution-corrects-for-estimating-the-sd-from-the-sample" id="toc-the-t-distribution-corrects-for-estimating-the-sd-from-the-sample" class="nav-link" data-scroll-target="#the-t-distribution-corrects-for-estimating-the-sd-from-the-sample"><span class="header-section-number">23.4.2</span> The t distribution: corrects for estimating the SD from the sample</a></li>
+  <li><a href="#the-f-distribution-a-ratio-of-two-variance-estimates" id="toc-the-f-distribution-a-ratio-of-two-variance-estimates" class="nav-link" data-scroll-target="#the-f-distribution-a-ratio-of-two-variance-estimates"><span class="header-section-number">23.4.3</span> The F distribution: a ratio of two variance estimates</a></li>
+  <li><a href="#three-rulers-one-logic" id="toc-three-rulers-one-logic" class="nav-link" data-scroll-target="#three-rulers-one-logic"><span class="header-section-number">23.4.4</span> Three rulers, one logic</a></li>
+  </ul></li>
+  <li><a href="#degrees-of-freedom-the-information-budget" id="toc-degrees-of-freedom-the-information-budget" class="nav-link" data-scroll-target="#degrees-of-freedom-the-information-budget"><span class="header-section-number">23.5</span> Degrees of freedom: the information budget</a></li>
+  <li><a href="#putting-it-all-together-what-r-is-doing-under-the-hood" id="toc-putting-it-all-together-what-r-is-doing-under-the-hood" class="nav-link" data-scroll-target="#putting-it-all-together-what-r-is-doing-under-the-hood"><span class="header-section-number">23.6</span> Putting it all together: what R is doing under the hood</a></li>
+  <li><a href="#the-role-of-assumptions" id="toc-the-role-of-assumptions" class="nav-link" data-scroll-target="#the-role-of-assumptions"><span class="header-section-number">23.7</span> The role of assumptions</a></li>
+  <li><a href="#looking-ahead" id="toc-looking-ahead" class="nav-link" data-scroll-target="#looking-ahead"><span class="header-section-number">23.8</span> Looking ahead</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">23.9</span> Check your understanding</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">23.10</span> References</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/14-mean-as-model.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/23-test-statistics-and-df.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./13-data-and-models.html">Section 3: Statistical Modeling — Regressions</a></li><li class="breadcrumb-item"><a href="./14-mean-as-model.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The mean as a model: residuals, fit, and comparing models</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21-why-inference.html">Section 4: Statistical Inference</a></li><li class="breadcrumb-item"><a href="./23-test-statistics-and-df.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The inferential machinery: test statistics, z/t/F, and degrees of freedom</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The mean as a model: residuals, fit, and comparing models</span></h1>
+<h1 class="title"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The inferential machinery: test statistics, z/t/F, and degrees of freedom</span></h1>
 </div>
 
 
@@ -595,379 +598,353 @@ window.Quarto = {
 </header>
 
 
-<section id="overview" class="level2" data-number="14.1">
-<h2 data-number="14.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">14.1</span> Overview</h2>
-<p>Chapter 13 introduced the idea that the mean of a dataset can be thought of as the simplest possible <strong>statistical model</strong>: it makes one prediction (the mean value) for every observation. This chapter takes that idea and turns it into something you can compute in R. By the end of the chapter you will have:</p>
+<section id="where-we-are" class="level2" data-number="23.1">
+<h2 data-number="23.1" class="anchored" data-anchor-id="where-we-are"><span class="header-section-number">23.1</span> Where we are</h2>
+<p>Chapter 21 introduced the sampling distribution and the standard error. Chapter 22 introduced the p-value and the two philosophies of testing (Fisher’s continuous evidence and Neyman-Pearson’s calibrated decision procedure). In both chapters we treated the sampling distribution as a known object whose shape we could appeal to: roughly normal for the mean, in particular.</p>
+<p>This chapter fills in what we glossed over: how does R <em>actually</em> turn your sample data into a p-value? What is the universal mathematical machinery that lets the same software handle a mean, a regression slope, a difference between two groups, an ANOVA, and a chi-squared test? The answer involves three new ideas that work together:</p>
 <ul>
-<li>computed the <strong>residuals</strong> of two competing models on a small dataset,</li>
-<li>quantified each model’s overall miss with the <strong>sum of squared residuals</strong>,</li>
-<li>shown that a model that makes a separate prediction for each experimental condition fits better than a model that makes one prediction for everyone.</li>
+<li>the <strong>test statistic</strong>, a way of converting raw sample values into a standardized “distance from the null,”</li>
+<li>the <strong>z, t, and F distributions</strong>, which are the universal reference shapes the test statistic is compared against,</li>
+<li><strong>degrees of freedom</strong>, the bookkeeping device that says how much information you have left after estimating things from the data.</li>
 </ul>
-<p>This is the same logic you applied to the aggression scores at the end of Chapter 9 (where you compared <code>SS_grand</code> to <code>SS_group</code> on the <code>vgames_study</code> dataset). The new thing here is the framing: each calculation is the fit of a specific <strong>model</strong>, and choosing between models is a comparison of how well each fits.</p>
+<p>By the end of the chapter you will be able to read the “t value,” “Pr(&gt;|t|),” and the F-statistic at the bottom of <code>summary(lm(...))</code>. The mystery of the inferential machinery will turn out to be a smaller mystery than it first looks.</p>
 </section>
-<section id="residuals-what-the-model-misses" class="level2" data-number="14.2">
-<h2 data-number="14.2" class="anchored" data-anchor-id="residuals-what-the-model-misses"><span class="header-section-number">14.2</span> Residuals: what the model misses</h2>
-<p>For any model that makes a prediction for each observation, the <strong>residual</strong> of an observation is the simple difference</p>
+<section id="a-motivating-example-did-hannahs-bakery-shortchange-us" class="level2" data-number="23.2">
+<h2 data-number="23.2" class="anchored" data-anchor-id="a-motivating-example-did-hannahs-bakery-shortchange-us"><span class="header-section-number">23.2</span> A motivating example: did Hannah’s bakery shortchange us?</h2>
+<p>We borrow a small story (used in many statistics textbooks, including Lakens 2022) to make the ideas concrete.</p>
+<p>Imagine a bakery called Hannah’s that advertises 100-gram brownies. You are suspicious that Hannah’s brownies are systematically lighter than advertised. To check, you buy 25 brownies over a few weeks, weigh each one at home, and find an average of 95 grams across your 25 brownies. You also compute the sample standard deviation: 8 grams.</p>
+<p>The question is essentially the same one that motivates every test in this book. Is 95 grams <em>suspicious</em> given that Hannah claims 100? Or is 95 a result we could easily get by chance because of sampling variability, even if Hannah’s true mean is really 100?</p>
+<p>To answer this, we need three things:</p>
+<ol type="1">
+<li>A null hypothesis. We will entertain Hannah’s claim: H₀ says the population mean weight of Hannah’s brownies is exactly 100.</li>
+<li>A statistic that summarizes the sample’s evidence against H₀.</li>
+<li>A reference distribution that tells us how that statistic would behave across samples <em>if</em> H₀ were true.</li>
+</ol>
+<p>For the rest of the chapter we use this story to build up each piece of machinery in turn.</p>
+</section>
+<section id="the-test-statistic-distance-from-the-null-in-standard-error-units" class="level2" data-number="23.3">
+<h2 data-number="23.3" class="anchored" data-anchor-id="the-test-statistic-distance-from-the-null-in-standard-error-units"><span class="header-section-number">23.3</span> The test statistic: distance from the null, in standard-error units</h2>
+<p>Our sample mean is 95 g; the null value is 100 g; the difference is 5 g. That number alone is hard to interpret. Is 5 grams a lot or a little? It depends on how much sample means <em>typically</em> wobble across samples like ours, which is captured by the standard error.</p>
+<p>The trick is to express the distance from the null <strong>in units of the standard error</strong>. That converts an unfamiliar 5-gram difference into a generic “this far from the null in standard-error units” measure that we can compare against a universal reference curve.</p>
+<p>This standardized distance is the <strong>test statistic</strong>. For a one-sample mean, it takes the form:</p>
 <p><span class="math display">\[
-\text{residual} = \text{observed} - \text{predicted}.
+t = \frac{\bar{x} - \mu_0}{\text{SE}_{\bar{x}}}
 \]</span></p>
-<p>If a participant scored 6 on a 1-10 scale and the model predicted 5, the residual is +1: the participant scored one point above what the model expected. If a participant scored 3 and the model predicted 5, the residual is -2: the participant scored two points below the model’s prediction. The residual is positive when the model under-predicts, negative when it over-predicts, and zero when the model is exactly right.</p>
-<p>Residuals are the central diagnostic quantity in statistical modeling. The sizes of the residuals tell you how well the model fits; the patterns in the residuals (across rows, across groups, across time) tell you whether the model is missing something systematic.</p>
-<p>For the mean-only model from Chapter 13, every prediction is the same value (the mean). So every residual is just the observation’s distance from the mean.</p>
-</section>
-<section id="a-small-worked-example" class="level2" data-number="14.3">
-<h2 data-number="14.3" class="anchored" data-anchor-id="a-small-worked-example"><span class="header-section-number">14.3</span> A small worked example</h2>
-<p>The rest of this chapter uses a small fictional dataset inspired by a classic social-psychology paradigm called <strong>Cyberball</strong>, developed by Williams and colleagues to study social ostracism. In the paradigm, participants play a simple virtual ball-tossing game on a computer with two other “players” who they believe are also participants, but who are actually controlled by the experimenter.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/cyberball.jpg" class="img-fluid figure-img" style="width:70.0%"></p>
-<figcaption>Schematic illustration of a three-player Cyberball game. The participant is one of the three figures; the other two appear to be other players but are in fact controlled by the experimenter, who decides whether and how often the ball is thrown to the participant.</figcaption>
-</figure>
-</div>
-<p>There are two experimental conditions. In the <strong>inclusion</strong> condition, the ball is shared among all three players roughly evenly: the participant receives the ball regularly throughout the game and is, in effect, a full member of the group. In the <strong>exclusion</strong> condition, the two confederate “players” stop throwing the ball to the participant after a few initial passes, and continue tossing only between themselves for the remainder of the game; the participant is socially excluded from the group activity. After the game, participants complete self-report measures, here a 1-7 self-esteem scale. The question is whether being excluded lowers self-esteem.</p>
-<p>We construct the dataset by hand so that you can verify every calculation that follows. Type these lines into your R script:</p>
+<p>with the standard error estimated as <span class="math inline">\(\text{SE}_{\bar{x}} = s / \sqrt{n}\)</span> where <span class="math inline">\(s\)</span> is the sample SD. For Hannah’s brownies:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cyberball <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">participant =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">condition   =</span> <span class="fu">c</span>(<span class="st">"Exclusion"</span>, <span class="st">"Exclusion"</span>, <span class="st">"Exclusion"</span>, <span class="st">"Exclusion"</span>,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Inclusion"</span>, <span class="st">"Inclusion"</span>, <span class="st">"Inclusion"</span>, <span class="st">"Inclusion"</span>),</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">self_esteem =</span> <span class="fu">c</span>(<span class="fl">2.5</span>, <span class="fl">3.0</span>, <span class="fl">4.0</span>, <span class="fl">2.5</span>,</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">5.5</span>, <span class="fl">4.5</span>, <span class="fl">6.0</span>, <span class="fl">5.0</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>cyberball</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x_bar <span class="ot">&lt;-</span> <span class="dv">95</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mu0   <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>s     <span class="ot">&lt;-</span> <span class="dv">8</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>n     <span class="ot">&lt;-</span> <span class="dv">25</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> s <span class="sc">/</span> <span class="fu">sqrt</span>(n)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>SE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.6</code></pre>
 </div>
-<p>Eight participants, four per condition, one self-esteem score per participant. We will fit two competing models to these scores and compare how well each one fits.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>t_stat <span class="ot">&lt;-</span> (x_bar <span class="sc">-</span> mu0) <span class="sc">/</span> SE</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>t_stat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -3.125</code></pre>
+</div>
+</div>
+<p>So our sample mean is <span class="math inline">\(-3.125\)</span> standard errors away from the null value. The minus sign tells us we are on the “less than 100” side; the magnitude tells us we are three-and-a-bit SEs out from the null.</p>
+<p>That is the key conceptual move. <strong>The test statistic is the standardized distance from the null.</strong> Once we have it, we can compare it to a universal reference curve that tells us how often a value of that size would occur by chance under H₀.</p>
+<p>A few practical points about this move:</p>
+<ul>
+<li>Every classical statistical test follows the same template. Sample value → null value → standard error → standardized distance → reference distribution → p-value. The pattern repeats for means, slopes, group differences, correlations, variances. What changes is which specific formulas apply at each step.</li>
+<li>The shape of the reference distribution depends on what we know about the data. If the population SD were known exactly, we would compare the test statistic to a standard normal curve (a <strong>z</strong> distribution). Because in practice we estimate the SD from the sample (we used <span class="math inline">\(s\)</span>, not a known <span class="math inline">\(\sigma\)</span>), the test statistic compares against a <strong>t</strong> distribution, whose shape depends on the sample size.</li>
+</ul>
+<p>We unpack these reference curves next.</p>
+</section>
+<section id="three-reference-distributions-z-t-f" class="level2" data-number="23.4">
+<h2 data-number="23.4" class="anchored" data-anchor-id="three-reference-distributions-z-t-f"><span class="header-section-number">23.4</span> Three reference distributions: z, t, F</h2>
+<p>The reference distribution is the known shape that the test statistic takes under H₀ given a particular set of assumptions. Three families appear most often.</p>
+<section id="the-z-distribution-the-standard-normal" class="level3" data-number="23.4.1">
+<h3 data-number="23.4.1" class="anchored" data-anchor-id="the-z-distribution-the-standard-normal"><span class="header-section-number">23.4.1</span> The z distribution: the standard normal</h3>
+<p>The <strong>z distribution</strong> is the standard normal: mean 0, standard deviation 1. It is the reference curve when the test statistic is a sample mean (or anything that can be standardized into one) <strong>and</strong> the population SD is known exactly. In practice, the population SD is almost never known, so the pure z test is rarely used for one-sample problems. But the z distribution is what every other reference curve in this section converges to as sample sizes grow, so it is the natural starting point.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="14-mean-as-model_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="576"></p>
+<p><img src="23-test-statistics-and-df_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="624"></p>
 </figure>
 </div>
 </div>
 </div>
+<p>The z distribution is symmetric and bell-shaped, with about 95% of its mass between <span class="math inline">\(-1.96\)</span> and <span class="math inline">\(1.96\)</span>. A z-statistic outside that range corresponds to a two-tailed p-value smaller than .05. The same 95% / .05 reference is what underlies the rule of thumb “results within roughly <span class="math inline">\(\pm 2\)</span> standard errors are unsurprising under H₀.”</p>
 </section>
-<section id="model-1-the-grand-mean-model" class="level2" data-number="14.4">
-<h2 data-number="14.4" class="anchored" data-anchor-id="model-1-the-grand-mean-model"><span class="header-section-number">14.4</span> Model 1: the grand-mean model</h2>
-<p>The simplest model says: ignore which condition each participant was in; predict the grand mean of <code>self_esteem</code> for everyone.</p>
-<p>Compute the grand mean and store it. Then use <code>mutate()</code> (from Chapter 9) to add a column with the model’s prediction and a column with the residual:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>grand_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(cyberball<span class="sc">$</span>self_esteem)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>grand_mean</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># returns 4.125</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>cyberball <span class="ot">&lt;-</span> cyberball <span class="sc">|&gt;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">predicted_grand =</span> grand_mean,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">residual_grand  =</span> self_esteem <span class="sc">-</span> predicted_grand)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>cyberball</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The resulting table contains the original three columns plus two new ones: every row has the same <code>predicted_grand</code> (4.125), and <code>residual_grand</code> is each participant’s distance from that single prediction.</p>
+<section id="the-t-distribution-corrects-for-estimating-the-sd-from-the-sample" class="level3" data-number="23.4.2">
+<h3 data-number="23.4.2" class="anchored" data-anchor-id="the-t-distribution-corrects-for-estimating-the-sd-from-the-sample"><span class="header-section-number">23.4.2</span> The t distribution: corrects for estimating the SD from the sample</h3>
+<p>When we have to estimate the population SD from our sample (which is the realistic case), the test statistic does not quite follow a z distribution. Estimating the SD adds extra uncertainty: with small samples, the sample SD can be far from the true SD, and an extreme-looking test statistic might come from a sample whose SD estimate happened to be unusually small. The <strong>t distribution</strong> accounts for this by having heavier tails than the z. With a small sample, the t distribution says “be more cautious”: an apparently large test statistic might be less surprising than it would be under z.</p>
+<p>The t distribution has a parameter called <strong>degrees of freedom (df)</strong>, which controls its shape. With small df the tails are fat; with large df the tails are thinner, and the t distribution converges to z. The intuition is that a larger sample gives a more reliable SD estimate, so the correction matters less.</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
+<div>
+<figure class="figure">
+<p><img src="23-test-statistics-and-df_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="720"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice how the three t curves (red, orange, blue) become indistinguishable from the dashed z line as df increases. At df = 30 the difference is already small; at df = 100 it would be invisible at this scale.</p>
+<p>For our Hannah example, the t statistic was <span class="math inline">\(-3.125\)</span> with df = <span class="math inline">\(n - 1 = 24\)</span>. We can compute the corresponding two-tailed p-value directly:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>(<span class="sc">-</span><span class="fl">3.125</span>, <span class="at">df =</span> <span class="dv">24</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.004602638</code></pre>
+</div>
+</div>
+<p>About 0.0046, or roughly 0.5%. Under H₀ (Hannah’s claim of 100 g), results as extreme as ours (95 g or more extreme on either side) would occur less than half a percent of the time. The data are very surprising under H₀.</p>
+</section>
+<section id="the-f-distribution-a-ratio-of-two-variance-estimates" class="level3" data-number="23.4.3">
+<h3 data-number="23.4.3" class="anchored" data-anchor-id="the-f-distribution-a-ratio-of-two-variance-estimates"><span class="header-section-number">23.4.3</span> The F distribution: a ratio of two variance estimates</h3>
+<p>When we want to compare two variance estimates against each other (as in ANOVA or in the overall test of a regression model), the test statistic is no longer a standardized mean; it is a <em>ratio</em> of variances. Under H₀, the ratio of two variance estimates follows the <strong>F distribution</strong>. The F has <strong>two</strong> degrees-of-freedom parameters, one for the numerator and one for the denominator.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="23-test-statistics-and-df_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The F is right-skewed and runs from 0 to infinity (a ratio of squared things cannot be negative). The exact shape depends on the two df values. F appears in two main places in this book: the overall F-statistic at the bottom of <code>summary(lm(...))</code> (testing whether the model as a whole explains anything), and ANOVA (Chapter to come).</p>
+</section>
+<section id="three-rulers-one-logic" class="level3" data-number="23.4.4">
+<h3 data-number="23.4.4" class="anchored" data-anchor-id="three-rulers-one-logic"><span class="header-section-number">23.4.4</span> Three rulers, one logic</h3>
+<p>The big takeaway about z, t, and F is that they are three different <em>rulers</em> for three different kinds of standardized statistics, but the logic is the same: we compute a test statistic, look up its position on the universal reference curve, and read off a tail area (the p-value). The math is universal because mathematicians once computed each reference curve, and now we just look up the answer.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 30%">
+<col style="width: 48%">
+</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: right;">participant</th>
-<th style="text-align: left;">condition</th>
-<th style="text-align: right;">self_esteem</th>
-<th style="text-align: right;">predicted_grand</th>
-<th style="text-align: right;">residual_grand</th>
+<th>Situation</th>
+<th>Test statistic</th>
+<th>Reference distribution</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">Exclusion</td>
-<td style="text-align: right;">2.5</td>
-<td style="text-align: right;">4.125</td>
-<td style="text-align: right;">-1.625</td>
+<td>One mean, population SD known</td>
+<td><span class="math inline">\((\bar{x} - \mu_0) / (\sigma / \sqrt{n})\)</span></td>
+<td>z</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">Exclusion</td>
-<td style="text-align: right;">3.0</td>
-<td style="text-align: right;">4.125</td>
-<td style="text-align: right;">-1.125</td>
+<td>One mean, population SD estimated</td>
+<td><span class="math inline">\((\bar{x} - \mu_0) / (s / \sqrt{n})\)</span></td>
+<td>t with df = n − 1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">Exclusion</td>
-<td style="text-align: right;">4.0</td>
-<td style="text-align: right;">4.125</td>
-<td style="text-align: right;">-0.125</td>
+<td>Two means, separate samples</td>
+<td>difference of means / SE of the difference</td>
+<td>t</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">Exclusion</td>
-<td style="text-align: right;">2.5</td>
-<td style="text-align: right;">4.125</td>
-<td style="text-align: right;">-1.625</td>
+<td>Slope in a simple regression</td>
+<td>slope / SE of slope</td>
+<td>t</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">5</td>
-<td style="text-align: left;">Inclusion</td>
-<td style="text-align: right;">5.5</td>
-<td style="text-align: right;">4.125</td>
-<td style="text-align: right;">1.375</td>
+<td>Overall regression model</td>
+<td>mean-square ratio</td>
+<td>F</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">6</td>
-<td style="text-align: left;">Inclusion</td>
-<td style="text-align: right;">4.5</td>
-<td style="text-align: right;">4.125</td>
-<td style="text-align: right;">0.375</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">7</td>
-<td style="text-align: left;">Inclusion</td>
-<td style="text-align: right;">6.0</td>
-<td style="text-align: right;">4.125</td>
-<td style="text-align: right;">1.875</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">8</td>
-<td style="text-align: left;">Inclusion</td>
-<td style="text-align: right;">5.0</td>
-<td style="text-align: right;">4.125</td>
-<td style="text-align: right;">0.875</td>
+<td>Several group means (ANOVA)</td>
+<td>mean-square ratio</td>
+<td>F</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<p>Two checks on this table.</p>
-<p><strong>The residuals sum to zero.</strong> This is always true of residuals from the mean: the mean is the value at which positive and negative deviations exactly cancel.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(cyberball<span class="sc">$</span>residual_grand)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># returns approximately 0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p><strong>The residuals are not small.</strong> Some participants are more than 1.5 points away from the grand-mean prediction. Visually:</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="14-mean-as-model_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="576"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Each grey segment shows how far one participant’s actual score is from the model’s single prediction (the red line). The grey segments are the residuals. Visually, they are substantial, especially for the inclusion participants who all sit well above the grand mean and for several exclusion participants who sit well below.</p>
+<p>These are not separate tests; they are different specific cases of the same single logic.</p>
 </section>
-<section id="why-we-cannot-just-sum-the-residuals-squaring" class="level2" data-number="14.5">
-<h2 data-number="14.5" class="anchored" data-anchor-id="why-we-cannot-just-sum-the-residuals-squaring"><span class="header-section-number">14.5</span> Why we cannot just sum the residuals: squaring</h2>
-<p>We need a single number that quantifies how well the model fits, and the residuals are the obvious building blocks. But, as just noted, the residuals always sum to zero. The positive and negative deviations cancel out, and the sum tells you nothing about the size of the errors.</p>
-<p>The standard fix is to <strong>square each residual before summing</strong>:</p>
-<p><span class="math display">\[
-\text{SS} = \sum_{i=1}^{n} (\text{observed}_i - \text{predicted}_i)^2.
-\]</span></p>
-<p>This is the <strong>sum of squared residuals</strong> (or sum of squared errors), often abbreviated <em>SS</em>. You met it in Chapter 9 when you computed <code>SS_grand</code> and <code>SS_group</code> on the aggression data.</p>
-<p>Two reasons squaring is the standard choice:</p>
-<ul>
-<li><strong>Squaring removes the sign.</strong> Negative and positive residuals both contribute positively to the sum, so the cancellation problem disappears.</li>
-<li><strong>Squaring penalizes large residuals more than small ones.</strong> A residual of 2 contributes 4 to the <em>SS</em>; a residual of 1 contributes only 1. Being off by a lot is treated as much worse than being off by a little. For most modeling problems in psychology this matches the kind of error you want to minimize.</li>
-</ul>
-<p>In R, on the residuals we already computed:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>SS_grand <span class="ot">&lt;-</span> <span class="fu">sum</span>(cyberball<span class="sc">$</span>residual_grand<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>SS_grand</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># returns 12.875</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The number 12.875 is the total squared error of the grand-mean model on these eight observations. It has no natural interpretation in isolation; it is the comparison to the <em>SS</em> of another model that gives it meaning.</p>
 </section>
-<section id="model-2-the-group-means-model" class="level2" data-number="14.6">
-<h2 data-number="14.6" class="anchored" data-anchor-id="model-2-the-group-means-model"><span class="header-section-number">14.6</span> Model 2: the group-means model</h2>
-<p>A slightly less naive model uses two predictions instead of one: predict the mean of the exclusion condition for exclusion participants, and the mean of the inclusion condition for inclusion participants. The model is more complex (two numbers instead of one), and it uses information the previous model ignored (which condition each participant was in).</p>
-<p>Using the <code>group_by()</code> + <code>mutate()</code> + <code>ungroup()</code> pattern from Chapter 9 (the same pattern you used to add a per-group statistic as a column):</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cyberball <span class="ot">&lt;-</span> cyberball <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condition) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">predicted_group =</span> <span class="fu">mean</span>(self_esteem)) <span class="sc">|&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">residual_group =</span> self_esteem <span class="sc">-</span> predicted_group)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>cyberball</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The exclusion group’s mean is 3.00 and the inclusion group’s mean is 5.25, so <code>predicted_group</code> is 3.00 for the first four rows and 5.25 for the last four. The residuals are each participant’s distance from their own condition mean.</p>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
+<section id="degrees-of-freedom-the-information-budget" class="level2" data-number="23.5">
+<h2 data-number="23.5" class="anchored" data-anchor-id="degrees-of-freedom-the-information-budget"><span class="header-section-number">23.5</span> Degrees of freedom: the information budget</h2>
+<p>The shape of the t (and F) distribution depends on degrees of freedom. We should be explicit about what df actually means, because most introductions present it as a magic formula and most students leave with no intuition for what it is.</p>
+<p>The right way to think about it: <strong>degrees of freedom are an information budget</strong>. You start with n independent pieces of information (your n observations). Every time you estimate a parameter from the data, you spend one piece of that information. The df is what is left.</p>
+<p>A small example. With Hannah’s 25 brownies, we started with 25 pieces of information. To compute the sample standard deviation, we first needed to compute the sample mean. That one calculation “spent” one piece of the information: once you know the mean, you only need 24 of the 25 deviations from the mean to determine the 25th (the deviations have to sum to zero). So the sample SD is computed using df = 25 - 1 = 24 effective pieces of information. That is why df for a one-sample t-test is n - 1.</p>
+<p>The pattern generalizes. Each parameter estimated from the data costs one piece of information.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 35%">
+<col style="width: 24%">
+</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: right;">participant</th>
-<th style="text-align: left;">condition</th>
-<th style="text-align: right;">self_esteem</th>
-<th style="text-align: right;">predicted_group</th>
-<th style="text-align: right;">residual_group</th>
+<th>Test or model</th>
+<th>df expended</th>
+<th>df left</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">Exclusion</td>
-<td style="text-align: right;">2.5</td>
-<td style="text-align: right;">3.00</td>
-<td style="text-align: right;">-0.50</td>
+<td>One-sample t-test</td>
+<td>1 (the mean)</td>
+<td>n − 1</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">Exclusion</td>
-<td style="text-align: right;">3.0</td>
-<td style="text-align: right;">3.00</td>
-<td style="text-align: right;">0.00</td>
+<td>Two-sample t-test</td>
+<td>2 (two group means)</td>
+<td>n − 2</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">Exclusion</td>
-<td style="text-align: right;">4.0</td>
-<td style="text-align: right;">3.00</td>
-<td style="text-align: right;">1.00</td>
+<td>Simple regression slope test</td>
+<td>2 (intercept and slope)</td>
+<td>n − 2</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">Exclusion</td>
-<td style="text-align: right;">2.5</td>
-<td style="text-align: right;">3.00</td>
-<td style="text-align: right;">-0.50</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">5</td>
-<td style="text-align: left;">Inclusion</td>
-<td style="text-align: right;">5.5</td>
-<td style="text-align: right;">5.25</td>
-<td style="text-align: right;">0.25</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">6</td>
-<td style="text-align: left;">Inclusion</td>
-<td style="text-align: right;">4.5</td>
-<td style="text-align: right;">5.25</td>
-<td style="text-align: right;">-0.75</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">7</td>
-<td style="text-align: left;">Inclusion</td>
-<td style="text-align: right;">6.0</td>
-<td style="text-align: right;">5.25</td>
-<td style="text-align: right;">0.75</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">8</td>
-<td style="text-align: left;">Inclusion</td>
-<td style="text-align: right;">5.0</td>
-<td style="text-align: right;">5.25</td>
-<td style="text-align: right;">-0.25</td>
+<td>Multiple regression with k predictors</td>
+<td>k + 1 (intercept + k slopes)</td>
+<td>n − k − 1</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<p>Compared to Model 1, the residuals are noticeably smaller. Visually:</p>
+<p>This explains why df matters mechanically: a smaller df makes the t distribution heavier-tailed, which means a given test statistic produces a larger p-value. When you have few observations and have estimated several parameters, your estimates of the SE are unreliable, and the reference distribution should be more cautious. Df captures this exactly.</p>
+<p>A concrete consequence: the same observed test statistic of, say, t = 2.5 corresponds to different p-values at different df.</p>
 <div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="14-mean-as-model_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="624"></p>
-</figure>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>(<span class="sc">-</span><span class="fl">2.5</span>, <span class="at">df =</span> <span class="dv">5</span>)   <span class="co"># df = 5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0544901</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>(<span class="sc">-</span><span class="fl">2.5</span>, <span class="at">df =</span> <span class="dv">30</span>)  <span class="co"># df = 30</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01811565</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>(<span class="sc">-</span><span class="fl">2.5</span>, <span class="at">df =</span> <span class="dv">200</span>) <span class="co"># df = 200</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01322317</code></pre>
 </div>
 </div>
-</div>
-<p>Each green crossbar is a group mean (the prediction for that condition); the grey segments are the residuals from that prediction. Compared to the picture for Model 1, the grey segments are much shorter.</p>
-<p>The sum of squared residuals confirms this numerically:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>SS_group <span class="ot">&lt;-</span> <span class="fu">sum</span>(cyberball<span class="sc">$</span>residual_group<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>SS_group</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># returns 2.75</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
+<p>With df = 5 the p-value is about 0.05; with df = 30 it is about 0.018; with df = 200 it is about 0.013. The same test statistic, but the conclusion depends on how reliable your SD estimate was. Larger df, more reliable estimate, smaller p-value.</p>
 </section>
-<section id="comparing-the-two-models" class="level2" data-number="14.7">
-<h2 data-number="14.7" class="anchored" data-anchor-id="comparing-the-two-models"><span class="header-section-number">14.7</span> Comparing the two models</h2>
-<p>We can now place the two numbers side by side and ask what they tell us.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>SS_grand</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 12.875</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>SS_group</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2.75</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>SS_grand <span class="sc">-</span> SS_group</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 10.125</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p><code>SS_group</code> is smaller than <code>SS_grand</code> by 10.125. Using the group means as predictions reduces the total squared error by 10.125 compared to using the grand mean. Expressed as a proportion of the original <em>SS</em>:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>(SS_grand <span class="sc">-</span> SS_group) <span class="sc">/</span> SS_grand</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.786</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>About <strong>78.6 percent</strong> of the total squared error of the grand-mean model is accounted for by knowing the condition. In other words, condition explains a large fraction of the variability in self-esteem scores. The remaining 21.4 percent (the <em>SS</em> that survives in Model 2) is variability <em>within</em> each condition that the group-means model still cannot explain.</p>
-<p>This is exactly the decomposition you saw in Chapter 9 with the aggression data, where the analogous proportion was about 20 percent. The arithmetic is the same; the conclusion is more dramatic here because the Cyberball example is constructed to have a strong condition effect.</p>
-<p>A general fact, true in every case: <code>SS_group</code> is at most equal to <code>SS_grand</code>, never larger. Adding information (group membership) cannot make the fit worse. It can leave it unchanged (if condition is unrelated to the outcome, the two group means are nearly identical and the two models are nearly the same), but it cannot make it worse.</p>
-</section>
-<section id="from-ss-to-variance-and-standard-deviation" class="level2" data-number="14.8">
-<h2 data-number="14.8" class="anchored" data-anchor-id="from-ss-to-variance-and-standard-deviation"><span class="header-section-number">14.8</span> From SS to variance and standard deviation</h2>
-<p>A small notational aside that connects this chapter to ideas you already know. The <strong>variance</strong> of a variable, computed with <code>var()</code> in R, is essentially the sum of squared residuals from the mean, divided by <em>n</em> − 1:</p>
-<p><span class="math display">\[
-\text{var}(x) = \frac{\sum (x_i - \bar{x})^2}{n - 1} = \frac{SS_{\text{grand}}}{n - 1}.
-\]</span></p>
-<p>The <strong>standard deviation</strong> (<code>sd()</code>) is the square root of the variance. So when you computed <code>sd(aggression)</code> in Chapters 6 and 9, you were implicitly summarizing the residuals of the grand-mean model on the <code>aggression</code> variable. Variance and <em>SS</em> differ only by a denominator; the conceptual content is the same.</p>
-<p>Navarro (2018, Section 5.2) discusses variance and standard deviation in detail and lays out several alternatives (range, interquartile range). The squared-error perspective is one choice among several. It is the dominant choice in statistical modeling because it has nice mathematical properties (the mean is the value that minimizes <em>SS</em>, the variance decomposition is additive across nested models, and so on), but other choices are sometimes more appropriate (for example, the <em>absolute</em> deviation is more robust to outliers).</p>
-</section>
-<section id="the-trap-of-perfect-fit" class="level2" data-number="14.9">
-<h2 data-number="14.9" class="anchored" data-anchor-id="the-trap-of-perfect-fit"><span class="header-section-number">14.9</span> The trap of “perfect fit”</h2>
-<p>A reader paying close attention might ask: if smaller <em>SS</em> is better, why not use a model that predicts each participant’s exact score and achieves <em>SS</em> = 0?</p>
-<p>The answer is that such a model would not be a model at all. It would have one parameter per observation (eight numbers for eight participants), which is the same amount of information as the data itself. It does not simplify. It does not reveal any pattern. It cannot generalize: if you collected a new participant, the model would have no prediction for them. It is a perfect description of <em>this</em> sample and an empty description of anything else.</p>
-<p>A good model trades fit for simplicity. The grand-mean model uses 1 number (high simplicity, mediocre fit). The group-means model uses 2 numbers (still simple, much better fit). A model with 8 numbers achieves perfect fit but at the cost of becoming the data. Where to stop on this continuum is the central question of statistical modeling, and Chapter 19 will introduce it formally as the <strong>bias-variance trade-off</strong>. For now, what matters is the principle: complexity is not free.</p>
-</section>
-<section id="recalling-chapter-9" class="level2" data-number="14.10">
-<h2 data-number="14.10" class="anchored" data-anchor-id="recalling-chapter-9"><span class="header-section-number">14.10</span> Recalling Chapter 9</h2>
-<p>You did this same arithmetic in Chapter 9, on the larger <code>vgames_study</code> dataset. Recall the result: <code>SS_grand</code> on the <code>aggression</code> variable was approximately 307; <code>SS_group</code> (using the two condition means as predictions) was approximately 245; the proportion of squared error explained by condition was about 0.20. Now you can read that result with a slightly richer vocabulary: the grand-mean model fit a single number to 120 observations; the group-means model added the experimental condition as a second piece of information; the second model fit better, but a large fraction of the variability remained unexplained by condition.</p>
-<p>In the chapters that follow, we keep adding information. Chapter 15 replaces the categorical “which group are you in?” predictor with a continuous predictor (one number per participant, like <code>hours_weekly</code>), and replaces the two-number group-means model with a <strong>line</strong> that can take any value as its prediction. Chapter 17 adds multiple predictors simultaneously. Each step is more complex than the last, and each step (in general) reduces the residual <em>SS</em>.</p>
-</section>
-<section id="looking-ahead" class="level2" data-number="14.11">
-<h2 data-number="14.11" class="anchored" data-anchor-id="looking-ahead"><span class="header-section-number">14.11</span> Looking ahead</h2>
-<p>By now you have:</p>
+<section id="putting-it-all-together-what-r-is-doing-under-the-hood" class="level2" data-number="23.6">
+<h2 data-number="23.6" class="anchored" data-anchor-id="putting-it-all-together-what-r-is-doing-under-the-hood"><span class="header-section-number">23.6</span> Putting it all together: what R is doing under the hood</h2>
+<p>You will rarely compute a test statistic by hand. R has built-in functions for every standard test:</p>
 <ul>
-<li>a working definition of a residual,</li>
-<li>a working definition of model fit (sum of squared residuals),</li>
-<li>the experience of comparing two competing models on the same data and seeing the better one win.</li>
+<li><code>t.test()</code> for one- and two-sample t-tests.</li>
+<li><code>cor.test()</code> for correlations.</li>
+<li><code>chisq.test()</code> for chi-squared tests.</li>
+<li><code>aov()</code> for ANOVA.</li>
+<li><code>summary(lm(...))</code> reports t-statistics and an overall F.</li>
 </ul>
-<p>Chapter 15 takes the same logic and applies it to a continuous predictor: from a flat line at the mean to a sloped line that predicts a different value for each participant based on the value of some other variable. The arithmetic is more involved, but the framework is identical: data, model, predictions, residuals, fit.</p>
+<p>When R reports a p-value, it has done the following in order:</p>
+<ol type="1">
+<li>Computed the appropriate test statistic from your data: the standardized distance from the null.</li>
+<li>Identified the correct reference distribution and its df from the design.</li>
+<li>Looked up the tail area beyond your test statistic on the reference distribution.</li>
+<li>Reported that tail area as the p-value.</li>
+</ol>
+<p>For Hannah’s brownies, the t-test would look like this in R:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate 25 brownies with mean 95, SD 8 to recreate the example</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>brownies <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">25</span>, <span class="at">mean =</span> <span class="dv">95</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(brownies, <span class="at">mu =</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  brownies
+t = -0.67498, df = 24, p-value = 0.5061
+alternative hypothesis: true mean is not equal to 100
+95 percent confidence interval:
+  94.77481 102.64977
+sample estimates:
+mean of x 
+ 98.71229 </code></pre>
+</div>
+</div>
+<p>The output reports the t-statistic, the df, and the two-tailed p-value, exactly as we computed them by hand. The 95% confidence interval is a different (related) inferential output we will not develop here.</p>
+<p>The most important thing this whole chapter does for you, in practice, is the following. Look back at the <code>summary(lm(...))</code> output from Chapter 16:</p>
+<pre><code>Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)   4.1962    0.2827   14.843  &lt; 2e-16
+hours_weekly  0.0816    0.0271    3.016   0.00313
+
+Residual standard error: 1.556 on 118 degrees of freedom
+F-statistic: 9.1 on 1 and 118 DF, p-value: 0.003133</code></pre>
+<p>You now know what every column means.</p>
+<ul>
+<li><strong>Estimate</strong> is the parameter value (intercept or slope), as in Section 3.</li>
+<li><strong>Std. Error</strong> is the estimated standard deviation of the sampling distribution of that parameter (Chapter 21).</li>
+<li><strong>t value</strong> is the test statistic: Estimate / Std. Error, i.e., the standardized distance from the null value of zero. For <code>hours_weekly</code>: 0.0816 / 0.0271 ≈ 3.016.</li>
+<li><strong>Pr(&gt;|t|)</strong> is the p-value, computed by looking up the t-statistic on a t-distribution with 118 df (the n − 2 from the simple regression).</li>
+<li><strong>F-statistic and its p-value</strong> at the bottom test the model as a whole: is at least one slope different from zero? In simple regression with one predictor, this is exactly the same test as the t-test on the slope (and gives the same p-value, .003).</li>
+<li><strong>Residual standard error</strong> is the typical size of the residuals; 118 df because we estimated 2 parameters (intercept and slope) from the n = 120 observations.</li>
+</ul>
+<p>Everything you politely ignored in Chapter 16 is now interpretable.</p>
 </section>
-<section id="check-your-understanding" class="level2" data-number="14.12">
-<h2 data-number="14.12" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">14.12</span> Check your understanding</h2>
-<p><strong>1. What is a residual?</strong></p>
-<div id="radio_WUYHRZNBWT" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_WUYHRZNBWT" value=""> <span>A typo, mistake, or error in the data.</span></label><label><input type="radio" autocomplete="off" name="radio_WUYHRZNBWT" value="answer"> <span>The difference between an observed value and the value the model predicted for that observation: <code>residual = observed - predicted</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_WUYHRZNBWT" value=""> <span>The mean of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_WUYHRZNBWT" value=""> <span>The slope of a regression line.</span></label>
+<section id="the-role-of-assumptions" class="level2" data-number="23.7">
+<h2 data-number="23.7" class="anchored" data-anchor-id="the-role-of-assumptions"><span class="header-section-number">23.7</span> The role of assumptions</h2>
+<p>The reference distributions (z, t, F) deliver correct p-values <em>only when</em> the assumptions of the test are reasonable. We have already seen most of these assumptions in Chapter 19, but they show up again here because they are what makes the inferential machinery work.</p>
+<p>For a one-sample t-test, the assumptions are essentially:</p>
+<ul>
+<li><strong>Independence.</strong> Observations are independent of each other (no clustering, no repeated measures from the same person).</li>
+<li><strong>Random sampling.</strong> The sample is drawn at random from the population we want to make claims about.</li>
+<li><strong>Approximate normality of the data, or large enough n that the CLT applies.</strong> The sampling distribution of the mean is approximately normal under one of these conditions.</li>
+</ul>
+<p>For a regression, the LINE assumptions from Chapter 19 (Linearity, Independence, Normality of residuals, Equal variance) play the same role.</p>
+<p>When assumptions are violated, the reference distribution is no longer guaranteed to match the actual sampling distribution of the test statistic. R will still print a p-value; the p-value just may not mean what we want it to mean. Lakens (2022, Chapter 1) emphasizes this point repeatedly: a p-value is part of a <em>calibrated procedure</em>, and the calibration requires the assumptions to hold.</p>
+</section>
+<section id="looking-ahead" class="level2" data-number="23.8">
+<h2 data-number="23.8" class="anchored" data-anchor-id="looking-ahead"><span class="header-section-number">23.8</span> Looking ahead</h2>
+<p>You can now read every column of standard regression output, t-test output, and ANOVA output. You can also explain what R is computing when it returns a p-value, and you can answer the question “what changes when df changes.”</p>
+<p>Chapter 24 turns from the <em>computation</em> of p-values to the <em>decision-theoretic structure</em> that surrounds them. What happens when the procedure is wrong? What is the trade-off between Type I and Type II errors? What does it mean to “have 80% power,” and why is that claim meaningless without an anchor like SESOI (the Smallest Effect Size of Interest)?</p>
+<p>Chapter 25 then returns to the philosophical issues raised at the end of Chapter 22: the distinction between exploratory and confirmatory work, the multiple-testing problem, the practical discipline of pre-registration, and the famous Ioannidis observation that under realistic conditions a large fraction of published “significant” findings may be false.</p>
+</section>
+<section id="check-your-understanding" class="level2" data-number="23.9">
+<h2 data-number="23.9" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">23.9</span> Check your understanding</h2>
+<p><strong>1. What is a “test statistic”?</strong></p>
+<div id="radio_UXIUVHMOIB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_UXIUVHMOIB" value=""> <span>It is the average of the sample minus the null value, expressed in the original units of measurement and reported directly without further transformation.</span></label><label><input type="radio" autocomplete="off" name="radio_UXIUVHMOIB" value="answer"> <span>It is the standardized distance from the null hypothesis: the difference between the sample value and the null, divided by the standard error of the sample value.</span></label><label><input type="radio" autocomplete="off" name="radio_UXIUVHMOIB" value=""> <span>It is the probability that the null hypothesis is true given the observed sample, computed using the reference distribution and the sample size.</span></label><label><input type="radio" autocomplete="off" name="radio_UXIUVHMOIB" value=""> <span>It is the difference between two consecutive sample means computed across replications of the study under identical conditions.</span></label>
 </div>
-<p><strong>2. What does the sum of the residuals from the grand mean always equal?</strong></p>
-<div id="radio_YMXUNVBFRJ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_YMXUNVBFRJ" value=""> <span>It is the variance of the dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_YMXUNVBFRJ" value=""> <span>It is the size of the dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_YMXUNVBFRJ" value="answer"> <span>Zero (exactly, up to floating-point rounding). The mean is the value at which positive and negative residuals exactly cancel.</span></label><label><input type="radio" autocomplete="off" name="radio_YMXUNVBFRJ" value=""> <span>It is positive if the mean is positive and negative if the mean is negative.</span></label>
+<p><strong>2. In a one-sample t-test of the mean, what is the denominator of the test statistic?</strong></p>
+<div id="radio_LUHZXJNZHP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_LUHZXJNZHP" value=""> <span>It is the difference in sample size between two competing experimental groups divided by the smaller group's standard deviation as estimated from the pilot study.</span></label><label><input type="radio" autocomplete="off" name="radio_LUHZXJNZHP" value=""> <span>It is the residual standard error of a linear regression model divided by the square root of the F-statistic for the same regression coefficient.</span></label><label><input type="radio" autocomplete="off" name="radio_LUHZXJNZHP" value=""> <span>It is the sample variance divided by the population variance, used when one of the two is known and the other has to be estimated from the dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_LUHZXJNZHP" value="answer"> <span>It is the standard error of the sample mean, equal to the sample standard deviation divided by the square root of the sample size, used when the population SD is estimated from the sample.</span></label>
 </div>
-<p><strong>3. Why do we square the residuals before summing them to measure model fit?</strong></p>
-<div id="radio_SKQGLFJKAV" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_SKQGLFJKAV" value=""> <span>Because squaring is faster to compute than summing absolute values.</span></label><label><input type="radio" autocomplete="off" name="radio_SKQGLFJKAV" value=""> <span>Because the squared values are always smaller than the original residuals.</span></label><label><input type="radio" autocomplete="off" name="radio_SKQGLFJKAV" value="answer"> <span>Because the residuals sum to zero, summing them gives no information about the size of the errors. Squaring first removes the sign so positive and negative residuals do not cancel, and also penalizes large residuals more than small ones.</span></label><label><input type="radio" autocomplete="off" name="radio_SKQGLFJKAV" value=""> <span>Because R cannot compute negative numbers.</span></label>
+<p><strong>3. What is “degrees of freedom” (df)?</strong></p>
+<div id="radio_RWEFCUIPWH" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_RWEFCUIPWH" value=""> <span>It is the difference between the z and the t distributions caused by sample size effects on the dispersion of the sampling distribution under H0.</span></label><label><input type="radio" autocomplete="off" name="radio_RWEFCUIPWH" value="answer"> <span>It is a parameter of the t (and F) distribution that controls its shape; intuitively, it is the amount of independent information left in the sample after estimating parameters from the data.</span></label><label><input type="radio" autocomplete="off" name="radio_RWEFCUIPWH" value=""> <span>It is the number of statistical tests run by the researcher across all the analyses performed on the dataset, including supplementary and follow-up analyses.</span></label><label><input type="radio" autocomplete="off" name="radio_RWEFCUIPWH" value=""> <span>It is the difference between observed and predicted values in a regression model, used in the formula for the residual standard error and the model R-squared.</span></label>
 </div>
-<p><strong>4. What is the relationship between <code>SS_grand</code> (sum of squared residuals from the grand mean) and <code>SS_group</code> (sum of squared residuals from the group means) on the same dataset?</strong></p>
-<div id="radio_IBNMPMWLNF" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_IBNMPMWLNF" value=""> <span>It is always larger than <code>SS_grand</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_IBNMPMWLNF" value=""> <span>It is exactly equal to <code>SS_grand</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_IBNMPMWLNF" value="answer"> <span>It is less than or equal to <code>SS_grand</code>. Using more information about each participant (their condition) cannot make the fit worse, only better or the same.</span></label><label><input type="radio" autocomplete="off" name="radio_IBNMPMWLNF" value=""> <span>It can be either smaller or larger than <code>SS_grand</code>, depending on the sample.</span></label>
+<p><strong>4. When does each of the z, t, and F reference distributions apply?</strong></p>
+<div id="radio_PRRHFJMXGY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_PRRHFJMXGY" value=""> <span>The z distribution applies when the data are normal, the t distribution applies when the data are non-normal, and the F distribution applies when the data are heavily skewed.</span></label><label><input type="radio" autocomplete="off" name="radio_PRRHFJMXGY" value=""> <span>The z distribution applies when the sample size is large, the t distribution applies when it is small, and the F distribution applies when there is a single categorical predictor with two levels.</span></label><label><input type="radio" autocomplete="off" name="radio_PRRHFJMXGY" value="answer"> <span>The z distribution applies when the population SD is known, the t distribution applies when the SD is estimated from the sample (its shape depending on df), and the F distribution applies to ratios of variance estimates such as in ANOVA or the overall regression test.</span></label><label><input type="radio" autocomplete="off" name="radio_PRRHFJMXGY" value=""> <span>The z, t, and F distributions are interchangeable when the sample size is at least 30; the choice depends only on whether the test is two-tailed or one-tailed and on the convention of the software package.</span></label>
 </div>
-<p><strong>5. What is the relationship between the variance, the standard deviation, and the residuals from the mean?</strong></p>
-<div id="radio_QVIZFHQZOO" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_QVIZFHQZOO" value=""> <span>Variance is the standard deviation divided by the mean.</span></label><label><input type="radio" autocomplete="off" name="radio_QVIZFHQZOO" value=""> <span>Variance is the same as the sum of squared residuals.</span></label><label><input type="radio" autocomplete="off" name="radio_QVIZFHQZOO" value="answer"> <span>Variance is the sum of squared residuals from the mean divided by <code>n - 1</code>. Standard deviation is the square root of the variance.</span></label><label><input type="radio" autocomplete="off" name="radio_QVIZFHQZOO" value=""> <span>Standard deviation has no relationship to residuals.</span></label>
+<p><strong>5. How does the t distribution differ from the z distribution, and why?</strong></p>
+<div id="radio_YXVLFDPQKM" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_YXVLFDPQKM" value=""> <span>The t distribution has lighter tails than the z, meaning extreme test statistics are less likely under the t and produce smaller p-values for any given test statistic at moderate df.</span></label><label><input type="radio" autocomplete="off" name="radio_YXVLFDPQKM" value="answer"> <span>The t distribution has heavier tails than the z at small df; an extreme test statistic is therefore less surprising under the t than under the z, and yields a larger p-value at small df; as df grows the t converges to the z.</span></label><label><input type="radio" autocomplete="off" name="radio_YXVLFDPQKM" value=""> <span>The t and z are identical at all values of df; the apparent difference seen in textbook figures is a visual artifact of how the curves are drawn on the standardized scale.</span></label><label><input type="radio" autocomplete="off" name="radio_YXVLFDPQKM" value=""> <span>The z always has wider tails than the t, regardless of df, because the z accounts for additional uncertainty introduced by sampling whereas the t assumes the variance is fixed.</span></label>
 </div>
-<p><strong>6. Why is a model that achieves <code>SS</code> = 0 by predicting each observation exactly (using one parameter per observation) not a desirable model?</strong></p>
-<div id="radio_KCTBYABVXN" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_KCTBYABVXN" value=""> <span>It is the ideal model and should be used whenever possible.</span></label><label><input type="radio" autocomplete="off" name="radio_KCTBYABVXN" value="answer"> <span>It is not a useful model: it has one parameter per observation, does not simplify the data, and cannot generalize to new observations. Achieving zero error by predicting each observation exactly is a sign that the model has become the data, not a description of it.</span></label><label><input type="radio" autocomplete="off" name="radio_KCTBYABVXN" value=""> <span>It is required by reproducibility guidelines.</span></label><label><input type="radio" autocomplete="off" name="radio_KCTBYABVXN" value=""> <span>It only fails when there are very few observations.</span></label>
+<p><strong>6. In <code>summary(lm(...))</code> output, what do the “Std. Error,” “t value,” and “Pr(&gt;|t|)” columns represent for a coefficient?</strong></p>
+<div id="radio_LWWRAQALKP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_LWWRAQALKP" value=""> <span>The Pr(&gt;|t|) column reports the probability that the slope is exactly zero in the population given the observed data, calculated by Bayesian inversion of the t-statistic on the t reference distribution.</span></label><label><input type="radio" autocomplete="off" name="radio_LWWRAQALKP" value=""> <span>The t value column is the standardized residual of the prediction made by the regression model for the participant whose observed value deviates most from the model's predicted value.</span></label><label><input type="radio" autocomplete="off" name="radio_LWWRAQALKP" value=""> <span>The Std. Error column is the residual standard error of the regression model around the fitted line, identical for every coefficient and equal to the square root of the model's mean squared residual.</span></label><label><input type="radio" autocomplete="off" name="radio_LWWRAQALKP" value="answer"> <span>The t value is the coefficient divided by its Std. Error, the standardized distance from the null of zero; the Pr(&gt;|t|) is the two-tailed p-value computed by looking up |t value| on a t distribution with the residual degrees of freedom (n − k − 1).</span></label>
 </div>
-<p><strong>7. In this chapter’s Cyberball example, condition explained about 78.6% of the squared error. In Chapter 9, on the <code>vgames_study</code> data, condition explained about 20% of the squared error in aggression. Why is the proportion so different in the two examples?</strong></p>
-<div id="radio_RYJTBHZBRU" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_RYJTBHZBRU" value=""> <span>The dataset is much smaller in this chapter.</span></label><label><input type="radio" autocomplete="off" name="radio_RYJTBHZBRU" value=""> <span>Random sampling variability.</span></label><label><input type="radio" autocomplete="off" name="radio_RYJTBHZBRU" value="answer"> <span>The Cyberball example was constructed to have a strong condition effect, so a large fraction of the variability is between groups. In the <code>vgames_study</code> data, the condition effect on aggression is real but smaller relative to the within-condition variability, so the proportion explained by condition is smaller.</span></label><label><input type="radio" autocomplete="off" name="radio_RYJTBHZBRU" value=""> <span>The arithmetic is different in the two cases.</span></label>
+<p><strong>7. Why does the same observed |t| = 2.5 give a smaller p-value at df = 200 than at df = 5?</strong></p>
+<div id="radio_BIZQHIIVTN" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_BIZQHIIVTN" value=""> <span>At df = 5 the p-value is larger because the procedure has less power to detect a real effect; the difference is purely about power and not about the shape of the reference distribution.</span></label><label><input type="radio" autocomplete="off" name="radio_BIZQHIIVTN" value=""> <span>At df = 200 the p-value is larger because the t distribution at high df becomes wider in the tails, making any given test statistic relatively less surprising than at small df.</span></label><label><input type="radio" autocomplete="off" name="radio_BIZQHIIVTN" value=""> <span>The p-values are essentially equal because the t and z distributions converge in the tails, regardless of the value of df chosen for the comparison procedure.</span></label><label><input type="radio" autocomplete="off" name="radio_BIZQHIIVTN" value="answer"> <span>At df = 5 the t distribution has heavier tails, so a |t| of 2.5 is more likely under H0 than at df = 200; the same test statistic therefore yields a larger p-value at df = 5 (about 0.05) than at df = 200 (about 0.01).</span></label>
+</div>
+<p><strong>8. In what sense is the F distribution a “ratio” distribution?</strong></p>
+<div id="radio_KXTVXHYRCR" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_KXTVXHYRCR" value=""> <span>An F distribution describes the sampling distribution of a single regression coefficient under the null that the population value of that coefficient is exactly zero across all replications.</span></label><label><input type="radio" autocomplete="off" name="radio_KXTVXHYRCR" value=""> <span>An F distribution describes the sampling distribution of the residuals of a fitted regression model around the OLS line, accounting for the model's degrees of freedom.</span></label><label><input type="radio" autocomplete="off" name="radio_KXTVXHYRCR" value="answer"> <span>An F distribution describes the sampling distribution of a ratio of two variance estimates under the null; it is right-skewed and is parameterized by two df values (numerator and denominator).</span></label><label><input type="radio" autocomplete="off" name="radio_KXTVXHYRCR" value=""> <span>An F distribution describes the joint sampling distribution of all the residuals in a multilevel model and is used to derive standard errors for the random-effect variance components.</span></label>
+</div>
+<p><strong>9. Why do the assumptions of a test matter for the validity of its p-value?</strong></p>
+<div id="radio_MRUKWBTBRH" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MRUKWBTBRH" value=""> <span>Assumptions are administrative paperwork required by some journals, with no real effect on the validity of the p-value computed by the software.</span></label><label><input type="radio" autocomplete="off" name="radio_MRUKWBTBRH" value="answer"> <span>The reference distributions z, t, F are derived under specific assumptions; when those assumptions are violated, the reference distribution may not match the actual sampling distribution of the test statistic, and the reported p-value may not mean what the formula says it means.</span></label><label><input type="radio" autocomplete="off" name="radio_MRUKWBTBRH" value=""> <span>Assumptions matter only for small samples; for samples of any reasonable size, the law of large numbers makes the p-value valid regardless of how the data were collected.</span></label><label><input type="radio" autocomplete="off" name="radio_MRUKWBTBRH" value=""> <span>Assumptions are only relevant for Bayesian inference; in frequentist hypothesis testing the test statistic and the reference distribution are robust to any kind of assumption violation.</span></label>
+</div>
+<p><strong>10. What is the “information budget” view of degrees of freedom?</strong></p>
+<div id="radio_EQUPIOVKHK" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_EQUPIOVKHK" value=""> <span>Each parameter estimated from the data adds to the available pool of information, so the model with more predictors always has more df left over for inference about each parameter.</span></label><label><input type="radio" autocomplete="off" name="radio_EQUPIOVKHK" value="answer"> <span>Each parameter estimated from the data spends one piece of the original independent information; df is what is left, controls the shape of the reference distribution, and shrinks as more parameters are estimated.</span></label><label><input type="radio" autocomplete="off" name="radio_EQUPIOVKHK" value=""> <span>Df is fixed at n - 1 for any analysis that uses the sample mean, regardless of how many additional parameters such as slopes or interaction terms are estimated by the model.</span></label><label><input type="radio" autocomplete="off" name="radio_EQUPIOVKHK" value=""> <span>Df is the same as the standard error in modern statistical software, and reporting one of the two is sufficient when describing the precision of a coefficient in a research paper.</span></label>
 </div>
 </section>
-<section id="references" class="level2" data-number="14.13">
-<h2 data-number="14.13" class="anchored" data-anchor-id="references"><span class="header-section-number">14.13</span> References</h2>
-<p>Navarro, D. J. (2018). <em>Learning statistics with R: A tutorial for psychology students and other beginners</em> (Version 0.6). <a href="https://learningstatisticswithr.com" class="uri">https://learningstatisticswithr.com</a></p>
-<p>Williams, K. D., &amp; Jarvis, B. (2006). Cyberball: A program for use in research on interpersonal ostracism and acceptance. <em>Behavior Research Methods</em>, <em>38</em>(1), 174-180.</p>
+<section id="references" class="level2" data-number="23.10">
+<h2 data-number="23.10" class="anchored" data-anchor-id="references"><span class="header-section-number">23.10</span> References</h2>
+<p>Lakens, D. (2022). <em>Improving your statistical inferences</em>. Chapter 1, “Using p-values to test a hypothesis.” <a href="https://lakens.github.io/statistical_inferences/01-pvalue.html" class="uri">https://lakens.github.io/statistical_inferences/01-pvalue.html</a></p>
+<p>Navarro, D. J. (2018). <em>Learning statistics with R: A tutorial for psychology students and other beginners</em> (Version 0.6), Chapter 13 (“Comparing two means”). <a href="https://learningstatisticswithr.com" class="uri">https://learningstatisticswithr.com</a></p>
 
 
 </section>
@@ -1594,13 +1571,13 @@ window.onload = function() {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./13-data-and-models.html" class="pagination-link" aria-label="Data and the idea of a statistical model">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data and the idea of a statistical model</span></span>
+      <a href="./22-pvalues-fisher-neyman-pearson.html" class="pagination-link" aria-label="P-values, Fisher, and Neyman-Pearson">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">P-values, Fisher, and Neyman-Pearson</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./15-simple-linear-model.html" class="pagination-link" aria-label="From the mean to the line: the simple linear model">
-        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">From the mean to the line: the simple linear model</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./24-decisions-errors-power-sesoi.html" class="pagination-link" aria-label="Decisions, errors, power, and SESOI">
+        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and SESOI</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1609,4 +1586,4 @@ window.onload = function() {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/14-mean-as-model.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/23-test-statistics-and-df.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>25&nbsp; Two roles, multiple testing, and pre-registration – Understanding and analyzing social and behavioral data</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./24-decisions-errors-power-sesoi.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-d685995fa19fd69abfd2845f2861e92b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="include/webex.css">
+<link rel="stylesheet" href="include/custom.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21-why-inference.html">Section 4: Statistical Inference</a></li><li class="breadcrumb-item"><a href="./25-two-roles-multiple-testing.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two roles, multiple testing, and pre-registration</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Understanding and analyzing social and behavioral data</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/Y45HV1N/intro-data-analysis" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 1: Getting Started Properly</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-basics-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What is R, and why use it?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-r-vs-rstudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R, RStudio, and how they relate</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-files-and-environment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Scripts, RData, projects, environments, and R Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-projects-and-sessions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Working with R projects and R sessions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-objects-and-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Objects and functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-operations-and-packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Basic operations, custom functions, and packages</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-recap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Recap and getting data into R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 2: Manipulating and Visualizing Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-data-wrangling-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data wrangling: basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-tidyverse-and-descriptives.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wrangling and describing data with the tidyverse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-data-visualization-principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">First principles of data visualization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-wrangling-for-psychology.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Wrangling for psychology research</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-advanced-wrangling-optional.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Advanced wrangling (optional)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 3: Statistical Modeling — Regressions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-data-and-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data and the idea of a statistical model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-mean-as-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The mean as a model: residuals, fit, and comparing models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-simple-linear-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">From the mean to the line: the simple linear model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-fitting-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Fitting and interpreting simple regression in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-multiple-and-categorical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Multiple regression and categorical predictors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-moderation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Moderation: when one predictor depends on another</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-bias-variance-assumptions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Bias, variance, and the assumptions of the linear model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-diagnostics-and-limits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Diagnostics, model fit, and the limits of your model</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 4: Statistical Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-why-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Why inference? Samples, populations, and the standard error</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-pvalues-fisher-neyman-pearson.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">P-values, Fisher, and Neyman-Pearson</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-test-statistics-and-df.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The inferential machinery: test statistics, z/t/F, and degrees of freedom</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24-decisions-errors-power-sesoi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and SESOI</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25-two-roles-multiple-testing.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two roles, multiple testing, and pre-registration</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#where-we-are" id="toc-where-we-are" class="nav-link active" data-scroll-target="#where-we-are"><span class="header-section-number">25.1</span> Where we are</a></li>
+  <li><a href="#the-two-roles" id="toc-the-two-roles" class="nav-link" data-scroll-target="#the-two-roles"><span class="header-section-number">25.2</span> The two roles</a>
+  <ul class="collapse">
+  <li><a href="#the-analyst" id="toc-the-analyst" class="nav-link" data-scroll-target="#the-analyst"><span class="header-section-number">25.2.1</span> The analyst</a></li>
+  <li><a href="#the-claim-maker" id="toc-the-claim-maker" class="nav-link" data-scroll-target="#the-claim-maker"><span class="header-section-number">25.2.2</span> The claim-maker</a></li>
+  <li><a href="#both-roles-same-person-same-data" id="toc-both-roles-same-person-same-data" class="nav-link" data-scroll-target="#both-roles-same-person-same-data"><span class="header-section-number">25.2.3</span> Both roles, same person, same data</a></li>
+  </ul></li>
+  <li><a href="#why-the-framework-requires-a-fixed-procedure" id="toc-why-the-framework-requires-a-fixed-procedure" class="nav-link" data-scroll-target="#why-the-framework-requires-a-fixed-procedure"><span class="header-section-number">25.3</span> Why the framework requires a fixed procedure</a></li>
+  <li><a href="#alpha-inflation-the-math" id="toc-alpha-inflation-the-math" class="nav-link" data-scroll-target="#alpha-inflation-the-math"><span class="header-section-number">25.4</span> Alpha inflation: the math</a>
+  <ul class="collapse">
+  <li><a href="#two-layers-of-p-value-interpretation" id="toc-two-layers-of-p-value-interpretation" class="nav-link" data-scroll-target="#two-layers-of-p-value-interpretation"><span class="header-section-number">25.4.1</span> Two layers of p-value interpretation</a></li>
+  </ul></li>
+  <li><a href="#multiple-testing-corrections" id="toc-multiple-testing-corrections" class="nav-link" data-scroll-target="#multiple-testing-corrections"><span class="header-section-number">25.5</span> Multiple-testing corrections</a>
+  <ul class="collapse">
+  <li><a href="#bonferroni-the-conservative-classic" id="toc-bonferroni-the-conservative-classic" class="nav-link" data-scroll-target="#bonferroni-the-conservative-classic"><span class="header-section-number">25.5.1</span> Bonferroni: the conservative classic</a></li>
+  <li><a href="#holm-same-control-less-conservative" id="toc-holm-same-control-less-conservative" class="nav-link" data-scroll-target="#holm-same-control-less-conservative"><span class="header-section-number">25.5.2</span> Holm: same control, less conservative</a></li>
+  <li><a href="#benjamini-hochberg-a-different-target" id="toc-benjamini-hochberg-a-different-target" class="nav-link" data-scroll-target="#benjamini-hochberg-a-different-target"><span class="header-section-number">25.5.3</span> Benjamini-Hochberg: a different target</a></li>
+  <li><a href="#which-correction-to-use-summarized" id="toc-which-correction-to-use-summarized" class="nav-link" data-scroll-target="#which-correction-to-use-summarized"><span class="header-section-number">25.5.4</span> Which correction to use, summarized</a></li>
+  </ul></li>
+  <li><a href="#ioannidis-and-the-positive-predictive-value" id="toc-ioannidis-and-the-positive-predictive-value" class="nav-link" data-scroll-target="#ioannidis-and-the-positive-predictive-value"><span class="header-section-number">25.6</span> Ioannidis and the positive predictive value</a></li>
+  <li><a href="#exploratory-vs-confirmatory-analysis-in-full" id="toc-exploratory-vs-confirmatory-analysis-in-full" class="nav-link" data-scroll-target="#exploratory-vs-confirmatory-analysis-in-full"><span class="header-section-number">25.7</span> Exploratory vs confirmatory analysis, in full</a>
+  <ul class="collapse">
+  <li><a href="#the-six-step-argument" id="toc-the-six-step-argument" class="nav-link" data-scroll-target="#the-six-step-argument"><span class="header-section-number">25.7.1</span> The six-step argument</a></li>
+  <li><a href="#honestly-quantified" id="toc-honestly-quantified" class="nav-link" data-scroll-target="#honestly-quantified"><span class="header-section-number">25.7.2</span> “Honestly quantified”</a></li>
+  </ul></li>
+  <li><a href="#pre-registration" id="toc-pre-registration" class="nav-link" data-scroll-target="#pre-registration"><span class="header-section-number">25.8</span> Pre-registration</a>
+  <ul class="collapse">
+  <li><a href="#what-pre-registration-is" id="toc-what-pre-registration-is" class="nav-link" data-scroll-target="#what-pre-registration-is"><span class="header-section-number">25.8.1</span> What pre-registration is</a></li>
+  <li><a href="#why-pre-registration" id="toc-why-pre-registration" class="nav-link" data-scroll-target="#why-pre-registration"><span class="header-section-number">25.8.2</span> Why pre-registration</a></li>
+  <li><a href="#what-pre-registration-is-not" id="toc-what-pre-registration-is-not" class="nav-link" data-scroll-target="#what-pre-registration-is-not"><span class="header-section-number">25.8.3</span> What pre-registration is not</a></li>
+  <li><a href="#pre-registration-is-sufficient-but-not-strictly-necessary" id="toc-pre-registration-is-sufficient-but-not-strictly-necessary" class="nav-link" data-scroll-target="#pre-registration-is-sufficient-but-not-strictly-necessary"><span class="header-section-number">25.8.4</span> Pre-registration is sufficient but not strictly necessary</a></li>
+  </ul></li>
+  <li><a href="#p-hacking-harking-and-the-garden-of-forking-paths" id="toc-p-hacking-harking-and-the-garden-of-forking-paths" class="nav-link" data-scroll-target="#p-hacking-harking-and-the-garden-of-forking-paths"><span class="header-section-number">25.9</span> P-hacking, HARKing, and the garden of forking paths</a></li>
+  <li><a href="#closing-section-4" id="toc-closing-section-4" class="nav-link" data-scroll-target="#closing-section-4"><span class="header-section-number">25.10</span> Closing Section 4</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">25.11</span> Check your understanding</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">25.12</span> References</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/25-two-roles-multiple-testing.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21-why-inference.html">Section 4: Statistical Inference</a></li><li class="breadcrumb-item"><a href="./25-two-roles-multiple-testing.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two roles, multiple testing, and pre-registration</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two roles, multiple testing, and pre-registration</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="where-we-are" class="level2" data-number="25.1">
+<h2 data-number="25.1" class="anchored" data-anchor-id="where-we-are"><span class="header-section-number">25.1</span> Where we are</h2>
+<p>The last four chapters built up the machinery of statistical inference, both its concepts (Chapter 21), its philosophies (Chapter 22), its mathematical apparatus (Chapter 23), and its decision-theoretic structure (Chapter 24). Throughout, we have written as if the researcher runs a single, pre-specified test on a fresh sample with a single hypothesis derived from a clear rationale. That is the idealized case for which the Neyman-Pearson framework’s calibrated error rates apply cleanly.</p>
+<p>Real research is messier. A real dataset has many possible variables, many possible analyses, many possible exclusion rules. The researcher who collected it has their own intuitions and theories, which are influenced (often unconsciously) by what the data look like. The space of analyses that <em>could</em> be run on the dataset is large; the space of analyses that <em>will</em> be reported in the paper is small. Connecting those two spaces honestly is one of the hardest methodological problems in empirical science.</p>
+<p>This chapter is about that connection. By the end of the chapter you will know:</p>
+<ul>
+<li>the <strong>two roles</strong> a researcher plays in any data analysis: the <strong>analyst</strong>, who explores, and the <strong>claim-maker</strong>, who commits to inferences,</li>
+<li>why Neyman-Pearson’s calibrated error rate breaks the moment the procedure is shaped by the data,</li>
+<li>the math and the intuition of <strong>alpha inflation</strong> when many tests are run,</li>
+<li>three families of <strong>multiple-testing corrections</strong> (Bonferroni, Holm, Benjamini-Hochberg) and how to choose between them,</li>
+<li>the <strong>positive predictive value</strong> (PPV) framework introduced by Ioannidis, which gives a chilling answer to the question “what fraction of published positive findings are actually true,”</li>
+<li>the difference between <strong>exploratory</strong> and <strong>confirmatory</strong> analysis when both are seen through the lens of the two roles,</li>
+<li><strong>pre-registration</strong> as the technology that lets researchers maintain both honestly,</li>
+<li>and the visible failure modes of misuse: <strong>p-hacking</strong>, <strong>HARKing</strong>, and the “garden of forking paths.”</li>
+</ul>
+<p>This chapter closes Section 4. By its end, you will have a complete framework for reading p-values critically and designing studies that produce calibrated, interpretable inferences.</p>
+</section>
+<section id="the-two-roles" class="level2" data-number="25.2">
+<h2 data-number="25.2" class="anchored" data-anchor-id="the-two-roles"><span class="header-section-number">25.2</span> The two roles</h2>
+<p>A single researcher, working with a single dataset, plays two epistemically different roles. The same person, the same data. But the standards differ.</p>
+<section id="the-analyst" class="level3" data-number="25.2.1">
+<h3 data-number="25.2.1" class="anchored" data-anchor-id="the-analyst"><span class="header-section-number">25.2.1</span> The analyst</h3>
+<p>The analyst is the researcher exploring the data. The analyst’s job is to find interesting patterns, generate ideas, follow leads. The analyst can run many tests, fit alternative models, try different exclusion rules, peek at p-values, and abandon dead ends. The analyst is allowed to be opportunistic. No rules constrain what the analyst can do, because the analyst is not yet making any claim to anyone.</p>
+<p>The output of the analyst’s work is <strong>hypotheses</strong>, not conclusions. If the analyst notices that violent video games seem to affect aggression more strongly among male participants than female ones, that is not yet a finding. It is a <em>candidate finding</em>, a pattern in this dataset that could be tested in a future, properly designed study.</p>
+<p>As long as no one is going to act on the analyst’s output, this kind of exploration is harmless. There are no false positives in a world where no one is making claims. Exploration is how science generates new ideas.</p>
+<p>This framing matters because it removes the moralism that often surrounds exploratory analysis in psychology. Exploration is not a sin. The problem is never exploration itself; the problem is exploration <em>disguised as confirmation</em>.</p>
+</section>
+<section id="the-claim-maker" class="level3" data-number="25.2.2">
+<h3 data-number="25.2.2" class="anchored" data-anchor-id="the-claim-maker"><span class="header-section-number">25.2.2</span> The claim-maker</h3>
+<p>The claim-maker is the researcher <em>offering an inference to the broader scientific community</em>. They are saying: “Based on this study, here is a conclusion that you can rely on for further action.” Other people, the reader of the paper, the policymaker reading the recommendation, the next researcher building on the finding, the practitioner deciding whether to adopt this intervention, will act on what the claim-maker says.</p>
+<p>Because other people will act, the claim-maker is bound by the Neyman-Pearson framework. They must pre-specify the procedure. They must accept the calibrated error rate. They must report the result honestly, whether it favors their hypothesis or not. The framework’s promise of calibrated long-run error rates only works if the procedure is fixed in advance and run as specified.</p>
+<p>The output of the claim-maker’s work is <strong>decisions</strong>: “We reject H₀ at α = .05,” or “We fail to reject H₀ at α = .05.” These are binary commitments that other people will rely on.</p>
+</section>
+<section id="both-roles-same-person-same-data" class="level3" data-number="25.2.3">
+<h3 data-number="25.2.3" class="anchored" data-anchor-id="both-roles-same-person-same-data"><span class="header-section-number">25.2.3</span> Both roles, same person, same data</h3>
+<p>In practice, the same researcher does both. They explore, then they confirm. They look at the data, generate hypotheses, design a follow-up, run the test, report the result. There is nothing wrong with this; it is how science works. What is required is that the two roles be <strong>kept separate in the report</strong>.</p>
+<p>A clean paper might contain both:</p>
+<ul>
+<li>A <strong>confirmatory section</strong> reporting pre-specified tests, with calibrated error rates.</li>
+<li>An <strong>exploratory section</strong> reporting whatever the researcher noticed in the data, clearly labeled as exploratory, with no claim to calibrated p-values.</li>
+</ul>
+<p>Both sections can appear in the same paper. They serve different functions. The reader knows what to trust and what to read as suggestive.</p>
+<p>The key technology that lets a researcher inhabit both roles cleanly is <strong>pre-registration</strong>, which we develop in detail later in this chapter.</p>
+</section>
+</section>
+<section id="why-the-framework-requires-a-fixed-procedure" class="level2" data-number="25.3">
+<h2 data-number="25.3" class="anchored" data-anchor-id="why-the-framework-requires-a-fixed-procedure"><span class="header-section-number">25.3</span> Why the framework requires a fixed procedure</h2>
+<p>The Neyman-Pearson promise of calibrated error rates is a promise about a particular kind of object: a <strong>procedure</strong>. Not a finding, not a discovery, not an analysis. A procedure.</p>
+<p>A procedure is the full specification of what you are going to do, written before you see the data. It includes:</p>
+<ul>
+<li>The hypothesis you will test.</li>
+<li>The statistic you will compute.</li>
+<li>The α level you will use.</li>
+<li>The decision rule (reject if p &lt; α).</li>
+<li>Implicitly, every choice you have made about how to clean, transform, and analyze the data.</li>
+</ul>
+<p>The 5% calibration says this: if you run THIS PROCEDURE, with the null actually true, you will reject in about 5% of the long-run repetitions. That is the long-run frequency the framework is built on.</p>
+<p>The catch is that <strong>the procedure must be a fixed object, specified independently of the data</strong>. The moment the procedure depends on the data, the framework’s guarantees disintegrate.</p>
+<p>What does “the procedure depends on the data” look like in practice? It looks like:</p>
+<ul>
+<li>Looking at the data and then deciding which variables to include.</li>
+<li>Trying several analyses and reporting the one with the smallest p-value.</li>
+<li>Removing observations after seeing how they affect the result.</li>
+<li>Splitting the sample by a covariate after noticing it looks interesting.</li>
+<li>Adding control variables after the first analysis was not significant.</li>
+<li>Changing α after seeing the p-value (“p = .07 is close enough”).</li>
+<li>Stopping data collection when the result looks favorable, or continuing until it does.</li>
+</ul>
+<p>Each of these turns the procedure from a fixed object into a function of the data. The moment the procedure is a function of the data, its actual long-run false-positive rate is no longer α. It is <strong>higher</strong>, often dramatically so.</p>
+<p>The math is unforgiving here. We are about to see exactly how much higher.</p>
+</section>
+<section id="alpha-inflation-the-math" class="level2" data-number="25.4">
+<h2 data-number="25.4" class="anchored" data-anchor-id="alpha-inflation-the-math"><span class="header-section-number">25.4</span> Alpha inflation: the math</h2>
+<p>If you run a single test at α = .05, you accept a 5% false-positive risk for that test. If you run <em>several</em> tests, each at α = .05, on data where the null is true for all of them, what is the probability that at least one rejects?</p>
+<p>Assume the tests are independent. The probability that any one test does NOT reject is (1 − α) = 0.95. The probability that all k tests do not reject is (1 − α)^k. The probability that at least one rejects, just by chance, is:</p>
+<p><span class="math display">\[
+P(\text{at least one false positive}) = 1 - (1 - \alpha)^k.
+\]</span></p>
+<p>This is the <strong>family-wise error rate</strong>, the chance that the family of tests produces at least one false positive when all nulls are true.</p>
+<p>For α = .05:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="25-two-roles-multiple-testing_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The dashed green line at .05 is your intended false-positive rate. The blue curve is the actual family-wise rate. The two coincide only at k = 1. At k = 5 tests, the actual rate is already about 23%. At k = 10, about 40%. At k = 20, about 64%. At k = 100, about 99%.</p>
+<p>By 100 tests, you are essentially certain to have at least one false positive, even if every null is true. By 20 tests, you are more likely than not. By 5 tests, you have nearly five times the rate you committed to.</p>
+<p>This is what the “consumption” metaphor of alpha captures: each test consumes some of the family-wise tolerance for false positives. Run enough tests and the tolerance is exhausted.</p>
+<section id="two-layers-of-p-value-interpretation" class="level3" data-number="25.4.1">
+<h3 data-number="25.4.1" class="anchored" data-anchor-id="two-layers-of-p-value-interpretation"><span class="header-section-number">25.4.1</span> Two layers of p-value interpretation</h3>
+<p>A single p-value, in isolation, has its standard interpretation: the probability of data this extreme under H₀, given that this is the test that was run.</p>
+<p>The same p-value, embedded in a <em>family</em> of tests, no longer corresponds to a 5%-false-positive procedure. A p of .03 in isolation is moderately surprising under the null. The same p of .03, as one of twenty tests run on the data, is unsurprising; you would expect about one such result by chance.</p>
+<p>Whether a p-value is “real evidence” depends on <strong>how many tests were run</strong>, not on the p-value alone.</p>
+</section>
+</section>
+<section id="multiple-testing-corrections" class="level2" data-number="25.5">
+<h2 data-number="25.5" class="anchored" data-anchor-id="multiple-testing-corrections"><span class="header-section-number">25.5</span> Multiple-testing corrections</h2>
+<p>A <strong>correction</strong> is a tool for translating between the per-test rate (α) and the family-wise rate. It lets us preserve a target family-wise error rate while still running multiple tests.</p>
+<p>We will introduce three procedures: Bonferroni (the simplest), Holm (a refinement of Bonferroni), and Benjamini-Hochberg (which controls a slightly different quantity). The differences matter, and they connect to different research situations.</p>
+<section id="bonferroni-the-conservative-classic" class="level3" data-number="25.5.1">
+<h3 data-number="25.5.1" class="anchored" data-anchor-id="bonferroni-the-conservative-classic"><span class="header-section-number">25.5.1</span> Bonferroni: the conservative classic</h3>
+<p>The Bonferroni correction is the simplest. To control the family-wise error rate at α across k tests, you compare each individual p-value to α / k instead of α.</p>
+<p><strong>Intuition.</strong> You started with a 5% tolerance for false positives. Divide that tolerance equally among your k tests, and each test gets 5% / k. Across all k tests, the false-positive rate stays bounded by the original 5%.</p>
+<p><strong>A worked example.</strong> Imagine a study where you run 5 tests at α = .05.</p>
+<ul>
+<li>Without correction: each test uses α = .05. Family-wise rate is about 23%.</li>
+<li>With Bonferroni: each test uses α = .05 / 5 = .01. Family-wise rate stays at most .05.</li>
+</ul>
+<p>Concretely, suppose your five tests produced p-values of .03, .015, .002, .12, and .80. Under the uncorrected rule (α = .05), you would reject three of them. Under Bonferroni (α / 5 = .01), you would reject only one (the p = .002). The other two (.03 and .015) are still notable in isolation, but in the context of running 5 tests at once, they do not clear the corrected threshold.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pvals <span class="ot">&lt;-</span> <span class="fu">c</span>(.<span class="dv">03</span>, .<span class="dv">015</span>, .<span class="dv">002</span>, .<span class="dv">12</span>, .<span class="dv">80</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Reject under uncorrected rule:</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(pvals <span class="sc">&lt;</span> .<span class="dv">05</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2 3</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reject under Bonferroni at family-wise alpha = .05:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(pvals <span class="sc">&lt;</span> .<span class="dv">05</span> <span class="sc">/</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Or in R using p.adjust:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">p.adjust</span>(pvals, <span class="at">method =</span> <span class="st">"bonferroni"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.150 0.075 0.010 0.600 1.000</code></pre>
+</div>
+</div>
+<p>The function <code>p.adjust()</code> returns the adjusted p-values: the originals multiplied by the number of tests (capped at 1.0). You can then compare the adjusted p-values directly to your original α.</p>
+<p><strong>When Bonferroni is appropriate.</strong> When any single false positive in the family of tests is a serious problem. For example: the primary outcomes of a clinical trial, where one false positive could lead to approving a treatment that does not work; the conclusions of a regulatory decision, where the stakes of error are high.</p>
+<p><strong>The cost of Bonferroni.</strong> It is conservative. Splitting α equally across k tests makes each individual test much less powerful. With 20 tests, each test runs at α = .0025, which is a stringent threshold. Real effects below that threshold will be missed.</p>
+</section>
+<section id="holm-same-control-less-conservative" class="level3" data-number="25.5.2">
+<h3 data-number="25.5.2" class="anchored" data-anchor-id="holm-same-control-less-conservative"><span class="header-section-number">25.5.2</span> Holm: same control, less conservative</h3>
+<p>The Holm correction is a sequential refinement of Bonferroni. The idea is the same (control family-wise α at .05), but the math is less wasteful.</p>
+<p><strong>Procedure.</strong> Sort the p-values from smallest to largest. Compare the smallest to α / k. If it is significant, compare the next smallest to α / (k − 1). Continue down the ladder; the j-th smallest p-value is compared to α / (k − j + 1). Stop the first time a comparison fails: from that point on, do not reject.</p>
+<p><strong>Intuition.</strong> If you have already “used up” some of your testing budget on the smallest p-values, the remaining budget is shared across fewer tests, so the threshold for each subsequent test is less strict. The total family-wise rate is still bounded by α, but each individual test can use a larger threshold than in pure Bonferroni.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">p.adjust</span>(pvals, <span class="at">method =</span> <span class="st">"holm"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.09 0.06 0.01 0.24 0.80</code></pre>
+</div>
+</div>
+<p>In our example, Holm and Bonferroni give similar results (mostly the same rejections), but Holm has slightly more power: where Bonferroni rejects only the smallest p-value, Holm may reject one or two more, depending on the gaps between the sorted p-values.</p>
+<p><strong>When Holm is appropriate.</strong> Anywhere Bonferroni is appropriate. Holm controls the same quantity (family-wise α) with a small power gain. Most modern multiple-comparison guidance recommends Holm over Bonferroni for this reason.</p>
+</section>
+<section id="benjamini-hochberg-a-different-target" class="level3" data-number="25.5.3">
+<h3 data-number="25.5.3" class="anchored" data-anchor-id="benjamini-hochberg-a-different-target"><span class="header-section-number">25.5.3</span> Benjamini-Hochberg: a different target</h3>
+<p>Benjamini-Hochberg (often abbreviated BH or FDR) controls a different quantity. Instead of the family-wise error rate, it controls the <strong>false discovery rate</strong>: the expected proportion of false positives <em>among the tests we reject</em>.</p>
+<p><strong>The distinction.</strong> Family-wise error rate asks: what is the probability that at least one of my rejections is false? FDR asks: of my rejections, what fraction can I expect to be false?</p>
+<p>These are different questions with different answers. The family-wise rate is more conservative; if you have 100 tests and want to be 95% sure none of your rejections is false, Bonferroni or Holm forces a strict per-test threshold. FDR is more permissive; if you have 100 tests and reject 20 of them, controlling FDR at 5% means you expect about 1 of those 20 to be false, which is a different (and more lenient) standard.</p>
+<p><strong>Procedure.</strong> Sort p-values from smallest to largest. The j-th smallest p-value is compared to (j / k) × α. Find the largest j for which p ≤ (j / k) × α; reject all p-values up to that one.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">p.adjust</span>(pvals, <span class="at">method =</span> <span class="st">"BH"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0500 0.0375 0.0100 0.1500 0.8000</code></pre>
+</div>
+</div>
+<p><strong>When BH is appropriate.</strong> When you are screening many hypotheses and accepting a small proportion of false discoveries is tolerable. The canonical example is genomics: a study tests tens of thousands of genes for differential expression; controlling family-wise α at .05 across 20,000 tests would make every per-test threshold absurdly strict (α / 20,000 = .0000025), and very few real effects would be detected. FDR is more useful here: of the 100 genes you flag as differentially expressed, you expect about 5 to be false, which is reasonable for an exploratory screen.</p>
+<p>In psychology, BH is appropriate when you have many secondary outcomes and the goal is to flag candidates for follow-up, not to make irrevocable decisions. Bonferroni or Holm is appropriate when each test corresponds to a decision that matters individually.</p>
+</section>
+<section id="which-correction-to-use-summarized" class="level3" data-number="25.5.4">
+<h3 data-number="25.5.4" class="anchored" data-anchor-id="which-correction-to-use-summarized"><span class="header-section-number">25.5.4</span> Which correction to use, summarized</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 19%">
+<col style="width: 57%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Goal</th>
+<th>Correction</th>
+<th>Family-wise alpha controlled?</th>
+<th>Power</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Strict family-wise control; any false positive matters</td>
+<td>Bonferroni</td>
+<td>Yes</td>
+<td>Lowest</td>
+</tr>
+<tr class="even">
+<td>Strict family-wise control with slightly more power</td>
+<td>Holm</td>
+<td>Yes</td>
+<td>Higher than Bonferroni</td>
+</tr>
+<tr class="odd">
+<td>Control the proportion of false discoveries among rejections</td>
+<td>Benjamini-Hochberg (FDR)</td>
+<td>No (different target)</td>
+<td>Highest of the three</td>
+</tr>
+</tbody>
+</table>
+<p>The choice depends on the cost of false positives. If a single false positive is costly (a clinical recommendation, a primary outcome in a trial), use Holm or Bonferroni. If you are screening many candidates and a small false-positive rate among rejections is acceptable, use BH.</p>
+</section>
+</section>
+<section id="ioannidis-and-the-positive-predictive-value" class="level2" data-number="25.6">
+<h2 data-number="25.6" class="anchored" data-anchor-id="ioannidis-and-the-positive-predictive-value"><span class="header-section-number">25.6</span> Ioannidis and the positive predictive value</h2>
+<p>We now look at multiple testing from a different angle. Instead of asking “what is the false-positive rate of the procedure,” we ask: <strong>of the published results that report a “significant” finding, what fraction are actually true?</strong></p>
+<p>This is the question John Ioannidis famously posed in his 2005 paper <em>Why Most Published Research Findings Are False</em>. The answer he developed depends on three quantities:</p>
+<ul>
+<li><strong>The prior probability</strong> that any given hypothesis being tested is actually true. Call this <strong>R / (R + 1)</strong>, where R is the ratio of true effects to null effects in the research field. If 1 in 10 hypotheses tested is actually true, R = 0.1 and the prior is about 9%.</li>
+<li><strong>The power</strong> of the studies in the field (1 − β).</li>
+<li><strong>The alpha level</strong> they use (α).</li>
+</ul>
+<p>The <strong>positive predictive value</strong> (PPV) is the probability that a finding reported as significant is actually a true effect:</p>
+<p><span class="math display">\[
+\text{PPV} = \frac{(1 - \beta) \cdot R}{(1 - \beta) \cdot R + \alpha}.
+\]</span></p>
+<p>Let’s plug in some realistic numbers. Suppose:</p>
+<ul>
+<li>The field tests many hypotheses, but only about 1 in 10 reflects a true effect (R = 0.1).</li>
+<li>The typical study has 50% power (a commonly observed value for psychology).</li>
+<li>α = .05.</li>
+</ul>
+<p>Then:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="fl">0.1</span>     <span class="co"># 1 true effect for every 10 hypotheses tested</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>power <span class="ot">&lt;-</span> <span class="fl">0.50</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>ppv <span class="ot">&lt;-</span> (power <span class="sc">*</span> R) <span class="sc">/</span> (power <span class="sc">*</span> R <span class="sc">+</span> alpha)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>ppv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5</code></pre>
+</div>
+</div>
+<p><strong>About 50%.</strong> Half of the “significant” findings published in such a field are actually true. The other half are false positives, even though every study used α = .05.</p>
+<p>If power is lower (say 30%) and the field tests broader, more speculative hypotheses (R = 0.05), the PPV drops below 25%. Most published positives are false. Ioannidis used calculations like this to argue that the published literature in many fields is heavily polluted by false positives.</p>
+<p>A few things make the picture worse than even these numbers suggest:</p>
+<ul>
+<li><strong>Multiple testing.</strong> If researchers run several tests and report only the significant one (as we have just seen), the effective α is higher than .05. This further reduces PPV.</li>
+<li><strong>Publication bias.</strong> Significant results are more likely to be published than non-significant ones. This selectively elevates false positives in the published record.</li>
+<li><strong>Researcher degrees of freedom.</strong> Choices made after seeing the data (which variables to include, which exclusion rules to apply) inflate the actual false-positive rate beyond .05.</li>
+</ul>
+<p>The PPV framework is a useful lens. The headline number is not the per-test α; it is the proportion of published “significant” results that actually reflect a real effect, and that proportion depends on power, on the prior plausibility of the hypotheses, and on the discipline of the procedures used.</p>
+<p>A short video by Veritasium summarizes the basics of PPV and the Ioannidis argument; it is a useful complement to the formal treatment above.</p>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/42QuXLucH3Q" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<p>The practical takeaway: a published “p &lt; .05” is not by itself a strong claim about truth. It is a piece of evidence whose strength depends on the prior plausibility of the hypothesis, the power of the study, and whether the procedure was fixed in advance.</p>
+</section>
+<section id="exploratory-vs-confirmatory-analysis-in-full" class="level2" data-number="25.7">
+<h2 data-number="25.7" class="anchored" data-anchor-id="exploratory-vs-confirmatory-analysis-in-full"><span class="header-section-number">25.7</span> Exploratory vs confirmatory analysis, in full</h2>
+<p>We now have all the pieces to develop a careful version of the exploratory-confirmatory distinction we sketched in Chapter 22.</p>
+<section id="the-six-step-argument" class="level3" data-number="25.7.1">
+<h3 data-number="25.7.1" class="anchored" data-anchor-id="the-six-step-argument"><span class="header-section-number">25.7.1</span> The six-step argument</h3>
+<p>To see why the distinction matters, walk through the following six steps. The argument is not technical, but each step has to be made deliberately, because skipping any of them is where the confusion lives.</p>
+<p><strong>Step 1: what the p-value is.</strong> A p-value is the probability of data this extreme or more, under H₀, <strong>given the procedure that was run</strong>. The “given the procedure” is doing a lot of work. The p-value’s mathematical meaning depends on a specific assumed procedure. The formula computes the tail area of a reference distribution under that procedure.</p>
+<p><strong>Step 2: what “procedure” means.</strong> A procedure is the full specification of the test. It includes the hypothesis being tested, the statistic being computed, the sample being analyzed, the variables being included, the exclusion rules, and the decision rule. A procedure is specified <strong>before</strong> you see the data. It is a plan, not a description of what you ended up doing.</p>
+<p><strong>Step 3: what happens when you explore.</strong> When researchers explore, they do not commit to a procedure in advance. They look at the data, then choose what to test, then report the result. The choice of test depends on the data. The procedure was a function of the data.</p>
+<p><strong>Step 4: the p-value math assumes a fixed procedure.</strong> The math behind the p-value works only if the procedure is fixed independently of the data. When the procedure depends on the data, the <em>correct</em> reference distribution to use is wider than the one the formula assumes, because it would have to account for all the ways the researcher could have chosen the test, not just the one they actually chose.</p>
+<p><strong>Step 5: what the reported p-value actually reflects.</strong> In an exploratory analysis, the reported p-value does not have the meaning its formula assigns. It is something more like “across the many tests I could have run, this is the one with the smallest p-value.” Reporting it as if it were the only test you intended misrepresents the calibration.</p>
+<p><strong>Step 6: the result.</strong> A confirmatory p-value of .03 has the calibrated meaning the formula says it has: the reader can update beliefs accordingly. An exploratory p-value of .03 looks identical on the page but does not have the calibrated meaning. The reader cannot tell from the printed text which one they are looking at. That is exactly why some external mechanism is required to communicate the difference.</p>
+</section>
+<section id="honestly-quantified" class="level3" data-number="25.7.2">
+<h3 data-number="25.7.2" class="anchored" data-anchor-id="honestly-quantified"><span class="header-section-number">25.7.2</span> “Honestly quantified”</h3>
+<p>We have been using the phrase “calibrated” a lot. Let us make it precise.</p>
+<p>A p-value of .03 is <strong>honestly quantified</strong> if the procedure that produced it has an actual long-run rejection rate of about 3% when H₀ is true. The stated probability matches the actual frequency.</p>
+<p>An <strong>honest</strong> p-value comes from a procedure specified independently of the data. Pre-registration is the most credible way to demonstrate that, but it is not the only one. A hypothesis derived from theory and tested on new data, by a researcher who never looked at the data, is also honest. A pre-existing analytic protocol from a discipline, applied to new data, is honest.</p>
+<p>A p-value is <strong>dishonest</strong> when the procedure depends on the data. This happens whenever:</p>
+<ul>
+<li>The researcher saw the data before deciding the procedure.</li>
+<li>The researcher tried multiple analyses and reported the most favorable.</li>
+<li>The researcher changed exclusion rules after seeing the result.</li>
+<li>The researcher selected the hypothesis from a list after noticing which one looked promising.</li>
+<li>The researcher peeked at the data during collection and stopped when results looked good.</li>
+</ul>
+<p>The result is the same in each case: the p-value’s stated probability does not match the actual frequency. The number is real (it came from a real test on real data), but its meaning has been distorted by the procedure that produced it.</p>
+<blockquote class="blockquote">
+<p><strong>The central point.</strong> Pre-specification does NOT make findings more likely to be true. The same data, the same effect, the same analysis would produce the same numbers either way. What pre-specification does is make the surprise level <strong>calculable</strong>. In a pre-specified study, when you report p = .03, the number means what its formula claims. In an exploratory study, the reported p = .03 is not a meaningful probability statement.</p>
+</blockquote>
+</section>
+</section>
+<section id="pre-registration" class="level2" data-number="25.8">
+<h2 data-number="25.8" class="anchored" data-anchor-id="pre-registration"><span class="header-section-number">25.8</span> Pre-registration</h2>
+<p>We have been talking around pre-registration for several chapters. Time to specify it.</p>
+<section id="what-pre-registration-is" class="level3" data-number="25.8.1">
+<h3 data-number="25.8.1" class="anchored" data-anchor-id="what-pre-registration-is"><span class="header-section-number">25.8.1</span> What pre-registration is</h3>
+<p>A <strong>pre-registration</strong> is a public, time-stamped document that records, before data collection, exactly what the researcher plans to do. It includes:</p>
+<ul>
+<li>The research question.</li>
+<li>The hypotheses, stated explicitly.</li>
+<li>The sample size and stopping rule.</li>
+<li>The design (manipulations, control conditions).</li>
+<li>The variables that will be measured.</li>
+<li>The exclusion criteria.</li>
+<li>The exact analyses that will be run, including the statistical tests, the variables included, and the decision rules.</li>
+<li>The interpretation rules (what counts as supporting H₁, what counts as supporting H₀).</li>
+</ul>
+<p>It is submitted to a public registry such as the <strong>Open Science Framework</strong> (OSF) or <strong>AsPredicted</strong>, which time-stamps and archives it. Once the data are collected and the paper is eventually written, the pre-registration becomes part of the public record of the study.</p>
+<p>In the paper, the analyses listed in the pre-registration go in a <strong>confirmatory section</strong> with calibrated p-values. Anything not in the pre-registration goes in an <strong>exploratory section</strong>, clearly labeled as such, with no claim to calibrated p-values.</p>
+</section>
+<section id="why-pre-registration" class="level3" data-number="25.8.2">
+<h3 data-number="25.8.2" class="anchored" data-anchor-id="why-pre-registration"><span class="header-section-number">25.8.2</span> Why pre-registration</h3>
+<p>The reader’s perspective makes the case clear. A reader picks up a paper and is considering whether to update their beliefs, adopt an intervention, change a policy. They are about to act on the claim. What do they need to know to act responsibly?</p>
+<p>They need to know <strong>the actual error rate of the procedure that produced the result</strong>. If the procedure has a 5% false-positive rate (as α = .05 would suggest), the reader can incorporate that into their judgment. If the procedure actually has a 30% false-positive rate (because the researcher explored extensively), the reader needs to know that, because they would weigh the evidence very differently.</p>
+<p>The problem is that a paper, as text on a page, gives the reader no way to tell. Two papers reporting “p = .03” can look identical even if one is calibrated and the other is not.</p>
+<p><strong>Pre-registration is the technology that lets the reader distinguish.</strong> The time-stamped public document shows exactly what procedure the researcher committed to before seeing the data. Anything in the paper that matches the pre-registration is confirmatory (calibrated p-value). Anything that does not match is exploratory (uncalibrated, hypothesis-generating).</p>
+<p>The math is already there; pre-registration provides the <strong>evidence the reader needs</strong> to apply the math correctly.</p>
+</section>
+<section id="what-pre-registration-is-not" class="level3" data-number="25.8.3">
+<h3 data-number="25.8.3" class="anchored" data-anchor-id="what-pre-registration-is-not"><span class="header-section-number">25.8.3</span> What pre-registration is not</h3>
+<p>Pre-registration is often misunderstood as a constraint on what researchers can do. It is not. Pre-registration constrains how findings are <strong>labeled</strong>, not what findings can be reported.</p>
+<ul>
+<li>A pre-registered study can still report exploratory findings, in addition to the pre-registered ones.</li>
+<li>A pre-registered study can deviate from the pre-registration, as long as the deviation is explicit and the affected analyses are labeled as exploratory.</li>
+<li>A pre-registration can be amended before data are seen.</li>
+<li>A pre-registration does not require any particular result. The researcher reports whatever they find, calibrated or not.</li>
+</ul>
+<p>What pre-registration does is force a distinction between “what we said we would do” and “what we did when we saw the data.” That distinction is what enables the reader to apply the calibration correctly.</p>
+</section>
+<section id="pre-registration-is-sufficient-but-not-strictly-necessary" class="level3" data-number="25.8.4">
+<h3 data-number="25.8.4" class="anchored" data-anchor-id="pre-registration-is-sufficient-but-not-strictly-necessary"><span class="header-section-number">25.8.4</span> Pre-registration is sufficient but not strictly necessary</h3>
+<p>Strictly speaking, what is required for confirmatory inference is that the procedure was specified independently of the data. Pre-registration is the most credible way to demonstrate this, but it is not the only way.</p>
+<p>Hypotheses derived from a published theory and tested on new data also count as confirmatory if the researcher never saw the data first. Replications of previously published findings count, since the procedure is determined by the original study. Studies using a standard, pre-existing analytic protocol from a research domain count.</p>
+<p>In each case, the procedure was fixed by something external to the data. The p-value is honestly quantified.</p>
+<p>Why, then, do we still teach pre-registration as the standard? Three reasons.</p>
+<ol type="1">
+<li><strong>Verifiable.</strong> A pre-registration is time-stamped and public. Readers can check that the procedure really was fixed in advance, rather than taking the researcher’s word for it.</li>
+<li><strong>Specific.</strong> A pre-registration forces the researcher to commit to specifics (exclusion rules, exact tests, decision rules) that are easy to forget or unconsciously change.</li>
+<li><strong>Demonstrably independent.</strong> Even if a researcher genuinely believes their hypothesis was theory-derived, the act of pre-registering provides external evidence that the procedure was not data-influenced.</li>
+</ol>
+<p>For most researchers, most of the time, pre-registration is the workable solution. It does not require special philosophical sophistication; it just requires writing things down before looking at the data.</p>
+</section>
+</section>
+<section id="p-hacking-harking-and-the-garden-of-forking-paths" class="level2" data-number="25.9">
+<h2 data-number="25.9" class="anchored" data-anchor-id="p-hacking-harking-and-the-garden-of-forking-paths"><span class="header-section-number">25.9</span> P-hacking, HARKing, and the garden of forking paths</h2>
+<p>Three names for the most common failure modes of role-separation.</p>
+<p><strong>P-hacking</strong> is the practice of trying many analyses on the same dataset, until one is significant, and reporting only that one. It can take many forms: trying different subgroups, different exclusion rules, different control variables, different transformations of the outcome. Each version produces a different p-value; the smallest one gets reported. The reader sees a clean “p = .03” with no indication of the search that produced it.</p>
+<p><strong>HARKing</strong> stands for <em>Hypothesizing After Results are Known</em>. It is the practice of writing up a finding as if you had predicted it, when in fact you noticed it in the data. HARKing presents an exploratory finding as confirmatory, with all the apparent calibration of a pre-specified test. The result is a paper where the predicted claim conveniently matches the observed result, and the reader has no way to tell whether the prediction was real.</p>
+<p><strong>The garden of forking paths</strong> (Gelman &amp; Loken, 2014) is a subtler problem. Even sincere researchers who do not consciously p-hack face it. The data they collect informs the analytic choices they make. Different data would have led to different choices.</p>
+<p>Imagine a researcher with a single hypothesis (“violent gaming increases aggression”). They collect data, run the test, p = .07. They notice the effect is stronger in male participants and decide to include gender as a moderator. Now p = .03. They report this with the moderator. The researcher was not consciously p-hacking; they had a single hypothesis. But the analytic decision (to include the moderator) was influenced by seeing the data. If the data had been different, they might not have run that analysis at all. The set of analyses that <em>could have been run</em>, conditional on what the data looked like, is large; the actual false-positive rate of the procedure is determined by <em>all</em> the branches, not just the one that was reported.</p>
+<p>This is why even sincere researchers benefit from pre-registration. The forking paths are invisible to introspection. The researcher cannot tell, from the inside, whether their analytic decisions were data-influenced. Pre-registration cuts off the forking paths in advance.</p>
+</section>
+<section id="closing-section-4" class="level2" data-number="25.10">
+<h2 data-number="25.10" class="anchored" data-anchor-id="closing-section-4"><span class="header-section-number">25.10</span> Closing Section 4</h2>
+<p>We have now developed a complete framework for thinking about statistical inference in modern empirical science. Let us close with the most important takeaways from the five chapters.</p>
+<ul>
+<li><strong>The sampling distribution</strong> is the bridge between the one sample we have and the population we care about. The standard error is its width. Inference is the discipline of reasoning from one to the other (Chapter 21).</li>
+<li><strong>Two philosophies of testing exist.</strong> Fisher’s is a continuous measure of evidence; Neyman-Pearson’s is a binary decision procedure with calibrated long-run error rates. Modern practice uses a hybrid that is technically inconsistent (Chapter 22).</li>
+<li><strong>The Neyman-Pearson framework has two dimensions.</strong> A quantitative procedure with controlled error rates, and a qualitative judgment about whether a predicted claim is corroborated. Both are needed for confirmatory inference; only the first applies to exploratory work (Chapter 22).</li>
+<li><strong>P-values are computed by comparing a test statistic to a reference distribution.</strong> The test statistic is the standardized distance from the null; z, t, and F are the universal reference rulers. Degrees of freedom controls the shape of the reference (Chapter 23).</li>
+<li><strong>The decision procedure produces two kinds of error: Type I (α) and Type II (β).</strong> Power is 1 − β, the rate of correct rejection given a specific alternative. α, β, effect size, and n are linked; pick three, the fourth is determined. SESOI is the smallest effect size of interest, the anchor that gives “power” a meaning. Equivalence testing lets you make positive “no meaningful effect” claims (Chapter 24).</li>
+<li><strong>Researchers play two roles.</strong> The analyst explores; the claim-maker pre-specifies. The calibration of p-values requires a fixed procedure. Exploration is harmless as long as it is labeled honestly. Alpha inflates with multiple tests; corrections (Bonferroni, Holm, BH) translate between layers. Ioannidis’ PPV shows that even at α = .05, a large fraction of published “significant” findings can be false when power is low and the prior plausibility of hypotheses is modest. Pre-registration is the practical discipline that lets researchers maintain both honesty and credibility (Chapter 25).</li>
+</ul>
+<p>The next sections of the book will move on from inference proper. We will see how the same linear-model framework from Section 3 can absorb t-tests, ANOVA, regression, and many “different” tests into a single unified machinery (and how this connects to inference in a clean way). We will also turn to <strong>causal inference</strong>, the question of when statistical relationships can be interpreted as causal: what experimental designs, what observational adjustments, what assumptions are required.</p>
+<p>But this is the close of Section 4. The conceptual machinery of statistical inference is in your hands.</p>
+</section>
+<section id="check-your-understanding" class="level2" data-number="25.11">
+<h2 data-number="25.11" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">25.11</span> Check your understanding</h2>
+<p><strong>1. What is the distinction between the analyst role and the claim-maker role?</strong></p>
+<div id="radio_MLDZAWJMQL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MLDZAWJMQL" value=""> <span>The analyst commits to one pre-specified hypothesis; the claim-maker explores the dataset without restriction.</span></label><label><input type="radio" autocomplete="off" name="radio_MLDZAWJMQL" value=""> <span>The analyst and the claim-maker are different people, since the same person cannot legitimately play both roles in a single project.</span></label><label><input type="radio" autocomplete="off" name="radio_MLDZAWJMQL" value=""> <span>The analyst always reports calibrated p-values; the claim-maker reports only effect sizes and confidence intervals without any p-value at all.</span></label><label><input type="radio" autocomplete="off" name="radio_MLDZAWJMQL" value="answer"> <span>The analyst explores the data and generates hypotheses without making formal claims; the claim-maker pre-specifies the procedure and offers calibrated inferences to be acted upon by readers.</span></label>
+</div>
+<p><strong>2. Why does the Neyman-Pearson framework require a procedure that is fixed independently of the data?</strong></p>
+<div id="radio_DWUWKNEAYV" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_DWUWKNEAYV" value=""> <span>Because data-dependent procedures use the same reference distribution as fixed procedures, the family-wise alpha is automatically controlled when many tests are run on the same dataset by the researcher.</span></label><label><input type="radio" autocomplete="off" name="radio_DWUWKNEAYV" value=""> <span>Because the Neyman-Pearson decision rule says reject if p &lt; alpha; once that rule is in place, no further specification of the procedure is needed for the calibration of the test to hold.</span></label><label><input type="radio" autocomplete="off" name="radio_DWUWKNEAYV" value=""> <span>Because pre-specifying the procedure is a moral requirement for honest science; the actual statistical calibration of p-values does not depend on whether the procedure was fixed in advance.</span></label><label><input type="radio" autocomplete="off" name="radio_DWUWKNEAYV" value="answer"> <span>Because the long-run false-positive rate of the procedure is only equal to alpha when the procedure is fixed independently of the data; data-dependent procedures have a higher actual false-positive rate, often much higher.</span></label>
+</div>
+<p><strong>3. If you run 5 independent tests, each at α = .05, on data where all five nulls are true, what is the probability of at least one false positive?</strong></p>
+<div id="radio_XCNLSRPCET" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_XCNLSRPCET" value=""> <span>About 64%, because each test has its own independent false-positive rate that adds to the family-wise total.</span></label><label><input type="radio" autocomplete="off" name="radio_XCNLSRPCET" value="answer"> <span>About 23%, because 1 - (1 - .05)^5 ≈ .23; the family-wise rate is the probability of at least one false positive across the five tests.</span></label><label><input type="radio" autocomplete="off" name="radio_XCNLSRPCET" value=""> <span>About 5%, because each test is run at alpha = .05 and the rate per test is preserved across the family of tests being performed.</span></label><label><input type="radio" autocomplete="off" name="radio_XCNLSRPCET" value=""> <span>About 50%, because the family-wise rate doubles for each additional test added to the analysis under independent testing assumptions.</span></label>
+</div>
+<p><strong>4. What is the difference between the Bonferroni and Holm corrections?</strong></p>
+<div id="radio_ZPRQCORRYK" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ZPRQCORRYK" value="answer"> <span>Bonferroni compares each p-value to alpha divided by the number of tests; Holm uses the same comparison for the smallest p-value but relaxes the threshold for subsequent ones (alpha / (k - j + 1)); both control the family-wise alpha, but Holm has slightly more power.</span></label><label><input type="radio" autocomplete="off" name="radio_ZPRQCORRYK" value=""> <span>Bonferroni and Holm both control the false discovery rate by sorting p-values from smallest to largest and comparing each to a different scaled threshold; the choice depends on whether the researcher prefers a one-tailed or two-tailed interpretation of the test.</span></label><label><input type="radio" autocomplete="off" name="radio_ZPRQCORRYK" value=""> <span>Bonferroni multiplies the observed p-value by the number of tests and reports the adjusted result; Holm does the same but with a square-root transformation to preserve the original alpha level across all the tests.</span></label><label><input type="radio" autocomplete="off" name="radio_ZPRQCORRYK" value=""> <span>Bonferroni controls the family-wise alpha at the level specified by the researcher; Holm controls the false discovery rate at the same level by using the Benjamini-Hochberg sequential procedure for comparison.</span></label>
+</div>
+<p><strong>5. What does the Benjamini-Hochberg (FDR) correction control, and when is it appropriate?</strong></p>
+<div id="radio_KQNDXTZMKW" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_KQNDXTZMKW" value=""> <span>Benjamini-Hochberg controls the family-wise error rate at a stricter level than Bonferroni and Holm, making it more appropriate for primary outcomes in clinical trials and other high-stakes decisions.</span></label><label><input type="radio" autocomplete="off" name="radio_KQNDXTZMKW" value="answer"> <span>Benjamini-Hochberg controls the false discovery rate (the expected proportion of false positives among the rejections), which is more permissive than family-wise control and is appropriate when accepting a small proportion of false positives is tolerable.</span></label><label><input type="radio" autocomplete="off" name="radio_KQNDXTZMKW" value=""> <span>Benjamini-Hochberg adjusts the alpha level only for the smallest p-value in the family of tests; it ignores the other tests and accepts whatever family-wise alpha results from this single-step adjustment.</span></label><label><input type="radio" autocomplete="off" name="radio_KQNDXTZMKW" value=""> <span>Benjamini-Hochberg requires the tests to be perfectly independent of each other; when tests are correlated (as they often are in regression analyses) the procedure cannot be applied at all to the family of tests.</span></label>
+</div>
+<p><strong>6. What is the positive predictive value (PPV) of a research field, in Ioannidis’s framework?</strong></p>
+<div id="radio_SIPVPRQQHY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_SIPVPRQQHY" value=""> <span>PPV is the probability that a study has correctly rejected the null hypothesis given the observed p-value and the assumed prior probability of the alternative hypothesis being true in the population.</span></label><label><input type="radio" autocomplete="off" name="radio_SIPVPRQQHY" value="answer"> <span>PPV is the probability that a finding reported as significant reflects a true effect; it depends on the prior probability of the hypothesis being true, the power of the study, and the alpha level used in the procedure.</span></label><label><input type="radio" autocomplete="off" name="radio_SIPVPRQQHY" value=""> <span>PPV is the proportion of all studies in a research field that report a statistically significant result at alpha = .05 across both pre-specified and exploratory analyses run on the same dataset by the same researcher.</span></label><label><input type="radio" autocomplete="off" name="radio_SIPVPRQQHY" value=""> <span>PPV is the long-run rate at which the procedure correctly rejects the null hypothesis when the null is actually false, assuming the standard test assumptions are met by the data.</span></label>
+</div>
+<p><strong>7. What does pre-registration do, and why is it useful?</strong></p>
+<div id="radio_FXRPDXQEBO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_FXRPDXQEBO" value=""> <span>Pre-registration is a moral commitment that researchers make to themselves about the integrity of their analysis; it has no practical effect on the calibration of the p-values they report in the published paper.</span></label><label><input type="radio" autocomplete="off" name="radio_FXRPDXQEBO" value=""> <span>Pre-registration replaces all post-data analytic decisions with a fully automated procedure that the software runs without any further input from the researcher about exclusion rules or other specifics.</span></label><label><input type="radio" autocomplete="off" name="radio_FXRPDXQEBO" value=""> <span>Pre-registration is required by all psychology journals as a condition of publication; without it, no paper can be published regardless of the methodological quality of the analyses.</span></label><label><input type="radio" autocomplete="off" name="radio_FXRPDXQEBO" value="answer"> <span>Pre-registration is a public, time-stamped document specifying the procedure in advance of seeing the data; it provides the external evidence a reader needs to know whether reported p-values are calibrated, and constrains how findings are labeled rather than what can be reported.</span></label>
+</div>
+<p><strong>8. What are p-hacking and HARKing?</strong></p>
+<div id="radio_EPVKIVXWHO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_EPVKIVXWHO" value=""> <span>P-hacking is running a single pre-specified analysis on a dataset and reporting the result regardless of whether it is statistically significant; HARKing is reporting only the significant secondary outcomes of a pre-registered confirmatory study.</span></label><label><input type="radio" autocomplete="off" name="radio_EPVKIVXWHO" value="answer"> <span>P-hacking is trying many analyses on the same data and reporting only the significant one as if it were the only test run; HARKing (Hypothesizing After Results are Known) is writing up a finding as a pre-specified hypothesis when it was actually noticed in the data.</span></label><label><input type="radio" autocomplete="off" name="radio_EPVKIVXWHO" value=""> <span>P-hacking is computing the wrong p-value due to a typo in the analysis code; HARKing is writing the methods section of a paper after the results section has been finalized and accepted by the journal.</span></label><label><input type="radio" autocomplete="off" name="radio_EPVKIVXWHO" value=""> <span>P-hacking is using a stricter alpha level than the conventional .05 to ensure a significant result; HARKing is using a more permissive alpha level after the data show a marginally significant pattern.</span></label>
+</div>
+<p><strong>9. What is the “garden of forking paths” and why does it matter for inference?</strong></p>
+<div id="radio_TLFUCLHHWH" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_TLFUCLHHWH" value=""> <span>The garden of forking paths applies only to researchers who consciously p-hack; sincere researchers with a single hypothesis are immune from its effects on their false-positive rate across the analysis of the dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_TLFUCLHHWH" value="answer"> <span>Even sincere researchers face the problem because the data they collect informs their analytic choices; the set of analyses that <em>could have been run</em> given different data is large, and the actual false-positive rate of the implicit procedure depends on all the branches, not just the one reported.</span></label><label><input type="radio" autocomplete="off" name="radio_TLFUCLHHWH" value=""> <span>The garden of forking paths is a metaphor for the difficulty of choosing between Bayesian and frequentist approaches to inference; it has no practical implication for the calibration of p-values in either framework.</span></label><label><input type="radio" autocomplete="off" name="radio_TLFUCLHHWH" value=""> <span>The garden of forking paths applies only to studies that test more than ten different hypotheses on the same dataset; with fewer tests, the family-wise alpha is automatically controlled by the procedure used.</span></label>
+</div>
+<p><strong>10. What is equivalence testing, and what role does SESOI play in it?</strong></p>
+<div id="radio_BBZMJPIGQO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_BBZMJPIGQO" value=""> <span>Equivalence testing is a Bayesian alternative to frequentist hypothesis testing that computes a posterior probability of equivalence given the data; it does not require the researcher to specify a SESOI before running the test on the data.</span></label><label><input type="radio" autocomplete="off" name="radio_BBZMJPIGQO" value=""> <span>Equivalence testing changes the alpha threshold to a more permissive value (such as .50) so that the null hypothesis is rejected more often, producing claims of equivalence from any non-significant result in the procedure.</span></label><label><input type="radio" autocomplete="off" name="radio_BBZMJPIGQO" value=""> <span>Equivalence testing replaces the standard hypothesis test with a chi-squared test of independence; it is appropriate when the outcome is categorical and the predictors are continuous or ordinal in nature.</span></label><label><input type="radio" autocomplete="off" name="radio_BBZMJPIGQO" value="answer"> <span>Equivalence testing reframes the question as 'is the effect smaller than SESOI?' using two one-sided tests against the SESOI bounds; rejecting both supports a positive claim that the effect is practically equivalent to zero, addressing the asymmetry of standard hypothesis testing.</span></label>
+</div>
+</section>
+<section id="references" class="level2" data-number="25.12">
+<h2 data-number="25.12" class="anchored" data-anchor-id="references"><span class="header-section-number">25.12</span> References</h2>
+<p>Benjamini, Y., &amp; Hochberg, Y. (1995). Controlling the false discovery rate: A practical and powerful approach to multiple testing. <em>Journal of the Royal Statistical Society. Series B</em>, 57(1), 289-300.</p>
+<p>Gelman, A., &amp; Loken, E. (2014). The statistical crisis in science. <em>American Scientist</em>, 102(6), 460-465.</p>
+<p>Holm, S. (1979). A simple sequentially rejective multiple test procedure. <em>Scandinavian Journal of Statistics</em>, 6(2), 65-70.</p>
+<p>Ioannidis, J. P. A. (2005). Why most published research findings are false. <em>PLOS Medicine</em>, 2(8), e124. <a href="https://doi.org/10.1371/journal.pmed.0020124" class="uri">https://doi.org/10.1371/journal.pmed.0020124</a></p>
+<p>Kerr, N. L. (1998). HARKing: Hypothesizing after the results are known. <em>Personality and Social Psychology Review</em>, 2(3), 196-217.</p>
+<p>Lakens, D. (2022). <em>Improving your statistical inferences</em>. Chapter 2, “Error control.” <a href="https://lakens.github.io/statistical_inferences/02-errorcontrol.html" class="uri">https://lakens.github.io/statistical_inferences/02-errorcontrol.html</a></p>
+<p>Mesquida, C., Warne, J., &amp; Lakens, D. (2025). What is your hypothesis? On the importance of knowing your hypothesis before conducting a hypothesis test. <em>SportRxiv</em>. <a href="https://doi.org/10.51224/SRXIV.577" class="uri">https://doi.org/10.51224/SRXIV.577</a></p>
+<p>Simmons, J. P., Nelson, L. D., &amp; Simonsohn, U. (2011). False-positive psychology: Undisclosed flexibility in data collection and analysis allows presenting anything as significant. <em>Psychological Science</em>, 22(11), 1359-1366.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  var t = document.getElementsByClassName("webex-total_correct");
+  for (var i = 0; i < t.length; i++) {
+    p = t[i].parentElement;
+    var correct = p.getElementsByClassName("webex-correct").length;
+    var solvemes = p.getElementsByClassName("webex-solveme").length;
+    var radiogroups = p.getElementsByClassName("webex-radiogroup").length;
+    var selects = p.getElementsByClassName("webex-select").length;
+
+    t[i].innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* check answers */
+check_func = function() {
+  console.log("webex: check answers");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('unchecked')) {
+    cl.remove("unchecked");
+    this.innerHTML = "Hide Answers";
+  } else {
+    cl.add("unchecked");
+    this.innerHTML = "Show Answers";
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+
+  var cl = this.classList
+
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("webex onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  var check_sections = document.getElementsByClassName("webex-check");
+  console.log("check:", check_sections.length);
+  for (var i = 0; i < check_sections.length; i++) {
+    check_sections[i].classList.add("unchecked");
+
+    let btn = document.createElement("button");
+    btn.innerHTML = "Show Answers";
+    btn.classList.add("webex-check-button");
+    btn.onclick = check_func;
+    check_sections[i].appendChild(btn);
+
+    let spn = document.createElement("span");
+    spn.classList.add("webex-total_correct");
+    check_sections[i].appendChild(spn);
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+
+    solveme[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+  }
+
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+    selects[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+  }
+
+  update_total_correct();
+}
+
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./24-decisions-errors-power-sesoi.html" class="pagination-link" aria-label="Decisions, errors, power, and SESOI">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and SESOI</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/25-two-roles-multiple-testing.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

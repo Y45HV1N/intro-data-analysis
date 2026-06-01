@@ -491,6 +491,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Why inference? Samples, populations, and the standard error</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-pvalues-fisher-neyman-pearson.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">P-values, Fisher, and Neyman-Pearson</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-test-statistics-and-df.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The inferential machinery: test statistics, z/t/F, and degrees of freedom</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24-decisions-errors-power-sesoi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and SESOI</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25-two-roles-multiple-testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two roles, multiple testing, and pre-registration</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -624,28 +648,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="check-your-understanding" class="level2" data-number="2.7">
 <h2 data-number="2.7" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">2.7</span> Check your understanding</h2>
 <p><strong>1. Which of the following best describes the relationship between R and RStudio?</strong></p>
-<div id="radio_ZVBVDPMEPA" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_ZVBVDPMEPA" value=""> <span>R is the dashboard you click on, and RStudio is the engine that performs computations.</span></label><label><input type="radio" autocomplete="off" name="radio_ZVBVDPMEPA" value=""> <span>R and RStudio are two names for the same program.</span></label><label><input type="radio" autocomplete="off" name="radio_ZVBVDPMEPA" value="answer"> <span>R is the engine that performs computations, and RStudio is a dashboard that provides a comfortable working environment around R.</span></label><label><input type="radio" autocomplete="off" name="radio_ZVBVDPMEPA" value=""> <span>RStudio includes its own version of R and replaces the need to install R separately.</span></label>
+<div id="radio_AGSQTTQKAO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_AGSQTTQKAO" value=""> <span>R is the dashboard you click on, and RStudio is the engine that performs computations.</span></label><label><input type="radio" autocomplete="off" name="radio_AGSQTTQKAO" value=""> <span>R and RStudio are two names for the same program.</span></label><label><input type="radio" autocomplete="off" name="radio_AGSQTTQKAO" value="answer"> <span>R is the engine that performs computations, and RStudio is a dashboard that provides a comfortable working environment around R.</span></label><label><input type="radio" autocomplete="off" name="radio_AGSQTTQKAO" value=""> <span>RStudio includes its own version of R and replaces the need to install R separately.</span></label>
 </div>
 <p><strong>2. Which piece of software actually performs the statistical computations?</strong></p>
-<div id="radio_PJVPAHSUSE" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_PJVPAHSUSE" value=""> <span>RStudio.</span></label><label><input type="radio" autocomplete="off" name="radio_PJVPAHSUSE" value="answer"> <span>R.</span></label><label><input type="radio" autocomplete="off" name="radio_PJVPAHSUSE" value=""> <span>Microsoft Excel.</span></label><label><input type="radio" autocomplete="off" name="radio_PJVPAHSUSE" value=""> <span>The web browser used to download the installer.</span></label>
+<div id="radio_CBRXOKDEBJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_CBRXOKDEBJ" value=""> <span>RStudio.</span></label><label><input type="radio" autocomplete="off" name="radio_CBRXOKDEBJ" value="answer"> <span>R.</span></label><label><input type="radio" autocomplete="off" name="radio_CBRXOKDEBJ" value=""> <span>Microsoft Excel.</span></label><label><input type="radio" autocomplete="off" name="radio_CBRXOKDEBJ" value=""> <span>The web browser used to download the installer.</span></label>
 </div>
 <p><strong>3. What happens if you install RStudio without first installing R?</strong></p>
-<div id="radio_VEDEABLUYK" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_VEDEABLUYK" value=""> <span>RStudio works without R, because RStudio comes with its own statistical engine built in.</span></label><label><input type="radio" autocomplete="off" name="radio_VEDEABLUYK" value=""> <span>RStudio refuses to start.</span></label><label><input type="radio" autocomplete="off" name="radio_VEDEABLUYK" value="answer"> <span>RStudio opens, but it has no engine to talk to, so commands cannot be executed.</span></label><label><input type="radio" autocomplete="off" name="radio_VEDEABLUYK" value=""> <span>R is automatically downloaded by RStudio the first time it is launched.</span></label>
+<div id="radio_HAUKJREKLW" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_HAUKJREKLW" value=""> <span>RStudio works without R, because RStudio comes with its own statistical engine built in.</span></label><label><input type="radio" autocomplete="off" name="radio_HAUKJREKLW" value=""> <span>RStudio refuses to start.</span></label><label><input type="radio" autocomplete="off" name="radio_HAUKJREKLW" value="answer"> <span>RStudio opens, but it has no engine to talk to, so commands cannot be executed.</span></label><label><input type="radio" autocomplete="off" name="radio_HAUKJREKLW" value=""> <span>R is automatically downloaded by RStudio the first time it is launched.</span></label>
 </div>
 <p><strong>4. Where does R itself come from when you install it?</strong></p>
-<div id="radio_KTXFOYFJLD" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_KTXFOYFJLD" value="answer"> <span>CRAN, the Comprehensive R Archive Network.</span></label><label><input type="radio" autocomplete="off" name="radio_KTXFOYFJLD" value=""> <span>The Apple App Store and the Microsoft Store.</span></label><label><input type="radio" autocomplete="off" name="radio_KTXFOYFJLD" value=""> <span>GitHub.</span></label><label><input type="radio" autocomplete="off" name="radio_KTXFOYFJLD" value=""> <span>The RStudio website.</span></label>
+<div id="radio_NYIVSBNKRM" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_NYIVSBNKRM" value="answer"> <span>CRAN, the Comprehensive R Archive Network.</span></label><label><input type="radio" autocomplete="off" name="radio_NYIVSBNKRM" value=""> <span>The Apple App Store and the Microsoft Store.</span></label><label><input type="radio" autocomplete="off" name="radio_NYIVSBNKRM" value=""> <span>GitHub.</span></label><label><input type="radio" autocomplete="off" name="radio_NYIVSBNKRM" value=""> <span>The RStudio website.</span></label>
 </div>
 <p><strong>5. Is installing RStudio required to use R?</strong></p>
-<div id="radio_ITMQPCKNHG" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_ITMQPCKNHG" value=""> <span>It is mandatory: R cannot be used without RStudio.</span></label><label><input type="radio" autocomplete="off" name="radio_ITMQPCKNHG" value=""> <span>It is discouraged: most experienced users avoid RStudio in favor of the bare console.</span></label><label><input type="radio" autocomplete="off" name="radio_ITMQPCKNHG" value="answer"> <span>It is the standard practice for most users, although other environments such as Positron, VS Code, and Jupyter also exist.</span></label><label><input type="radio" autocomplete="off" name="radio_ITMQPCKNHG" value=""> <span>It is only useful for users on Windows; macOS users should not install it.</span></label>
+<div id="radio_BBIHVIWIDL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_BBIHVIWIDL" value=""> <span>It is mandatory: R cannot be used without RStudio.</span></label><label><input type="radio" autocomplete="off" name="radio_BBIHVIWIDL" value=""> <span>It is discouraged: most experienced users avoid RStudio in favor of the bare console.</span></label><label><input type="radio" autocomplete="off" name="radio_BBIHVIWIDL" value="answer"> <span>It is the standard practice for most users, although other environments such as Positron, VS Code, and Jupyter also exist.</span></label><label><input type="radio" autocomplete="off" name="radio_BBIHVIWIDL" value=""> <span>It is only useful for users on Windows; macOS users should not install it.</span></label>
 </div>
 <p><strong>6. Which RStudio panel will list the objects you have created during a session?</strong></p>
-<div id="radio_IZGRIGWRIW" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_IZGRIGWRIW" value=""> <span>The Help panel.</span></label><label><input type="radio" autocomplete="off" name="radio_IZGRIGWRIW" value=""> <span>The Plots panel.</span></label><label><input type="radio" autocomplete="off" name="radio_IZGRIGWRIW" value="answer"> <span>The Environment panel.</span></label><label><input type="radio" autocomplete="off" name="radio_IZGRIGWRIW" value=""> <span>The Files panel.</span></label>
+<div id="radio_HXYJFASVYN" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_HXYJFASVYN" value=""> <span>The Help panel.</span></label><label><input type="radio" autocomplete="off" name="radio_HXYJFASVYN" value=""> <span>The Plots panel.</span></label><label><input type="radio" autocomplete="off" name="radio_HXYJFASVYN" value="answer"> <span>The Environment panel.</span></label><label><input type="radio" autocomplete="off" name="radio_HXYJFASVYN" value=""> <span>The Files panel.</span></label>
 </div>
 
 
