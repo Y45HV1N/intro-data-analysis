@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>21&nbsp; Why inference? Samples, populations, and the standard error – Understanding and analyzing social and behavioral data</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./20-diagnostics-and-limits.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-d685995fa19fd69abfd2845f2861e92b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="include/webex.css">
+<link rel="stylesheet" href="include/custom.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21-why-inference.html">Section 4: Statistical Inference</a></li><li class="breadcrumb-item"><a href="./21-why-inference.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Why inference? Samples, populations, and the standard error</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Understanding and analyzing social and behavioral data</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/Y45HV1N/intro-data-analysis" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 1: Getting Started Properly</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-basics-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What is R, and why use it?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-r-vs-rstudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R, RStudio, and how they relate</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-files-and-environment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Scripts, RData, projects, environments, and R Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-projects-and-sessions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Working with R projects and R sessions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-objects-and-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Objects and functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-operations-and-packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Basic operations, custom functions, and packages</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-recap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Recap and getting data into R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 2: Manipulating and Visualizing Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-data-wrangling-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data wrangling: basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-tidyverse-and-descriptives.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wrangling and describing data with the tidyverse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-data-visualization-principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">First principles of data visualization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-wrangling-for-psychology.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Wrangling for psychology research</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-advanced-wrangling-optional.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Advanced wrangling (optional)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 3: Statistical Modeling — Regressions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-data-and-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data and the idea of a statistical model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-mean-as-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The mean as a model: residuals, fit, and comparing models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-simple-linear-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">From the mean to the line: the simple linear model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-fitting-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Fitting and interpreting simple regression in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-multiple-and-categorical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Multiple regression and categorical predictors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-moderation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Moderation: when one predictor depends on another</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-bias-variance-assumptions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Bias, variance, and the assumptions of the linear model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-diagnostics-and-limits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Diagnostics, model fit, and the limits of your model</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 4: Statistical Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-why-inference.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Why inference? Samples, populations, and the standard error</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#welcome-to-section-4" id="toc-welcome-to-section-4" class="nav-link active" data-scroll-target="#welcome-to-section-4"><span class="header-section-number">21.1</span> Welcome to Section 4</a></li>
+  <li><a href="#the-fundamental-gap-what-we-care-about-vs.-what-we-have" id="toc-the-fundamental-gap-what-we-care-about-vs.-what-we-have" class="nav-link" data-scroll-target="#the-fundamental-gap-what-we-care-about-vs.-what-we-have"><span class="header-section-number">21.2</span> The fundamental gap: what we care about vs.&nbsp;what we have</a></li>
+  <li><a href="#the-sample-is-just-one-of-many-possible-samples" id="toc-the-sample-is-just-one-of-many-possible-samples" class="nav-link" data-scroll-target="#the-sample-is-just-one-of-many-possible-samples"><span class="header-section-number">21.3</span> The sample is just one of many possible samples</a></li>
+  <li><a href="#imagining-many-possible-samples-the-sampling-distribution" id="toc-imagining-many-possible-samples-the-sampling-distribution" class="nav-link" data-scroll-target="#imagining-many-possible-samples-the-sampling-distribution"><span class="header-section-number">21.4</span> Imagining many possible samples: the sampling distribution</a></li>
+  <li><a href="#building-a-sampling-distribution-by-simulation" id="toc-building-a-sampling-distribution-by-simulation" class="nav-link" data-scroll-target="#building-a-sampling-distribution-by-simulation"><span class="header-section-number">21.5</span> Building a sampling distribution by simulation</a></li>
+  <li><a href="#the-standard-error-quantifying-precision" id="toc-the-standard-error-quantifying-precision" class="nav-link" data-scroll-target="#the-standard-error-quantifying-precision"><span class="header-section-number">21.6</span> The standard error: quantifying precision</a>
+  <ul class="collapse">
+  <li><a href="#watching-the-standard-error-shrink-with-sample-size" id="toc-watching-the-standard-error-shrink-with-sample-size" class="nav-link" data-scroll-target="#watching-the-standard-error-shrink-with-sample-size"><span class="header-section-number">21.6.1</span> Watching the standard error shrink with sample size</a></li>
+  <li><a href="#the-connection-back-to-lm-output" id="toc-the-connection-back-to-lm-output" class="nav-link" data-scroll-target="#the-connection-back-to-lm-output"><span class="header-section-number">21.6.2</span> The connection back to <code>lm()</code> output</a></li>
+  </ul></li>
+  <li><a href="#the-central-limit-theorem-clt-why-the-bell-curve-is-so-important" id="toc-the-central-limit-theorem-clt-why-the-bell-curve-is-so-important" class="nav-link" data-scroll-target="#the-central-limit-theorem-clt-why-the-bell-curve-is-so-important"><span class="header-section-number">21.7</span> The Central Limit Theorem (CLT): why the bell curve is so important</a></li>
+  <li><a href="#this-applies-to-everything-not-just-means" id="toc-this-applies-to-everything-not-just-means" class="nav-link" data-scroll-target="#this-applies-to-everything-not-just-means"><span class="header-section-number">21.8</span> This applies to everything, not just means</a></li>
+  <li><a href="#why-is-all-of-this-so-important" id="toc-why-is-all-of-this-so-important" class="nav-link" data-scroll-target="#why-is-all-of-this-so-important"><span class="header-section-number">21.9</span> Why is all of this so important?</a></li>
+  <li><a href="#looking-ahead" id="toc-looking-ahead" class="nav-link" data-scroll-target="#looking-ahead"><span class="header-section-number">21.10</span> Looking ahead</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">21.11</span> Check your understanding</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">21.12</span> References</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/21-why-inference.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21-why-inference.html">Section 4: Statistical Inference</a></li><li class="breadcrumb-item"><a href="./21-why-inference.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Why inference? Samples, populations, and the standard error</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Why inference? Samples, populations, and the standard error</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="welcome-to-section-4" class="level2" data-number="21.1">
+<h2 data-number="21.1" class="anchored" data-anchor-id="welcome-to-section-4"><span class="header-section-number">21.1</span> Welcome to Section 4</h2>
+<p>Section 1 taught you how R works as a tool. Section 2 taught you how to clean, summarize, and visualize a dataset. Section 3 taught you how to fit and interpret linear models, from the simplest one-number model (the mean) all the way to multiple regression with interactions and assumption diagnostics.</p>
+<p>Throughout Section 3 we said the same thing many times, in slightly different words:</p>
+<blockquote class="blockquote">
+<p>Everything in this section is <strong>description</strong>. We are describing the dataset we have. We are not (yet) making any claim about whether the effects we see hold in the wider world, in people we did not sample, in studies we have not run.</p>
+</blockquote>
+<p>That gap is what Section 4 is about. It is the gap between what we observe in our data and what we want to say about a broader <strong>population</strong> that our data was drawn from. Closing that gap, or at least quantifying it honestly, is what <strong>statistical inference</strong> does. The four chapters that follow build up the machinery, the logic, the philosophy, and the practical disciplines that make inference possible.</p>
+<p>This chapter is the first step. Before any p-values, any tests, any “is this effect real?” decisions, there is a more basic question: why is generalizing from one sample to a population such a hard problem in the first place, and what new ideas do we need to handle it? By the end of the chapter you will have:</p>
+<ul>
+<li>a clear understanding of why having “just one sample” is the central obstacle of inference,</li>
+<li>the concept of <strong>sampling variability</strong>: why the same study, run twice, gives different answers,</li>
+<li>the concept of the <strong>sampling distribution</strong>: the distribution of all the answers you would have gotten if you had run the study many times,</li>
+<li>the <strong>standard error</strong>, the single most important number in inference,</li>
+<li>the <strong>Central Limit Theorem</strong>, which is what makes inference practical, and</li>
+<li>a connection back to the Std. Error column you saw in <code>lm()</code> output in Chapter 16 and pointedly ignored at the time.</li>
+</ul>
+<p>The chapter is conceptual and visual. There is some R code, but it is used to <em>simulate</em> sampling distributions so you can see them with your own eyes. The math is light.</p>
+</section>
+<section id="the-fundamental-gap-what-we-care-about-vs.-what-we-have" class="level2" data-number="21.2">
+<h2 data-number="21.2" class="anchored" data-anchor-id="the-fundamental-gap-what-we-care-about-vs.-what-we-have"><span class="header-section-number">21.2</span> The fundamental gap: what we care about vs.&nbsp;what we have</h2>
+<p>Every study you read or run is a sample. A sample of 120 university students in Innsbruck. A sample of 200 children in a school in Pisa. A sample of 47 patients in a clinic in Berlin. A sample of one researcher’s data. None of these samples is the thing that science actually cares about.</p>
+<p>What science cares about is something larger and harder to define. It cares about <em>all young adults</em> (not just our 120), about <em>all children of school age in Western Europe</em> (not just our 200), about <em>all patients with this disorder</em> (not just our 47). The set of all the units about which we want to make a claim is called the <strong>population</strong>. The bit of the population we actually measured is called the <strong>sample</strong>.</p>
+<p>This vocabulary is more than a label. It carries a conceptual point worth restating in different ways, because students consistently underestimate how strange the situation is.</p>
+<ul>
+<li>The <strong>population parameter</strong> is a number that describes the population. The mean aggression of all the young adults the study could speak to. The slope of <code>hours_weekly</code> on <code>aggression</code> for all gamers, not just our 120. Population parameters exist (in principle) but we cannot observe them directly.</li>
+<li>The <strong>sample statistic</strong> is the corresponding number computed from the sample. The mean aggression of our 120 participants. The slope from <code>lm(aggression ~ hours_weekly, data = data)</code> fitted to our 120. Sample statistics are observable; we computed them throughout Section 3.</li>
+</ul>
+<p>The sample statistic is our <strong>estimate</strong> of the population parameter. It is not, in any normal sense, the population parameter itself. It is the closest we can get to the population parameter given the data we collected.</p>
+<p>Take a concrete case. In our running example, the mean aggression of the 120 participants in <code>vgames_study.csv</code> is:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>aggression)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.888333</code></pre>
+</div>
+</div>
+<p>So 4.89 (rounded). What does this number actually tell us?</p>
+<p>It is the <strong>mean aggression of the 120 participants in our sample</strong>. It is not the mean aggression of “all young adults,” “all gamers,” “all participants in similar studies,” or any other population we might care about. The number 4.89 is what we measured in our sample. The number we want, the population mean, is something we have never seen and almost certainly differs from 4.89 to some unknown extent.</p>
+<p>The same applies to every other statistic in Section 3. The slope of 0.08 for <code>hours_weekly</code> predicting <code>aggression</code>. The R-squared of 0.072 for that simple regression. The interaction slope of 0.60 in Chapter 18 between condition and trait hostility. Every one of those numbers was a sample statistic. None of them was the population parameter. They were our estimates of population parameters we cannot see.</p>
+<blockquote class="blockquote">
+<p><strong>An analogy.</strong> Imagine you want to know the average height of all adults in your country. You cannot line up everyone and measure them. So you pick 100 people, measure them, average their heights, and get 172 cm. The 172 is the sample mean. The thing you actually want to know, the average height of every adult in your country, is the population mean. You will never know that number exactly. Your 100-person sample average is your estimate of it.</p>
+</blockquote>
+<p>This sounds obvious when you put it this way. But the consequence is not obvious. If you cannot directly observe the population parameter, how can you ever say anything useful about it? Why is statistics not just throwing up its hands and saying “we cannot know”?</p>
+<p>The answer to that question is the entire content of this chapter, and indeed of inferential statistics as a whole. The answer is that even though we cannot see the population, we can reason carefully about <em>how much our sample estimate would have varied if we had drawn a different sample</em>. That reasoning is what gives us tools to make principled statements about the population, despite never observing it directly.</p>
+</section>
+<section id="the-sample-is-just-one-of-many-possible-samples" class="level2" data-number="21.3">
+<h2 data-number="21.3" class="anchored" data-anchor-id="the-sample-is-just-one-of-many-possible-samples"><span class="header-section-number">21.3</span> The sample is just one of many possible samples</h2>
+<p>Here is the question that opens the door.</p>
+<p>Suppose you ran your video-game study and computed the sample mean aggression: 4.89. Now imagine you went out and ran the study again, recruiting <strong>a completely different set of 120 participants</strong> from the same population, running the same protocol, computing the same statistic. What number would you get?</p>
+<p>The answer that beginners often expect is: “Well, 4.89, or near it.” This is wrong. The right answer is: “Some other number, almost certainly. Maybe 4.81. Maybe 5.02. Maybe 4.71. The new sample is made of different people, and different people have different aggression scores, so the new mean will be different.”</p>
+<p>This difference is not a flaw in your measurement, not a mistake by the experimenter, not a sign that your study was poorly designed. It is an unavoidable consequence of working with samples. Every sample contains different individuals, and the statistic you compute on those individuals depends on who happened to be in the sample. We call this phenomenon <strong>sampling variability</strong>.</p>
+<p>It is essential to understand that sampling variability is <em>structural</em>, not error in the everyday sense. The 4.89 you got was a real, correct answer for the 120 people you happened to measure. So is the 4.81 you might have gotten from a different 120. There is no “correct” sample mean; each sample has its own mean. The variability between them is something we have to think about and live with, not something we should try to make go away.</p>
+<blockquote class="blockquote">
+<p><strong>An analogy.</strong> Imagine a giant bowl filled with millions of balls. Some are heavy, some are light, but the average weight (across all the balls in the bowl) is some fixed number, say 100 grams. Now you reach in, blindfolded, and scoop out a handful of, say, 30 balls. The average weight of those 30 balls will be some number, close to 100 but probably not exactly 100. If you put them back and scoop a different 30, the new average will be some other number, also close to 100 but probably not exactly 100, and probably not exactly the same as the first scoop. You scoop a third time: a third average, slightly different from the first two. This is sampling variability. The bowl never changed. Your scoops did.</p>
+</blockquote>
+<p>A short illustration in R will make this concrete. To do it without needing a real bowl of balls, we will pretend that the 120 participants in our <code>vgames_study</code> data are the entire population (in real life they are not, but the simulation will illustrate the idea). Then we will repeatedly draw smaller samples from this “population” and look at how the sample mean varies.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pretend the 120 observations in `data` are our population.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeatedly draw a sample of 30, compute its mean, look at how the means vary.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>sample1 <span class="ot">&lt;-</span> <span class="fu">sample</span>(data<span class="sc">$</span>aggression, <span class="at">size =</span> <span class="dv">30</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>sample2 <span class="ot">&lt;-</span> <span class="fu">sample</span>(data<span class="sc">$</span>aggression, <span class="at">size =</span> <span class="dv">30</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>sample3 <span class="ot">&lt;-</span> <span class="fu">sample</span>(data<span class="sc">$</span>aggression, <span class="at">size =</span> <span class="dv">30</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(sample1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.1</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(sample2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.11</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(sample3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.28</code></pre>
+</div>
+</div>
+<p>Each line draws a fresh sample of 30 from the same 120 observations, and computes the mean. The three means are not the same. They are close to each other and close to the overall mean of the data, but each one is its own number. That difference between the three numbers is sampling variability, made visible in a single line of R.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="21-why-inference_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="624"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The five sample means in the plot above are all close to the population mean (the dashed line), but no two are identical. None of them equals the population mean exactly. Each sample sits in its own slightly different place. The dance around the truth, sample by sample, is the central object of inferential statistics.</p>
+</section>
+<section id="imagining-many-possible-samples-the-sampling-distribution" class="level2" data-number="21.4">
+<h2 data-number="21.4" class="anchored" data-anchor-id="imagining-many-possible-samples-the-sampling-distribution"><span class="header-section-number">21.4</span> Imagining many possible samples: the sampling distribution</h2>
+<p>The next step is conceptually the most important in this chapter. The previous section showed that a sample mean is one number among many possible numbers, because different samples produce different means. The natural next question is: what does the collection of <em>all those possible numbers</em> look like? If we could somehow take every possible sample of 120 people from the population, compute the mean of each, and stack them all up, what would the result look like?</p>
+<p>The collection of all the values a statistic could take, across all the possible samples one could draw from the population, is called the <strong>sampling distribution</strong> of that statistic.</p>
+<p>This is a slippery concept on first encounter, because the sampling distribution is something we are <em>imagining</em>. We do not actually draw all those samples; we draw one sample, in practice. But the <em>idea</em> of the sampling distribution is the bridge between our single sample and the population we care about. It tells us how much our particular sample mean could have varied from other possible means we did not happen to draw.</p>
+<p>Three properties of the sampling distribution matter most:</p>
+<ol type="1">
+<li><strong>The center.</strong> Across all possible samples, the average value of the sample mean equals the population mean. The sampling distribution is centered exactly on the population parameter. This is true even though most individual samples will not give exactly the population value. Some samples land too low, some land too high; on average they balance.</li>
+<li><strong>The spread.</strong> The sampling distribution has a width. Some sample means land far from the population value, some land close. The spread tells us how much “wobble” there is from sample to sample.</li>
+<li><strong>The shape.</strong> For most reasonable statistics, the sampling distribution looks like a bell curve, even when the underlying data does not. We will come to <em>why</em> this is true in a later section; the fact alone matters now.</li>
+</ol>
+<p>It is helpful to compare the sampling distribution to two other distributions that are easy to confuse with it.</p>
+<ul>
+<li>The <strong>population distribution</strong> is the distribution of values among all units in the population. The histogram of aggression scores for all the young adults we are interested in. It exists in principle. We almost never see it directly.</li>
+<li>The <strong>sample distribution</strong> is the distribution of values in our specific sample. The histogram of aggression scores for our 120 participants. We can see this; we can plot it; we have done it many times already.</li>
+<li>The <strong>sampling distribution</strong> is the distribution of the <em>statistic</em> (the mean, say, or a slope) across all possible samples. It is not a distribution of raw values; it is a distribution of summaries. It exists only in our imagination unless we manually simulate it.</li>
+</ul>
+<p>The three are easy to mix up because they all involve histograms and they all involve the same population. But they are distinct objects.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 31%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Distribution</th>
+<th>Each point is</th>
+<th>Where we see it</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Population distribution</td>
+<td>One unit (e.g., one person)</td>
+<td>Almost never observed</td>
+</tr>
+<tr class="even">
+<td>Sample distribution</td>
+<td>One unit in our sample</td>
+<td>Directly: <code>hist(data$aggression)</code></td>
+</tr>
+<tr class="odd">
+<td>Sampling distribution</td>
+<td>One summary statistic (e.g., the mean) from one hypothetical sample</td>
+<td>Imagined; can be simulated</td>
+</tr>
+</tbody>
+</table>
+<p>The sampling distribution is the new object in this section, and the rest of the chapter builds up tools to think about it. The next step is to actually look at one, by simulating it.</p>
+</section>
+<section id="building-a-sampling-distribution-by-simulation" class="level2" data-number="21.5">
+<h2 data-number="21.5" class="anchored" data-anchor-id="building-a-sampling-distribution-by-simulation"><span class="header-section-number">21.5</span> Building a sampling distribution by simulation</h2>
+<p>We cannot in practice run a real study a thousand times. But we can do something almost as good in R: we can build a fake population on the computer, draw a thousand samples from it, compute the mean of each, and plot the resulting collection of means. That collection is the sampling distribution. By looking at it directly, we can see all three properties listed above with our own eyes.</p>
+<p>The R function for generating random numbers from a normal distribution is <code>rnorm()</code>. If we wanted to pretend that aggression in some population was normally distributed with a mean of 5.0 and a standard deviation of 1.5, we could generate one sample of 30 like this:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>one_sample <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="fl">5.0</span>, <span class="at">sd =</span> <span class="fl">1.5</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(one_sample)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.310186</code></pre>
+</div>
+</div>
+<p>So one sample of 30 from the population gave us a sample mean of about 5.06. As we already know, a different sample would give us a different mean. The function <code>replicate()</code> lets us repeat that operation many times automatically. The following line draws <strong>1000 different samples</strong> of size 30 from the same population, computing the mean of each:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>sample_means <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">1000</span>, <span class="fu">mean</span>(<span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="fl">5.0</span>, <span class="at">sd =</span> <span class="fl">1.5</span>)))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(sample_means)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1000</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample_means)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.310186 5.094302 4.763600 4.664535 4.495557 5.259209</code></pre>
+</div>
+</div>
+<p>We now have a vector of 1000 sample means. Each one is the mean of a different sample of 30 people from the same population. The first six values are shown.</p>
+<p>What does the distribution of these 1000 means look like? Two things, mainly: where is its center, and how spread out is it?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(sample_means)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.995496</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(sample_means)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2841269</code></pre>
+</div>
+</div>
+<p>The mean of our 1000 sample means is very close to 5.0, the value we set when we generated the population. The standard deviation of those 1000 sample means is around 0.27. These are the central tendency and the spread of the sampling distribution. Let us visualize it:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="21-why-inference_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="624"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Look closely at this plot. Every bar represents how many of our 1000 simulated samples produced a mean in that small bin. The dashed red line is the true population mean. Notice:</p>
+<ul>
+<li>The histogram is <strong>centered on the population mean (5.0)</strong>. Some sample means landed a little below; some landed a little above. The average of all 1000 sample means is essentially 5.0. This is the “center” property of the sampling distribution.</li>
+<li>The histogram is <strong>bell-shaped</strong>. It rises smoothly from the tails to a peak near 5.0 and falls smoothly back down. This is the “shape” property. The Central Limit Theorem (next major section) tells us this shape is approximately always the case.</li>
+<li>The histogram has a <strong>width</strong>. Sample means ranged roughly from 4.3 to 5.7. The vast majority sit between about 4.5 and 5.5. The standard deviation of the 1000 sample means (about 0.27) measures this width.</li>
+</ul>
+<p>A single sample is one draw from this distribution. The mean of our actual study is one of the dots that would fall somewhere on this histogram. The 1000 dots in our simulation are alternative versions of that one dot, each from a different hypothetical replication.</p>
+</section>
+<section id="the-standard-error-quantifying-precision" class="level2" data-number="21.6">
+<h2 data-number="21.6" class="anchored" data-anchor-id="the-standard-error-quantifying-precision"><span class="header-section-number">21.6</span> The standard error: quantifying precision</h2>
+<p>The width of the sampling distribution has a special name: the <strong>standard error</strong> (SE) of the statistic. It is just the standard deviation of the sampling distribution. Its meaning is the meaning of that width.</p>
+<ul>
+<li>A <strong>small standard error</strong> means the sampling distribution is narrow. The statistic does not vary much across samples. Our estimate is <strong>precise</strong>: we would expect to get a similar answer if we ran the study again.</li>
+<li>A <strong>large standard error</strong> means the sampling distribution is wide. The statistic varies a lot across samples. Our estimate is <strong>imprecise</strong>: a new sample could easily give a substantially different answer.</li>
+</ul>
+<p>The standard error is not a property of the data we collected. It is a property of the procedure (the statistic + the sample size + the population variability). The same data could yield estimates with different standard errors depending on which statistic you compute (the mean has one SE, the median has another, a slope has another). And the same statistic on the same kind of data could yield different SEs depending on the sample size.</p>
+<p>For the sample mean specifically, there is a tidy formula:</p>
+<p><span class="math display">\[
+SE_{\bar{x}} = \frac{\sigma}{\sqrt{n}}.
+\]</span></p>
+<p>In words: the standard error of the sample mean equals the population standard deviation divided by the square root of the sample size. The formula captures two intuitions cleanly:</p>
+<ol type="1">
+<li><strong>The standard error grows with σ.</strong> If the data are very variable (people differ a lot from each other), then a fixed-size sample will reflect that variability in its estimate of the mean. SE goes up.</li>
+<li><strong>The standard error shrinks with n.</strong> Larger samples produce more precise estimates. Doubling the sample size does not, however, halve the SE; because of the square root, you need to <em>quadruple</em> the sample size to halve the SE.</li>
+</ol>
+<p>Our simulation matches the formula. The population SD was 1.5, the sample size was 30, so we expected the SE to be:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fl">1.5</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">30</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2738613</code></pre>
+</div>
+</div>
+<p>And the standard deviation of our 1000 simulated means was about 0.27. The two values agree to within simulation noise. The formula is not magic; it is the analytic shortcut for the same quantity our simulation produced by brute force.</p>
+<section id="watching-the-standard-error-shrink-with-sample-size" class="level3" data-number="21.6.1">
+<h3 data-number="21.6.1" class="anchored" data-anchor-id="watching-the-standard-error-shrink-with-sample-size"><span class="header-section-number">21.6.1</span> Watching the standard error shrink with sample size</h3>
+<p>We can visualize the “n shrinks the SE” point directly by running the simulation at several sample sizes and overlaying the resulting sampling distributions.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>means_n10  <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">1000</span>, <span class="fu">mean</span>(<span class="fu">rnorm</span>(<span class="dv">10</span>,  <span class="at">mean =</span> <span class="fl">5.0</span>, <span class="at">sd =</span> <span class="fl">1.5</span>)))</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>means_n30  <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">1000</span>, <span class="fu">mean</span>(<span class="fu">rnorm</span>(<span class="dv">30</span>,  <span class="at">mean =</span> <span class="fl">5.0</span>, <span class="at">sd =</span> <span class="fl">1.5</span>)))</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>means_n100 <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">1000</span>, <span class="fu">mean</span>(<span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> <span class="fl">5.0</span>, <span class="at">sd =</span> <span class="fl">1.5</span>)))</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>means_n500 <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">1000</span>, <span class="fu">mean</span>(<span class="fu">rnorm</span>(<span class="dv">500</span>, <span class="at">mean =</span> <span class="fl">5.0</span>, <span class="at">sd =</span> <span class="fl">1.5</span>)))</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Empirical SE (standard deviation of the sample means)</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">n10 =</span> <span class="fu">sd</span>(means_n10), <span class="at">n30 =</span> <span class="fu">sd</span>(means_n30),</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">n100 =</span> <span class="fu">sd</span>(means_n100), <span class="at">n500 =</span> <span class="fu">sd</span>(means_n500))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       n10        n30       n100       n500 
+0.47221669 0.28212384 0.14866981 0.06651027 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Theoretical SE from the formula</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">n10 =</span> <span class="fl">1.5</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">10</span>), <span class="at">n30 =</span> <span class="fl">1.5</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">30</span>),</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n100 =</span> <span class="fl">1.5</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">100</span>), <span class="at">n500 =</span> <span class="fl">1.5</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">500</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       n10        n30       n100       n500 
+0.47434165 0.27386128 0.15000000 0.06708204 </code></pre>
+</div>
+</div>
+<p>The simulated and theoretical SEs agree, and you can see the SE shrinking from about 0.47 (n = 10) down to about 0.067 (n = 500). The same comparison as a single picture:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="21-why-inference_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="720"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>All four sampling distributions are centered on 5.0 (the population mean, marked with a dashed line). But they get progressively narrower as the sample size increases. With n = 10, the sample means range from about 3.5 to 6.5; with n = 500, they range from roughly 4.85 to 5.15. The center is the same; the precision (the SE) is what changes.</p>
+</section>
+<section id="the-connection-back-to-lm-output" class="level3" data-number="21.6.2">
+<h3 data-number="21.6.2" class="anchored" data-anchor-id="the-connection-back-to-lm-output"><span class="header-section-number">21.6.2</span> The connection back to <code>lm()</code> output</h3>
+<p>Recall the <code>summary(lm(...))</code> output from Chapter 16. The Coefficients block had four columns: <code>Estimate</code>, <code>Std. Error</code>, <code>t value</code>, and <code>Pr(&gt;|t|)</code>. We told you, every time, to focus on the Estimate column and to ignore the rest until Section 4.</p>
+<p>You can now read the second column. The <strong>Std. Error</strong> of a coefficient is the standard deviation of the sampling distribution of that coefficient. It tells you how much the slope (or intercept) would wobble if you re-ran the study with a fresh sample of the same size from the same population. A small Std. Error means the slope is a precise estimate; a large Std. Error means it is imprecise. The remaining two columns (the t-value and the p-value) are calculations built on top of this Std. Error; they answer the question “is the slope big enough, relative to its noise, that we should treat it as different from zero?” That is Chapter 22’s topic. The Std. Error, the building block, is what we have just defined.</p>
+<p>For example, on our running model:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> hours_weekly, <span class="at">data =</span> data)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1)<span class="sc">$</span>coefficients</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               Estimate Std. Error  t value     Pr(&gt;|t|)
+(Intercept)  4.19617633  0.2698749 15.54860 2.432180e-30
+hours_weekly 0.08164636  0.0270674  3.01641 3.133333e-03</code></pre>
+</div>
+</div>
+<p>The slope of <code>hours_weekly</code> is 0.082, and its Std. Error is 0.027. The interpretation: if we re-ran the same study many times with fresh samples of 120, the slope estimates would cluster around the true population slope, with a typical wobble (standard deviation) of about 0.027. The slope estimate is reasonably precise, in the sense that it would not bounce around all over the place across replications.</p>
+</section>
+</section>
+<section id="the-central-limit-theorem-clt-why-the-bell-curve-is-so-important" class="level2" data-number="21.7">
+<h2 data-number="21.7" class="anchored" data-anchor-id="the-central-limit-theorem-clt-why-the-bell-curve-is-so-important"><span class="header-section-number">21.7</span> The Central Limit Theorem (CLT): why the bell curve is so important</h2>
+<p>We have been quietly using a remarkable fact since the simulation in the previous section: the sampling distribution was always bell-shaped, no matter what we tried. We generated the underlying data from a normal distribution in those examples, which makes the bell shape unsurprising. But the result is much stronger than that.</p>
+<p><strong>The Central Limit Theorem says: when you compute the mean of a sample, the sampling distribution of that mean is approximately normal, regardless of the shape of the original data, as long as the sample is large enough.</strong></p>
+<p>This is a theorem, in the strong mathematical sense. It has a proof. It is not an approximation or a rule of thumb. It says that even if the underlying data is wildly skewed, bimodal, or strangely shaped, the means of large enough samples behave as if they were drawn from a normal distribution. Means smooth out the strangeness of the original data.</p>
+<p>The phrase “large enough” is the only fuzzy part. How large is enough depends on how non-normal the original data is. A common practical rule of thumb is <strong>n ≥ 30</strong>, but this is just a rule, not a law. With mildly non-normal data, samples of 20 or 25 give close-to-normal sampling distributions. With severely skewed or weird data, you may need 50 or more before the sampling distribution is convincingly normal.</p>
+<p>A demonstration helps. Suppose the underlying data were not normal at all, but were drawn from a heavily skewed distribution (a chi-squared distribution, say, which has a long tail to the right). What does the sampling distribution of the mean look like as we increase n?</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="21-why-inference_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="816"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="21-why-inference_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="816"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The first picture above shows the population, which is heavily skewed to the right. Most values are low, but a long tail extends to the right. The second picture shows what the sampling distribution of the mean looks like for that population at four sample sizes.</p>
+<ul>
+<li>With <strong>n = 2</strong>, the sampling distribution still looks skewed: averaging just two values is not enough to smooth out the population’s asymmetry.</li>
+<li>With <strong>n = 5</strong>, the skew is much weaker but visible.</li>
+<li>With <strong>n = 30</strong>, the sampling distribution looks essentially normal. The population’s skew has been smoothed out by averaging 30 values at a time.</li>
+<li>With <strong>n = 200</strong>, the sampling distribution is normal, narrow, and tightly centered on the true population mean.</li>
+</ul>
+<p>This is the CLT at work. The shape of the <em>data</em> (top panel) and the shape of the <em>sampling distribution of the mean</em> (bottom panel) are very different things. As n grows, the sampling distribution becomes more and more normal, regardless of how non-normal the data themselves are.</p>
+<p>Why does this matter? Because the normal distribution has known mathematical properties that we can use to compute probabilities (and therefore p-values, in the next chapter). If sampling distributions were arbitrarily shaped, we could not compute anything; every problem would need bespoke math. The CLT guarantees that as long as our samples are reasonably large, we can use the normal distribution as the reference shape for our statistic. This is the single largest reason the normal distribution shows up everywhere in statistics.</p>
+</section>
+<section id="this-applies-to-everything-not-just-means" class="level2" data-number="21.8">
+<h2 data-number="21.8" class="anchored" data-anchor-id="this-applies-to-everything-not-just-means"><span class="header-section-number">21.8</span> This applies to everything, not just means</h2>
+<p>We have been computing the sampling distribution of the sample mean because the mean is the simplest statistic and the easiest to visualize. But the concept of a sampling distribution is not specific to means. It applies to every statistic you can compute from a sample.</p>
+<ul>
+<li>The sampling distribution of a <strong>regression slope</strong> describes how the slope would vary across hypothetical replications.</li>
+<li>The sampling distribution of an <strong>R-squared</strong> describes how R-squared would vary.</li>
+<li>The sampling distribution of a <strong>correlation coefficient</strong> describes how the correlation would vary.</li>
+<li>The sampling distribution of a <strong>difference between two group means</strong> describes how the difference would vary.</li>
+<li>The sampling distribution of any statistic you can compute is the distribution of that statistic across all possible samples.</li>
+</ul>
+<p>The standard error is, for every one of these, the standard deviation of the corresponding sampling distribution. The Std. Error column of <code>summary(lm(...))</code> contains the standard errors of the coefficients. When R prints the standard error of a correlation, or of a chi-squared statistic, or of a regression slope, the meaning is the same: the standard deviation of the sampling distribution of that statistic.</p>
+<p>You will eventually meet two refinements of this idea.</p>
+<ul>
+<li>For some statistics, the sampling distribution is approximately normal (CLT applies). For others, it has a specific, known shape (the <strong>t</strong>, <strong>F</strong>, or <strong>chi-squared</strong> distributions). Which shape applies depends on the statistic and on what is known about the data. We will return to this when we look at test statistics in Chapter 23.</li>
+<li>The <strong>shape</strong> of the sampling distribution is what lets us compute p-values. A p-value is the probability of seeing a result at least as extreme as ours, assuming a particular value of the population parameter. To compute that probability, we need to know what the sampling distribution looks like under that assumption. This is exactly what makes the work of Chapter 22 possible.</li>
+</ul>
+</section>
+<section id="why-is-all-of-this-so-important" class="level2" data-number="21.9">
+<h2 data-number="21.9" class="anchored" data-anchor-id="why-is-all-of-this-so-important"><span class="header-section-number">21.9</span> Why is all of this so important?</h2>
+<p>We started the chapter with a complaint: we care about the population, but we have only a sample. The number we computed from our sample (the mean, the slope, the R-squared) is not the population parameter; it is one observation in a large space of possible numbers we could have computed if we had drawn a different sample.</p>
+<p>The sampling distribution is the entire object that describes that space. The standard error is the single number that summarizes how wide the space is. Together, they let us say things like:</p>
+<ul>
+<li>“Our estimated slope is 0.08, with an SE of 0.03. The sampling distribution of slopes from studies like this is bell-shaped and centered on the true population slope. So if the true slope were zero, results as far from zero as 0.08 would be unusual (because 0.08 is much bigger than 0.03).”</li>
+<li>“Our estimated mean is 4.89, with an SE of 0.14. If we ran the study many times, our means would mostly land between roughly 4.61 and 5.17 (about 2 SE above and below). So the population mean is plausibly anywhere in that range; we cannot pin it down more precisely than that.”</li>
+</ul>
+<p>These statements are inferences. They are the kind of claim that statistical inference is in the business of producing. To make them, you need the sampling distribution as a conceptual object, and you need the standard error as a quantitative summary. The rest of Section 4 will take this foundation and build on it: how do we decide whether a result is too far from zero to be plausibly chance? What does “too far” mean precisely? What are the rules of the game, and how were they invented? Those are the topics of Chapters 22 onwards.</p>
+<p>For Lakens’ formulation of this same idea, see Chapter 1 of <em>Improving Your Statistical Inferences</em> (Lakens, 2022). Navarro (2018), Chapter 9 (Introduction to probability) and Chapter 10 (Estimating unknown quantities from a sample), covers the same material from a slightly different angle and is a useful companion read.</p>
+</section>
+<section id="looking-ahead" class="level2" data-number="21.10">
+<h2 data-number="21.10" class="anchored" data-anchor-id="looking-ahead"><span class="header-section-number">21.10</span> Looking ahead</h2>
+<p>Chapter 22 picks up where this one leaves off. We have a sample statistic, and we know its sampling distribution. The natural next question is: how should we use this to make a decision about whether an effect in our data is “real” in the population? That question has a long, contested history. Two giants of twentieth-century statistics, Ronald Fisher and Jerzy Neyman (with Egon Pearson), proposed two different answers, and psychology has been using a strange mixture of both ever since. Chapter 22 walks through that history, names the two frameworks, and tells you precisely what a p-value is (and, more importantly, what it is not). It is the chapter that connects the standard error you now understand to the p-values you will read in every research paper for the rest of your career.</p>
+</section>
+<section id="check-your-understanding" class="level2" data-number="21.11">
+<h2 data-number="21.11" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">21.11</span> Check your understanding</h2>
+<p><strong>1. What is the difference between a population and a sample, and between a population parameter and a sample statistic?</strong></p>
+<div id="radio_IKOSFGMTVU" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_IKOSFGMTVU" value=""> <span>The population is the dataset the experimenter measured; the sample is a subset of it shown in graphs.</span></label><label><input type="radio" autocomplete="off" name="radio_IKOSFGMTVU" value="answer"> <span>The population is the full set of units we want to make claims about; the sample is the subset of units we actually measured.</span></label><label><input type="radio" autocomplete="off" name="radio_IKOSFGMTVU" value=""> <span>The population is the variables in the data; the sample is the participants who answered them.</span></label><label><input type="radio" autocomplete="off" name="radio_IKOSFGMTVU" value=""> <span>The population is the larger version of the sample; the two contain the same individuals.</span></label>
+</div>
+<p><strong>2. What is “sampling variability”?</strong></p>
+<div id="radio_BDMKYVWGIE" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_BDMKYVWGIE" value=""> <span>Random measurement error introduced by the experimenter that better instruments would remove.</span></label><label><input type="radio" autocomplete="off" name="radio_BDMKYVWGIE" value=""> <span>A bias in the sample that should be corrected by adjusting the data before analysis.</span></label><label><input type="radio" autocomplete="off" name="radio_BDMKYVWGIE" value="answer"> <span>The structural variation of a sample statistic across different samples from the same population; even a perfect study gives a different answer each time.</span></label><label><input type="radio" autocomplete="off" name="radio_BDMKYVWGIE" value=""> <span>A computational artifact of statistical software that disappears with more accurate algorithms.</span></label>
+</div>
+<p><strong>3. What is the sampling distribution of a statistic?</strong></p>
+<div id="radio_SXBMQRQQAB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_SXBMQRQQAB" value=""> <span>The distribution of the raw data values across all units in the population.</span></label><label><input type="radio" autocomplete="off" name="radio_SXBMQRQQAB" value=""> <span>The distribution of the raw data values across the units in our specific sample.</span></label><label><input type="radio" autocomplete="off" name="radio_SXBMQRQQAB" value="answer"> <span>The distribution of a statistic (such as the sample mean) across all the possible samples one could draw from the population.</span></label><label><input type="radio" autocomplete="off" name="radio_SXBMQRQQAB" value=""> <span>The distribution of the predictor variables included in a regression model.</span></label>
+</div>
+<p><strong>4. Where is the sampling distribution of the sample mean centered?</strong></p>
+<div id="radio_CMOPAQRCAI" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_CMOPAQRCAI" value=""> <span>On the value of the largest observation in the sample.</span></label><label><input type="radio" autocomplete="off" name="radio_CMOPAQRCAI" value=""> <span>On zero, regardless of the population parameter, by mathematical construction.</span></label><label><input type="radio" autocomplete="off" name="radio_CMOPAQRCAI" value="answer"> <span>On the population parameter, even though individual samples almost never land exactly there.</span></label><label><input type="radio" autocomplete="off" name="radio_CMOPAQRCAI" value=""> <span>On the value of the most recent sample, which shifts the distribution each time.</span></label>
+</div>
+<p><strong>5. What is the standard error (SE) of a statistic?</strong></p>
+<div id="radio_QPNYATXKWS" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_QPNYATXKWS" value=""> <span>The standard deviation of the raw data values in our sample.</span></label><label><input type="radio" autocomplete="off" name="radio_QPNYATXKWS" value="answer"> <span>The standard deviation of the sampling distribution of the statistic; it quantifies the precision of our estimate.</span></label><label><input type="radio" autocomplete="off" name="radio_QPNYATXKWS" value=""> <span>A correction factor applied to p-values when model assumptions are violated.</span></label><label><input type="radio" autocomplete="off" name="radio_QPNYATXKWS" value=""> <span>The largest absolute value the statistic could plausibly take in any sample.</span></label>
+</div>
+<p><strong>6. How does sample size affect the standard error?</strong></p>
+<div id="radio_KLAOPBUBRZ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_KLAOPBUBRZ" value=""> <span>Larger samples produce larger SEs, because they contain more information about variation.</span></label><label><input type="radio" autocomplete="off" name="radio_KLAOPBUBRZ" value="answer"> <span>Larger samples produce smaller SEs, because averaging over more observations smooths out individual variation; for the mean, SE = σ / √n.</span></label><label><input type="radio" autocomplete="off" name="radio_KLAOPBUBRZ" value=""> <span>Sample size has no effect on the SE; only the variability of the population determines it.</span></label><label><input type="radio" autocomplete="off" name="radio_KLAOPBUBRZ" value=""> <span>Smaller samples produce smaller SEs, because they avoid the chance of including extreme values.</span></label>
+</div>
+<p><strong>7. What does the Central Limit Theorem say?</strong></p>
+<div id="radio_XRXIGMUGUZ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_XRXIGMUGUZ" value=""> <span>The raw data of any analysis must be normally distributed before computing any statistic.</span></label><label><input type="radio" autocomplete="off" name="radio_XRXIGMUGUZ" value="answer"> <span>For large enough samples, the sampling distribution of the sample mean is approximately normal, regardless of the shape of the raw data.</span></label><label><input type="radio" autocomplete="off" name="radio_XRXIGMUGUZ" value=""> <span>The sample size must be exactly 30 for the theorem to apply; smaller and larger values invalidate it.</span></label><label><input type="radio" autocomplete="off" name="radio_XRXIGMUGUZ" value=""> <span>Only means computed from already-normal data have sampling distributions; other statistics do not.</span></label>
+</div>
+<p><strong>8. Does the concept of a sampling distribution apply only to means?</strong></p>
+<div id="radio_LPSEGSERYY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_LPSEGSERYY" value=""> <span>Only the sample mean has a sampling distribution; other statistics do not.</span></label><label><input type="radio" autocomplete="off" name="radio_LPSEGSERYY" value=""> <span>Only statistics from normally distributed data have a sampling distribution.</span></label><label><input type="radio" autocomplete="off" name="radio_LPSEGSERYY" value="answer"> <span>Every statistic computed from a sample has a sampling distribution: slopes, correlations, R-squared, group differences, and so on.</span></label><label><input type="radio" autocomplete="off" name="radio_LPSEGSERYY" value=""> <span>Sampling distributions are only meaningful when the population contains millions of units.</span></label>
+</div>
+<p><strong>9. What does the “Std. Error” column of an <code>lm()</code> model’s coefficients table represent?</strong></p>
+<div id="radio_YKQFDCLMEG" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_YKQFDCLMEG" value=""> <span>The variability of the predictor variable across observations in the dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_YKQFDCLMEG" value="answer"> <span>The estimated standard deviation of the sampling distribution of the slope across hypothetical replications of the study.</span></label><label><input type="radio" autocomplete="off" name="radio_YKQFDCLMEG" value=""> <span>The residual standard error of the regression model around the fitted line.</span></label><label><input type="radio" autocomplete="off" name="radio_YKQFDCLMEG" value=""> <span>The correlation between the predictor and the outcome variable in the sample.</span></label>
+</div>
+<p><strong>10. Why does the sampling distribution matter for statistical inference?</strong></p>
+<div id="radio_TQQVMKHRRO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_TQQVMKHRRO" value=""> <span>Knowing the sampling distribution lets us read p-values directly off the data.</span></label><label><input type="radio" autocomplete="off" name="radio_TQQVMKHRRO" value="answer"> <span>It lets us reason about how plausible our sample value is under different hypotheses about the population, despite never observing the population directly.</span></label><label><input type="radio" autocomplete="off" name="radio_TQQVMKHRRO" value=""> <span>The sampling distribution is only useful when the exact population values are already known.</span></label><label><input type="radio" autocomplete="off" name="radio_TQQVMKHRRO" value=""> <span>The sampling distribution replaces the need for descriptive statistics in research reports.</span></label>
+</div>
+</section>
+<section id="references" class="level2" data-number="21.12">
+<h2 data-number="21.12" class="anchored" data-anchor-id="references"><span class="header-section-number">21.12</span> References</h2>
+<p>Lakens, D. (2022). <em>Improving your statistical inferences</em>. Chapter 1, “Using p-values to test a hypothesis.” <a href="https://lakens.github.io/statistical_inferences/01-pvalue.html" class="uri">https://lakens.github.io/statistical_inferences/01-pvalue.html</a></p>
+<p>Navarro, D. J. (2018). <em>Learning statistics with R: A tutorial for psychology students and other beginners</em> (Version 0.6), Chapters 9 (“Introduction to probability”) and 10 (“Estimating unknown quantities from a sample”). <a href="https://learningstatisticswithr.com" class="uri">https://learningstatisticswithr.com</a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  var t = document.getElementsByClassName("webex-total_correct");
+  for (var i = 0; i < t.length; i++) {
+    p = t[i].parentElement;
+    var correct = p.getElementsByClassName("webex-correct").length;
+    var solvemes = p.getElementsByClassName("webex-solveme").length;
+    var radiogroups = p.getElementsByClassName("webex-radiogroup").length;
+    var selects = p.getElementsByClassName("webex-select").length;
+
+    t[i].innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* check answers */
+check_func = function() {
+  console.log("webex: check answers");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('unchecked')) {
+    cl.remove("unchecked");
+    this.innerHTML = "Hide Answers";
+  } else {
+    cl.add("unchecked");
+    this.innerHTML = "Show Answers";
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+
+  var cl = this.classList
+
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("webex onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  var check_sections = document.getElementsByClassName("webex-check");
+  console.log("check:", check_sections.length);
+  for (var i = 0; i < check_sections.length; i++) {
+    check_sections[i].classList.add("unchecked");
+
+    let btn = document.createElement("button");
+    btn.innerHTML = "Show Answers";
+    btn.classList.add("webex-check-button");
+    btn.onclick = check_func;
+    check_sections[i].appendChild(btn);
+
+    let spn = document.createElement("span");
+    spn.classList.add("webex-total_correct");
+    check_sections[i].appendChild(spn);
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+
+    solveme[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+  }
+
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+    selects[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+  }
+
+  update_total_correct();
+}
+
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./20-diagnostics-and-limits.html" class="pagination-link" aria-label="Diagnostics, model fit, and the limits of your model">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Diagnostics, model fit, and the limits of your model</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/21-why-inference.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

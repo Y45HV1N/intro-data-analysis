@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.37">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -76,14 +76,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2a10d0346db92f4f4683709d27f46b3b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-663e73f9dec64fbea7d0ce06426dad2b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-2a10d0346db92f4f4683709d27f46b3b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-d685995fa19fd69abfd2845f2861e92b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -476,6 +476,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 4: Statistical Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-why-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Why inference? Samples, populations, and the standard error</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -863,36 +880,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="check-your-understanding" class="level2" data-number="6.7">
 <h2 data-number="6.7" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">6.7</span> Check your understanding</h2>
 <p><strong>1. What is the difference between <code>&lt;-</code> and <code>=</code> for assignment in R?</strong></p>
-<div id="radio_RLJWIBEBCC" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_RLJWIBEBCC" value=""> <span><code>x = 5</code> is the only correct way to assign in R; <code>x &lt;- 5</code> is wrong.</span></label><label><input type="radio" autocomplete="off" name="radio_RLJWIBEBCC" value="answer"> <span>Both work, but <code>&lt;-</code> is the convention in R; <code>=</code> has another meaning inside function calls (named arguments).</span></label><label><input type="radio" autocomplete="off" name="radio_RLJWIBEBCC" value=""> <span><code>&lt;-</code> and <code>=</code> are completely interchangeable; there is no difference.</span></label><label><input type="radio" autocomplete="off" name="radio_RLJWIBEBCC" value=""> <span><code>&lt;-</code> only works inside functions, not in scripts.</span></label>
+<div id="radio_MNWDKJYMRM" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MNWDKJYMRM" value=""> <span><code>x = 5</code> is the only correct way to assign in R; <code>x &lt;- 5</code> is wrong.</span></label><label><input type="radio" autocomplete="off" name="radio_MNWDKJYMRM" value="answer"> <span>Both work, but <code>&lt;-</code> is the convention in R; <code>=</code> has another meaning inside function calls (named arguments).</span></label><label><input type="radio" autocomplete="off" name="radio_MNWDKJYMRM" value=""> <span><code>&lt;-</code> and <code>=</code> are completely interchangeable; there is no difference.</span></label><label><input type="radio" autocomplete="off" name="radio_MNWDKJYMRM" value=""> <span><code>&lt;-</code> only works inside functions, not in scripts.</span></label>
 </div>
 <p><strong>2. What does <code>mean()</code> return when applied to a vector containing one or more <code>NA</code> values, by default?</strong></p>
-<div id="radio_VCRGNBSOTP" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_VCRGNBSOTP" value=""> <span><code>mean()</code> returns 0 by default.</span></label><label><input type="radio" autocomplete="off" name="radio_VCRGNBSOTP" value="answer"> <span><code>mean()</code> returns NA by default; setting <code>na.rm = TRUE</code> computes the mean of the non-missing values.</span></label><label><input type="radio" autocomplete="off" name="radio_VCRGNBSOTP" value=""> <span><code>mean()</code> automatically removes missing values without needing any argument.</span></label><label><input type="radio" autocomplete="off" name="radio_VCRGNBSOTP" value=""> <span>R refuses to run <code>mean()</code> on a vector containing NA.</span></label>
+<div id="radio_UIGEFZAYAY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_UIGEFZAYAY" value=""> <span><code>mean()</code> returns 0 by default.</span></label><label><input type="radio" autocomplete="off" name="radio_UIGEFZAYAY" value="answer"> <span><code>mean()</code> returns NA by default; setting <code>na.rm = TRUE</code> computes the mean of the non-missing values.</span></label><label><input type="radio" autocomplete="off" name="radio_UIGEFZAYAY" value=""> <span><code>mean()</code> automatically removes missing values without needing any argument.</span></label><label><input type="radio" autocomplete="off" name="radio_UIGEFZAYAY" value=""> <span>R refuses to run <code>mean()</code> on a vector containing NA.</span></label>
 </div>
 <p><strong>3. Which is the correct syntax for defining a function named <code>quick_summary</code> that takes one argument <code>x</code>?</strong></p>
-<div id="radio_HXGOPPIILG" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_HXGOPPIILG" value=""> <span><code>function quick_summary(x) { ... }</code></span></label><label><input type="radio" autocomplete="off" name="radio_HXGOPPIILG" value="answer"> <span><code>quick_summary &lt;- function(x) { ... }</code></span></label><label><input type="radio" autocomplete="off" name="radio_HXGOPPIILG" value=""> <span><code>define quick_summary(x) { ... }</code></span></label><label><input type="radio" autocomplete="off" name="radio_HXGOPPIILG" value=""> <span><code>quick_summary = function: x -&gt; { ... }</code></span></label>
+<div id="radio_LVHBGAKRBD" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_LVHBGAKRBD" value=""> <span><code>function quick_summary(x) { ... }</code></span></label><label><input type="radio" autocomplete="off" name="radio_LVHBGAKRBD" value="answer"> <span><code>quick_summary &lt;- function(x) { ... }</code></span></label><label><input type="radio" autocomplete="off" name="radio_LVHBGAKRBD" value=""> <span><code>define quick_summary(x) { ... }</code></span></label><label><input type="radio" autocomplete="off" name="radio_LVHBGAKRBD" value=""> <span><code>quick_summary = function: x -&gt; { ... }</code></span></label>
 </div>
 <p><strong>4. What is the main advantage of applying a custom function to all relevant variables at once, compared to applying it manually one variable at a time?</strong></p>
-<div id="radio_TZPIZAHYKA" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_TZPIZAHYKA" value=""> <span>It is faster than the manual approach but produces different results.</span></label><label><input type="radio" autocomplete="off" name="radio_TZPIZAHYKA" value="answer"> <span>It scales to many more variables without growing in length, makes the correction formula live in one place, and keeps the intent of the code clear.</span></label><label><input type="radio" autocomplete="off" name="radio_TZPIZAHYKA" value=""> <span>It is the only way to apply a correction to a data frame.</span></label><label><input type="radio" autocomplete="off" name="radio_TZPIZAHYKA" value=""> <span>It avoids the need to ever inspect the data.</span></label>
+<div id="radio_OWZLZLQKIL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_OWZLZLQKIL" value=""> <span>It is faster than the manual approach but produces different results.</span></label><label><input type="radio" autocomplete="off" name="radio_OWZLZLQKIL" value="answer"> <span>It scales to many more variables without growing in length, makes the correction formula live in one place, and keeps the intent of the code clear.</span></label><label><input type="radio" autocomplete="off" name="radio_OWZLZLQKIL" value=""> <span>It is the only way to apply a correction to a data frame.</span></label><label><input type="radio" autocomplete="off" name="radio_OWZLZLQKIL" value=""> <span>It avoids the need to ever inspect the data.</span></label>
 </div>
 <p><strong>5. What does <code>install.packages("psych")</code> do?</strong></p>
-<div id="radio_PEGOJBYYSY" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_PEGOJBYYSY" value=""> <span>It downloads but does not install the package.</span></label><label><input type="radio" autocomplete="off" name="radio_PEGOJBYYSY" value=""> <span>It loads an already-installed package into the current session.</span></label><label><input type="radio" autocomplete="off" name="radio_PEGOJBYYSY" value="answer"> <span>It downloads and installs a package on your computer; this needs to be done once per computer.</span></label><label><input type="radio" autocomplete="off" name="radio_PEGOJBYYSY" value=""> <span>It is required at the start of every R session for every package.</span></label>
+<div id="radio_SITFBKXIEG" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_SITFBKXIEG" value=""> <span>It downloads but does not install the package.</span></label><label><input type="radio" autocomplete="off" name="radio_SITFBKXIEG" value=""> <span>It loads an already-installed package into the current session.</span></label><label><input type="radio" autocomplete="off" name="radio_SITFBKXIEG" value="answer"> <span>It downloads and installs a package on your computer; this needs to be done once per computer.</span></label><label><input type="radio" autocomplete="off" name="radio_SITFBKXIEG" value=""> <span>It is required at the start of every R session for every package.</span></label>
 </div>
 <p><strong>6. How often do you need to call <code>library(psych)</code>?</strong></p>
-<div id="radio_TYXJMFHJJA" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_TYXJMFHJJA" value=""> <span>Once: it persists across all future sessions.</span></label><label><input type="radio" autocomplete="off" name="radio_TYXJMFHJJA" value=""> <span>It loads automatically; no <code>library()</code> call is ever needed.</span></label><label><input type="radio" autocomplete="off" name="radio_TYXJMFHJJA" value="answer"> <span>At the start of every R session in which you want to use the package's functions.</span></label><label><input type="radio" autocomplete="off" name="radio_TYXJMFHJJA" value=""> <span>Only when the package is installed.</span></label>
+<div id="radio_XIELKKLODI" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_XIELKKLODI" value=""> <span>Once: it persists across all future sessions.</span></label><label><input type="radio" autocomplete="off" name="radio_XIELKKLODI" value=""> <span>It loads automatically; no <code>library()</code> call is ever needed.</span></label><label><input type="radio" autocomplete="off" name="radio_XIELKKLODI" value="answer"> <span>At the start of every R session in which you want to use the package's functions.</span></label><label><input type="radio" autocomplete="off" name="radio_XIELKKLODI" value=""> <span>Only when the package is installed.</span></label>
 </div>
 <p><strong>7. What is the <code>::</code> operator used for, as in <code>psych::describe()</code>?</strong></p>
-<div id="radio_CPIVQZKZOE" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_CPIVQZKZOE" value=""> <span>It is a way to install a package directly from a function call.</span></label><label><input type="radio" autocomplete="off" name="radio_CPIVQZKZOE" value="answer"> <span>It calls a function from a package without loading the entire package into the session.</span></label><label><input type="radio" autocomplete="off" name="radio_CPIVQZKZOE" value=""> <span>It is the only way to call functions from packages developed by others.</span></label><label><input type="radio" autocomplete="off" name="radio_CPIVQZKZOE" value=""> <span>It tells R to ignore the package and use a base R version of the function instead.</span></label>
+<div id="radio_WVJZOZYSCY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_WVJZOZYSCY" value=""> <span>It is a way to install a package directly from a function call.</span></label><label><input type="radio" autocomplete="off" name="radio_WVJZOZYSCY" value="answer"> <span>It calls a function from a package without loading the entire package into the session.</span></label><label><input type="radio" autocomplete="off" name="radio_WVJZOZYSCY" value=""> <span>It is the only way to call functions from packages developed by others.</span></label><label><input type="radio" autocomplete="off" name="radio_WVJZOZYSCY" value=""> <span>It tells R to ignore the package and use a base R version of the function instead.</span></label>
 </div>
 <p><strong>8. Which of the following best describes <code>describe()</code> from the <code>psych</code> package?</strong></p>
-<div id="radio_XMPZNJDRNO" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_XMPZNJDRNO" value=""> <span>It is faster than <code>summary()</code> but returns less information.</span></label><label><input type="radio" autocomplete="off" name="radio_XMPZNJDRNO" value=""> <span>It is a base R function, available without loading any package.</span></label><label><input type="radio" autocomplete="off" name="radio_XMPZNJDRNO" value="answer"> <span>It is in the <code>psych</code> package and returns a richer set of descriptive statistics than base R's <code>summary()</code>, including skewness, kurtosis, and the standard error of the mean.</span></label><label><input type="radio" autocomplete="off" name="radio_XMPZNJDRNO" value=""> <span>It only works on data frames, not on vectors.</span></label>
+<div id="radio_HFEAFJYGHH" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_HFEAFJYGHH" value=""> <span>It is faster than <code>summary()</code> but returns less information.</span></label><label><input type="radio" autocomplete="off" name="radio_HFEAFJYGHH" value=""> <span>It is a base R function, available without loading any package.</span></label><label><input type="radio" autocomplete="off" name="radio_HFEAFJYGHH" value="answer"> <span>It is in the <code>psych</code> package and returns a richer set of descriptive statistics than base R's <code>summary()</code>, including skewness, kurtosis, and the standard error of the mean.</span></label><label><input type="radio" autocomplete="off" name="radio_HFEAFJYGHH" value=""> <span>It only works on data frames, not on vectors.</span></label>
 </div>
 
 
