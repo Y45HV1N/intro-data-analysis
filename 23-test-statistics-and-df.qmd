@@ -24,17 +24,17 @@ This chapter fills in what we glossed over: how does R *actually* turn your samp
 
 By the end of the chapter you will be able to read the "t value," "Pr(>|t|)," and the F-statistic at the bottom of `summary(lm(...))`. The mystery of the inferential machinery will turn out to be a smaller mystery than it first looks.
 
-## A motivating example: did Hannah's bakery shortchange us?
+## A motivating example: did Hannah's Bakery shortchange us?
 
-We borrow a small story (used in many statistics textbooks, including Lakens 2022) to make the ideas concrete.
+We borrow a small story to make the ideas concrete.
 
-Imagine a bakery called Hannah's that advertises 100-gram brownies. You are suspicious that Hannah's brownies are systematically lighter than advertised. To check, you buy 25 brownies over a few weeks, weigh each one at home, and find an average of 95 grams across your 25 brownies. You also compute the sample standard deviation: 8 grams.
+Imagine a place called Hannah's Bakery that advertises 100-gram scones. You are suspicious that Hannah's scones are systematically lighter than advertised. To check, you buy 25 scones over a few weeks, weigh each one at home, and find an average of 95 grams across your 25 scones. You also compute the sample standard deviation: 8 grams.
 
 The question is essentially the same one that motivates every test in this book. Is 95 grams *suspicious* given that Hannah claims 100? Or is 95 a result we could easily get by chance because of sampling variability, even if Hannah's true mean is really 100?
 
 To answer this, we need three things:
 
-1. A null hypothesis. We will entertain Hannah's claim: H₀ says the population mean weight of Hannah's brownies is exactly 100.
+1. A null hypothesis. We will entertain Hannah's claim: H₀ says the population mean weight of Hannah's scones is exactly 100.
 2. A statistic that summarizes the sample's evidence against H₀.
 3. A reference distribution that tells us how that statistic would behave across samples *if* H₀ were true.
 
@@ -52,7 +52,7 @@ $$
 t = \frac{\bar{x} - \mu_0}{\text{SE}_{\bar{x}}}
 $$
 
-with the standard error estimated as $\text{SE}_{\bar{x}} = s / \sqrt{n}$ where $s$ is the sample SD. For Hannah's brownies:
+with the standard error estimated as $\text{SE}_{\bar{x}} = s / \sqrt{n}$ where $s$ is the sample SD. For Hannah's scones:
 
 ```{r}
 x_bar <- 95
@@ -204,7 +204,7 @@ The shape of the t (and F) distribution depends on degrees of freedom. We should
 
 The right way to think about it: **degrees of freedom are an information budget**. You start with n independent pieces of information (your n observations). Every time you estimate a parameter from the data, you spend one piece of that information. The df is what is left.
 
-A small example. With Hannah's 25 brownies, we started with 25 pieces of information. To compute the sample standard deviation, we first needed to compute the sample mean. That one calculation "spent" one piece of the information: once you know the mean, you only need 24 of the 25 deviations from the mean to determine the 25th (the deviations have to sum to zero). So the sample SD is computed using df = 25 - 1 = 24 effective pieces of information. That is why df for a one-sample t-test is n - 1.
+A small example. With Hannah's 25 scones, we started with 25 pieces of information. To compute the sample standard deviation, we first needed to compute the sample mean. That one calculation "spent" one piece of the information: once you know the mean, you only need 24 of the 25 deviations from the mean to determine the 25th (the deviations have to sum to zero). So the sample SD is computed using df = 25 - 1 = 24 effective pieces of information. That is why df for a one-sample t-test is n - 1.
 
 The pattern generalizes. Each parameter estimated from the data costs one piece of information.
 
@@ -244,13 +244,13 @@ When R reports a p-value, it has done the following in order:
 3. Looked up the tail area beyond your test statistic on the reference distribution.
 4. Reported that tail area as the p-value.
 
-For Hannah's brownies, the t-test would look like this in R:
+For Hannah's scones, the t-test would look like this in R:
 
 ```{r}
-# Simulate 25 brownies with mean 95, SD 8 to recreate the example
+# Simulate 25 scones with mean 95, SD 8 to recreate the example
 set.seed(7)
-brownies <- rnorm(25, mean = 95, sd = 8)
-t.test(brownies, mu = 100)
+scones <- rnorm(25, mean = 95, sd = 8)
+t.test(scones, mu = 100)
 ```
 
 The output reports the t-statistic, the df, and the two-tailed p-value, exactly as we computed them by hand. The 95% confidence interval is a different (related) inferential output we will not develop here.

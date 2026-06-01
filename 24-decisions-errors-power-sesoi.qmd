@@ -1,5 +1,5 @@
 ---
-title: "Decisions, errors, power, and SESOI"
+title: "Decisions, errors, power, and the SESOI"
 ---
 
 ```{r}
@@ -9,8 +9,10 @@ library(webexercises)
 library(ggplot2)
 library(dplyr)
 library(pwr)
+library(TOSTER)
 theme_set(theme_minimal(base_size = 12))
 set.seed(2025)
+data <- read.csv("data/vgames_study.csv")
 ```
 
 ## Where we are
@@ -24,7 +26,7 @@ By the end of the chapter you will know:
 - the two ways a decision procedure can be wrong (Type I and Type II errors), and what controls them,
 - what **statistical power** is, and why it is always defined *relative to an effect size*,
 - how α, β, n, and effect size lock together in a four-quantity system: pick any three and the fourth is determined,
-- what the **Smallest Effect Size of Interest** (SESOI) is, and why it is the anchor that gives "80% power" a meaning,
+- what the **Smallest Effect Size of Interest** (the SESOI) is, and why it is the anchor that gives "80% power" a meaning,
 - a brief look at **equivalence testing**, which lets you make positive claims about there being no meaningful effect, and
 - how to run a power analysis in R with the `pwr` package.
 
@@ -95,7 +97,7 @@ What is often missing from that slogan is a critical condition. Power is not an 
 
 > Power = the probability of correctly rejecting H₀, **given that the true effect size is some specific value δ.**
 
-When researchers say "my study has 80% power," they always mean *for a specific effect size that they cared about*. Without that anchor, the claim is undefined. We will return to this point in detail when we get to SESOI.
+When researchers say "my study has 80% power," they always mean *for a specific effect size that they cared about*. Without that anchor, the claim is undefined. We will return to this point in detail when we get to the SESOI.
 
 A picture helps. Imagine the sampling distribution of the test statistic under H₀ (centered at 0) and the sampling distribution under H₁ (centered at the true effect size, in test-statistic units). The decision rule is "reject if the test statistic falls beyond the critical value." The probabilities of Type I error and Type II error correspond to specific areas under those two curves.
 
@@ -103,8 +105,8 @@ A picture helps. Imagine the sampling distribution of the test statistic under H
 #| echo: false
 #| message: false
 #| warning: false
-#| fig.width: 8
-#| fig.height: 4
+#| fig.width: 8.5
+#| fig.height: 4.4
 xs <- seq(-4, 7, length.out = 800)
 null_d <- dnorm(xs, mean = 0, sd = 1)
 alt_d  <- dnorm(xs, mean = 2.5, sd = 1)
@@ -118,25 +120,32 @@ df_typeII <- data.frame(x = xs[xs < crit], y = alt_d[xs < crit])
 df_power  <- data.frame(x = xs[xs >= crit], y = alt_d[xs >= crit])
 ggplot(df_plot, aes(x, y, color = curve)) +
   geom_ribbon(data = df_typeII, aes(x = x, ymin = 0, ymax = y),
-              fill = "#EF4444", alpha = 0.6, inherit.aes = FALSE) +
+              fill = "#EF4444", alpha = 0.55, inherit.aes = FALSE) +
   geom_ribbon(data = df_typeI, aes(x = x, ymin = 0, ymax = y),
-              fill = "#F59E0B", alpha = 0.6, inherit.aes = FALSE) +
+              fill = "#F59E0B", alpha = 0.7, inherit.aes = FALSE) +
   geom_ribbon(data = df_power, aes(x = x, ymin = 0, ymax = y),
-              fill = "#10B981", alpha = 0.45, inherit.aes = FALSE) +
+              fill = "#10B981", alpha = 0.4, inherit.aes = FALSE) +
   geom_line(linewidth = 0.9) +
   geom_vline(xintercept = crit, color = "#1F2937", linewidth = 0.5, linetype = "dashed") +
   scale_color_manual(values = c("H0 (true effect = 0)" = "#3B82F6",
                                 "H1 (true effect > 0)" = "#7C3AED"),
                      name = NULL) +
-  annotate("text", x = 3.0, y = 0.04, label = "Type I error (alpha)",
-           color = "#F59E0B", fontface = "bold") +
-  annotate("text", x = 1.2, y = 0.04, label = "Type II error (beta)",
-           color = "#EF4444", fontface = "bold") +
-  annotate("text", x = 4.6, y = 0.20, label = "Power (1 - beta)",
-           color = "#10B981", fontface = "bold") +
+  # Labels placed far apart vertically and horizontally to avoid overlap
+  annotate("label", x = 1.0, y = 0.13, label = "Type II error\n(beta)",
+           color = "#EF4444", fontface = "bold", size = 3.6,
+           label.size = 0, fill = "white", alpha = 0.85) +
+  annotate("label", x = 2.6, y = 0.035, label = "Type I error\n(alpha)",
+           color = "#F59E0B", fontface = "bold", size = 3.6,
+           label.size = 0, fill = "white", alpha = 0.85) +
+  annotate("label", x = 4.0, y = 0.22, label = "Power\n(1 - beta)",
+           color = "#10B981", fontface = "bold", size = 3.6,
+           label.size = 0, fill = "white", alpha = 0.85) +
+  annotate("text", x = crit, y = 0.43, label = "Decision\nthreshold",
+           color = "#1F2937", size = 3.3, hjust = -0.05) +
   labs(title = "Type I error, Type II error, and power, visualized",
-       subtitle = "Dashed line = decision threshold; areas correspond to long-run rates",
+       subtitle = "Dashed line = decision threshold; coloured areas = long-run rates",
        x = "Test statistic", y = "Density") +
+  coord_cartesian(ylim = c(0, 0.48)) +
   theme(legend.position = "top")
 ```
 
@@ -210,7 +219,7 @@ The curve rises as n grows. To get from 50% power to 80% power requires roughly 
 
 The same logic applies to other test types: t-tests, F-tests, correlations, chi-squared tests, all have analogous power-vs-n curves, which the `pwr` package can produce.
 
-## What is missing from this picture: SESOI
+## What is missing from this picture: the SESOI
 
 Everything in the previous section assumed we knew the effect size we wanted to detect. We picked d = 0.5 essentially arbitrarily. But where does that number come from in a real study?
 
@@ -220,28 +229,28 @@ Three options are common in practice:
 2. **An effect size from a prior study.** The trouble: prior published effect sizes are typically biased upward because of publication bias, optional stopping, and other forms of selective reporting. Building your power analysis on a biased estimate gives you a biased target.
 3. **The smallest effect you would actually care about.** This is the right anchor. And it has a name.
 
-The **Smallest Effect Size of Interest** (SESOI) is the smallest effect size that you, the researcher, would care about. Below SESOI, you would not change your behavior, your conclusions, or your recommendations, even if the effect were demonstrably real. SESOI is a value chosen *in advance*, based on:
+The **Smallest Effect Size of Interest** (the SESOI) is the smallest effect size that you, the researcher, would care about. Below the SESOI, you would not change your behavior, your conclusions, or your recommendations, even if the effect were demonstrably real. The SESOI is a value chosen *in advance*, based on:
 
 - **Practical relevance.** What is the smallest effect that would justify acting on the result? For a clinical intervention, the smallest improvement that would change the recommendation. For a brief priming experiment, the smallest priming effect that would change the theoretical interpretation.
-- **Theoretical relevance.** What is the smallest effect that the theory would predict? A theory that predicts effects of d ≥ 0.3 implicitly says SESOI = 0.3.
+- **Theoretical relevance.** What is the smallest effect that the theory would predict? A theory that predicts effects of d ≥ 0.3 implicitly says the SESOI is 0.3.
 - **Decision-relevance.** What is the smallest difference that, if real, would change the choice between two practical alternatives?
 
-SESOI is not the effect you *expect*. It is the effect you would *care about*. The two are different.
+The SESOI is not the effect you *expect*. It is the effect you would *care about*. The two are different.
 
 ### A concrete example
 
-In the Hannah's brownies example from Chapter 23, suppose Hannah advertises 100-gram brownies. Would a true average of 99.5 grams matter? Probably not; that is a half-gram deviation, well below anyone's threshold of complaint. What about 99 grams? Still probably not. What about 95 grams? Yes; that is a 5% shortfall, which most people would consider a meaningful underweight. We might set SESOI = 5 grams: anything smaller than 5 g of underweight is not worth caring about, anything larger is.
+In the Hannah's Bakery example from Chapter 23, suppose Hannah advertises 100-gram scones. Would a true average of 99.5 grams matter? Probably not; that is a half-gram deviation, well below anyone's threshold of complaint. What about 99 grams? Still probably not. What about 95 grams? Yes; that is a 5% shortfall, which most people would consider a meaningful underweight. We might set the SESOI at 5 grams: anything smaller than 5 g of underweight is not worth caring about, anything larger is.
 
-The corresponding design question becomes: how many brownies must we weigh to detect a true 5-gram shortfall with 80% power and α = .05? The math gives a specific number, which we can run with `pwr`:
+The corresponding design question becomes: how many scones must we weigh to detect a true 5-gram shortfall with 80% power and α = .05? The math gives a specific number, which we can run with `pwr`:
 
 ```{r}
-# Suppose population SD of brownie weights is 8 g. To detect a difference of 5 g:
+# Suppose population SD of scone weights is 8 g. To detect a difference of 5 g:
 pwr.t.test(d = 5/8, sig.level = .05, power = .80, type = "one.sample")$n
 ```
 
-We would need to weigh about 22 brownies to have 80% power to detect a true 5-gram shortfall.
+We would need to weigh about 22 scones to have 80% power to detect a true 5-gram shortfall.
 
-### Why "80% power" is meaningless without SESOI
+### Why "80% power" is meaningless without the SESOI
 
 Now we can be precise about why "I designed the study for 80% power" is incomplete. Power is conditional on an effect size, so the claim is missing the second half of the sentence. Two researchers can both say "my study has 80% power" and mean completely different things.
 
@@ -250,30 +259,154 @@ Now we can be precise about why "I designed the study for 80% power" is incomple
 
 These are extremely different studies with extremely different implications. The first one is set up to catch nearly any meaningful effect, real or theoretical; the second is set up only to catch effects so large they would be obvious in casual inspection. Without naming the effect size, "80% power" is empty.
 
-The remedy is **SESOI**. State the smallest effect you care about, derive the sample size you need to detect it with adequate power, and report both quantities. Then the reader can evaluate whether your study was actually designed to test the claim it ends up making.
+The remedy is **the SESOI**. State the smallest effect you care about, derive the sample size you need to detect it with adequate power, and report both quantities. Then the reader can evaluate whether your study was actually designed to test the claim it ends up making.
 
-### How SESOI changes the interpretation of results
+### How the SESOI changes the interpretation of results
 
-SESOI changes not only the design of the study but also how the results are read.
+The SESOI changes not only the design of the study but also how the results are read.
 
-**Scenario 1: significant but smaller than SESOI.** Suppose you designed a study with 80% power to detect SESOI = 0.2, and you find p = .002 with an observed effect of 0.05. The effect is statistically significant. But the observed effect is smaller than SESOI. The right interpretation: there may be a real effect, but it is too small to matter for the decision you cared about. Statistical significance does not rescue practical irrelevance.
+**Scenario 1: significant but smaller than the SESOI.** Suppose you designed a study with 80% power to detect a SESOI of 0.2, and you find p = .002 with an observed effect of 0.05. The effect is statistically significant. But the observed effect is smaller than the SESOI. The right interpretation: there may be a real effect, but it is too small to matter for the decision you cared about. Statistical significance does not rescue practical irrelevance.
 
-**Scenario 2: non-significant but larger than SESOI.** Same design. You find p = .15 with an observed effect of 0.4. The effect is not statistically significant. But the observed effect is larger than SESOI, and you had adequate power. The right interpretation: your data did not provide strong enough evidence to reject the null, but the observed effect is larger than what you would have called meaningful. This is genuinely inconclusive: you cannot confidently call the effect zero (it might just be that the noise was high) and you cannot confidently confirm the predicted effect.
+**Scenario 2: non-significant but larger than the SESOI.** Same design. You find p = .15 with an observed effect of 0.4. The effect is not statistically significant. But the observed effect is larger than the SESOI, and you had adequate power. The right interpretation: your data did not provide strong enough evidence to reject the null, but the observed effect is larger than what you would have called meaningful. This is genuinely inconclusive: you cannot confidently call the effect zero (it might just be that the noise was high) and you cannot confidently confirm the predicted effect.
 
-**Scenario 3: non-significant and smaller than SESOI.** Same design. You find p = .25 with an observed effect of 0.05. The effect is not statistically significant *and* the observed effect is smaller than SESOI. With adequate power, this is meaningful evidence that the effect, if it exists, is smaller than what you would have called interesting. We can do better than just "fail to reject"; we can construct a test that directly evaluates whether the effect is below SESOI. That test is equivalence testing.
+**Scenario 3: non-significant and smaller than the SESOI.** Same design. You find p = .25 with an observed effect of 0.05. The effect is not statistically significant *and* the observed effect is smaller than the SESOI. With adequate power, this is meaningful evidence that the effect, if it exists, is smaller than what you would have called interesting. We can do better than just "fail to reject"; we can construct a test that directly evaluates whether the effect is below the SESOI. That test is equivalence testing, the topic of the next section.
 
-## Equivalence testing: a quick look
+## Equivalence testing and the TOST procedure
 
-We have stressed that "p > .05" does not mean "there is no effect." But sometimes you genuinely want to argue that an effect is small enough to be practically negligible. That argument needs its own test.
+We have stressed several times that "p > .05" does not mean "there is no effect." A non-significant standard hypothesis test only tells you that you cannot reject the null; it never confirms the null. But sometimes you *want* to argue, on positive grounds, that an effect is small enough to be practically negligible. A pharmaceutical company wants to claim their cheaper drug works as well as the expensive one. A replicator wants to claim that an effect originally reported as large is in fact too small to matter. A theorist wants to claim that the predicted moderator does not actually moderate. None of these claims can be supported by a non-significant *p*-value in a standard test. They need a different statistical machinery.
 
-**Equivalence testing** reframes the question. Instead of testing "is the effect different from zero," you test "is the effect *smaller than SESOI*." The procedure (often the *Two One-Sided Tests*, or TOST, procedure) splits the test into two one-sided tests against the SESOI bounds:
+That machinery is **equivalence testing**, and the most common version of it is the **Two One-Sided Tests (TOST)** procedure. Lakens (2017, 2022) is the standard modern reference for the technique in psychology and we draw on those sources here.
 
-- One test checks whether the effect is significantly less than +SESOI.
-- The other test checks whether the effect is significantly greater than -SESOI.
+### The intuition: flipping the question
 
-If both one-sided tests reject, you can claim equivalence: the effect is within ±SESOI of zero, which means it is too small to matter under your declared SESOI.
+In a standard hypothesis test, the null is "the effect is exactly zero" and the alternative is "the effect is not zero." If you reject the null, you conclude there is an effect; if you do not reject, you cannot conclude either way. The asymmetry is built in: you can support "effect exists" but not "effect does not exist."
 
-Equivalence testing is the modern way to make a positive "no meaningful effect" claim. It is in routine use in pharmacology, exercise science, and increasingly in psychology. Lakens (2017, 2022) develops the machinery in detail. We will not develop the full TOST procedure here, but you should know that "this effect is practically negligible" is a claim that can be tested formally, given an SESOI; it is not just an inference from a non-significant p-value.
+Equivalence testing flips this asymmetry. It starts with a SESOI: a value $\delta$ such that effects smaller than $\delta$ are considered too small to matter. The new null becomes "the effect is at least as large as the SESOI (in either direction)." The new alternative becomes "the effect is smaller than the SESOI." Rejecting the new null means concluding that the effect is too small to matter, which is a positive claim of practical equivalence.
+
+In symbols, suppose we want to argue that the true difference between two means is within $\pm\delta$. We set up two one-sided tests:
+
+- $H_{0,\text{lower}}$: the true difference is $\leq -\delta$. Reject if the observed difference is significantly *greater than* $-\delta$.
+- $H_{0,\text{upper}}$: the true difference is $\geq +\delta$. Reject if the observed difference is significantly *less than* $+\delta$.
+
+If we reject **both** one-sided nulls, then we have evidence that the true difference is both above $-\delta$ AND below $+\delta$, that is, within the equivalence band $(-\delta, +\delta)$. This is the TOST procedure.
+
+### A picture of the equivalence band
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig.width: 8
+#| fig.height: 3.4
+sesoi <- 0.5
+df_band <- data.frame(
+  scenario = factor(c(
+    "Equivalence supported (CI inside band)",
+    "Inconclusive (CI overlaps band)",
+    "Effect detected (CI outside band)"),
+    levels = c("Equivalence supported (CI inside band)",
+               "Inconclusive (CI overlaps band)",
+               "Effect detected (CI outside band)")
+  ),
+  est = c(0.05, 0.35, 0.8),
+  lo  = c(-0.20, -0.05, 0.45),
+  hi  = c(0.30, 0.75, 1.15)
+)
+ggplot(df_band, aes(x = est, y = scenario)) +
+  annotate("rect", xmin = -sesoi, xmax = sesoi, ymin = -Inf, ymax = Inf,
+           fill = "#10B981", alpha = 0.15) +
+  geom_vline(xintercept = c(-sesoi, sesoi), color = "#10B981", linetype = "dashed", linewidth = 0.6) +
+  geom_vline(xintercept = 0, color = "#1F2937", linewidth = 0.3) +
+  geom_errorbarh(aes(xmin = lo, xmax = hi), height = 0.15, color = "#1F2937", linewidth = 0.8) +
+  geom_point(size = 3, color = "#1F2937") +
+  annotate("text", x = -sesoi, y = 3.45, label = "-SESOI", color = "#10B981",
+           fontface = "bold", size = 3.5) +
+  annotate("text", x = sesoi, y = 3.45, label = "+SESOI", color = "#10B981",
+           fontface = "bold", size = 3.5) +
+  coord_cartesian(xlim = c(-1.0, 1.4), clip = "off") +
+  labs(title = "The equivalence band, and three possible scenarios",
+       subtitle = "Green region = effects smaller than the SESOI; dots = observed effect; bars = 90% CI",
+       x = "Observed effect (e.g., difference in means)",
+       y = NULL) +
+  theme(plot.margin = margin(20, 10, 10, 10))
+```
+
+The shaded green band shows the region of practically negligible effects: anything between $-$SESOI and $+$SESOI is considered "equivalent to zero" by our pre-specified standard. The three bars are 90% confidence intervals from three hypothetical studies.
+
+- **Top row.** The estimated effect is 0.05; the CI is $[-0.20, 0.30]$, which sits entirely inside the green band. We have evidence of equivalence: the true effect is plausibly within $\pm$SESOI of zero.
+- **Middle row.** The estimated effect is 0.35; the CI is $[-0.05, 0.75]$, which crosses both the band and zero. The result is inconclusive; we have neither evidence of equivalence nor evidence against the null.
+- **Bottom row.** The estimated effect is 0.80; the CI is $[0.45, 1.15]$, which sits entirely outside the band on the positive side. The effect is detected and is larger than the SESOI.
+
+This visual rule of thumb is, in fact, exactly equivalent to running the TOST procedure with the corresponding alpha level (with the standard convention of using a 90% CI for $\alpha = .05$, because the two one-sided tests "spend" alpha on each side).
+
+### Running TOST in R with the `TOSTER` package
+
+The `TOSTER` package by Lakens and Caldwell makes this very easy. The main function we will use is `t_TOST()` for two-sample, paired, or one-sample equivalence tests on raw data.
+
+A worked example on our running dataset. In `vgames_study.csv`, `empathy` was measured *before* the experimental manipulation (which game participants were assigned to play). Random assignment to violent vs neutral conditions should produce groups with very similar pre-treatment empathy. We can ask: are the two condition means *equivalent* to each other on empathy, within a tolerance we declare in advance?
+
+Suppose we decide that a SESOI of $\pm 0.5$ points on the 1-7 empathy scale would be the smallest difference we would consider meaningful (a half-point shift is a substantial fraction of a one-unit category).
+
+```{r}
+#| message: false
+#| warning: false
+library(TOSTER)
+t_TOST(
+  formula = empathy ~ condition,
+  data = data,
+  hypothesis = "EQU",       # equivalence
+  eqb = 0.5,                # SESOI; equivalence bound of +/- 0.5
+  eqbound_type = "raw",     # bound is in raw outcome units (not standardized)
+  alpha = 0.05
+)
+```
+
+The output reports:
+
+- The observed group difference (empathy in the neutral group minus empathy in the violent group).
+- The two one-sided tests, each with its own t-statistic, df, and p-value.
+- A decision: equivalent? rejected? inconclusive?
+- A 90% confidence interval on the difference (since TOST at $\alpha = .05$ corresponds to the 90% CI rule).
+
+The standard reporting rule is straightforward: if **both** one-sided p-values are below your $\alpha$, declare equivalence. If neither is, you do not have evidence of equivalence (but you also do not have evidence against equivalence; you just have an inconclusive result). If one is below alpha and the other is not, your CI partially overlaps the bound, and again the result is inconclusive in the strict TOST sense.
+
+A small variant of the function call uses Cohen's *d* as the SESOI metric, which is convenient when the original scale is hard to interpret:
+
+```{r}
+#| eval: false
+t_TOST(
+  formula = empathy ~ condition,
+  data = data,
+  hypothesis = "EQU",
+  eqb = 0.4,                # SESOI = 0.4 standardized units
+  eqbound_type = "SMD",     # standardized mean difference
+  alpha = 0.05
+)
+```
+
+### How to choose the SESOI for an equivalence test
+
+The same logic from the earlier section applies, but the choice is now central rather than incidental. Anvari and Lakens (2021) discuss in detail how to justify a SESOI for psychology research; their summary is that the choice should be driven by *what would change a decision*, not by convention. For empathy on a 1-7 scale, a half-point difference is roughly half a response-category unit, which most researchers would treat as a meaningful shift. For aggression on a 1-10 scale, a SESOI of 0.5 to 1.0 is plausible. For a clinical outcome where 1 point on a depression scale corresponds to a measurable improvement in functioning, the SESOI would be even smaller. None of this is arbitrary; the SESOI is a declared, defensible value, chosen before data collection, that the equivalence test then uses as its target.
+
+### Equivalence testing combined with the standard test
+
+A common (and recommended) practice in modern psychology methodology is to run **both** a standard test and an equivalence test on the same data. The two tests together address two questions:
+
+- The standard test asks "is there evidence of any effect?"
+- The equivalence test asks "is there evidence that the effect is too small to matter?"
+
+Four combinations are possible:
+
+| Standard test | Equivalence test | Interpretation |
+|--------------|-----------------|----------------|
+| Significant | Equivalent | Effect detected, but smaller than the SESOI; statistically present but practically negligible. |
+| Significant | Not equivalent | Effect detected and large enough to matter (the standard case for a "meaningful" finding). |
+| Not significant | Equivalent | No detectable effect, and the data are consistent with effects too small to matter (a positive null result). |
+| Not significant | Not equivalent | Inconclusive: we have neither detected an effect nor ruled out a meaningful one. |
+
+Lakens (2017) argues that the bottom-left cell, "non-significant + equivalent," is the appropriate way to communicate a positive null finding, and the bottom-right cell, "not significant + not equivalent," is the result that most often gets mistakenly written up as "no effect" when it is actually inconclusive. The discipline of running both tests together prevents that confusion.
+
+For more on equivalence testing, including extensions to correlations, ANOVA, and meta-analysis, Lakens (2017) is the most accessible primer, and Lakens (2022) Chapter 9 is a comprehensive treatment.
 
 ## Power analysis in practice: the `pwr` package
 
@@ -308,9 +441,9 @@ For more elaborate designs (multilevel models, mixed designs, structural equatio
 We now have all the pieces to describe the version of Neyman-Pearson hypothesis testing that Lakens, Cohen, and several generations of methodologists have advocated. It is more disciplined than the casual hybrid most researchers use, but it pays off in interpretability.
 
 1. **Pre-specify the test.** Decide before data collection: what hypothesis, what statistic, what α, what test (one-tailed or two), what exclusion rules.
-2. **Anchor n to SESOI.** Choose the smallest effect size that would matter, and compute the required sample size from a power analysis.
+2. **Anchor n to the SESOI.** Choose the smallest effect size that would matter, and compute the required sample size from a power analysis.
 3. **Run the test once.** No peeking, no optional stopping, no swapping the analysis after seeing the data.
-4. **Report the result.** Statistical significance is one piece. Whether the observed effect is larger or smaller than SESOI is another. Confidence intervals make both visible.
+4. **Report the result.** Statistical significance is one piece. Whether the observed effect is larger or smaller than the SESOI is another. Confidence intervals make both visible.
 5. **Accept the long-run error rates.** Your individual decision might be wrong. The procedure is calibrated, not infallible. The calibration is the point.
 
 This is what Neyman-Pearson originally proposed. It requires more commitment up-front than the hybrid most researchers use, but it produces decisions that are honestly calibrated and that connect to real-world consequences.
@@ -359,23 +492,23 @@ opts_q5 <- c(
 )
 
 opts_q6 <- c(
-  "Without SESOI the conventional rule of thumb at d = 0.5 still applies, so any claim of 80% power can be interpreted as referring to that medium effect size by default.",
-  answer = "Without SESOI the claim does not specify which effect size the power refers to, and two researchers can both say 80% power while one means d = 0.1 and the other means d = 1.0, two designs with completely different implications.",
-  "Without SESOI any computed power is purely speculative and cannot be used in any formal way to determine the sample size required for the planned hypothesis test.",
-  "Without SESOI the claim still has a precise meaning because the long-run false-positive rate alpha is fixed and the procedure remains calibrated regardless of the effect size."
+  "Without the SESOI the conventional rule of thumb at d = 0.5 still applies, so any claim of 80% power can be interpreted as referring to that medium effect size by default.",
+  answer = "Without the SESOI the claim does not specify which effect size the power refers to, and two researchers can both say 80% power while one means d = 0.1 and the other means d = 1.0, two designs with completely different implications.",
+  "Without the SESOI any computed power is purely speculative and cannot be used in any formal way to determine the sample size required for the planned hypothesis test.",
+  "Without the SESOI the claim still has a precise meaning because the long-run false-positive rate alpha is fixed and the procedure remains calibrated regardless of the effect size."
 )
 
 opts_q7 <- c(
   "Statistical significance with a tiny effect is always strong evidence that the effect is real in the population, because a small effect with a small p-value indicates a precise estimate of a real difference.",
-  "The effect being smaller than SESOI is irrelevant for the interpretation of the result, since SESOI plays no role once the test has already been run and the p-value has been computed and reported.",
+  "The effect being smaller than the SESOI is irrelevant for the interpretation of the result, since the SESOI plays no role once the test has already been run and the p-value has been computed and reported.",
   answer = "The effect is statistically detectable but practically negligible; statistical significance does not rescue practical irrelevance, and the appropriate interpretation is that there may be a real effect but one too small to change any decision based on the study.",
   "The result is uninterpretable because a small effect with a small p-value indicates a violation of the assumptions of the t-test or of the regression model used to compute the test statistic."
 )
 
 opts_q8 <- c(
-  "Equivalence testing computes a Bayesian posterior probability that the null hypothesis is exactly true, given the observed data and a prior centered at zero with variance equal to SESOI squared.",
+  "Equivalence testing computes a Bayesian posterior probability that the null hypothesis is exactly true, given the observed data and a prior centered at zero with variance equal to the SESOI squared.",
   "Equivalence testing changes the alpha threshold of the standard hypothesis test to 0.5 so that the null hypothesis is rejected less often, producing claims of equivalence from non-significant results.",
-  answer = "Equivalence testing reframes the question as 'is the effect smaller than SESOI?' rather than 'is the effect different from zero?' and uses two one-sided tests against the SESOI bounds; rejecting both supports a positive claim of practical equivalence.",
+  answer = "Equivalence testing reframes the question as 'is the effect smaller than the SESOI?' rather than 'is the effect different from zero?' and uses two one-sided tests against the SESOI bounds; rejecting both supports a positive claim of practical equivalence.",
   "Equivalence testing computes the same p-value as a standard hypothesis test but interprets a non-significant result as a positive demonstration that the population effect is exactly equal to zero."
 )
 
@@ -388,7 +521,7 @@ opts_q9 <- c(
 
 opts_q10 <- c(
   "The serious frequentist practice begins with the data and adapts the procedure to whatever the data look like, with the goal of maximizing the apparent statistical significance of the most interesting finding.",
-  answer = "The serious frequentist practice pre-specifies the procedure (test, alpha, design, exclusion rules), anchors the sample size to SESOI, runs the test once as specified, reports the result honestly, and accepts the calibrated long-run error rates as the basis for the inference.",
+  answer = "The serious frequentist practice pre-specifies the procedure (test, alpha, design, exclusion rules), anchors the sample size to the SESOI, runs the test once as specified, reports the result honestly, and accepts the calibrated long-run error rates as the basis for the inference.",
   "The serious frequentist practice never reports a p-value; instead it relies entirely on Bayes factors and posterior probabilities to communicate the evidence in favor of each hypothesis under consideration.",
   "The serious frequentist practice runs many candidate tests on the data and reports only the smallest p-value, while applying Bonferroni correction to keep the family-wise error rate at a conventional level."
 )
@@ -418,7 +551,7 @@ opts_q10 <- c(
 
 `r longmcq(opts_q6)`
 
-**7. A study designed with 80% power to detect SESOI = 0.2 finds p = .002 with an observed effect of d = 0.05. How should this be interpreted?**
+**7. A study designed with 80% power to detect a SESOI of 0.2 finds p = .002 with an observed effect of d = 0.05. How should this be interpreted?**
 
 `r longmcq(opts_q7)`
 
@@ -435,6 +568,8 @@ opts_q10 <- c(
 `r longmcq(opts_q10)`
 
 ## References
+
+Anvari, F., & Lakens, D. (2021). Using anchor-based methods to determine the smallest effect size of interest. *Journal of Experimental Social Psychology*, 96, 104159. <https://doi.org/10.1016/j.jesp.2021.104159>
 
 Lakens, D. (2017). Equivalence tests: A practical primer for t-tests, correlations, and meta-analyses. *Social Psychological and Personality Science*, 8(4), 355-362. <https://doi.org/10.1177/1948550617697177>
 

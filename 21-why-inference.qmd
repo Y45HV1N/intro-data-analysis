@@ -16,7 +16,7 @@ set.seed(2025)
 
 ## Welcome to Section 4
 
-Section 1 taught you how R works as a tool. Section 2 taught you how to clean, summarize, and visualize a dataset. Section 3 taught you how to fit and interpret linear models, from the simplest one-number model (the mean) all the way to multiple regression with interactions and assumption diagnostics.
+Section 1 taught you how R works as a tool. Section 2 taught you how to clean and summarize a dataset. Section 3 taught you how to fit and interpret linear models, from the simplest one-number model (the mean) all the way to multiple regression with interactions and assumption diagnostics.
 
 Throughout Section 3 we said the same thing many times, in slightly different words:
 
