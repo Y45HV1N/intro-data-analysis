@@ -380,21 +380,57 @@ Pre-registration is often misunderstood as a constraint on what researchers can 
 
 What pre-registration does is force a distinction between "what we said we would do" and "what we did when we saw the data." That distinction is what enables the reader to apply the calibration correctly.
 
-### Pre-registration is sufficient but not strictly necessary
+### What a good pre-registration actually requires
 
-Strictly speaking, what is required for confirmatory inference is that the procedure was specified independently of the data. Pre-registration is the most credible way to demonstrate this, but it is not the only way.
+It is worth pausing on what, precisely, a pre-registration delivers, and what it does not. To see this clearly we have to bring back the two-dimensions framing from Chapter 22 and combine it with the two-roles framing from earlier in this chapter.
 
-Hypotheses derived from a published theory and tested on new data also count as confirmatory if the researcher never saw the data first. Replications of previously published findings count, since the procedure is determined by the original study. Studies using a standard, pre-existing analytic protocol from a research domain count.
+**Recall the two dimensions of the Neyman-Pearson framework.** The first dimension is the **quantitative** one: a calibrated procedure whose long-run false-positive rate is bounded by α. The second dimension is the **qualitative** one: a predicted claim derived from a rationale, which the data either corroborate or refute. These two dimensions can be present or absent independently of each other.
 
-In each case, the procedure was fixed by something external to the data. The p-value is honestly quantified.
+The mathematics of the first dimension does not care about the content of the hypothesis. Error control is purely a function of how the procedure was specified and run. An exploratory study, where the researcher has no specific prediction in advance, can still satisfy Dimension 1 in either of two ways.
 
-Why, then, do we still teach pre-registration as the standard? Three reasons.
+- **Single exact procedure.** If the researcher runs *one* fixed test, specified before data collection, and reports that single result without choosing among alternatives after the fact, the p-value is calibrated. The fact that there was no predicted claim does not change this: the procedure is well-defined and the long-run error rate is bounded by α.
+- **Adjusted multiple tests.** If the researcher runs several tests but commits in advance to a multiple-testing correction (Bonferroni, Holm, or BH, as developed earlier in this chapter), the family-wise (or false-discovery) error rate is again bounded by the chosen value. Again, the absence of a predicted claim is irrelevant to the calibration.
 
-1. **Verifiable.** A pre-registration is time-stamped and public. Readers can check that the procedure really was fixed in advance, rather than taking the researcher's word for it.
-2. **Specific.** A pre-registration forces the researcher to commit to specifics (exclusion rules, exact tests, decision rules) that are easy to forget or unconsciously change.
-3. **Demonstrably independent.** Even if a researcher genuinely believes their hypothesis was theory-derived, the act of pre-registering provides external evidence that the procedure was not data-influenced.
+So an exploratory study, properly specified and properly corrected, can carry **valid p-values with controlled error rates**, just like a confirmatory study. There is no statistical impropriety in well-conducted exploration.
 
-For most researchers, most of the time, pre-registration is the workable solution. It does not require special philosophical sophistication; it just requires writing things down before looking at the data.
+What the exploratory study lacks is the second dimension. There is no predicted claim that was at stake before the data were seen, so there is nothing for the data to *corroborate* or *refute* in the epistemic sense. The implications of this absence are real and worth spelling out.
+
+- **An exploratory finding is a discovery, not a confirmation.** Even if the p-value is calibrated, the result is suggestive evidence about a pattern in the dataset, not evidence that a pre-existing theoretical prediction has survived a test.
+- **The natural epistemic next step is replication or confirmation.** An honestly labeled exploratory finding implicitly proposes a follow-up: a fresh study, with the analysis pre-specified, that tests whether the pattern recurs. The exploratory study is the source of the hypothesis; the follow-up confirmatory study is what corroborates or refutes it.
+- **A single exploratory result does not warrant policy or intervention decisions.** Acting on an exploratory finding skips the corroboration step. Practitioners, policymakers, and follow-up researchers should treat exploratory findings as hypotheses for further investigation, not as evidence ready for application.
+
+This is where the two-roles framing from the beginning of the chapter comes back. The **analyst** can run exploratory analyses freely; nothing bad happens as long as no one is going to act on the result. The **claim-maker** offers an inference that other people will act on, and is therefore bound by the full Neyman-Pearson discipline of both dimensions. An exploratory finding, on its own, is the work of an analyst. If someone is going to act on it, then a claim-maker has entered the picture, and the standards rise accordingly.
+
+But here is the practical problem. The reader of a published paper has no way, from the text alone, to know which procedure was actually run. The same "p = .03" can appear in:
+
+- a confirmatory paper with both dimensions intact (calibrated procedure, predicted claim),
+- an exploratory paper with Dimension 1 intact but Dimension 2 absent (calibrated procedure, no predicted claim, properly labeled as a discovery),
+- a paper where the researcher ran many analyses and reported the smallest p-value (Dimension 1 broken, no real Dimension 2 either),
+- a paper where the predicted claim was generated after seeing the data (HARKing: Dimension 2 broken, Dimension 1 sometimes broken too).
+
+To the reader, these four papers can look identical. There is no internal feature of the paper that distinguishes a calibrated procedure from an uncalibrated one. The reader who is about to act on the claim cannot tell which kind of evidence they are looking at.
+
+**This is the gap that pre-registration closes.** A pre-registration is a public, time-stamped document showing exactly what procedure the researcher committed to before the data were collected. The reader can compare what was pre-registered against what is reported in the paper. Anything that matches the pre-registration is confirmatory: the calibration of the reported p-value is verified by external evidence. Anything that does not match is exploratory and should be labeled as such. Pre-registration is, in this sense, the technology that lets the *reader* apply the calibration of Dimension 1 correctly.
+
+Here is the crucial insight that follows. **Because error control is a property of the procedure, not of the hypothesis content, what matters for a good pre-registration is the full procedure in unambiguous detail, not the verbal hypothesis.**
+
+This is often misunderstood. Students new to pre-registration sometimes write something like "We hypothesize that violent video games will increase aggression" and consider the work done. That sentence is useful for Dimension 2 (it tells the reader what claim is at stake), but it does *nothing* for Dimension 1. The same verbal hypothesis is compatible with dozens of different statistical procedures, each of which would give a different p-value on the same data. Without a specification of the procedure, the verbal hypothesis cannot anchor any error-controlled inference.
+
+A good pre-registration, then, contains the full procedure, including all of the following:
+
+- The exact statistical test (e.g., independent-samples t-test, two-tailed).
+- The exact sample size, with a stopping rule (e.g., 60 participants per condition; no peeking).
+- The exact outcome variable(s) and how they will be computed or scored.
+- The exact exclusion criteria (e.g., participants who fail an attention check; participants with reaction times below 200 ms; missing-data handling).
+- The exact analysis model, with all predictors, covariates, transformations, and interactions named.
+- The exact α level and any multiple-testing correction.
+- **The interpretation rules**: what counts as supporting H₁, what counts as supporting H₀, what counts as inconclusive, and (if the SESOI framework is being used) what counts as practically equivalent to zero.
+
+Each of these is part of the procedure that the math of the p-value assumes. Each one, if left unspecified, becomes a degree of freedom that a researcher might exercise after seeing the data, breaking the calibration.
+
+The verbal hypothesis, by contrast, plays a different role. It belongs to Dimension 2: it tells the reader what predicted claim the procedure was built to test, so that the eventual "reject" or "do not reject" decision can be interpreted as corroborating or refuting *that specific claim*. A clear verbal hypothesis adds qualitative content to the inference. But it does not, on its own, deliver error control.
+
+The practical recommendation: when you pre-register a study, do not stop after writing the hypothesis. Specify the procedure in enough detail that someone else, given your dataset and your pre-registration, would arrive at the same numerical p-value as you do. If a single ambiguity remains in the procedure, that is a degree of freedom that the post-hoc analysis can exploit, and the calibration claim of the reported p-value is weakened to that extent. A pre-registration that gets the procedure right protects both the researcher (from unconsciously inflating their false-positive rate) and the reader (who can verify the calibration).
 
 ## P-hacking, HARKing, and the garden of forking paths
 
