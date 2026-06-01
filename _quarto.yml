@@ -42,6 +42,9 @@ book:
     - 18-moderation.qmd
     - 19-bias-variance-assumptions.qmd
     - 20-diagnostics-and-limits.qmd
+  - part: 'Section 4: Statistical Inference'
+    chapters:
+    - 21-why-inference.qmd
 format:
   html:
     theme:
