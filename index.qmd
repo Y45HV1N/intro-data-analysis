@@ -28,9 +28,3 @@ To follow along you will need:
 - an internet connection to install additional R packages.
 
 The first chapters will guide you through the installation of these tools.
-
-## Section 1: Getting Started Properly {.unnumbered}
-
-Section 1 lays out the foundations: what R is, how to install it, what the different file types are, and how to perform basic operations. By the end of Section 1 you will have a solid mental model of the R ecosystem and you will be ready to start working with real data.
-
-Additional sections will be added as the book grows.
