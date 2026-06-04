@@ -15,9 +15,9 @@ data <- read.csv("data/vgames_study.csv")
 
 Up to this point we have looked at our data through numbers: counts, means, standard deviations, residuals. Numbers compress information, which is useful when you want a single value to compare or to put in a sentence. But numbers also hide information, and what they hide can change the answer to a research question.
 
-This chapter is about the other half of looking at data: visualization. The chapter does not contain plotting code yet. The reason is deliberate: it is much easier to learn the *how* of plotting once you know the *what* and the *why*. We start with the questions a good plot answers, the conceptual framework that organizes every plot you will ever make, the principles that distinguish a good plot from a bad one, and the kinds of judgment calls you will face when reading or making one. The tools to translate these decisions into actual plots in R come in the next chapter.
+This chapter is about the other half of looking at data: visualization. The chapter does not contain plotting code yet. The reason is deliberate: it is much easier to learn the *how* of plotting once you know the *what* and the *why*. We start with the questions a good plot answers, the conceptual framework that organizes every plot you will ever make, the principles that distinguish a good plot from a bad one, and the kinds of judgment calls you will face when reading or making one. The tools to translate these decisions into actual plots in R come in Chapter 30, in Section 5.
 
-The plots that appear throughout this chapter are produced with `ggplot2`, the R package you will learn in the next chapter. The code for each plot is hidden for now, so you can focus on the visual outcome rather than the syntax. You will revisit these examples and reproduce them yourself once you have learned the package.
+The plots that appear throughout this chapter are produced with `ggplot2`, the R package you will learn in Chapter 30. The code for each plot is hidden for now, so you can focus on the visual outcome rather than the syntax. You will revisit these examples and reproduce them yourself once you have learned the package.
 
 ## Why visualize?
 
@@ -84,7 +84,7 @@ Here is a video from YouTube that explains two uses of data visualization:
 
 ## The grammar of graphics
 
-Most modern data-visualization systems (including `ggplot2`, the R package you will learn in the next chapter) are based on a framework called the **grammar of graphics**, formalized by the statistician Leland Wilkinson. The core idea is that any plot is built from the same three ingredients, combined in different ways.
+Most modern data-visualization systems (including `ggplot2`, the R package you will learn in Chapter 30) are based on a framework called the **grammar of graphics**, formalized by the statistician Leland Wilkinson. The core idea is that any plot is built from the same three ingredients, combined in different ways.
 
 ```{r}
 #| echo: false
@@ -596,13 +596,15 @@ You now have three skills that work together:
 
 1. **Data wrangling** (Chapters 8 and 9): getting the data into the right shape, selecting the variables you need, filtering to the rows that are relevant, creating derived variables.
 2. **Descriptive statistics** (Chapter 9): summarizing the data numerically, with `summary()`, `mean()`, `psych::describe()`, or a custom `summarize()` pipeline.
-3. **Data visualization** (this chapter, conceptually; the next chapter, in code): communicating patterns visually.
+3. **Data visualization** (this chapter, conceptually; Chapter 30 onwards, in code): communicating patterns visually.
 
 The order in practice is almost always: wrangle first (clean, filter, reshape), then describe (compute summaries to check what you have), then visualize (plot what looks important). Wrangling is usually the largest time investment and the least visible step in a finished paper. Descriptives are how you sanity-check the wrangling. Visualization is how you discover what is worth modeling and how you communicate the results once you have modeled them.
 
 ## Looking ahead
 
-The next chapter introduces `ggplot2`, the package that lets you implement the principles of this chapter in actual R code. `ggplot2` is the visualization component of the tidyverse you loaded in Chapter 9, so you do not need to install anything new. You will see how each of the three ingredients of the grammar of graphics (data, aesthetics, geometry) becomes a piece of code, and how the same dataset can be displayed in radically different and informative ways.
+`ggplot2`, the R package that lets you implement the principles of this chapter in actual code, is introduced in Chapter 30 (in Section 5). It is the visualization component of the tidyverse you loaded in Chapter 9, so no new installation is required when you get there. You will see how each of the three ingredients of the grammar of graphics (data, aesthetics, geometry) becomes a piece of code, and how the same dataset can be displayed in radically different and informative ways.
+
+The chapters between this one and Chapter 30 will continue to use ggplot2 figures as illustrations, with the code kept hidden, so that you can focus on the substantive content before learning the package itself.
 
 For now, the principles in this chapter are the things to keep in mind. Good plots are not the result of decorative talent; they are the result of a small number of decisions made carefully.
 

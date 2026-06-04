@@ -22,7 +22,7 @@ The **tidyverse** is a set of R packages that share a common design philosophy a
 
 - `dplyr`, for data manipulation (selecting, filtering, summarizing).
 - `tidyr`, for reshaping data (wide to long and back).
-- `ggplot2`, for visualization (the next chapter).
+- `ggplot2`, for visualization (covered in Chapter 30, in Section 5).
 
 When you load the tidyverse, you load all of these (and several others) at once. Install once and load every session:
 
@@ -276,7 +276,7 @@ data_wide <- data_long |>
   )
 ```
 
-For now, what matters is recognizing the two shapes and knowing the names of the two functions. We will return to long format when we get to plotting in the next chapter.
+For now, what matters is recognizing the two shapes and knowing the names of the two functions. We will return to long format when we get to plotting in Chapter 30.
 
 ## Descriptive statistics in base R: a brief recap
 
