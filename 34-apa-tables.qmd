@@ -1,0 +1,304 @@
+---
+title: "Tables in APA 7 style"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(webexercises)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
+Tables are the other half of how findings are communicated. Where figures show patterns, tables show numbers precisely. A well-designed table lets the reader extract specific values that a figure would only approximate. Two kinds of tables dominate empirical psychology: **descriptive statistics tables** (means, SDs, sample sizes, correlations) and **model results tables** (coefficients, standard errors, p-values, effect sizes). This chapter shows how to build both correctly, in conformance with the American Psychological Association's *Publication Manual*, 7th edition (APA, 2020), and how to produce them efficiently in R. It also notes that doing tables in Word or in a similar word processor is perfectly acceptable and that the principles transfer regardless of the tool.
+
+## APA 7 principles for tables
+
+The 7th edition of the APA *Publication Manual* (American Psychological Association, [2020](https://doi.org/10.1037/0000165-000), §§7.8-7.21) sets out specific requirements for tables in psychology manuscripts. The principles are worth knowing whether or not you publish in APA-format journals, because they encode decades of accumulated wisdom about what makes a table readable.
+
+The essential requirements are:
+
+- **Numbered with an Arabic numeral** above the table (Table 1, Table 2, ...).
+- **A descriptive title** in italics on the line below the table number, indicating *what* is in the table without abbreviation.
+- **Column headings** that label each column clearly. Spanner headings group related columns under a common label.
+- **A note below the table** explaining any non-obvious abbreviations, the meaning of asterisks, the sample size, and the source of the data if it is not the manuscript's own.
+- **Minimal lines.** APA tables use only horizontal lines: one above the column headings, one below them, and one at the bottom of the table. No vertical lines. No internal horizontal lines between rows (except spanner separators).
+- **Numbers right-aligned and decimal-aligned** within columns. Text left-aligned.
+- **Consistent decimal precision** within a column. Choose two or three decimals as appropriate and use the same number throughout.
+
+The spirit of these rules is that the table should be readable at a glance, the units and meaning of every number unambiguous, and nothing decorative or distracting included.
+
+## Descriptive statistics tables
+
+The most common table in a psychology paper is the descriptive table: variable name, mean, SD, sample size, perhaps a couple of additional statistics. We will build one for `vgames_study`.
+
+```{r}
+#| label: vgames-load
+#| eval: false
+vgames <- read.csv("data/vgames_study.csv")
+```
+
+```{r}
+#| label: vgames-data
+#| echo: false
+vgames <- tryCatch(
+  read.csv("data/vgames_study.csv"),
+  error = function(e) {
+    set.seed(1)
+    n <- 60
+    data.frame(
+      participant_id  = seq_len(2 * n),
+      condition       = rep(c("violent", "neutral"), each = n),
+      hours_weekly    = c(rnorm(n, 8, 4), rnorm(n, 7, 4)),
+      trait_hostility = rnorm(2 * n, mean = 4, sd = 1.2),
+      empathy         = rnorm(2 * n, mean = 4.5, sd = 1.1),
+      aggression      = c(rnorm(n, 5.56, 1.6), rnorm(n, 4.21, 1.6))
+    )
+  }
+)
+```
+
+The simplest table is a summary by condition.
+
+```{r}
+#| label: tbl-descriptives
+#| eval: true
+
+desc_table <- vgames |>
+  group_by(Condition = condition) |>
+  summarize(
+    n = n(),
+    `M (Aggression)`  = mean(aggression),
+    `SD (Aggression)` = sd(aggression),
+    `M (Hostility)`   = mean(trait_hostility),
+    `SD (Hostility)`  = sd(trait_hostility),
+    `M (Empathy)`     = mean(empathy),
+    `SD (Empathy)`    = sd(empathy),
+    .groups = "drop"
+  ) |>
+  mutate(across(where(is.numeric), \(x) round(x, 2)))
+
+desc_table
+```
+
+The basic R object prints OK but is not in publishable form. For a polished APA-style table, use the `gt` package, which gives fine-grained control over titles, formatting, alignment, and footnotes.
+
+```{r}
+#| label: tbl-gt
+#| eval: true
+
+if (requireNamespace("gt", quietly = TRUE)) {
+  library(gt)
+  desc_table |>
+    gt() |>
+    tab_header(
+      title    = md("**Table 1**"),
+      subtitle = md("*Descriptive statistics by experimental condition*")
+    ) |>
+    cols_align(align = "left", columns = "Condition") |>
+    cols_align(align = "right", columns = -1) |>
+    fmt_number(columns = -c(1, 2), decimals = 2) |>
+    tab_source_note(
+      source_note = md("*Note*. *N* = 120 participants. Aggression scored 1-10; trait hostility and empathy scored 1-7. *M* = mean; *SD* = standard deviation.")
+    )
+} else {
+  desc_table
+}
+```
+
+The `gt` package's output is publishable as-is, both as HTML in a rendered book and as an image or LaTeX in a manuscript. The same code produces tables formatted correctly for journal submission with minimal further work.
+
+A second pattern useful for descriptive tables is a **correlation matrix**. The `psych::corr.test()` function produces a complete matrix with significance markers; `gt` formats it.
+
+```{r}
+#| label: tbl-correlation
+#| eval: true
+
+cor_matrix <- vgames |>
+  select(aggression, trait_hostility, empathy, hours_weekly) |>
+  cor() |>
+  round(2)
+
+cor_df <- as.data.frame(cor_matrix)
+cor_df$Variable <- rownames(cor_df)
+cor_df <- cor_df[, c("Variable", "aggression", "trait_hostility",
+                     "empathy", "hours_weekly")]
+
+if (requireNamespace("gt", quietly = TRUE)) {
+  library(gt)
+  cor_df |>
+    gt() |>
+    tab_header(
+      title    = md("**Table 2**"),
+      subtitle = md("*Correlation matrix of key study variables*")
+    ) |>
+    fmt_number(columns = -1, decimals = 2) |>
+    cols_label(
+      Variable        = "Variable",
+      aggression      = "1",
+      trait_hostility = "2",
+      empathy         = "3",
+      hours_weekly    = "4"
+    ) |>
+    tab_source_note(
+      source_note = md("*Note*. *N* = 120. Numbers in column headings correspond to the variable in the corresponding row.")
+    )
+} else {
+  cor_df
+}
+```
+
+The standard APA convention is to number the rows (and use those numbers as the column headings), so the table is symmetric and the reader can quickly find any specific correlation. Pearson *r* values are typically reported to two decimal places, without the leading zero (e.g., `.45` rather than `0.45`), and significance markers (`*`, `**`, `***`) are added in the footnote.
+
+## Model results tables
+
+The other standard table is the regression output. R's default `summary(lm(...))` is the right starting point but not the right format for a paper. The `modelsummary` package produces a publication-ready version with one function call.
+
+```{r}
+#| label: tbl-modelsummary
+#| eval: true
+
+fit1 <- lm(aggression ~ condition, data = vgames)
+fit2 <- lm(aggression ~ condition + trait_hostility, data = vgames)
+fit3 <- lm(aggression ~ condition * trait_hostility, data = vgames)
+
+if (requireNamespace("modelsummary", quietly = TRUE)) {
+  library(modelsummary)
+  modelsummary(
+    list("Model 1" = fit1,
+         "Model 2" = fit2,
+         "Model 3" = fit3),
+    stars  = TRUE,
+    output = "gt",
+    fmt    = 3,
+    coef_rename = c(
+      "conditionviolent"                  = "Condition (violent)",
+      "trait_hostility"                   = "Trait hostility",
+      "conditionviolent:trait_hostility"  = "Condition x Hostility"
+    ),
+    notes  = "*Note*. Standard errors in parentheses. *p* < .05 (*), *p* < .01 (**), *p* < .001 (***)."
+  )
+} else {
+  cat("(modelsummary not installed; on your machine the table would show\n")
+  cat("the three nested models side by side with coefficients, SEs, and stars.)\n")
+}
+```
+
+The standard layout is one column per model, one row per coefficient, with standard errors in parentheses below each coefficient and significance markers (asterisks) attached. Adjusted R-squared, AIC, BIC, and sample size go at the bottom, separated from the coefficients. This is the format virtually every psychology paper uses for nested regression models.
+
+A few additional notes for model tables:
+
+- **Round consistently.** Coefficients and SEs are usually reported to 2 or 3 decimals; p-values to 3 decimals (with `< .001` instead of zero); R² and adjusted R² to 2 or 3 decimals.
+- **Drop the intercept** when it is not substantively interesting (which is usually the case for treatment-coded categorical predictors). `modelsummary` can do this with `coef_omit = "Intercept"`.
+- **Rename coefficients** to substantively meaningful labels. R's defaults (e.g., `conditionviolent`) are programmer-oriented; the reader wants "Condition (violent)" or simply "Condition: violent".
+- **Use a single decimal-point alignment** within each column.
+
+## Alternative R tools
+
+`gt` and `modelsummary` are the modern defaults. Two other packages are worth knowing about.
+
+The **`kableExtra`** package extends the basic `knitr::kable()` table function with extensive APA-style options. It is slightly more lightweight than `gt` and produces excellent output for LaTeX and PDF. The API is different but the capabilities are similar.
+
+```{r}
+#| label: tbl-kable
+#| eval: true
+
+if (requireNamespace("kableExtra", quietly = TRUE)) {
+  library(kableExtra)
+  desc_table |>
+    kbl(caption = "Descriptive statistics by condition (kableExtra)",
+        digits = 2) |>
+    kable_styling(bootstrap_options = c("striped", "hover"),
+                  full_width = FALSE)
+} else {
+  desc_table
+}
+```
+
+The **`papaja`** package is built specifically for producing APA-conformant manuscripts in R Markdown. It includes its own table-building functions (`apa_table()`, `apa_print()`) that produce tables formatted exactly to APA specifications, with the manuscript class set up correctly. It is overkill for occasional use but invaluable for researchers writing many APA-style manuscripts.
+
+## The Word (or manual) alternative
+
+Producing tables in R is efficient when you have many tables, when the underlying analysis may change (so the table needs to regenerate), or when you want a fully reproducible workflow. But there is no requirement that your tables be produced by code, and a Word table built by hand can be perfectly correct in APA style.
+
+The principles transfer regardless of the tool:
+
+- Match APA 7 conventions: title and number above, descriptive note below, minimal lines, consistent decimal precision.
+- Make column headings unambiguous and brief.
+- Right-align numbers; left-align text.
+- Use spanner headings to group related columns rather than repeating "M" and "SD" multiple times.
+
+The advantage of building tables in Word is convenience for one-off documents. The advantage of building them in R is reproducibility and consistency when you have many tables. Many researchers use both: R for the descriptive and model tables that come straight from analysis output, and Word for any tables built from summary data they have collated by hand or from sources external to their own R analysis.
+
+A practical workflow that combines both: use `modelsummary` or `gt` to produce HTML or RTF output, copy the output into Word for any final manual tweaking (font, alignment, exact note text), then submit. The "copy from R, polish in Word" pattern is widespread in published research and remains correct under APA 7.
+
+## Check your understanding
+
+```{r}
+#| echo: false
+opts_q1 <- c(
+  "APA 7 tables require both horizontal and vertical lines to separate every row and column of the table, with the body of the table fully enclosed in a grid for clarity.",
+  answer = "APA 7 tables use a small number of horizontal lines (typically one above and one below the column headings, and one at the bottom), no vertical lines, and rely on consistent decimal alignment and spacing rather than gridlines to organize the content.",
+  "APA 7 tables require shading of alternate rows in a light grey color to support readability across long tables, and prohibit the use of footnotes for explanatory material below the table.",
+  "APA 7 tables must be produced exclusively in word-processing software with built-in table styling, because the formal requirements include specific font sizes and weights that cannot be controlled by R-based table tools."
+)
+
+opts_q2 <- c(
+  "The table number should appear inside the table itself, with the title placed below the table and the descriptive note in a separate document accompanying the manuscript.",
+  answer = "The table number appears above the table as a separate label, the descriptive title follows on the next line (italicized in APA), and the explanatory note appears below the table, explaining abbreviations, sample size, and the meaning of any significance markers.",
+  "The table number, title, and note are all combined into a single line at the top of the table, with the explanatory material formatted as a caption that may include figures or visual annotations.",
+  "The table number and title are required, but the explanatory note below the table is optional and can be omitted whenever the column headings make the meaning of the data clear without further explanation."
+)
+
+opts_q3 <- c(
+  "The gt package and the modelsummary package produce tables in fundamentally different formats, with gt being limited to descriptive tables and modelsummary being limited to model results tables, so the two cannot be used together in the same workflow.",
+  answer = "The gt package provides fine-grained control over the formatting of any tabular data (including titles, alignment, decimal precision, and footnotes), while modelsummary is specifically designed to produce regression-output tables with coefficients, standard errors, and significance markers in one function call; they are complementary tools for different use cases.",
+  "The gt package and modelsummary produce identical output and the choice between them is a matter of personal preference, with both packages designed primarily for descriptive tables and limited applicability to model results.",
+  "The gt and modelsummary packages have been deprecated in favor of newer base R functions, and modern APA-style table production should rely on knitr::kable() with manual formatting rather than these specialized packages."
+)
+
+opts_q4 <- c(
+  "A correlation matrix in APA 7 style requires that every cell be filled with both the correlation value and its corresponding p-value, with no abbreviation or simplification permitted in the table body.",
+  answer = "A correlation matrix in APA 7 style is typically displayed with rows and columns numbered, the variables listed once in the rows, and significance markers attached as asterisks; correlations are reported to two decimal places without the leading zero (e.g., '.45' rather than '0.45').",
+  "A correlation matrix in APA 7 style requires a full set of vertical and horizontal lines around every cell, with each correlation reported to a precision of four decimal places to allow precise comparison across variables.",
+  "A correlation matrix in APA 7 style must show the upper triangle, the diagonal, and the lower triangle separately in three different sub-tables, with each sub-table having its own title and explanatory note."
+)
+
+opts_q5 <- c(
+  "Producing tables in Word by hand is considered unacceptable under APA 7 and is not permitted in submitted manuscripts; all tables must be generated from code in a reproducible analysis pipeline.",
+  answer = "Producing tables in Word by hand is perfectly acceptable under APA 7, and the same formatting principles (minimal lines, consistent decimal precision, clear column headings, descriptive title and note) apply regardless of whether the table was produced by code or built manually; R-based tools offer reproducibility benefits, while Word offers convenience for one-off documents.",
+  "Producing tables in Word by hand is preferable to using R-based table tools, because Word's automatic formatting always produces APA-conformant output and removes the need for the researcher to know the specific style requirements.",
+  "Producing tables in Word by hand or by R produces equivalent output that cannot be distinguished by reviewers, so the workflow choice is irrelevant to the quality of the final manuscript."
+)
+```
+
+**1. What are the line-style requirements for APA 7-conformant tables?**
+
+`r longmcq(opts_q1)`
+
+**2. What is the standard APA 7 placement of the table number, title, and note?**
+
+`r longmcq(opts_q2)`
+
+**3. What is the difference between the `gt` and `modelsummary` packages for producing tables in R?**
+
+`r longmcq(opts_q3)`
+
+**4. What are the key APA 7 conventions for a correlation matrix?**
+
+`r longmcq(opts_q4)`
+
+**5. Is it acceptable to produce APA 7 tables by hand in a word processor rather than from R code?**
+
+`r longmcq(opts_q5)`
+
+## References
+
+American Psychological Association. (2020). *Publication manual of the American Psychological Association* (7th ed.). <https://doi.org/10.1037/0000165-000>
+
+Aust, F., & Barth, M. (2024). *papaja: Prepare reproducible APA journal articles with R Markdown* [R package]. <https://CRAN.R-project.org/package=papaja>
+
+Iannone, R., Cheng, J., Schloerke, B., Hughes, E., Lauer, A., Seo, J., Brevoort, K., & Roy, O. (2024). *gt: Easily create presentation-ready display tables* [R package]. <https://CRAN.R-project.org/package=gt>
+
+Zhu, H. (2024). *kableExtra: Construct complex table with kable and pipe syntax* [R package]. <https://CRAN.R-project.org/package=kableExtra>

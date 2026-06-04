@@ -37,6 +37,17 @@ jobs:
             any::stringr
             any::pwr
             any::TOSTER
+            any::effectsize
+            any::metafor
+            any::BayesFactor
+            any::binom
+            any::likelihoodR
+            any::ggridges
+            any::gt
+            any::kableExtra
+            any::modelsummary
+            any::broom
+            any::patchwork
 
       - name: Render and Publish to gh-pages
         uses: quarto-dev/quarto-actions/publish@v2

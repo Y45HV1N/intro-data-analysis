@@ -49,6 +49,29 @@ book:
     - 23-test-statistics-and-df.qmd
     - 24-decisions-errors-power-sesoi.qmd
     - 25-two-roles-multiple-testing.qmd
+    - 26-philosophy-of-np.qmd
+    - 27-fisher-estimation.qmd
+    - 28-bayesian-basics.qmd
+    - 29-likelihoodism.qmd
+  - part: 'Section 5: Data Visualization in Practice and Communicating Findings'
+    chapters:
+    - 30-intro-ggplot2.qmd
+    - 31-visualizing-means.qmd
+    - 32-count-variables.qmd
+    - 33-distributions.qmd
+    - 34-apa-tables.qmd
+    - 35-apa-reporting.qmd
+    - 36-coefficient-plots.qmd
+    - 37-dataviz-use-cases.qmd
+    - 38-audience-targeted-reporting.qmd
+  - part: 'Section 6: Causal Inference'
+    chapters:
+    - 39-why-data-doesnt-tell-causes.qmd
+    - 40-potential-outcomes.qmd
+    - 41-randomization.qmd
+    - 42-dags.qmd
+    - 43-confounders-mediators-colliders.qmd
+    - 44-backdoor-criterion.qmd
 format:
   html:
     theme:

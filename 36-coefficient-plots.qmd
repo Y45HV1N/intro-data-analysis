@@ -1,0 +1,364 @@
+---
+title: "Coefficient plots and forest plots"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(webexercises)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
+A regression with several predictors produces a table of coefficients, each with an estimate, a standard error, a confidence interval, and a p-value. Reading such a table requires the reader to compare numbers across rows mentally; it is hard to see at a glance which predictors are large, which are small, and which are uncertain. The **coefficient plot** (sometimes called a *dot-and-whisker plot*, a *coefplot*, or, in its meta-analytic form, a *forest plot*) puts the same information into a single visual element. One row per coefficient, a dot at the point estimate, a horizontal line for the 95% confidence interval, and a vertical reference line at zero. Once you have seen one, regression tables start to feel obsolete for many purposes.
+
+This chapter explains what coefficient plots show, builds them in R from scratch, and shows the meta-analytic forest plot variant.
+
+## What a coefficient plot shows
+
+A coefficient plot is a visual summary of a model. Each row is a coefficient. The dot is the point estimate. The horizontal line is the 95% confidence interval. A vertical dashed line at zero is the reference. If the line does not cross zero, the coefficient is statistically significantly different from zero at α = .05. The width of the line is the precision: narrow lines are precise estimates, wide lines are imprecise.
+
+Three things become immediately visible:
+
+- **Which coefficients are far from zero.** The eye is drawn to the rows whose lines are entirely on one side of zero.
+- **How precise each estimate is.** Long lines mean the estimate is consistent with a wide range of values.
+- **Which coefficients are comparable in magnitude.** When coefficients are on the same scale (standardized, or in the same units), comparing dot positions across rows is a meaningful comparison.
+
+The coefficient plot is most useful when there are several predictors of similar interest. For one or two predictors, an effect-size estimate with its CI in the prose is enough. For five or ten, the plot is a strict improvement over the table.
+
+## Building a coefficient plot from scratch
+
+Let us build one for a multiple regression on `vgames_study`.
+
+```{r}
+#| label: vgames-load
+#| eval: false
+vgames <- read.csv("data/vgames_study.csv")
+```
+
+```{r}
+#| label: vgames-data
+#| echo: false
+vgames <- tryCatch(
+  read.csv("data/vgames_study.csv"),
+  error = function(e) {
+    set.seed(1)
+    n <- 60
+    data.frame(
+      participant_id  = seq_len(2 * n),
+      condition       = rep(c("violent", "neutral"), each = n),
+      hours_weekly    = c(rnorm(n, 8, 4), rnorm(n, 7, 4)),
+      trait_hostility = rnorm(2 * n, mean = 4, sd = 1.2),
+      empathy         = rnorm(2 * n, mean = 4.5, sd = 1.1),
+      aggression      = c(rnorm(n, 5.56, 1.6), rnorm(n, 4.21, 1.6))
+    )
+  }
+)
+```
+
+Fit a model with several predictors:
+
+```{r}
+#| label: fit-model
+
+fit <- lm(aggression ~ condition + trait_hostility + empathy + hours_weekly,
+          data = vgames)
+summary(fit)
+```
+
+Extract the coefficient estimates and CIs:
+
+```{r}
+#| label: extract-coefs
+
+if (requireNamespace("broom", quietly = TRUE)) {
+  library(broom)
+  coef_df <- tidy(fit, conf.int = TRUE) |>
+    filter(term != "(Intercept)")
+} else {
+  # Manual extraction without broom
+  est <- coef(fit)
+  ci  <- confint(fit)
+  coef_df <- data.frame(
+    term     = names(est),
+    estimate = unname(est),
+    conf.low = ci[, 1],
+    conf.high = ci[, 2]
+  ) |>
+    filter(term != "(Intercept)")
+}
+
+coef_df
+```
+
+`broom::tidy()` returns a clean data frame with one row per term and columns for the estimate, SE, statistic, p-value, and confidence interval. If `broom` is unavailable, the same information can be assembled from `coef()` and `confint()` by hand.
+
+Now the plot:
+
+```{r}
+#| label: fig-coefplot
+#| fig-width: 6
+#| fig-height: 3.4
+#| fig-align: center
+
+coef_df$term <- factor(coef_df$term,
+                       levels = rev(coef_df$term))
+
+ggplot(coef_df, aes(x = estimate, y = term)) +
+  geom_vline(xintercept = 0, linetype = "dashed",
+             color = "grey40") +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high),
+                 height = 0, linewidth = 0.7,
+                 color = "steelblue4") +
+  geom_point(size = 3, color = "steelblue") +
+  labs(x = "Coefficient estimate (95% CI)",
+       y = NULL) +
+  theme_minimal(base_size = 11) +
+  theme(panel.grid.minor = element_blank())
+```
+
+The dashed grey line at zero is the reference. Each predictor has a dot at its point estimate and a horizontal line spanning its 95% CI. A predictor whose CI does not cross zero is statistically significant at α = .05; a predictor whose CI crosses zero is not. The reader can see, at a glance, that some predictors have large coefficients (long distance from zero) while others have small ones, and that some are estimated with high precision (narrow CI) while others are uncertain (wide CI).
+
+The plot is more informative than the corresponding table for one specific kind of question: *which predictors are doing the substantive work in the model, and how reliably?* This is the kind of question readers most commonly want to answer when scanning a regression output.
+
+## Standardized vs unstandardized coefficients
+
+The plot above mixes coefficients on different scales: `condition` is a 0/1 dummy, `trait_hostility` is on a 1-7 scale, `empathy` is on a 1-7 scale, and `hours_weekly` is in hours. A coefficient of 1.0 on `hours_weekly` is not commensurable with a coefficient of 1.0 on the dummy. Comparing dot positions across these rows is misleading.
+
+For a fair comparison, plot **standardized** coefficients (β, Chapter 27 section 27.5), which scale every predictor to standard-deviation units.
+
+```{r}
+#| label: fig-standardized-coefs
+#| fig-width: 6
+#| fig-height: 3.4
+#| fig-align: center
+
+if (requireNamespace("effectsize", quietly = TRUE)) {
+  library(effectsize)
+  std <- standardize_parameters(fit)
+  std_df <- data.frame(
+    term      = std$Parameter,
+    estimate  = std$Std_Coefficient,
+    conf.low  = std$CI_low,
+    conf.high = std$CI_high
+  ) |>
+    filter(term != "(Intercept)")
+  std_df$term <- factor(std_df$term, levels = rev(std_df$term))
+
+  ggplot(std_df, aes(x = estimate, y = term)) +
+    geom_vline(xintercept = 0, linetype = "dashed",
+               color = "grey40") +
+    geom_errorbarh(aes(xmin = conf.low, xmax = conf.high),
+                   height = 0, linewidth = 0.7,
+                   color = "firebrick4") +
+    geom_point(size = 3, color = "firebrick") +
+    labs(x = "Standardized coefficient (beta, 95% CI)",
+         y = NULL) +
+    theme_minimal(base_size = 11) +
+    theme(panel.grid.minor = element_blank())
+} else {
+  cat("(effectsize not installed; the figure would show the same plot in beta units.)\n")
+}
+```
+
+Now all the coefficients are in standard-deviation units, and comparing dot positions across rows is meaningful: a β of 0.4 versus a β of 0.1 directly tells you that the first predictor matters about four times as much per SD as the second, in the context of this model. This is the version of the coefficient plot most useful for substantive interpretation when the predictors are on different scales.
+
+## Renaming and reordering for clarity
+
+The default coefficient names from R (`conditionviolent`, `trait_hostility`, etc.) are programmer-friendly but not reader-friendly. A polished plot has descriptive labels and a substantively meaningful ordering of rows.
+
+```{r}
+#| label: fig-coefplot-polished
+#| fig-width: 6.5
+#| fig-height: 3.4
+#| fig-align: center
+
+renames <- c(
+  conditionviolent  = "Condition (violent vs neutral)",
+  trait_hostility   = "Trait hostility",
+  empathy           = "Empathy",
+  hours_weekly      = "Hours of weekly gameplay"
+)
+
+coef_df$label <- renames[as.character(coef_df$term)]
+coef_df$label <- factor(coef_df$label,
+                        levels = rev(c(
+                          "Condition (violent vs neutral)",
+                          "Trait hostility",
+                          "Empathy",
+                          "Hours of weekly gameplay"
+                        )))
+
+ggplot(coef_df, aes(x = estimate, y = label)) +
+  geom_vline(xintercept = 0, linetype = "dashed",
+             color = "grey40") +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high),
+                 height = 0, linewidth = 0.7,
+                 color = "steelblue4") +
+  geom_point(size = 3, color = "steelblue") +
+  labs(x = "Coefficient estimate (95% CI)",
+       y = NULL,
+       title = "Predictors of aggression in vgames_study") +
+  theme_minimal(base_size = 11) +
+  theme(plot.title = element_text(face = "bold", size = 11),
+        panel.grid.minor = element_blank())
+```
+
+Two small things have changed. The coefficient labels are now descriptive English rather than the raw names from R's output. The ordering of rows is substantive (the experimental manipulation at the top, individual differences below it, exposure last). Both make the figure easier to read at a glance.
+
+When the model has many coefficients, an additional improvement is to color-code or facet by predictor type (categorical vs continuous, or theoretically motivated vs control), and to sort within each facet by effect magnitude. The general principle is that the reader should be able to read the plot top to bottom and immediately understand the conceptual structure of the model.
+
+## Forest plots: the meta-analytic cousin
+
+The **forest plot** is the same visualization applied to a different problem: summarizing the effect-size estimates across multiple studies. We saw one in Chapter 27 (section 27.8). Each row is one study; the dot is its effect-size estimate; the line is the 95% CI; the size of the dot can be scaled to the study's weight in the meta-analysis. The pooled meta-analytic estimate is shown as a diamond at the bottom (or, in some conventions, as a separate larger dot).
+
+```{r}
+#| label: fig-forest-plot
+#| fig-width: 7
+#| fig-height: 3.4
+#| fig-align: center
+
+# Hypothetical meta-analytic data
+forest_data <- data.frame(
+  study  = c("Original (vgames_study)",
+             "Replication 1 (Anderson lab)",
+             "Replication 2 (Bushman lab)",
+             "Replication 3 (Ferguson lab)",
+             "Replication 4 (multi-site RR)"),
+  d      = c(0.85, 0.72, 1.02, 0.31, 0.58),
+  se     = c(0.183, 0.180, 0.200, 0.255, 0.110)
+)
+forest_data$lower <- forest_data$d - 1.96 * forest_data$se
+forest_data$upper <- forest_data$d + 1.96 * forest_data$se
+forest_data$weight <- 1 / forest_data$se^2
+
+# Fixed-effect meta-analytic pool
+w <- forest_data$weight
+pooled_d  <- sum(w * forest_data$d) / sum(w)
+pooled_se <- sqrt(1 / sum(w))
+pooled_row <- data.frame(
+  study = "Meta-analytic estimate",
+  d     = pooled_d,
+  se    = pooled_se,
+  lower = pooled_d - 1.96 * pooled_se,
+  upper = pooled_d + 1.96 * pooled_se,
+  weight = NA
+)
+all_rows <- rbind(forest_data, pooled_row)
+all_rows$study <- factor(all_rows$study, levels = rev(all_rows$study))
+all_rows$is_pooled <- c(rep(FALSE, 5), TRUE)
+all_rows$msize <- ifelse(all_rows$is_pooled, 5,
+                         2 + 5 * all_rows$weight /
+                             max(all_rows$weight, na.rm = TRUE))
+
+ggplot(all_rows, aes(y = study, x = d)) +
+  geom_vline(xintercept = 0, color = "grey50", linetype = "dashed") +
+  geom_errorbarh(aes(xmin = lower, xmax = upper),
+                 height = 0, linewidth = 0.6) +
+  geom_point(data = subset(all_rows, !is_pooled),
+             aes(size = msize), shape = 15,
+             color = "steelblue") +
+  geom_point(data = subset(all_rows, is_pooled),
+             shape = 23, fill = "firebrick", color = "firebrick",
+             size = 4) +
+  scale_size_identity() +
+  labs(x = "Standardized effect size (Cohen's d, 95% CI)",
+       y = NULL,
+       title = "Forest plot of vgames_study and replications") +
+  theme_minimal(base_size = 11) +
+  theme(plot.title = element_text(face = "bold", size = 11),
+        panel.grid.minor = element_blank())
+```
+
+Same visual logic as a coefficient plot, applied to a meta-analytic question instead of a regression model. The size of each square is scaled to the inverse-variance weight (larger squares contribute more to the pooled estimate). The bottom row, in red, is the pooled meta-analytic estimate from a fixed-effect model. The CI on the pooled estimate is much narrower than any individual study, reflecting the precision gain from combining evidence.
+
+The forest plot's visual logic is so successful that meta-analyses in psychology and medicine almost universally use it. For a deeper treatment of meta-analytic forest plots, see Borenstein, Hedges, Higgins, and Rothstein ([2021](https://doi.org/10.1002/9781119558378)).
+
+## A coding intuition
+
+Every coefficient and forest plot has the same skeleton:
+
+1. A horizontal *x* axis representing the effect-size scale (coefficient value, standardized coefficient, Cohen's *d*).
+2. A *y* axis representing rows (coefficients, studies).
+3. A vertical reference line at the null value (usually zero).
+4. A horizontal CI line for each row.
+5. A dot at the point estimate.
+
+The ggplot code, accordingly, is always essentially the same:
+
+```{r}
+#| eval: false
+ggplot(my_data, aes(x = estimate, y = label)) +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high)) +
+  geom_point()
+```
+
+Everything else (colors, sizes, themes, titles, ordering) is decoration. Once you have written the skeleton once, every coefficient plot or forest plot you ever build is a small modification of that template.
+
+## Check your understanding
+
+```{r}
+#| echo: false
+opts_q1 <- c(
+  "A coefficient plot is appropriate only when the model has at most two predictors, because with more predictors the plot becomes too crowded to read effectively.",
+  answer = "A coefficient plot displays one row per coefficient with a point at the estimate, a horizontal line for the 95% CI, and a vertical reference line at zero, making it easy to see at a glance which predictors are far from zero, how precise each estimate is, and which coefficients are comparable in magnitude.",
+  "A coefficient plot is mathematically equivalent to a bar chart of regression coefficients and the choice between them is a matter of preference; both convey identical information in slightly different visual forms.",
+  "A coefficient plot is used only when the regression model has been fitted with Bayesian methods, because the horizontal line is interpreted as a credible interval rather than a frequentist confidence interval."
+)
+
+opts_q2 <- c(
+  "Standardized coefficients should be avoided in coefficient plots because the standardization process destroys the connection between the figure and the original units of the predictors.",
+  answer = "Standardized coefficients are useful in coefficient plots when the predictors are on different scales, because they rescale every predictor to standard-deviation units and allow the magnitudes of different coefficients to be directly compared along the same x-axis.",
+  "Standardized coefficients in a coefficient plot are equivalent to Pearson correlations between each predictor and the outcome, regardless of how many other predictors are included in the model.",
+  "Standardized coefficients in a coefficient plot should always be reported alongside unstandardized coefficients in two separate panels of the same figure, because either alone is insufficient for interpretation."
+)
+
+opts_q3 <- c(
+  "A forest plot summarizes the predictors in a single regression model, with each row showing one predictor's coefficient and confidence interval against a common zero reference line.",
+  answer = "A forest plot summarizes the effect-size estimates from multiple studies on the same question, with each row representing a study, the dot showing its point estimate, the line showing its 95% CI, the dot size scaled to the study's meta-analytic weight, and a diamond at the bottom showing the pooled meta-analytic estimate.",
+  "A forest plot is identical to a coefficient plot in every respect, and the two names refer to the same visualization used in slightly different contexts but with no substantive difference in their construction.",
+  "A forest plot displays the residuals of a meta-analytic model arranged by study, with each row showing the deviation of one study's effect estimate from the meta-analytic pooled value."
+)
+
+opts_q4 <- c(
+  "The vertical reference line at zero in a coefficient plot represents the chosen alpha level of the test, with different alpha levels requiring different positions for the reference line.",
+  answer = "The vertical reference line at zero in a coefficient plot serves as the null value against which coefficients are compared; if a coefficient's confidence interval does not cross zero, the coefficient is statistically significantly different from zero at the corresponding alpha level.",
+  "The vertical reference line at zero in a coefficient plot represents the maximum likelihood estimate of the intercept term, and indicates whether the regression has a meaningful baseline value.",
+  "The vertical reference line at zero in a coefficient plot is a purely cosmetic element that helps the eye scan the figure but has no inferential meaning."
+)
+
+opts_q5 <- c(
+  "When the predictors in a regression model are on different scales, a coefficient plot using unstandardized coefficients allows the magnitudes to be directly compared because the scale of each coefficient is mathematically irrelevant to the visual comparison.",
+  answer = "When the predictors in a regression model are on different scales (a 0/1 dummy, a 1-7 scale, hours, etc.), comparing unstandardized coefficient magnitudes across rows is misleading because a coefficient of 1.0 means different substantive things on different scales; standardized coefficients allow a fair comparison.",
+  "When the predictors in a regression model are on different scales, the only correct visualization is to produce a separate coefficient plot for each predictor, because mixing predictors of different types in the same figure is statistically inappropriate.",
+  "When the predictors in a regression model are on different scales, the unstandardized coefficients should be displayed in absolute value rather than as signed estimates, with the direction of each effect indicated by a separate color in the figure."
+)
+```
+
+**1. What does a coefficient plot show and why is it useful?**
+
+`r longmcq(opts_q1)`
+
+**2. When are standardized coefficients useful in a coefficient plot, and why?**
+
+`r longmcq(opts_q2)`
+
+**3. What does a forest plot show?**
+
+`r longmcq(opts_q3)`
+
+**4. What is the role of the vertical reference line at zero in a coefficient plot?**
+
+`r longmcq(opts_q4)`
+
+**5. What is the problem with comparing unstandardized coefficient magnitudes across predictors of different types in a coefficient plot?**
+
+`r longmcq(opts_q5)`
+
+## References
+
+Borenstein, M., Hedges, L. V., Higgins, J. P. T., & Rothstein, H. R. (2021). *Introduction to meta-analysis* (2nd ed.). Wiley. <https://doi.org/10.1002/9781119558378>
+
+Robinson, D., Hayes, A., & Couch, S. (2024). *broom: Convert statistical objects into tidy tibbles* [R package]. <https://CRAN.R-project.org/package=broom>

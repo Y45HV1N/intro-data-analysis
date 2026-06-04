@@ -1,0 +1,187 @@
+---
+title: "Audience-targeted reporting: scientific vs lay communication"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(webexercises)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
+The same finding can be communicated to many different audiences. A statistician will want the precise model and the full set of statistics. A fellow psychologist will want effect sizes and confidence intervals in their own theoretical context. A clinician will want practical implications. A journalist will want a clear narrative. A member of the public will want to know what it means for them. Each of these is a legitimate audience, and each requires a different version of the same content.
+
+This chapter is about how to make those translations without distorting the underlying finding. It develops three messages. First, the audience determines almost every choice you make about how to present the result. Second, simplification for lay audiences is not the same as omission; you can keep the substantive accuracy while making the presentation more accessible. Third, every translation involves trade-offs, and the most common failure modes (too technical for the lay reader, too superficial for the scientific reader) are easy to fall into.
+
+The chapter has no live code. The principles apply regardless of the analysis tool. The examples use the `vgames_study` running example for continuity.
+
+## Why audience matters
+
+A finding has many facets. It has the model that produced it, the test statistics, the effect size and its CI, the substantive interpretation, the practical implications, the limitations, and the next questions it raises. Different audiences care about different combinations of these.
+
+A scientific peer in your subfield knows your theoretical context, can read regression output fluently, and will want a complete picture: the design, the model, the statistics, the effect sizes with CIs, the alternative explanations, the limitations. A scientific peer outside your subfield needs more help with context but the same technical level. A clinician needs less of the model details and more of the practical implications. A journalist wants a clear, memorable claim. A funder wants the impact. A member of the public wants to know whether the finding affects their life.
+
+The same data, the same analysis, the same conclusion can be communicated to all of these audiences. The choices about which details to foreground, which to background, and which to omit entirely are what separate one presentation from another. Picking the right combination for the audience you are addressing is itself a skill, and the rest of the chapter develops it.
+
+A few prerequisites for any presentation, regardless of audience:
+
+- The substantive direction of the finding is correct and unambiguous. ("Violent gameplay was associated with higher aggression scores" is correct; "violent gameplay causes aggression" overstates the design.)
+- The magnitude of the finding is conveyed somehow. A practically negligible effect should sound that way; a substantial effect should sound that way too.
+- The uncertainty is conveyed somehow. "The data are consistent with a wide range of possibilities" is more honest than "the effect is X."
+
+If any of these are missing, no amount of audience-tailoring fixes the underlying problem. The next sections take them as given and discuss how to translate.
+
+## The scientific audience: what they need
+
+A scientific peer wants enough information to evaluate the claim and to integrate it into a future meta-analysis. The standard format, developed at length in Chapter 35, requires:
+
+- The design (who, how many, what manipulation).
+- The descriptive statistics by group.
+- The test statistic and its degrees of freedom.
+- The exact p-value to three decimals.
+- The standardized effect size with its 95% confidence interval.
+- A figure that shows the substantive answer directly (Chapter 31).
+- A table when there are multiple statistics or models (Chapter 34).
+- Limitations and alternative explanations.
+
+For the scientific audience, *under*-reporting is the more common mistake. A results section that gives only the p-value, or only the mean difference without an effect size and CI, makes the work harder to evaluate and limits its usefulness for meta-analytic synthesis. Over-reporting is rarely a problem; if anything, more methodological transparency is usually better.
+
+The scientific audience's report is structured around the *test*: what was tested, what was found, what it means in the framework of the field's theoretical questions. The reader is assumed to be able to read regression output, interpret CIs, and place the finding in the literature.
+
+An example of a scientific-audience paragraph on the `vgames_study` aggression finding:
+
+> *Participants in the violent condition (M = 5.56, SD = 1.58, n = 60) scored higher on the aggression measure than those in the neutral condition (M = 4.21, SD = 1.60, n = 60). A Welch's t-test indicated this difference was statistically significant, t(118) = 4.65, p < .001, Cohen's d = 0.85, 95% CI [0.46, 1.21]. The standardized effect size is large by conventional benchmarks, though the wide CI (spanning from 0.46 to 1.21) is consistent with effects ranging from moderately large to remarkably large. The effect is consistent with the broader literature on short-term laboratory measures of aggression following violent media exposure (Anderson et al., 2010), though it is acknowledged that long-term real-world consequences are less well-supported and that the effect did not interact with baseline trait hostility in this study.*
+
+Every essential element from Chapter 35 is present: descriptives, test, effect size with CI, substantive interpretation, connection to the broader literature, honest acknowledgment of the limits. This is what scientific reporting looks like when done well.
+
+## The lay audience: what they need
+
+A member of the public, a journalist, or a policy maker has different needs. They typically do *not* want the t-statistic or the standardized effect size; they want to know what the finding *means*, in concrete terms that connect to their own experience. The challenge is to convey the same substantive direction and magnitude without using the technical machinery.
+
+Three strategies are particularly useful.
+
+**Translate effect sizes into concrete differences.** A Cohen's *d* of 0.85 is meaningless to a non-statistician. But "participants in the violent condition rated their aggression on the 10-point scale at about 5.6 on average, while participants in the neutral condition rated theirs at about 4.2; the difference, about 1.3 points on the scale, is large enough to be visible at the individual level in many cases but not all" is meaningful. The original-units mean difference is far more digestible than the standardized effect size, even though both convey the same finding.
+
+**Use a probability-of-superiority interpretation.** For Cohen's *d* of 0.85, the probability that a random participant from the violent condition will score higher than a random participant from the neutral condition is about 72%. This is a meaningful claim for a non-statistician: it converts the effect size into a question about individual instances, which is closer to how people naturally think about differences between groups.
+
+**Acknowledge uncertainty in plain language.** A 95% CI of [0.46, 1.21] cannot be reported as such. But "the data are consistent with the effect being moderately large or quite large; we cannot say precisely how large without more studies" captures the uncertainty without the jargon. The phrase "the data are consistent with" is the most useful lay translation of a confidence interval; it conveys the range of plausible values without invoking the formal procedure.
+
+A lay-audience version of the same `vgames_study` finding:
+
+> *In our study, people who played a violent video game in the lab gave higher aggression ratings afterwards than people who played a neutral game. On the 1-to-10 aggression scale we used, the violent-game group rated themselves at about 5.6 on average, while the neutral-game group rated themselves at about 4.2; a difference of just over one point on the scale. This is a meaningful difference. Roughly, if we picked one person at random from each group, the violent-game person would score higher about 7 out of 10 times. The data are consistent with the effect being moderately large or quite large. This study, like other short-term lab studies, tells us about immediate effects in a controlled setting; it does not directly tell us about long-term real-world consequences, which would require a different kind of study to demonstrate.*
+
+The same finding, the same direction, the same magnitude, the same honest uncertainty, but without a single statistic that a non-statistician would not recognize. The substantive content is preserved; the technical apparatus is replaced with plain-language equivalents.
+
+## Strategies for simplification without distortion
+
+The hardest part of lay communication is keeping the simplification honest. Several patterns are common pitfalls:
+
+**Dropping uncertainty entirely.** "The violent-game group was more aggressive than the neutral-game group" is technically correct but conveys a degree of certainty the data do not warrant. Adding "in this study" or "on average" or "the data are consistent with a meaningful difference" preserves the substantive claim while keeping the inferential modesty.
+
+**Overstating the design.** A laboratory study with self-reported aggression measures says something specific about laboratory contexts and self-reports; it does not establish that violent gameplay causes long-term aggressive behavior in everyday life. Lay reporting should respect what the design can and cannot show, even when the audience would prefer a stronger claim.
+
+**Conflating significance with importance.** "The result was statistically significant" tells a lay reader nothing about the magnitude; "the effect was large enough to matter at the individual level" tells them what they wanted to know. Convert the inferential statement into a substantive one.
+
+**Dropping the effect size in favor of "significant" / "not significant".** The lay version of the result should *not* be "we found a significant effect"; it should describe the effect's size in original units or via probability-of-superiority. Significance language outside of the scientific context misleads.
+
+**Overusing analogies.** A good analogy clarifies; a bad one introduces an unrelated mental model that distorts the finding. The probability-of-superiority interpretation is a good analogy because it preserves the statistical structure. Comparing a Cohen's *d* to the height difference between men and women is also good (we used it in Chapter 27). Comparing an effect size to "the difference between night and day" or "earth-shattering" is bad.
+
+The general principle: keep the substantive claim, the direction, the magnitude, and the uncertainty intact. Replace the technical vocabulary with plain-language equivalents. If you cannot translate without losing one of these, the simplification has gone too far, and the substantive claim needs to be qualified.
+
+## A side-by-side example
+
+The same finding, three audiences:
+
+**Scientific peer (full results paragraph).**
+
+> *Participants in the violent condition (M = 5.56, SD = 1.58, n = 60) scored higher on the aggression measure than those in the neutral condition (M = 4.21, SD = 1.60, n = 60). The difference was statistically significant, t(118) = 4.65, p < .001, Cohen's d = 0.85, 95% CI [0.46, 1.21]. The wide confidence interval suggests the effect could be moderately large or quite large; the precise magnitude is not pinned down by this single study. The result is consistent with short-term laboratory effects documented in prior literature, while the long-term and real-world implications remain an open question.*
+
+**Clinician or applied audience.**
+
+> *People who played a violent video game showed higher self-reported aggression immediately afterwards than people who played a neutral game. The difference, about 1.3 points on a 10-point scale, is meaningful: roughly speaking, after the violent game, a randomly picked participant was more aggressive than a randomly picked participant in the control group about 70% of the time. The effect was observed in a short laboratory session and refers to immediate post-game ratings, not to longer-term changes in everyday behavior. Whether the effect carries practical consequences in real-world settings depends on additional research that this study does not provide.*
+
+**Lay audience (general public, journalism).**
+
+> *People who played a violent video game rated themselves as more aggressive right afterwards than people who played a neutral game. The difference was about one point on a 10-point scale, which is enough to be noticeable in many individuals but not in all. The effect was clear within this study; how it translates to long-term real-world behavior outside the lab is a separate question that this study cannot answer.*
+
+The substantive content is identical across the three versions. What changes is the level of statistical detail, the vocabulary, and the framing. The scientific version foregrounds the technical machinery; the clinical version foregrounds the practical implication and the limits; the lay version drops the machinery entirely while keeping the direction, magnitude, and honest acknowledgment of the design's limits.
+
+A practical exercise: take any recent finding you have written about in scientific language, and try to produce the clinical and lay versions. Compare what you had to change and what you had to keep. The skill of audience translation is built almost entirely by practice.
+
+## A general principle
+
+Every translation involves a trade-off. The scientific version is precise but unreadable to a non-specialist. The lay version is accessible but lacks the technical depth. Neither is the "right" version; they are different versions for different purposes. The most important habit is to choose deliberately, write the version your audience needs, and avoid the failure mode of using the wrong version for the wrong audience (a scientific paragraph in a press release, or a lay summary in a methods section).
+
+For most researchers, most of the time, the scientific version is the default and the lay version is the translation. The discipline of the lay version is good for the scientific version, too: a researcher who can explain their finding to a non-specialist tends to also be able to write a clearer scientific results section, because the act of translating forces them to identify what the finding actually is, separately from the technical apparatus that produced it.
+
+Section 5 closes here. The chapters in this section together cover the visual and verbal communication of statistical findings: the principles of `ggplot2` (Chapter 30), visualizations for means and conditional means (Chapter 31), count data (Chapter 32), distributions (Chapter 33), APA tables (Chapter 34) and reporting (Chapter 35), coefficient and forest plots (Chapter 36), use cases by analysis type (Chapter 37), and audience-targeted communication (this chapter). Together with the statistical content of Sections 3 and 4, they cover the full pipeline from collecting data to communicating findings to the audience that needs to hear them.
+
+## Check your understanding
+
+```{r}
+#| echo: false
+opts_q1 <- c(
+  "The same statistical finding should be reported in identical language regardless of the audience, because changing the wording for different audiences introduces ambiguity and is incompatible with reproducible science.",
+  answer = "The same statistical finding should be presented at different levels of technical detail depending on the audience, with the substantive direction, magnitude, and uncertainty preserved across versions but the vocabulary and framing adapted to what the audience can interpret and use.",
+  "The same statistical finding should be reported in technical language only when communicating with other researchers in the same subfield, and in lay language for all other audiences including clinicians, who do not require statistical detail in their professional practice.",
+  "The same statistical finding should be presented in the most technical version possible for all audiences, because simplification distorts the underlying claim and is incompatible with honest scientific communication."
+)
+
+opts_q2 <- c(
+  "A scientific reporting paragraph requires only the p-value of the statistical test, because the p-value carries all the information about both the effect size and the direction of the result in a single number.",
+  answer = "A scientific reporting paragraph requires the design, descriptive statistics by group, test statistic with degrees of freedom, exact p-value, standardized effect size with 95% CI, substantive interpretation, and acknowledgment of limitations, so that peers can evaluate the claim and integrate the result into future meta-analyses.",
+  "A scientific reporting paragraph requires only the standardized effect size and its confidence interval, with the test statistic and p-value being optional under the new statistics framework which considers these legacy reporting conventions.",
+  "A scientific reporting paragraph requires a verbal description of the substantive direction and magnitude without numerical statistics, because numerical reporting is the responsibility of any supplementary tables rather than the prose."
+)
+
+opts_q3 <- c(
+  "Translating an effect size for a lay audience requires converting the standardized effect to a percentage of variance explained, because this is the most intuitive quantity for non-statisticians to understand.",
+  answer = "Translating an effect size for a lay audience benefits from concrete reformulations such as the raw mean difference in original units, the probability of superiority (the chance that a random observation from one group exceeds one from another), and plain-language statements about the consistency of the data with a range of magnitudes.",
+  "Translating an effect size for a lay audience requires reporting only the p-value, because lay readers are most familiar with the concept of statistical significance and any other quantity introduces unnecessary complexity.",
+  "Translating an effect size for a lay audience requires using emphatic language such as 'dramatic' or 'enormous' to convey the importance of the finding, because lay readers respond more strongly to qualitative descriptions than to numerical claims."
+)
+
+opts_q4 <- c(
+  "Simplification for a lay audience requires omitting all mention of uncertainty, because non-statisticians cannot interpret confidence intervals or p-values and including them would only confuse the substantive claim.",
+  answer = "Simplification for a lay audience preserves the substantive claim, the direction, the magnitude, and the uncertainty intact while replacing the technical vocabulary with plain-language equivalents; failures of simplification include dropping uncertainty entirely, overstating the design, conflating significance with importance, and overusing analogies that distort the underlying finding.",
+  "Simplification for a lay audience is best achieved by using extensive analogies to physical phenomena (such as comparing effect sizes to the height of buildings or the speed of light), because analogies are universally understood across audiences.",
+  "Simplification for a lay audience is unnecessary because journalists and non-specialists should be expected to consult specialists when they encounter statistical claims they do not understand, rather than expecting researchers to adapt their communication."
+)
+
+opts_q5 <- c(
+  "The most common failure mode of audience-targeted reporting is using the lay version of a finding in a methods section, because methods sections require lay-accessible descriptions of the statistical procedures used.",
+  answer = "The most common failure modes of audience-targeted reporting are using the wrong version for the audience (a scientific paragraph in a press release, or a lay summary in a methods section), dropping uncertainty entirely in the lay version, and conflating statistical significance with practical importance in the public-facing version.",
+  "The most common failure mode of audience-targeted reporting is using technical vocabulary in a lay version, because the substantive claim cannot be expressed accurately without technical terms.",
+  "The most common failure mode of audience-targeted reporting is using too many decimal places in the numerical statistics of either the scientific or the lay version, because excessive precision implies a degree of certainty the underlying data do not warrant."
+)
+```
+
+**1. How should the same statistical finding be presented to different audiences?**
+
+`r longmcq(opts_q1)`
+
+**2. What does a scientific reporting paragraph require?**
+
+`r longmcq(opts_q2)`
+
+**3. What strategies are most effective for translating an effect size to a lay audience?**
+
+`r longmcq(opts_q3)`
+
+**4. What is the right way to simplify a finding for a lay audience without distorting it?**
+
+`r longmcq(opts_q4)`
+
+**5. What are the most common failure modes of audience-targeted reporting?**
+
+`r longmcq(opts_q5)`
+
+## References
+
+Bornmann, L., & Marx, W. (2014). How should the societal impact of research be generated and measured? A proposal for a simple and practicable approach to allow interdisciplinary comparisons. *Scientometrics, 98*(1), 211-219. <https://doi.org/10.1007/s11192-013-1020-x>
+
+Nature Editorial. (2018). Beware the science gap. *Nature, 562*(7726), 7. <https://doi.org/10.1038/d41586-018-06907-y>
+
+National Academies of Sciences, Engineering, and Medicine. (2017). *Communicating science effectively: A research agenda*. The National Academies Press. <https://doi.org/10.17226/23674>

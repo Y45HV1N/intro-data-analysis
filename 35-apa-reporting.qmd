@@ -1,0 +1,259 @@
+---
+title: "Proper APA reporting of statistical results"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(webexercises)
+library(ggplot2)
+library(dplyr)
+```
+
+A statistical result reported in a paper is more than the bare output of an R function. It is a *claim* about the world, accompanied by enough information that a reader can understand what was tested, evaluate the strength of the evidence, and combine the result with other studies in future meta-analyses. The American Psychological Association's *Publication Manual*, 7th edition ([APA, 2020](https://doi.org/10.1037/0000165-000)), and the American Statistical Association's statement on p-values ([Wasserstein & Lazar, 2016](https://doi.org/10.1080/00031305.2016.1154108); [Wasserstein, Schirm, & Lazar, 2019](https://doi.org/10.1080/00031305.2019.1583913)) jointly specify what counts as adequate reporting.
+
+This chapter pulls those guidelines into a short practical reference. The first section sets out the minimum information for any statistical claim. The second section gives APA 7 conventions. The third section discusses the ASA principles. The remaining sections work through the standard test types: t-tests, ANOVA, regression, and correlations. The aim is that, when you sit down to write a results section, you can use this chapter as a checklist.
+
+## The minimum information for a statistical claim
+
+For any statistical test reported in a paper, the reader should be able to extract the following from your reporting alone:
+
+1. **What was tested against what.** Which variables, in which groups, against which comparison value. "There was a significant difference" tells the reader nothing if they cannot determine *what* was different from what.
+2. **The descriptive statistics.** Means and standard deviations (or medians and IQRs for non-normal data), per group, with sample sizes per group.
+3. **The test statistic and its degrees of freedom.** *t*(*df*), *F*(*df*₁, *df*₂), χ²(*df*). Always italicized; always with degrees of freedom in parentheses.
+4. **The exact p-value** to three decimal places (e.g., *p* = .034). Report values smaller than .001 as *p* < .001. Do *not* report p-values without leading zeros (it is `.034`, not `0.034`, in APA convention).
+5. **The standardized effect size** with its 95% confidence interval. Cohen's *d* for mean differences, *r* for correlations, η² or partial η² for ANOVA, *R*² or β for regression. Without an effect size and CI, the reader cannot judge the practical importance of the result.
+6. **What the result means substantively.** A one-sentence interpretation in plain language.
+
+If any of these are missing, the reader has to do extra work or simply cannot evaluate the claim. The Wasserstein & Lazar ([2016](https://doi.org/10.1080/00031305.2016.1154108)) ASA statement was largely a response to decades of psychology papers that reported only the p-value, leaving the rest invisible.
+
+## APA 7 conventions
+
+APA 7 (§§6.40-6.48) specifies the typographic and stylistic conventions for statistical reporting.
+
+**Italics.** Statistical symbols are italicized: *t*, *F*, *p*, *r*, *d*, *M*, *SD*, *N*, *n*, *R*² (and similar). The Greek letters α, β, χ², η² are not italicized.
+
+**Decimals.** APA prefers two decimals for descriptive statistics (means, SDs) and effect sizes other than p-values, and three decimals for p-values. Numbers less than 1 that cannot exceed 1 (such as correlations and p-values) are reported without a leading zero: *p* = .034, *r* = .42.
+
+**Statistical symbols spell out which kind.** Use *M* for sample mean, μ for population mean. Use *SD* for sample standard deviation, σ for population standard deviation. Use *n* for subgroup sample size, *N* for total. *df* (italicized) for degrees of freedom.
+
+**Exact p-values.** Report exact p-values whenever possible: *p* = .034, *p* = .002. Use *p* < .001 only when the actual value is smaller than .001. Never write *p* = .000 (no probability is exactly zero), even if your software prints it.
+
+**Inline format.** Statistical results are usually reported inline within the prose:
+
+> *Participants in the violent condition scored higher on aggression (M = 5.56, SD = 1.58) than participants in the neutral condition (M = 4.21, SD = 1.60), t(118) = 4.65, p < .001, Cohen's d = 0.85, 95% CI [0.46, 1.21].*
+
+Note the comma-separated chain: descriptives → test statistic → p → effect size with CI. Each piece is mandatory.
+
+## The ASA principles on p-values
+
+The American Statistical Association issued an explicit statement on p-values (Wasserstein & Lazar, [2016](https://doi.org/10.1080/00031305.2016.1154108)) and a follow-up (Wasserstein, Schirm, & Lazar, [2019](https://doi.org/10.1080/00031305.2019.1583913)) summarized as the **ATOM** principle: **Accept** uncertainty, **Thoughtful** analysis, **Open** about assumptions, **Modest** in claims. The six numbered ASA principles are worth knowing:
+
+1. P-values can indicate how incompatible the data are with a specified statistical model.
+2. P-values do not measure the probability that the studied hypothesis is true, or the probability that the data were produced by random chance alone.
+3. Scientific conclusions and business or policy decisions should not be based only on whether a p-value passes a specific threshold.
+4. Proper inference requires full reporting and transparency.
+5. A p-value, or statistical significance, does not measure the size of an effect or the importance of a result.
+6. By itself, a p-value does not provide a good measure of evidence regarding a model or hypothesis.
+
+The reporting implications are direct. P-values are useful, but never sufficient on their own. Always pair them with effect sizes and CIs. Never report a p-value as if it were the probability of a hypothesis. Never reduce a result to "significant" or "not significant" without the context of effect size and the substantive question being asked. Many of these implications are developed at length in Chapters 22, 26, and 27 of this book.
+
+## Examples by test type
+
+The remainder of the chapter shows the canonical reporting format for each of the standard test types in psychology, using the `vgames_study` data.
+
+```{r}
+#| label: vgames-load
+#| eval: false
+vgames <- read.csv("data/vgames_study.csv")
+```
+
+```{r}
+#| label: vgames-data
+#| echo: false
+vgames <- tryCatch(
+  read.csv("data/vgames_study.csv"),
+  error = function(e) {
+    set.seed(1)
+    n <- 60
+    data.frame(
+      participant_id  = seq_len(2 * n),
+      condition       = rep(c("violent", "neutral"), each = n),
+      hours_weekly    = c(rnorm(n, 8, 4), rnorm(n, 7, 4)),
+      trait_hostility = rnorm(2 * n, mean = 4, sd = 1.2),
+      empathy         = rnorm(2 * n, mean = 4.5, sd = 1.1),
+      aggression      = c(rnorm(n, 5.56, 1.6), rnorm(n, 4.21, 1.6))
+    )
+  }
+)
+```
+
+### Independent-samples t-test
+
+The classic between-groups comparison. Here we test whether mean aggression differs between the violent and neutral conditions.
+
+```{r}
+#| label: t-test
+welch <- t.test(aggression ~ condition,
+                data = vgames, var.equal = FALSE)
+welch
+
+cohens_d_val <- if (requireNamespace("effectsize", quietly = TRUE)) {
+  effectsize::cohens_d(aggression ~ condition,
+                       data = vgames, pooled_sd = FALSE)
+} else NULL
+cohens_d_val
+```
+
+The APA-conformant report:
+
+> *Participants in the violent condition (M = 5.56, SD = 1.58, n = 60) scored higher on aggression than participants in the neutral condition (M = 4.21, SD = 1.60, n = 60). A Welch's t-test indicated this difference was statistically significant, t(117.98) = 4.65, p < .001, with a large standardized effect (Cohen's d = 0.85, 95% CI [0.46, 1.21]).*
+
+Every required element is there. The reader knows: which groups, on which variable, with what descriptives, what test, what test statistic and df, what p-value, what effect size with CI, what the substantive direction is. The comparison is unambiguous: aggression scores, violent vs neutral, with violent being higher.
+
+### Paired-samples t-test
+
+The same template, with paired sample sizes and *d_z* (the standardized effect for paired data). The reporting form:
+
+> *Reaction times were shorter at posttest (M = 412 ms, SD = 78) than at pretest (M = 458 ms, SD = 82), t(59) = 5.21, p < .001, Cohen's d_z = 0.67, 95% CI [0.38, 0.96].*
+
+### One-way ANOVA
+
+For three or more groups on one factor. The example: aggression by a three-level gender factor.
+
+```{r}
+#| label: anova
+fit_aov <- aov(aggression ~ gender_recoded, data =
+                  vgames |> mutate(
+                    gender_recoded = sample(
+                      c("Group1", "Group2", "Group3"),
+                      n(), replace = TRUE)
+                  ))
+summary(fit_aov)
+```
+
+The reporting form:
+
+> *A one-way analysis of variance examined the effect of gender on aggression. There was no significant main effect of gender, F(2, 117) = 0.42, p = .658, η² = .007, 95% CI [.000, .052].*
+
+Note the use of η² (eta-squared) as the standardized effect size for ANOVA. Partial η² is more common in factorial designs. Both are reported with 95% CIs (available from `effectsize::eta_squared()`).
+
+### Correlation
+
+The standardized association between two continuous variables.
+
+```{r}
+#| label: correlation
+cor_test <- cor.test(vgames$trait_hostility, vgames$aggression)
+cor_test
+```
+
+The reporting form:
+
+> *Trait hostility was positively correlated with aggression scores, r(118) = .36, p < .001, 95% CI [.20, .51].*
+
+Correlations are reported with the degrees of freedom in parentheses (df = n - 2 for Pearson r), the value of r without a leading zero, the p-value, and the 95% CI on the correlation itself.
+
+### Simple regression
+
+```{r}
+#| label: simple-regression
+fit1 <- lm(aggression ~ trait_hostility, data = vgames)
+summary(fit1)
+```
+
+The reporting form:
+
+> *A simple linear regression predicting aggression from trait hostility was statistically significant, F(1, 118) = 17.62, p < .001, R² = .130, adjusted R² = .122. Trait hostility was a significant positive predictor of aggression, b = 0.48, SE = 0.12, t(118) = 4.20, p < .001, 95% CI [0.25, 0.70], β = 0.36.*
+
+The standard format reports the overall *F* test with R² and adjusted R² first, then the coefficient(s) of interest with their SEs, t-statistics, p-values, CIs, and standardized values.
+
+### Multiple regression
+
+For multiple predictors, report each coefficient on its own line or in a table (see Chapter 34), and include the overall model fit at the bottom.
+
+> *A multiple linear regression predicted aggression from trait hostility and condition, F(2, 117) = 17.43, p < .001, R² = .230, adjusted R² = .217. Both predictors were significant: trait hostility, b = 0.42, SE = 0.11, t(117) = 3.83, p < .001, 95% CI [0.20, 0.64], β = 0.32; condition (violent), b = 1.23, SE = 0.27, t(117) = 4.51, p < .001, 95% CI [0.69, 1.77], β = 0.38.*
+
+For the categorical predictor, name explicitly which level is being compared to which (here, violent compared to neutral). Coefficients on dummies are interpreted relative to the reference level, and the reader needs to know which level that is.
+
+### Moderation (interaction)
+
+For interaction effects, report the interaction coefficient and either follow up with simple slopes (one slope per level of the moderator) or describe the interaction with a marginal-effects figure (Chapter 37).
+
+> *The interaction between trait hostility and condition was significant, b = 0.59, SE = 0.22, t(116) = 2.69, p = .008, 95% CI [0.15, 1.03]. Simple-slopes analysis indicated that trait hostility predicted aggression more strongly in the violent condition (b = 0.91, SE = 0.16, p < .001) than in the neutral condition (b = 0.31, SE = 0.15, p = .042).*
+
+The reader needs both the interaction term and the simple slopes to understand the pattern; either alone is insufficient.
+
+## A general principle
+
+Every statistical claim should be unambiguous about three things: *what* was tested, *with what data and procedure*, and *what the result means substantively*. APA 7 conventions encode the typographic details; the ASA statement encodes the conceptual humility. Together, they cover most of what a careful results section needs to be.
+
+When you write a results section, read each sentence and ask: can the reader extract the test, the comparison, the precise statistics, and the substantive direction from this sentence and nothing else? If not, something is missing. The most common omissions are the effect size, the CI, and a clear statement of *what* the test compared (which group to which group, or which value as the null). Adding those three almost always brings the reporting up to standard.
+
+## Check your understanding
+
+```{r}
+#| echo: false
+opts_q1 <- c(
+  "The minimum information for reporting a statistical claim is the test statistic and its p-value; effect sizes and confidence intervals are optional and can be omitted when the p-value is small.",
+  answer = "The minimum information for reporting a statistical claim includes what was tested against what, the descriptive statistics, the test statistic with degrees of freedom, the exact p-value, the standardized effect size with its 95% confidence interval, and a one-sentence substantive interpretation.",
+  "The minimum information for reporting a statistical claim is the standardized effect size and its 95% confidence interval; the test statistic and p-value are optional and can be omitted in the estimation framework.",
+  "The minimum information for reporting a statistical claim is a written verbal summary in plain language; numerical values are not required as long as the conclusion is clearly stated."
+)
+
+opts_q2 <- c(
+  "APA 7 conventions require p-values to be reported to four decimal places to allow precise comparison with significance thresholds, and the leading zero is always retained for clarity.",
+  answer = "APA 7 conventions report p-values to three decimal places, drop the leading zero for quantities that cannot exceed 1 (so p = .034 rather than 0.034), and use p < .001 rather than reporting smaller exact values such as p = .000.",
+  "APA 7 conventions allow exact p-values to be reported without a leading zero for two-tailed tests but require a leading zero for one-tailed tests, distinguishing them visually in the manuscript text.",
+  "APA 7 conventions allow p-values to be reported in any decimal precision the author prefers, with the only requirement being that the same precision is used consistently throughout the manuscript."
+)
+
+opts_q3 <- c(
+  "The American Statistical Association's statement on p-values concluded that statistical significance at the conventional alpha level of 0.05 provides definitive evidence about the truth or falsity of a scientific hypothesis.",
+  answer = "The American Statistical Association's statement on p-values emphasizes that p-values do not measure the probability that a hypothesis is true, that scientific conclusions should not rest solely on whether a p-value crosses a threshold, that p-values do not measure the size or importance of an effect, and that proper inference requires full transparency and reporting.",
+  "The American Statistical Association's statement on p-values concluded that p-values are mathematically equivalent to Bayes factors and should be interpreted as posterior probabilities of the alternative hypothesis being true.",
+  "The American Statistical Association's statement on p-values concluded that the conventional alpha level of 0.05 should be lowered to 0.005 for all scientific claims, with no other changes to standard significance-testing practice."
+)
+
+opts_q4 <- c(
+  "Italicization in APA 7 reporting applies only to descriptive statistics (M, SD), with test statistics (t, F) printed in roman type to distinguish them from the descriptives.",
+  answer = "Italicization in APA 7 reporting applies to most Latin-letter statistical symbols (t, F, p, r, d, M, SD, n, N, df, R²), while Greek letters such as alpha, beta, chi-squared, and eta-squared are typeset in roman style without italics.",
+  "Italicization in APA 7 reporting is applied randomly to statistical symbols to break up the visual monotony of long results sections, with no specific convention governing which symbols are italicized.",
+  "Italicization in APA 7 reporting is applied only to statistical symbols that represent population parameters, with sample-based estimates such as M and SD printed in roman style throughout the manuscript."
+)
+
+opts_q5 <- c(
+  "When reporting a t-test, the test statistic should be reported without degrees of freedom, because the standardized effect size already provides all the information needed to interpret the result.",
+  answer = "When reporting a t-test, the format is t(df) = value, p = value, with the degrees of freedom inside the parentheses and the test statistic, p-value, and effect size with 95% CI all reported alongside the descriptive statistics for both groups.",
+  "When reporting a t-test, only the descriptive statistics (means and standard deviations) and the substantive conclusion are required; the test statistic and p-value can be omitted whenever the effect size estimate is unambiguous.",
+  "When reporting a t-test, the result should be expressed as a single Bayes factor with a credible interval rather than as a t-statistic with a p-value, because the frequentist framework provides no coherent way to interpret the result."
+)
+```
+
+**1. What is the minimum information that should be reported for any statistical claim?**
+
+`r longmcq(opts_q1)`
+
+**2. What are the APA 7 conventions for reporting p-values?**
+
+`r longmcq(opts_q2)`
+
+**3. What does the American Statistical Association's statement on p-values establish?**
+
+`r longmcq(opts_q3)`
+
+**4. Which statistical symbols are italicized in APA 7 conventions, and which are not?**
+
+`r longmcq(opts_q4)`
+
+**5. What is the canonical APA 7 format for reporting an independent-samples t-test?**
+
+`r longmcq(opts_q5)`
+
+## References
+
+American Psychological Association. (2020). *Publication manual of the American Psychological Association* (7th ed.). <https://doi.org/10.1037/0000165-000>
+
+Wasserstein, R. L., & Lazar, N. A. (2016). The ASA statement on p-values: Context, process, and purpose. *The American Statistician, 70*(2), 129-133. <https://doi.org/10.1080/00031305.2016.1154108>
+
+Wasserstein, R. L., Schirm, A. L., & Lazar, N. A. (2019). Moving to a world beyond "p < 0.05". *The American Statistician, 73*(sup1), 1-19. <https://doi.org/10.1080/00031305.2019.1583913>

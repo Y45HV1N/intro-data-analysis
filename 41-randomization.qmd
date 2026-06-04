@@ -1,0 +1,344 @@
+---
+title: "Randomization, the cleanest causal claim"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(webexercises)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
+Chapter 40 ended with a precise question. The observed group mean difference (the t-statistic from Chapter 22, the regression coefficient on `condition` from Chapter 17) estimates the average treatment effect *only when the treatment and control groups are exchangeable with respect to potential outcomes*. Without exchangeability, the difference mixes the ATE with whatever pre-existing differences distinguish the groups.
+
+This chapter is about the cleanest way to purchase exchangeability: **random assignment**. The chapter does three things. First, it makes the danger of non-randomization concrete with a simulation, so you can see with your own eyes how a clean `lm()` output can give a badly biased causal estimate when the groups differ at baseline. Second, it explains why random assignment fixes the problem: by making the assignment of treatment independent of any pre-existing characteristics, randomization forces exchangeability *by construction*. Third, it returns to the regression we have been computing throughout the book and notes that the math is the same; what changes is what we are licensed to say about the coefficient. The chapter closes with the distinction between *sampling uncertainty* (the topic of Section 4) and *causal uncertainty* (the topic of Section 6), and notes that the two are independent.
+
+By the end of the chapter, you should be able to look at any study and ask: was the treatment randomly assigned? If yes, the coefficient on the treatment dummy in `lm()` is licensed as a causal estimate. If no, it is not, and we will need the more elaborate machinery of Chapters 42 to 44.
+
+## The danger of self-selection
+
+Imagine `vgames_study` had been run differently. Instead of the researcher randomly assigning participants to either game, suppose the participants chose which game they wanted to play. Some chose the violent game, some chose the neutral game, and the experiment then proceeded as usual.
+
+What would go wrong? People do not choose video games at random. People who already have high trait hostility find the violent game more appealing; people who are calmer prefer the neutral one. The result is that the violent-game group has higher trait hostility *on average* before any game is played at all. Even if the violent game itself has zero causal effect on aggression, the violent-game group will likely show higher aggression scores, simply because more hostile people ended up in it.
+
+We can see this concretely with a simulation. We will create a population of 200 participants, each with a "true" baseline level of aggressive tendency. Then we will run the study two ways: once with self-selection, once with random assignment. The same population, the same outcome variable, the same `lm()` call. Only the assignment differs.
+
+```{r}
+#| label: self-selection-sim
+
+set.seed(42)
+n_pop <- 200
+
+# Each participant has a baseline aggressive tendency.
+# Aggression at the end of the study is baseline + 1.5 if treated
+# (a true ATE of +1.5), plus noise.
+participant <- data.frame(
+  id              = 1:n_pop,
+  baseline        = rnorm(n_pop, mean = 4, sd = 1.4)
+)
+
+# True ATE of the violent game on aggression is +1.5 points
+true_ATE <- 1.5
+
+# Scenario 1: self-selection.
+# Probability of choosing the violent game increases with baseline.
+prob_violent_self <- plogis((participant$baseline - 4) * 1.2)
+participant$condition_self <- ifelse(
+  runif(n_pop) < prob_violent_self,
+  "violent", "neutral"
+)
+
+# Scenario 2: random assignment.
+# Coin flip, independent of baseline.
+participant$condition_rand <- sample(
+  c("violent", "neutral"), n_pop, replace = TRUE
+)
+
+# Observed aggression in each scenario
+participant$aggression_self <- participant$baseline +
+  ifelse(participant$condition_self == "violent", true_ATE, 0) +
+  rnorm(n_pop, 0, 0.8)
+
+participant$aggression_rand <- participant$baseline +
+  ifelse(participant$condition_rand == "violent", true_ATE, 0) +
+  rnorm(n_pop, 0, 0.8)
+
+# Fit the same lm() in each scenario
+fit_self <- lm(aggression_self ~ condition_self, data = participant)
+fit_rand <- lm(aggression_rand ~ condition_rand, data = participant)
+
+cat(sprintf("True ATE                          = %.2f\n", true_ATE))
+cat(sprintf("Estimate under self-selection     = %.2f\n",
+            coef(fit_self)["condition_selfviolent"]))
+cat(sprintf("Estimate under random assignment  = %.2f\n",
+            coef(fit_rand)["condition_randviolent"]))
+```
+
+The true average treatment effect of the violent game (built into the simulation) is +1.5 points. Under self-selection, our `lm()` returns an estimate around 2.5 or 3.0, badly biased upward. Under random assignment, our `lm()` returns an estimate very close to the true +1.5. The data, the outcome, the population, and the statistical procedure are identical in the two scenarios. What differs is the design.
+
+Why does the self-selection version overestimate the effect? Because the people who chose the violent game were already more aggressive before they played any game. The 2.5-point gap that our regression detects has two pieces: roughly 1.5 points caused by the violent game itself (the real causal effect), and roughly 1.0 point caused by the pre-existing differences between people who chose each game. The regression cannot tell us which piece is which from the output alone.
+
+The figure below makes the difference at baseline visible. It shows the distribution of baseline aggressive tendency in each group, under each scenario. Under self-selection, the two groups look completely different at baseline. Under random assignment, they look essentially the same.
+
+```{r}
+#| label: fig-balance
+#| echo: false
+#| fig-width: 9
+#| fig-height: 3.6
+#| fig-align: center
+
+plot_balance <- function(data, condition_var, title_text) {
+  ggplot(data, aes(x = baseline, fill = .data[[condition_var]],
+                   color = .data[[condition_var]])) +
+    geom_density(alpha = 0.35, linewidth = 0.6) +
+    scale_fill_manual(values = c("neutral" = "steelblue",
+                                 "violent" = "firebrick"),
+                      name = "Condition") +
+    scale_color_manual(values = c("neutral" = "steelblue4",
+                                  "violent" = "firebrick4"),
+                       guide = "none") +
+    coord_cartesian(xlim = c(0, 8)) +
+    labs(x = "Baseline aggressive tendency", y = NULL,
+         title = title_text) +
+    theme_minimal(base_size = 10) +
+    theme(plot.title = element_text(face = "bold", size = 10.5),
+          axis.text.y = element_blank(),
+          legend.position = "bottom",
+          panel.grid.minor = element_blank())
+}
+
+plot_self <- plot_balance(participant, "condition_self",
+                          "Self-selection:\nbaselines differ between groups")
+plot_rand <- plot_balance(participant, "condition_rand",
+                          "Random assignment:\nbaselines are balanced")
+
+if (requireNamespace("patchwork", quietly = TRUE)) {
+  patchwork::wrap_plots(plot_self, plot_rand, ncol = 2)
+} else {
+  gridExtra::grid.arrange(plot_self, plot_rand, ncol = 2)
+}
+```
+
+In the left panel, the violent group's baseline distribution sits clearly to the right of the neutral group's. The groups are different at baseline, before any treatment has been delivered. Any difference we see at the end of the study is a mixture of the game's effect and this pre-existing imbalance. In the right panel, the two distributions overlap almost entirely. The groups are comparable at baseline, so the difference we see at the end can be attributed to the game itself.
+
+This is the visual fingerprint of randomization. Group means at baseline should look like the right panel. If they look like the left panel, you do not have a randomized experiment, no matter what the methods section says.
+
+## Why random assignment delivers exchangeability
+
+What randomization buys us, in plain language: when the treatment is randomly assigned, the assignment is *statistically independent* of every characteristic the participants brought with them. The coin does not know that someone is aggressive, female, young, or experienced with video games. It just flips. So which group a person ends up in is unrelated to any of their characteristics.
+
+If group assignment is unrelated to characteristics, then characteristics are evenly distributed across the two groups *on average*. Both groups have a mix of hostile and non-hostile, men and women, young and old, experienced and inexperienced. The mixes will be very similar in large samples, with the only systematic difference between the groups being the treatment itself.
+
+If the only systematic difference between the groups is the treatment, then any difference in average outcomes can be attributed to the treatment. There is no other systematic source of variation to which it could be attributed.
+
+In the language of potential outcomes from Chapter 40: random assignment ensures that the average *Y*(1) among people in the treatment group equals the average *Y*(1) in the whole population, and similarly the average *Y*(0) among people in the control group equals the average *Y*(0) in the whole population. This is exactly the exchangeability condition Chapter 40 said we needed. Random assignment delivers it by construction, with no further assumptions.
+
+We can state this as a principle:
+
+> **The randomization licensing principle.** If treatment is randomly assigned, then the average outcome in the treatment group is an unbiased estimate of *E*[*Y*(1)] across the population, and the average outcome in the control group is an unbiased estimate of *E*[*Y*(0)]. Therefore, the observed group mean difference is an unbiased estimate of the average treatment effect (the ATE).
+
+This is the central result of the Rubin causal model. It says that under randomization, the statistical comparison we have been doing throughout the book (the t-test, the regression coefficient) acquires a causal interpretation *for free*. No further assumptions, no new techniques. The design does the work.
+
+## "On average" is doing real work
+
+A practical caveat. The randomization licensing principle holds "in expectation," which is to say, in the long run across infinitely many studies, or in the limit of large samples within a single study. With small samples, random assignment can still produce groups that happen to differ on important characteristics. For example, if you randomize 20 participants and 12 of them happen to be male, then by chance the two groups will likely have unequal gender splits. This is not a failure of randomization. It is the variation we expect from small samples, and it is exactly the kind of uncertainty Section 4 was about.
+
+The takeaway is that random assignment makes groups exchangeable *in expectation*, with the residual within-sample imbalance shrinking as the sample size grows. Large samples make randomization reliable. Small samples leave some residual imbalance to chance, even after randomization.
+
+This is one of several reasons that sample-size planning (Chapter 24, on power and the SESOI) matters for causal studies. Bigger samples make randomization more reliable, not just statistical inference more powerful.
+
+## Connecting to the regression you already know
+
+Now we get to the practical payoff. When the treatment is randomly assigned, the linear model framework you learned in Section 3 produces causal estimates automatically. There is no new R function and no new statistical technique. You fit the same `lm()` you have been fitting all along:
+
+```{r}
+#| label: vgames-load
+#| eval: false
+vgames <- read.csv("data/vgames_study.csv")
+```
+
+```{r}
+#| label: vgames-data
+#| echo: false
+vgames <- tryCatch(
+  read.csv("data/vgames_study.csv"),
+  error = function(e) {
+    set.seed(1)
+    n <- 60
+    data.frame(
+      participant_id  = seq_len(2 * n),
+      condition       = rep(c("violent", "neutral"), each = n),
+      trait_hostility = rnorm(2 * n, mean = 4, sd = 1.2),
+      empathy         = rnorm(2 * n, mean = 4.5, sd = 1.1),
+      aggression      = c(rnorm(n, 5.56, 1.6), rnorm(n, 4.21, 1.6))
+    )
+  }
+)
+```
+
+```{r}
+#| label: causal-lm
+fit <- lm(aggression ~ condition, data = vgames)
+summary(fit)
+```
+
+The coefficient on `conditionviolent` is the observed group mean difference: how much higher the violent group's mean aggression is, on average, than the neutral group's. The standard error, the t-statistic, the p-value, and the confidence interval all carry their familiar Section 4 interpretations.
+
+What changes under random assignment is the substantive *meaning* of the coefficient. Without randomization, the coefficient is just a descriptive number, the gap between the two group means, which may or may not equal the ATE. With randomization, the coefficient *is* an estimate of the ATE. The causal claim "the violent game raised aggression by 1.35 points on the 1-10 scale, on average" is licensed by the design.
+
+This is worth lingering on. The math has not changed. The R syntax has not changed. The output you see is the same. The confidence interval is computed the same way. What is different is what you are entitled to *say* about the number. Under randomization: "The violent video game caused an average increase in aggression of 1.35 points." Without randomization: "Aggression was 1.35 points higher in the violent-game group than in the neutral-game group, but we cannot tell from this how much of that difference is caused by the game itself versus by pre-existing differences between the two groups." Same number, different statement.
+
+The principle is general. Whenever you run a regression on data from a randomized experiment, the coefficient on the randomly-assigned predictor estimates the ATE of that predictor on the outcome. The regression framework absorbs the causal interpretation seamlessly, because under randomization, the conditional expectation E[*Y* | treatment = 1] − E[*Y* | treatment = 0] (which is what regression estimates) equals E[*Y*(1)] − E[*Y*(0)] (which is the ATE).
+
+## Adding covariates: it does not hurt, and sometimes it helps
+
+You can also include additional covariates in your regression even in a randomized experiment. For example, if you measured baseline aggression or trait hostility before randomization, you can fit:
+
+```{r}
+#| label: with-covariate
+fit_adj <- lm(aggression ~ condition + trait_hostility, data = vgames)
+summary(fit_adj)$coefficients
+```
+
+Two important things to notice about this. First, the coefficient on `condition` is roughly the same as it was without the covariate, because randomization already balanced the two groups on trait hostility (and on every other pre-existing variable). Adding the covariate does not "correct" for any imbalance, because there was no imbalance to correct.
+
+Second, the standard error on the `condition` coefficient is typically *smaller* with the covariate than without it. This is because trait hostility explains some of the variation in aggression that is unrelated to the condition, and accounting for that variation makes the comparison between conditions more precise. This is the same noise-reduction logic we noted in Chapter 17 (multiple regression) and Chapter 31 (the precision-covariate role). In a randomized experiment, adding pre-treatment covariates is a way to *gain precision* without changing the causal interpretation of the treatment coefficient.
+
+The principle: in a randomized experiment, you do not need to control for anything to get an unbiased causal estimate of the treatment effect. But you can add pre-treatment covariates to improve precision, and doing so is harmless. The cases where adding covariates becomes essential (rather than optional) are observational studies, which we develop in Chapters 42 to 44.
+
+## Two kinds of uncertainty
+
+A common confusion is to mix up *sampling uncertainty* (the topic of Section 4) and *causal uncertainty* (the topic of Section 6). These are distinct, and it is worth keeping them straight.
+
+**Sampling uncertainty** is the uncertainty that comes from working with a finite sample drawn from a population. Even with perfect random assignment, your sample of 120 participants is not the whole population. The ATE estimate from your sample is not exactly equal to the population ATE. Standard errors, confidence intervals, and p-values quantify this uncertainty. Sampling uncertainty shrinks as your sample size grows.
+
+**Causal uncertainty** is a different beast. It is the uncertainty that comes from the design of the study. If the treatment was not randomly assigned, the observed group mean difference does not estimate the ATE at all, no matter how large your sample. Causal uncertainty does not shrink with sample size. Adding more participants does not fix non-randomization; it just gives you a more precise estimate of the wrong quantity.
+
+The two kinds of uncertainty stack:
+
+- A small randomized study has *low causal uncertainty* (the coefficient is an unbiased estimate of the ATE) but *high sampling uncertainty* (it is a noisy estimate, because the sample is small). The confidence interval will be wide.
+- A large randomized study has *low causal uncertainty* and *low sampling uncertainty*. The coefficient is unbiased and precise.
+- A large observational study has *high causal uncertainty* (the coefficient may not estimate the ATE at all) but *low sampling uncertainty* (the coefficient is precisely estimated, whatever it represents). Notice: a large observational study can be misleading exactly because its tight confidence interval makes the (potentially wrong) point estimate look authoritative.
+- A small observational study has *high causal uncertainty* and *high sampling uncertainty*. It is the worst case for both kinds of inference.
+
+Section 4 gave you the tools to assess and communicate sampling uncertainty (confidence intervals, p-values, effect sizes with CIs). Section 6 is giving you the tools to assess and communicate causal uncertainty. Both are needed for a complete picture of any quantitative claim.
+
+```{r}
+#| label: fig-two-uncertainties
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4.4
+#| fig-align: center
+
+grid_df <- expand.grid(
+  causal_unc   = c("low\n(randomized)",
+                   "high\n(observational)"),
+  sampling_unc = c("low\n(large N)",
+                   "high\n(small N)")
+)
+grid_df$label <- c(
+  "Best case:\nCI is narrow and\nunbiased.",
+  "Misleading:\nCI is narrow but\nbiased.",
+  "Wide but unbiased:\nCI is wide,\npoint estimate honest.",
+  "Worst case:\nCI is wide AND\nbiased."
+)
+grid_df$fill_col <- c("steelblue", "firebrick",
+                      "skyblue", "darkorange")
+
+ggplot(grid_df, aes(x = causal_unc, y = sampling_unc,
+                    fill = fill_col)) +
+  geom_tile(color = "white", linewidth = 2, alpha = 0.7) +
+  geom_text(aes(label = label),
+            size = 3.2, lineheight = 0.95) +
+  scale_fill_identity() +
+  labs(x = "Causal uncertainty",
+       y = "Sampling uncertainty",
+       title = "How sampling and causal uncertainty interact",
+       subtitle = "Sampling uncertainty shrinks with N. Causal uncertainty does not.") +
+  theme_minimal(base_size = 10.5) +
+  theme(plot.title = element_text(face = "bold", size = 11),
+        plot.subtitle = element_text(size = 9.5),
+        panel.grid = element_blank())
+```
+
+The upper-right cell is the dangerous one. A large observational study with a narrow confidence interval looks rigorous and authoritative on the page, but if it has not addressed causal uncertainty (through the methods of Chapters 42 to 44), the impressively tight estimate is around a number that may not be the causal effect at all.
+
+## When randomization is not possible
+
+We have now seen why randomization is the cleanest path to a causal claim, and how it converts standard regression output into a causal estimate "for free." The problem is that many questions cannot be studied with randomization. Some are unethical to randomize (we cannot randomly assign people to smoke, or to live in poverty). Some are practically impossible to randomize (we cannot randomly assign people to be male or female, or to grow up in a particular country, or to have a particular personality trait). Some involve interventions too large or too contested to randomize at scale (changes in tax policy, in education systems, in healthcare laws).
+
+For all of these, we are stuck with **observational data**: data in which we *observe* who got which treatment but did not randomly assign it. The treatment and control groups in observational data may have ended up in their groups for systematic reasons (selection, eligibility, choice), which means they may not be exchangeable, which means the observed group mean difference may not be the ATE. The danger we saw in the self-selection simulation at the start of this chapter is the central problem of observational causal inference.
+
+Chapters 42 to 44 develop the tools for thinking carefully about observational causal inference. The conceptual centerpiece is the **directed acyclic graph** (DAG), which lets us draw our assumptions about how variables cause one another and then read off the procedure for adjusting the comparison to recover the ATE. Chapter 42 introduces DAGs. Chapter 43 develops the three types of third variables we will need to worry about (confounders, mediators, colliders). Chapter 44 ties them together with the backdoor criterion, the rule for choosing the right set of variables to control.
+
+The good news is that the regression machinery is still the right tool. We do not throw `lm()` away. We just become careful about which variables we put on the right-hand side, and what the resulting coefficient is allowed to mean.
+
+## Check your understanding
+
+```{r}
+#| echo: false
+opts_q1 <- c(
+  "Self-selection into treatment is not a problem for causal inference as long as the researcher applies the lm() function correctly and reports the resulting confidence interval, because the regression procedure mathematically removes any self-selection bias from the estimated coefficient.",
+  answer = "Self-selection into treatment is a problem because participants who choose the treatment may already differ at baseline from those who do not, so the observed group mean difference at the end of the study mixes the causal effect of the treatment with these pre-existing differences and is biased as an estimate of the ATE.",
+  "Self-selection into treatment is a problem only when the sample size is small, because for large samples the central limit theorem ensures that pre-existing differences between groups average out across the two conditions.",
+  "Self-selection into treatment is a problem that can be solved by using a more sophisticated statistical procedure such as multilevel modeling or robust regression instead of a simple lm() call."
+)
+
+opts_q2 <- c(
+  "Random assignment makes the regression coefficient larger in magnitude than it would be under self-selection, because randomization amplifies the signal of the treatment by spreading it across all levels of the participants' baseline characteristics.",
+  answer = "Random assignment makes the treatment statistically independent of all pre-existing characteristics, which means the treatment and control groups are exchangeable on average and the observed group mean difference is an unbiased estimate of the ATE.",
+  "Random assignment makes the standard error of the regression coefficient smaller, because the procedure of randomization reduces measurement error in the outcome variable.",
+  "Random assignment is required for the calculation of p-values to be valid, but it has no effect on the interpretation of the regression coefficient itself, which describes the same association regardless of how the data were collected."
+)
+
+opts_q3 <- c(
+  "When the treatment is randomly assigned, the lm() function requires the inclusion of all measured baseline covariates as control variables, because randomization only guarantees an unbiased estimate of the ATE when conditional on these covariates.",
+  answer = "When the treatment is randomly assigned, the lm() function with the treatment dummy as the only predictor produces an unbiased estimate of the ATE; including pre-treatment covariates is optional and can improve precision (smaller standard errors) but is not needed for unbiasedness.",
+  "When the treatment is randomly assigned, the lm() function should not be used because the resulting coefficient is biased; specialized causal-inference functions such as ivreg or matchit should be used instead.",
+  "When the treatment is randomly assigned, the lm() function returns a regression coefficient that estimates the median treatment effect rather than the average treatment effect, because randomization induces a non-normal distribution in the residuals."
+)
+
+opts_q4 <- c(
+  "Sampling uncertainty and causal uncertainty are equivalent quantities that can both be reduced to acceptable levels by collecting a sufficiently large sample of participants.",
+  answer = "Sampling uncertainty (the precision of the estimate as a sample-based summary) shrinks as the sample size grows, while causal uncertainty (whether the estimate is targeting the right quantity at all) is a property of the study design and does not shrink with sample size; a large observational study can have low sampling uncertainty but high causal uncertainty.",
+  "Sampling uncertainty is the uncertainty that arises from the Bayesian prior, while causal uncertainty is the uncertainty that arises from the frequentist sampling distribution; the two are alternative ways of framing the same underlying quantity.",
+  "Sampling uncertainty is the uncertainty in the observed effect size when computed across a sample of participants, while causal uncertainty is the uncertainty about whether the effect will replicate in a follow-up study with the same design."
+)
+
+opts_q5 <- c(
+  "Observational data are not useful for causal inference because no statistical method can recover an unbiased estimate of the ATE without random assignment of the treatment.",
+  answer = "Observational data are used when random assignment is impossible, impractical, or unethical, but they require additional reasoning (about which variables cause which others) to recover causal estimates; the regression machinery is still useful, but the choice of which variables to include depends on the causal structure of the situation, not on the data alone.",
+  "Observational data can be used for causal inference by simply applying lm() to the observed treatment variable; the regression coefficient produced is automatically a causal estimate as long as the model is correctly specified.",
+  "Observational data are appropriate for causal claims only when the sample size is sufficiently large to detect very small effects, because in large samples the law of large numbers automatically corrects for any selection bias."
+)
+```
+
+**1. Why is self-selection into treatment a problem for causal inference?**
+
+`r longmcq(opts_q1)`
+
+**2. What does random assignment of the treatment accomplish in terms of the relationship between the treatment and pre-existing characteristics of the participants?**
+
+`r longmcq(opts_q2)`
+
+**3. When the treatment is randomly assigned, what is the relationship between `lm(outcome ~ treatment)` and the ATE?**
+
+`r longmcq(opts_q3)`
+
+**4. What is the difference between sampling uncertainty and causal uncertainty, and how do they relate to sample size?**
+
+`r longmcq(opts_q4)`
+
+**5. What is the role of observational data in causal inference, and how does it relate to the role of randomized experiments?**
+
+`r longmcq(opts_q5)`
+
+## References
+
+Holland, P. W. (1986). Statistics and causal inference. *Journal of the American Statistical Association, 81*(396), 945-960. <https://doi.org/10.2307/2289064>
+
+Imbens, G. W., & Rubin, D. B. (2015). *Causal inference for statistics, social, and biomedical sciences: An introduction*. Cambridge University Press. <https://doi.org/10.1017/CBO9781139025751>
+
+Rubin, D. B. (1974). Estimating causal effects of treatments in randomized and nonrandomized studies. *Journal of Educational Psychology, 66*(5), 688-701. <https://doi.org/10.1037/h0037350>
