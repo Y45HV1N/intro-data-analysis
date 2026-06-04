@@ -10,7 +10,7 @@ library(webexercises)
 
 ## Where you are now
 
-The previous six chapters introduced R from the ground up. You have not yet analyzed any real data, and that is intentional: most of the difficulty new users encounter with R is not statistical but environmental. People struggle not because regression is hard but because they cannot tell the difference between an R script and an R project, or because they do not know that an R session has been silently inheriting state from yesterday. By the end of Section 1, those obstacles are behind you.
+The previous six chapters introduced R from the ground up. You have not yet analyzed any real data, and that is intentional: most of the difficulty new users encounter with R is not statistical but environmental. People struggle not because regression is hard but because they cannot tell the difference between an R script and an R project, or because they do not realize an R session can silently inherit state from yesterday. By the end of Section 1, those obstacles are behind you.
 
 This chapter has three purposes. The first is to recap the six earlier chapters in compact form. The second is to introduce one practical step that Section 1 has not yet covered: how to load data from a file into R. The third is to point you toward what comes next. The questions at the end consolidate concepts across all six earlier chapters and the new material on data import.
 
@@ -30,7 +30,7 @@ This chapter has three purposes. The first is to recap the six earlier chapters 
 
 ## What this means for the rest of the book
 
-You now have everything you need to start using R for actual data analysis. The remaining sections of the book will introduce specific kinds of analysis and operations relevant to the [**4 other pillars**]{style="color: red;"} ([**data visualization**]{style="color: orange;"}, [**statistical modeling**]{style="color: orange;"}, [**statistical inference**]{style="color: orange;"}, [**causal inference**]{style="color: orange;"}) in combination with R coding (i.e., the [**5th pillar**]{style="color: red;"}), and the corresponding R workflow for each. Where Section 1 was about setting up the environment, the remaining sections will be about doing things with it.
+You now have everything you need to start using R for actual data analysis. Section 1 has covered the foundational half of Pillar 4 (the coding, programming, and communicating pillar introduced in the preface): how R works, how to set up a project, what objects and functions are, and how to install and use packages. The remaining sections turn to the other three pillars and to the second half of Pillar 4. Section 2 develops the data-manipulation skills that turn raw files into something you can analyze. Section 3 covers Pillar 1 (statistical modeling). Section 4 and the first part of Section 5 cover Pillar 2 (statistical inference). The middle and later chapters of Section 5 cover the visualization and reporting skills that complete Pillar 4. Section 6 covers Pillar 3 (causal inference). Where Section 1 was about setting up the environment, the remaining sections will be about doing things with it.
 
 Two pieces of advice for the transition.
 

@@ -143,7 +143,7 @@ ggplot(df_plot, aes(x, y, color = curve)) +
   annotate("text", x = crit, y = 0.43, label = "Decision\nthreshold",
            color = "#1F2937", size = 3.3, hjust = -0.05) +
   labs(title = "Type I error, Type II error, and power, visualized",
-       subtitle = "Dashed line = decision threshold; coloured areas = long-run rates",
+       subtitle = "Dashed line = decision threshold; colored areas = long-run rates",
        x = "Test statistic", y = "Density") +
   coord_cartesian(ylim = c(0, 0.48)) +
   theme(legend.position = "top")
@@ -406,7 +406,7 @@ Four combinations are possible:
 
 Lakens (2017) argues that the bottom-left cell, "non-significant + equivalent," is the appropriate way to communicate a positive null finding, and the bottom-right cell, "not significant + not equivalent," is the result that most often gets mistakenly written up as "no effect" when it is actually inconclusive. The discipline of running both tests together prevents that confusion.
 
-For more on equivalence testing, including extensions to correlations, ANOVA, and meta-analysis, Lakens (2017) is the most accessible primer, and Lakens (2022) Chapter 9 is a comprehensive treatment.
+For more on equivalence testing, including extensions to correlations, ANOVA, and meta-analysis, Lakens (2017) is the most accessible primer, and Lakens (2022) Chapter 9 is a detailed treatment.
 
 ## Power analysis in practice: the `pwr` package
 

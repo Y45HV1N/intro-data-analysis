@@ -41,7 +41,7 @@ If you fit a very flexible model with many parameters, it can twist and bend to 
 
 Back to the darts analogy. Suppose your aim is correct on average, but your hand is very shaky: your throws land all over the board, sometimes far above the bullseye, sometimes far below. On average, you are on target, but no individual throw can be trusted. That is high variance.
 
-In statistical terms, a model with high variance has so many parameters that it fits the noise as well as the signal. This is called **overfitting**. The model achieves a fantastically low sum of squared residuals on the dataset it was fit to, but those residuals are partly the result of fitting random noise that does not generalize. On a *different* sample drawn from the same population, the overfit model would perform poorly, because the noise patterns it captured are not real.
+In statistical terms, a model with high variance has so many parameters that it fits the noise as well as the signal. This is called **overfitting**. The model achieves an extremely low sum of squared residuals on the dataset it was fit to, but those residuals are partly the result of fitting random noise that does not generalize. On a *different* sample drawn from the same population, the overfit model would perform poorly, because the noise patterns it captured are not real.
 
 The extreme case is the "one-parameter-per-observation" model from Chapter 14: fit a model that has 120 parameters for 120 participants, with each parameter predicting one participant exactly. The training-data fit is perfect (residuals all zero), but the model has memorized the data rather than describing it. It cannot generalize.
 

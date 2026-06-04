@@ -130,7 +130,7 @@ data <- data |>
 
 Notice that the case-collapse step in the middle uses `case_when()` from Chapter 11. String functions get the data into a consistent form; `case_when()` then maps the cleaned strings to a final, controlled set of categories.
 
-For more sophisticated patterns, `stringr` also supports **regular expressions** (a notation for describing patterns in text). Regular expressions are powerful but have their own learning curve; the `stringr` cheatsheet on the tidyverse website is the best starting point if you find yourself needing them.
+For more sophisticated patterns, `stringr` also supports **regular expressions** (a notation for describing patterns in text). Regular expressions are very flexible but have their own learning curve; the `stringr` cheatsheet on the tidyverse website is the best starting point if you find yourself needing them.
 
 ## Detecting and handling outliers
 

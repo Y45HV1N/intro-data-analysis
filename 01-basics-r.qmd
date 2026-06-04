@@ -38,7 +38,7 @@ The second place is *correction*. With code, the whole analysis is visible in fr
 
 The third place is *reuse*. The script you write to clean Survey 1 is largely the same script you will use to clean Survey 2. With each project, your toolkit grows, and tasks that took a week the first time take an hour the third time.
 
-For a researcher working with social and behavioral data, the cumulative effect of these three benefits is substantial. The transition is also possible: thousands of researchers have made it, including people with no prior programming background.
+For a researcher working with social and behavioral data, the cumulative effect of these three benefits is substantial. The transition is also a realistic one: thousands of researchers have made it, including people with no prior programming background.
 
 ## R is "object-based"
 

@@ -487,7 +487,7 @@ draw_dag(nodes_p, edges_p,
          xlim = c(-2.0, 2.8), ylim = c(-0.4, 0.4))
 ```
 
-This is not a confounder (because *Z* has no arrow to *X*), so leaving it out causes no bias. But controlling for *Z* "soaks up" some of the noise in *Y*, which shrinks the residual variance and makes your estimate of the X effect more precise. This is exactly the ANCOVA-style noise reduction we noted in Chapter 17 and Chapter 31 in connection with multiple regression and the precision-covariate role. Adding such a covariate in a randomized experiment is harmless and often beneficial for precision. (In observational data, the picture is more complicated, but the principle that pre-treatment covariates can help precision still holds.)
+This is not a confounder (because *Z* has no arrow to *X*), so leaving it out causes no bias. But controlling for *Z* "soaks up" some of the noise in *Y*, which shrinks the residual variance and makes your estimate of the X effect more precise. This is exactly the ANCOVA-style noise reduction we noted in Chapter 17 in connection with multiple regression. Adding such a covariate in a randomized experiment is harmless and often beneficial for precision. (In observational data, the picture is more complicated, but the principle that pre-treatment covariates can help precision still holds.)
 
 **Causes of *X* only.** Suppose a third variable *Z* causes *X* but has no direct effect on *Y*.
 

@@ -67,7 +67,7 @@ genders <- c("F", "M", "F", "F", "M", "F", "M")
 finished_each <- c(TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE)
 ```
 
-`ages` is now a vector of seven numbers, `genders` is a vector of seven strings, and `finished_each` is a vector of seven logical values. The objects you created with single values in the previous section were technically vectors of length one; R does not formally distinguish "scalars" from "vectors of length one." Almost everything in R is a vector at some level.
+`ages` is now a vector of seven numbers, `genders` is a vector of seven strings, and `finished_each` is a vector of seven logical values. The objects you created with single values in the previous section were technically vectors of length one; R does not formally distinguish "scalars" from "vectors of length one." Almost everything in R is, at base, a vector.
 
 To find the length of a vector, use `length()`:
 

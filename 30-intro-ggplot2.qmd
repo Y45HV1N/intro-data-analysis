@@ -139,7 +139,7 @@ ggplot(data = vgames, aes(x = trait_hostility, y = aggression,
   geom_smooth(method = "lm", se = TRUE, formula = y ~ x)
 ```
 
-Notice how the new geom inherits the same x, y, and color mappings from the top-level `ggplot()` call. Because we mapped color to condition at the top, *both* the points and the lines are colored by condition. This is the power of the layered grammar: the data and aesthetic mappings flow downward through all the layers unless overridden.
+Notice how the new geom inherits the same x, y, and color mappings from the top-level `ggplot()` call. Because we mapped color to condition at the top, *both* the points and the lines are colored by condition. This is the point of the layered grammar: the data and aesthetic mappings flow downward through all the layers unless overridden.
 
 Read the final code from top to bottom and you have the entire structure of the plot in front of you: start with this data, map these aesthetics, add points, add a smoothing line. Four lines of code, one publication-ready figure.
 
@@ -287,7 +287,7 @@ ggplot(vgames, aes(x = trait_hostility, y = aggression)) +
 
 The formula `~ condition` tells `ggplot2` to make one panel per unique value of `condition`. The same x and y axes are used in each panel by default (so the panels are directly comparable), but options exist to free the scales per panel if needed.
 
-Faceting is one of `ggplot2`'s most powerful features. Whenever you find yourself thinking "I want to make the same plot for each subgroup of the data," facet it instead of writing a loop.
+Faceting is one of `ggplot2`'s most useful features. Whenever you find yourself thinking "I want to make the same plot for each subgroup of the data," facet it instead of writing a loop.
 
 ## Customizing the look: themes and labels
 

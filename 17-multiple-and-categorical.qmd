@@ -66,7 +66,7 @@ This is what makes multiple regression more useful than running several simple r
 
 ### A note on overlapping predictors
 
-The model's overall R-squared (0.20) is more than each predictor alone but less than the sum of their simple-regression R-squareds (7.2 percent for hours alone, 11.6 percent for hostility alone; together that would be 18.8 percent if they were independent, but the joint R-squared is 19.8 percent... close but not the same). The arithmetic does not simply add up because the two predictors are themselves correlated. Some of the variance that `hours_weekly` "explains" overlaps with what `trait_hostility` "explains." Multiple regression apportions the overlapping variance carefully so that no piece is double-counted.
+The model's overall R-squared (0.20) is more than each predictor alone but less than the sum of their simple-regression R-squareds (7.2 percent for hours alone, 11.6 percent for hostility alone; together that would be 18.8 percent if they were independent, but the joint R-squared is 19.8 percent, close but not the same). The arithmetic does not simply add up because the two predictors are themselves correlated. Some of the variance that `hours_weekly` "explains" overlaps with what `trait_hostility` "explains." Multiple regression apportions the overlapping variance carefully so that no piece is double-counted.
 
 ```{r}
 #| echo: false
@@ -82,7 +82,7 @@ ggplot(data, aes(x = trait_hostility, y = hours_weekly)) +
        y = "Weekly playing hours")
 ```
 
-The picture above shows that participants higher on trait hostility also tend to play slightly more hours of video games. This overlap is what the "holding constant" interpretation deals with. Predictors that are very strongly correlated produce a problem called **multicollinearity**, which makes the individual slopes unstable; we will mention it again in Chapter 20.
+The picture above shows that participants higher on trait hostility also tend to play slightly more hours of video games. This overlap is what the "holding constant" interpretation deals with. Predictors that are very strongly correlated produce a problem called **multicollinearity**, which makes the individual slopes unstable; we will return to it in detail in Chapter 20.
 
 ## Adding more predictors
 

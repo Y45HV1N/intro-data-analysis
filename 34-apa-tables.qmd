@@ -15,7 +15,7 @@ Tables are the other half of how findings are communicated. Where figures show p
 
 ## APA 7 principles for tables
 
-The 7th edition of the APA *Publication Manual* (American Psychological Association, [2020](https://doi.org/10.1037/0000165-000), §§7.8-7.21) sets out specific requirements for tables in psychology manuscripts. The principles are worth knowing whether or not you publish in APA-format journals, because they encode decades of accumulated wisdom about what makes a table readable.
+The 7th edition of the APA *Publication Manual* (American Psychological Association, [2020](https://doi.org/10.1037/0000165-000), §§7.8-7.21) sets out specific requirements for tables in psychology manuscripts. The principles are worth knowing whether or not you publish in APA-format journals, because they reflect long-standing conventions about what makes a table readable.
 
 The essential requirements are:
 

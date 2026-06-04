@@ -299,7 +299,7 @@ The slope of `hours_weekly` is 0.082, and its Std. Error is 0.027. The interpret
 
 ## The Central Limit Theorem (CLT): why the bell curve is so important
 
-We have been quietly using a remarkable fact since the simulation in the previous section: the sampling distribution was always bell-shaped, no matter what we tried. We generated the underlying data from a normal distribution in those examples, which makes the bell shape unsurprising. But the result is much stronger than that.
+We have been quietly relying on a fact whose strength we have not yet stated: the sampling distribution was always bell-shaped, no matter what we tried. We generated the underlying data from a normal distribution in those examples, which makes the bell shape unsurprising. But the result is much stronger than that.
 
 **The Central Limit Theorem says: when you compute the mean of a sample, the sampling distribution of that mean is approximately normal, regardless of the shape of the original data, as long as the sample is large enough.**
 

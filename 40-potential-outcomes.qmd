@@ -228,7 +228,7 @@ Here is the key insight that makes causal inference possible at all. Even though
 
 Specifically: if we have one group of people who actually played the violent game, we can use their observed aggression scores to estimate $E[Y(1)]$. If we have another group of people who actually played the neutral game, we can use their observed scores to estimate $E[Y(0)]$. The difference between these two group means is a candidate estimate of the ATE.
 
-This is exactly the comparison we have been computing throughout the book. The two-group mean comparison in Chapter 14 (mean as a model), the t-test in Chapter 22, the regression coefficient on `condition` in Chapter 17, all of these are computing the same quantity: the difference between the mean of *Y* in the treatment group and the mean of *Y* in the control group. We will call this quantity the **observed group mean difference**:
+This is exactly the comparison we have been computing throughout the book. The two-group mean comparison in Chapter 14 (mean as a model), the t-test in Chapter 23, the regression coefficient on `condition` in Chapter 17, all of these are computing the same quantity: the difference between the mean of *Y* in the treatment group and the mean of *Y* in the control group. We will call this quantity the **observed group mean difference**:
 
 $$
 \widehat{\Delta} = \bar{Y}_{\text{treatment group}} - \bar{Y}_{\text{control group}}

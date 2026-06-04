@@ -29,7 +29,7 @@ A session is not a file. Like the environment, it exists only while R is running
 
 ## How sessions and projects fit together
 
-A project is a folder; a session is a running instance of R. They are different kinds of thing.
+A project is a folder; a session is a running instance of R. They are different kinds of things.
 
 Their relationship in RStudio works as follows. Each open project has its own session. If you open a project, RStudio starts a session associated with that project. If you switch to a different project (using **File > Open Project**), RStudio shuts down the current session and starts a new one in the new project. If you have two projects open in two RStudio windows simultaneously, you have two independent sessions running.
 
@@ -43,7 +43,7 @@ The danger is that your script can appear to work in a particular session becaus
 
 The defense against this is simple: **regularly restart the session and re-run the script from the top.** A passing script in a clean session is a script that actually works. A passing script in a session you have been using for hours is a script that works in *that* session, which is a weaker claim.
 
-To restart the session in RStudio: click **Session > Restart R**, or press Ctrl+Shift+F10 (Cmd+Shift+0 on macOS). All objects disappear, all loaded packages are unloaded, and you start with a clean slate. Now run your script from the top. If it produces the expected results, you have evidence that your script is self-contained.
+To restart the session in RStudio: click **Session > Restart R**, or press Ctrl+Shift+F10 (Cmd+Shift+F10 on macOS). All objects disappear, all loaded packages are unloaded, and you start with a clean slate. Now run your script from the top. If it produces the expected results, you have evidence that your script is self-contained.
 
 A reasonable habit is to restart the session at the start of each work session and at any moment when something seems "off." Some people restart it many times a day; the cost is essentially zero (a fresh session takes a second to start).
 

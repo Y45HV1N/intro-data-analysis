@@ -48,7 +48,7 @@ In what follows we walk through each one, with code you can run on your own.
 
 ### Plot 1: Residuals vs Fitted
 
-This plot displays the residual of each observation (vertical axis) against the model's predicted value for that observation (horizontal axis). It is the workhorse of diagnostic plots, because two of the four LINE assumptions show up here:
+This plot displays the residual of each observation (vertical axis) against the model's predicted value for that observation (horizontal axis). It is the most useful of the diagnostic plots, because two of the four LINE assumptions show up here:
 
 - **Linearity**: the residuals should scatter randomly around zero, with no systematic curve. A U-shape or inverted-U indicates a nonlinear relationship the model is missing.
 - **Homoscedasticity**: the spread of the residuals should be roughly constant across the range of fitted values. A fan or cone shape indicates heteroscedasticity.
@@ -168,6 +168,212 @@ A short, practical decision tree:
 
 The general advice: **assumption violations are reasons to think more carefully, not reasons to panic.** A mild violation is a reason to acknowledge a limitation in your report. A serious violation is a reason to use a different model.
 
+## Multicollinearity: when predictors carry the same information
+
+Multicollinearity is not one of the LINE assumptions, but it is a closely related diagnostic concern. It belongs in this chapter because it shows up only once you have several predictors in a model, and because it tends to surprise people the first time they meet it.
+
+**The problem.** In Chapter 17 we noted that when two predictors in a multiple regression are correlated, each slope is interpreted as the *unique contribution* of that predictor, after the other predictors have been accounted for. The example was that `hours_weekly` and `trait_hostility` are mildly correlated, and their joint R-squared (about 0.20) was a little less than the sum of their separate R-squareds (7.2 + 11.6 = 18.8 percent). The two predictors carry partly overlapping information; the model apportions the overlap so that no piece is double-counted.
+
+That was a mild case. What happens when two predictors are not mildly correlated, but *strongly* correlated, carrying nearly the same information? The problem is called **multicollinearity**. The word combines "multi" (more than one) with "collinearity" (lying on the same line). It refers to any situation where two or more predictors in a regression are so closely related to each other that the model has trouble separating their individual contributions.
+
+### The intuition
+
+A short analogy. Imagine two coworkers who do the same job. If only one of them is in the office, you can clearly see what they contribute: their unique output is everything they produce. If both are in the office and do nearly the same work, you can still see the total output of the team, but you cannot tell which one to credit for any specific piece. The team-level performance is unambiguous; the individual contributions are not.
+
+Multicollinearity is the same situation in a regression. When two predictors carry nearly the same information, the *joint* contribution to the outcome is well estimated, but the *individual* contributions of each predictor are not. The model has to apportion the shared variance between them, and because the shared variance is most of what either predictor has to offer, the apportionment is very sensitive to small fluctuations in the data. Each slope is estimated from the tiny "unique" piece of variance that one predictor has but the other does not, and that tiny piece is what determines the standard error of the slope. The smaller the unique piece, the larger the standard error.
+
+The consequence: the joint model fits well (R-squared remains high), but each individual slope has a large standard error, sometimes flips sign relative to what you would expect, and is not stable across replications of the study.
+
+### A demonstration on `vgames_study`
+
+Let us construct the situation deliberately. We will create a new variable `trait_hostility_v2` that equals `trait_hostility` plus a small amount of random noise: a near-clone of the original.
+
+```{r}
+set.seed(2025)
+data$trait_hostility_v2 <- data$trait_hostility +
+                           rnorm(nrow(data), mean = 0, sd = 0.10)
+
+cor(data$trait_hostility, data$trait_hostility_v2)
+```
+
+The two predictors correlate at about 0.99: nearly perfect.
+
+Now fit two models. The first uses only the original trait hostility:
+
+```{r}
+m_simple <- lm(aggression ~ trait_hostility, data = data)
+round(summary(m_simple)$coefficients, 3)
+```
+
+The slope of `trait_hostility` is about 0.61 with a standard error of about 0.15. Clean and precise.
+
+The second model adds the near-clone:
+
+```{r}
+m_collinear <- lm(aggression ~ trait_hostility + trait_hostility_v2, data = data)
+round(summary(m_collinear)$coefficients, 3)
+```
+
+Look at what happened. Both `trait_hostility` and `trait_hostility_v2` now have point estimates that are very different from the simple model, their standard errors are roughly an order of magnitude larger, and the two slopes may even have opposite signs. None of this reflects a substantive change in what the data are telling us: the joint R-squared is essentially identical to the simple model, because no new information is in the second predictor. But the individual slopes are now unstable and uninterpretable.
+
+This is multicollinearity in action.
+
+### The diagnostic: the variance inflation factor (VIF)
+
+The standard diagnostic for multicollinearity is the **variance inflation factor (VIF)**. Each predictor in a multiple regression has its own VIF, a single number that measures how much that predictor's standard error is inflated by its overlap with the other predictors. A VIF of 1 means no inflation (the predictor is uncorrelated with the others). A VIF of 4 means the standard error is twice as large as it would have been with no overlap. A VIF of 100 means the standard error is 10 times larger.
+
+The function `vif()` from the `car` package computes the VIF for each predictor in a fitted `lm()` model.
+
+```{r}
+#| message: false
+#| warning: false
+library(car)
+vif(m_collinear)
+```
+
+Both VIFs are extremely large in this artificial example, which is exactly what the diagnosis of severe multicollinearity looks like. Compare to the original two-predictor model from Chapter 17:
+
+```{r}
+m_original <- lm(aggression ~ hours_weekly + trait_hostility, data = data)
+vif(m_original)
+```
+
+Both VIFs are close to 1, confirming that `hours_weekly` and `trait_hostility` carry mostly distinct information.
+
+A rule of thumb commonly cited in psychology (Cohen et al., 2003; James et al., 2013):
+
+- **VIF below 5**: usually fine.
+- **VIF between 5 and 10**: a warning sign, worth investigating.
+- **VIF above 10**: serious multicollinearity; the individual slopes should not be interpreted.
+
+These thresholds are conventions, not hard rules. A VIF of 4.5 in a small dataset is more worrying than a VIF of 6 in a large one, and the substantive judgment about whether the individual slopes are interpretable should weigh both the VIF and the sample size.
+
+### What to do about it
+
+Three practical responses, in order of decreasing aggressiveness.
+
+**1. Drop one of the redundant predictors.** If two predictors carry nearly the same information, you do not need both. Drop the one that is harder to interpret, less reliable, or less central to your research question. The simple model with the remaining predictor will give you a clean, interpretable slope.
+
+**2. Combine the redundant predictors into a single composite.** If both predictors are intended to measure the same construct (for example, two scales of trait hostility, or two items on the same subscale), the standard move is to average them, or to standardize them and then average, into a single composite. Chapter 11 covered the mechanics of composite scores. The composite then enters the regression as a single predictor, and the multicollinearity problem disappears.
+
+**3. Keep both predictors and report the inflated standard errors honestly.** Occasionally you may have a reason to keep two collinear predictors in the model: perhaps you are not interested in the individual slopes but only in the joint R-squared, or perhaps the substantive question requires both. In that case, the individual slopes should be interpreted with caution or not at all, the inflated standard errors should be reported clearly, and the joint contribution of the collinear set should be the focus of interpretation.
+
+A more advanced option exists for severe cases: **principal components regression** and **ridge regression** both handle collinear predictors by transforming the predictor set or by penalizing the slopes. They are beyond the scope of this book; for typical psychology research situations, the three options above are usually sufficient.
+
+### A visual picture of multicollinearity
+
+The clearest picture of why multicollinearity inflates standard errors is a **shared-variance diagram**. The figure compares the simple regression on the left with the multicollinear regression on the right.
+
+```{r}
+#| label: fig-multicollinearity
+#| fig-cap: "Shared-variance diagrams comparing a simple regression (left) with a multicollinear regression (right). Each circle represents the variance of a variable; the overlap between two circles represents the variance they share. **Left panel:** simple regression of `aggression` on `trait_hostility`. The overlap area is the simple-regression R-squared. The slope of `trait_hostility` is estimated from its overlap with `aggression` relative to its own total area. **Right panel:** multicollinear regression in which `trait_hostility` and `trait_hostility_v2` are nearly identical, shown as two heavily overlapping circles. The 'unique to `trait_hostility`' and 'unique to `trait_hostility_v2`' regions (the thin top and bottom crescents) are tiny, and each predictor's individual slope must be estimated from these tiny areas alone. The joint contribution of the two predictors to `aggression` is well estimated (the combined overlap with `aggression` is similar to the left panel), but the individual slopes are not."
+#| fig-width: 9
+#| fig-height: 4.7
+#| echo: false
+#| message: false
+#| warning: false
+
+library(ggforce)
+library(patchwork)
+
+# left panel: simple model
+left_circles <- data.frame(
+  x0    = c(0.0, 1.0),
+  y0    = c(0.0, 0.0),
+  r     = c(0.75, 0.85),
+  label = c("th", "agg")
+)
+
+p_left <- ggplot() +
+  geom_circle(data = left_circles,
+              aes(x0 = x0, y0 = y0, r = r, fill = label),
+              alpha = 0.55, color = "grey30", linewidth = 0.5) +
+  annotate("text", x = -0.85, y = 1.15,
+           label = "trait_hostility",
+           size = 3.4, fontface = "bold", color = "grey15") +
+  annotate("text", x = 1.85, y = 1.15,
+           label = "aggression",
+           size = 3.4, fontface = "bold", color = "grey15") +
+  annotate("segment", x = -0.85, xend = -0.45, y = 1.05, yend = 0.6,
+           color = "grey50", linewidth = 0.3) +
+  annotate("segment", x = 1.85, xend = 1.45, y = 1.05, yend = 0.6,
+           color = "grey50", linewidth = 0.3) +
+  annotate("text", x = 0.5, y = 0,
+           label = "shared variance\n(R-squared)",
+           size = 2.9, lineheight = 0.9, color = "grey20") +
+  scale_fill_manual(values = c("th" = "#4A6FA5", "agg" = "#A66A4A")) +
+  coord_fixed(xlim = c(-1.5, 2.4), ylim = c(-1.4, 1.4)) +
+  labs(title = "Simple regression") +
+  theme_void() +
+  theme(legend.position = "none",
+        plot.title = element_text(face = "bold", size = 11.5, hjust = 0.5))
+
+# right panel: multicollinear model
+# aggression placed at x = 1.0 to match left panel: the joint overlap of the
+# merged predictor blob with aggression is similar in size to the simple-model
+# overlap on the left.
+right_circles <- data.frame(
+  x0    = c(0.0,  0.0,  1.0),
+  y0    = c(0.18, -0.18, 0.0),
+  r     = c(0.75, 0.75,  0.85),
+  label = c("th", "th_v2", "agg")
+)
+
+p_right <- ggplot() +
+  geom_circle(data = right_circles,
+              aes(x0 = x0, y0 = y0, r = r, fill = label),
+              alpha = 0.45, color = "grey30", linewidth = 0.5) +
+  annotate("text", x = -1.05, y = 1.15,
+           label = "trait_hostility",
+           size = 3.3, fontface = "bold", color = "grey15") +
+  annotate("text", x = -1.05, y = -1.15,
+           label = "trait_hostility_v2",
+           size = 3.3, fontface = "bold", color = "grey15") +
+  annotate("text", x = 1.85, y = 1.15,
+           label = "aggression",
+           size = 3.3, fontface = "bold", color = "grey15") +
+  annotate("segment", x = -1.05, xend = -0.5, y = 1.05, yend = 0.78,
+           color = "grey50", linewidth = 0.3) +
+  annotate("segment", x = -1.05, xend = -0.5, y = -1.05, yend = -0.78,
+           color = "grey50", linewidth = 0.3) +
+  annotate("segment", x = 1.85, xend = 1.45, y = 1.05, yend = 0.7,
+           color = "grey50", linewidth = 0.3) +
+  annotate("text", x = -0.25, y = 0,
+           label = "near-total\noverlap",
+           size = 2.8, lineheight = 0.9, color = "grey15",
+           fontface = "italic") +
+  annotate("text", x = 0.55, y = 0,
+           label = "shared variance\n(R-squared)",
+           size = 2.6, lineheight = 0.9, color = "grey15",
+           fontface = "italic") +
+  annotate("text", x = -1.1, y = 0,
+           label = "tiny\nunique\nslivers",
+           size = 2.8, color = "firebrick", fontface = "bold",
+           lineheight = 0.9) +
+  annotate("segment", x = -0.7, xend = -0.25, y = 0.15, yend = 0.7,
+           color = "firebrick", linewidth = 0.4,
+           arrow = arrow(length = unit(0.22, "cm"), angle = 20)) +
+  annotate("segment", x = -0.7, xend = -0.25, y = -0.15, yend = -0.7,
+           color = "firebrick", linewidth = 0.4,
+           arrow = arrow(length = unit(0.22, "cm"), angle = 20)) +
+  scale_fill_manual(values = c("th"    = "#4A6FA5",
+                               "th_v2" = "#558565",
+                               "agg"   = "#A66A4A")) +
+  coord_fixed(xlim = c(-1.5, 2.4), ylim = c(-1.4, 1.4)) +
+  labs(title = "Multicollinear regression") +
+  theme_void() +
+  theme(legend.position = "none",
+        plot.title = element_text(face = "bold", size = 11.5, hjust = 0.5))
+
+p_left + p_right
+```
+
+What the figure shows. On the left, `trait_hostility` and `aggression` overlap in a moderate region. The blue circle has a clean area outside the overlap (its "unique" area), and the slope of `trait_hostility` is estimated from the relationship between its unique area and the overlap with `aggression`.
+
+On the right, `trait_hostility` and `trait_hostility_v2` overlap each other almost entirely. The "unique to `trait_hostility`" area is the thin top crescent, and the "unique to `trait_hostility_v2`" area is the thin bottom crescent. Each individual slope is estimated from one of these thin slivers alone, which is why the standard errors are inflated and the slopes become unstable. At the same time, the joint overlap of the merged predictor region with `aggression` is similar in size to the left panel's overlap, which is why the joint R-squared barely changed.
+
+This is the geometric reason for the apparent paradox in the demonstration above: a model that fits the data well at the level of the *whole set* of predictors but fails to give interpretable estimates for any *individual* predictor.
+
 ## Comparing models: R-squared, adjusted R-squared, and beyond
 
 Once you have several candidate models, how do you compare them?
@@ -218,7 +424,7 @@ Two more measures worth knowing about but not detailing here.
 
 ## When the linear model is not enough
 
-Linear regression is powerful and applies to a remarkable range of psychology research questions. It is not universal. Here is a map of common problems that go beyond the standard linear model, with the type of model that addresses each.
+Linear regression is powerful and applies to a wide range of psychology research questions. It is not universal. Here is a map of common problems that go beyond the standard linear model, with the type of model that addresses each.
 
 **Problem 1: Nonlinear relationships.**
 The true relationship between predictor and outcome is curved, not straight.
@@ -327,6 +533,13 @@ opts_q8 <- c(
   "The linear model can be applied to any research question without modification.",
   "Adjusted R-squared replaces all other model-comparison measures."
 )
+
+opts_q9 <- c(
+  "The joint R-squared will drop to nearly zero because the model cannot fit the data when predictors are correlated.",
+  answer = "The joint R-squared will be similar to a single-predictor model, but each individual slope will have a large standard error and the slopes will be unstable across samples. This is multicollinearity and can be diagnosed with the variance inflation factor (VIF) from the `car` package.",
+  "Both individual slopes will become statistically significant at p < .001 because the high correlation amplifies the apparent effect of each predictor on the outcome.",
+  "The `lm()` function will refuse to fit the model and will return an error message about singular design matrices."
+)
 ```
 
 **1. What does `plot(model)` produce when `model` is a fitted `lm` object?**
@@ -361,10 +574,16 @@ opts_q8 <- c(
 
 `r longmcq(opts_q8)`
 
+**9. Two predictors in a multiple regression are correlated with each other at *r* = 0.97. What is the most likely consequence for the fitted model?**
+
+`r longmcq(opts_q9)`
+
 ## References
 
 Aiken, L. S., & West, S. G. (1991). *Multiple regression: Testing and interpreting interactions*. Sage.
 
 Cohen, J., Cohen, P., West, S. G., & Aiken, L. S. (2003). *Applied multiple regression/correlation analysis for the behavioral sciences* (3rd ed.). Lawrence Erlbaum.
+
+James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An introduction to statistical learning: With applications in R*. Springer. <https://doi.org/10.1007/978-1-4614-7138-7>
 
 Navarro, D. J. (2018). *Learning statistics with R: A tutorial for psychology students and other beginners* (Version 0.6), Chapter 15.5. <https://learningstatisticswithr.com>

@@ -16,7 +16,7 @@ data <- read.csv("data/vgames_study.csv")
 
 Section 1 taught you how R works. Section 2 taught you how to take a raw data file and turn it into the specific summaries and plots you need to actually look at the data. Together, those two sections covered the work that precedes any analysis.
 
-Section 3 is about analysis itself, and specifically about a single, unifying framework that organizes most of the statistics you will use as a researcher in psychology and the social sciences. That framework is **statistical modeling**. It is not a single technique; it is a way of thinking that connects descriptive statistics (which you already know) to linear regression, ANOVA, t-tests, multiple regression, and beyond. Once you see the framework, the techniques fall into place as small variations on a single theme.
+Section 3 is about analysis itself, and specifically about a single, unifying framework that organizes most of the statistics you will use as a researcher in psychology and the social sciences. That framework is **statistical modeling**. It is not a single technique; it is a way of thinking that connects descriptive statistics (which you already know) to linear regression, ANOVA, t-tests, multiple regression, and beyond. Once you see the framework, the techniques become variations on a single theme.
 
 This chapter is the first of eight chapters on statistical modeling and regression. It is purely conceptual; it has no regression code. The goal is to install three ideas firmly enough that the rest of Section 3 can build on them: what data is, what a model is, and why the mean (which you have computed many times by now) can be thought of as the simplest possible model of a dataset. The next chapter will put those ideas to work with R code.
 

@@ -212,7 +212,7 @@ If your dataset has many groups, this approach becomes repetitive and you will e
 
 Let us pause on what you just did. With two means, you summarized the responses of 120 people. Each of those participants is unique: a particular age, a particular hostility score, a particular history with video games. Those individual differences disappear into a single number. The mean tells you the typical aggression score for each condition, but it tells you nothing about the spread of scores within each condition, nothing about the shape of the distribution, and nothing about how individual participants varied.
 
-That tradeoff is general. Whenever you summarize a group of people with a single number, you compress information; whatever that number does not capture is lost (at least temporarily). The art of statistical analysis is choosing summaries that capture what you actually want to know, and being explicit about what they leave out.
+That trade-off is general. Whenever you summarize a group of people with a single number, you compress information; whatever that number does not capture is lost (at least temporarily). The art of statistical analysis is choosing summaries that capture what you actually want to know, and being explicit about what they leave out.
 
 In the chapters that follow, we will treat the mean not as a number but as the simplest possible **model** of a dataset: a guess about each individual that is the same for everyone. Real models will use information about each participant (their condition, their age, their hostility) to make better, more individualized guesses. The starting point is always the mean, and the question is always: how much better can we do than the mean?
 

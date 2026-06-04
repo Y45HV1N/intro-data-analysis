@@ -182,7 +182,7 @@ quick_summary(ages)
 quick_summary(c("a", "b", "c"))
 ```
 
-This is intentionally a small example. We are not yet using any of the more powerful tools R has for writing functions; in particular, we are not using the "apply" family of functions, which we will introduce much later. For now, the goal is for you to recognize the structure of a function definition when you see it, not to write your own.
+This is intentionally a small example. We are not yet using any of the more flexible tools R has for writing functions; in particular, we are not using the "apply" family of functions, which we will introduce much later. For now, the goal is for you to recognize the structure of a function definition when you see it, not to write your own.
 
 ## A substantive example: correcting many distorted variables
 
@@ -316,11 +316,11 @@ In Excel, you would have inserted ten new columns next to the originals, written
 
 In both cases, if the correction formula was later found to be wrong, you would re-do all ten operations. In neither case would there be a written record, in code, of what was done. A reviewer asking "exactly how did you correct these variables?" would receive an answer that depends on your memory of the menu sequence.
 
-The R version is shorter to write, faster to update, and self-documenting. This is the moment in the book where the value of coding crystallizes. It is not about typing fewer characters; it is about the operation being re-runnable, inspectable, and scalable.
+The R version is shorter to write, faster to update, and self-documenting. This is the moment in the book where the value of coding becomes concrete. It is not about typing fewer characters; it is about the operation being re-runnable, inspectable, and scalable.
 
 ## Packages
 
-We have so far used only base R: the functions that ship with R itself. R's true reach comes from **packages**. A package is a collection of functions, datasets, and documentation, packaged together by the people who developed it. Packages let people who are not part of the R core team contribute new functions to the ecosystem and let any user benefit from those contributions.
+We have so far used only base R: the functions that ship with R itself. Most of R's reach comes from **packages**. A package is a collection of functions, datasets, and documentation, packaged together by the people who developed it. Packages let people who are not part of the R core team contribute new functions to the ecosystem and let any user benefit from those contributions.
 
 Some packages come from the R core team and are maintained alongside R itself. The vast majority come from researchers, practitioners, and hobbyists who needed a particular tool, wrote it, documented it, and made it available. The total number of packages on the central R archive (CRAN) is in the tens of thousands and grows continuously.
 

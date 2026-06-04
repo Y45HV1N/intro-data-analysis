@@ -705,7 +705,7 @@ opts_q10 <- c(
 
 `r longmcq(opts_q6)`
 
-**7. What is wrong with truncating the y-axis to a narrow range that excludes zero (e.g., showing aggression on a 4.0–6.0 scale when the variable can range from 1 to 10)?**
+**7. What is wrong with truncating the y-axis to a narrow range that excludes zero (e.g., showing aggression on a 4.0-6.0 scale when the variable can range from 1 to 10)?**
 
 `r longmcq(opts_q7)`
 
