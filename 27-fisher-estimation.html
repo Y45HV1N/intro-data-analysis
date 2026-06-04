@@ -754,7 +754,7 @@ window.Quarto = {
 <p>This is a fundamentally different conception of what the p-value is. To NP, the p-value is one input to a calibrated procedure whose long-run error rates we control. To Fisher, the p-value is a number we can read off any single experiment as a gauge of evidence in that single case. The figure below makes the difference concrete. Both panels show the same null distribution and the same observed t-statistic (t = 2.4). The left panel reads it the NP way: there are two sharply distinct zones, a rejection zone (in dark red, in both tails beyond the critical value) and a non-rejection zone (in pale grey, between the critical values). The observation falls in the rejection zone, so the verdict is “reject the null”; there is no further gradation. The right panel reads it the Fisher way: instead of two distinct zones, the area under the curve is shaded with a smooth gradient that gets darker as we move further from zero, representing the fact that observations further from zero carry more weight against the null on a continuous scale.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-fisher-vs-np" class="quarto-float quarto-figure quarto-figure-center anchored" width="864" data-fig-align="center">
+<div id="fig-fisher-vs-np" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="864">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fisher-vs-np-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="27-fisher-estimation_files/figure-html/fig-fisher-vs-np-1.png" id="fig-fisher-vs-np" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="864">
@@ -793,7 +793,7 @@ Figure&nbsp;27.1
 <p>We can run this simulation ourselves. The figure below shows 25 simulated replications of an independent-samples comparison between two groups of n = 32 each, drawn from populations with means 0 and 0.5 and a common SD of 1 (so a true Cohen’s <em>d</em> of 0.5, a medium effect, with statistical power around 50% to detect it at α = .05). For each simulated experiment, the figure shows the observed mean difference (the dot), its 95% confidence interval (the horizontal bar), and the two-sided p-value. The underlying truth is exactly the same in every simulation: only the random sample differs.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-dance-of-pvalues" class="quarto-float quarto-figure quarto-figure-center anchored" width="720" data-fig-align="center">
+<div id="fig-dance-of-pvalues" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="720">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dance-of-pvalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="27-fisher-estimation_files/figure-html/fig-dance-of-pvalues-1.png" id="fig-dance-of-pvalues" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="720">
@@ -842,7 +842,7 @@ d = \frac{M_1 - M_2}{s_p}
 <p>The figure below illustrates what different values of Cohen’s <em>d</em> mean in terms of overlap between distributions. For each panel, two normal distributions are shown with mean separation equal to <em>d</em> (with both distributions having SD = 1). The vertical line is the midpoint. The shaded region is the overlap; the unshaded region is the part of one distribution that falls beyond the other.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-cohens-d-overlap" class="quarto-float quarto-figure quarto-figure-center anchored" width="864" data-fig-align="center">
+<div id="fig-cohens-d-overlap" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="864">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cohens-d-overlap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="27-fisher-estimation_files/figure-html/fig-cohens-d-overlap-1.png" id="fig-cohens-d-overlap" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="864">
@@ -863,7 +863,7 @@ Figure&nbsp;27.3
 <p>The figure below illustrates what different values of <em>r</em> look like as scatterplots. The five panels show simulated bivariate normal data of <em>n</em> = 200 each, at <em>r</em> = 0.1, 0.3, 0.5, 0.7, and 0.9.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-r-scatter" class="quarto-float quarto-figure quarto-figure-center anchored" width="1056" data-fig-align="center">
+<div id="fig-r-scatter" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="1056">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-r-scatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="27-fisher-estimation_files/figure-html/fig-r-scatter-1.png" id="fig-r-scatter" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="1056">
@@ -887,7 +887,7 @@ Figure&nbsp;27.4
 <p>The figure below shows the contrast between <em>B</em> and β directly. The left panel shows a regression of aggression on trait hostility in original units, with the slope <em>B</em>. The right panel shows the <em>same data</em> and the <em>same regression line</em> after both variables have been standardized, with the slope β. The data are the same; only the axes change.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-B-vs-beta" class="quarto-float quarto-figure quarto-figure-center anchored" width="864" data-fig-align="center">
+<div id="fig-B-vs-beta" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="864">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-B-vs-beta-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="27-fisher-estimation_files/figure-html/fig-B-vs-beta-1.png" id="fig-B-vs-beta" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="864">
@@ -922,7 +922,7 @@ Figure&nbsp;27.5
 <p>The figure below shows the cat’s-eye picture for a hypothetical estimate of the violent-versus-neutral aggression difference in <code>vgames_study</code>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-cat-eye" class="quarto-float quarto-figure quarto-figure-center anchored" width="672" data-fig-align="center">
+<div id="fig-cat-eye" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="672">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cat-eye-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="27-fisher-estimation_files/figure-html/fig-cat-eye-1.png" id="fig-cat-eye" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="672">
@@ -960,7 +960,7 @@ SE_{M_1 - M_2} = s_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}
 <p>The figure below shows what target precision implies for sample size in a two-independent-groups design. The horizontal axis is the target margin of error in standard-deviation units (so MOE = 0.4 means the CI extends 0.4 SD above and below the point estimate). The vertical axis is the <em>n</em> per group required to achieve that average precision. The lower curve is for average precision; the upper curve uses an assurance level of 99%, meaning the CI width will hit the target on 99% of occasions.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-precision-curves" class="quarto-float quarto-figure quarto-figure-center anchored" width="720" data-fig-align="center">
+<div id="fig-precision-curves" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="720">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-precision-curves-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="27-fisher-estimation_files/figure-html/fig-precision-curves-1.png" id="fig-precision-curves" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="720">
@@ -981,7 +981,7 @@ Figure&nbsp;27.7
 <p>The forest plot is the central visualization of meta-analytic thinking. The figure below shows a forest plot combining our <code>vgames_study</code> result with three hypothetical replications, each with its own sample size and effect estimate. The bottom row is the pooled estimate from a fixed-effect meta-analysis.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-forest-plot" class="quarto-float quarto-figure quarto-figure-center anchored" width="720" data-fig-align="center">
+<div id="fig-forest-plot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="720">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-forest-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="27-fisher-estimation_files/figure-html/fig-forest-plot-1.png" id="fig-forest-plot" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="720">
@@ -1070,7 +1070,7 @@ mean in group neutral mean in group violent
 <p>Now produce an ESCI-style plot showing the means of the two conditions with 95% CIs alongside the difference and its CI on a floating axis.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-vgames-esci" class="quarto-float quarto-figure quarto-figure-center anchored" width="672" data-fig-align="center">
+<div id="fig-vgames-esci" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="672">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vgames-esci-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="27-fisher-estimation_files/figure-html/fig-vgames-esci-1.png" id="fig-vgames-esci" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="672">
@@ -1122,7 +1122,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-meta-forest-live" class="quarto-float quarto-figure quarto-figure-center anchored" width="672" data-fig-align="center">
+<div id="fig-meta-forest-live" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="672">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-meta-forest-live-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="27-fisher-estimation_files/figure-html/fig-meta-forest-live-1.png" id="fig-meta-forest-live" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="672">
