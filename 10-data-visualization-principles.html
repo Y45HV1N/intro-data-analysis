@@ -709,8 +709,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="overview" class="level2" data-number="10.1">
 <h2 data-number="10.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">10.1</span> Overview</h2>
 <p>Up to this point we have looked at our data through numbers: counts, means, standard deviations, residuals. Numbers compress information, which is useful when you want a single value to compare or to put in a sentence. But numbers also hide information, and what they hide can change the answer to a research question.</p>
-<p>This chapter is about the other half of looking at data: visualization. The chapter does not contain plotting code yet. The reason is deliberate: it is much easier to learn the <em>how</em> of plotting once you know the <em>what</em> and the <em>why</em>. We start with the questions a good plot answers, the conceptual framework that organizes every plot you will ever make, the principles that distinguish a good plot from a bad one, and the kinds of judgment calls you will face when reading or making one. The tools to translate these decisions into actual plots in R come in the next chapter.</p>
-<p>The plots that appear throughout this chapter are produced with <code>ggplot2</code>, the R package you will learn in the next chapter. The code for each plot is hidden for now, so you can focus on the visual outcome rather than the syntax. You will revisit these examples and reproduce them yourself once you have learned the package.</p>
+<p>This chapter is about the other half of looking at data: visualization. The chapter does not contain plotting code yet. The reason is deliberate: it is much easier to learn the <em>how</em> of plotting once you know the <em>what</em> and the <em>why</em>. We start with the questions a good plot answers, the conceptual framework that organizes every plot you will ever make, the principles that distinguish a good plot from a bad one, and the kinds of judgment calls you will face when reading or making one. The tools to translate these decisions into actual plots in R come in Chapter 30, in Section 5.</p>
+<p>The plots that appear throughout this chapter are produced with <code>ggplot2</code>, the R package you will learn in Chapter 30. The code for each plot is hidden for now, so you can focus on the visual outcome rather than the syntax. You will revisit these examples and reproduce them yourself once you have learned the package.</p>
 </section>
 <section id="why-visualize" class="level2" data-number="10.2">
 <h2 data-number="10.2" class="anchored" data-anchor-id="why-visualize"><span class="header-section-number">10.2</span> Why visualize?</h2>
@@ -752,7 +752,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="the-grammar-of-graphics" class="level2" data-number="10.3">
 <h2 data-number="10.3" class="anchored" data-anchor-id="the-grammar-of-graphics"><span class="header-section-number">10.3</span> The grammar of graphics</h2>
-<p>Most modern data-visualization systems (including <code>ggplot2</code>, the R package you will learn in the next chapter) are based on a framework called the <strong>grammar of graphics</strong>, formalized by the statistician Leland Wilkinson. The core idea is that any plot is built from the same three ingredients, combined in different ways.</p>
+<p>Most modern data-visualization systems (including <code>ggplot2</code>, the R package you will learn in Chapter 30) are based on a framework called the <strong>grammar of graphics</strong>, formalized by the statistician Leland Wilkinson. The core idea is that any plot is built from the same three ingredients, combined in different ways.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -1103,13 +1103,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li><strong>Data wrangling</strong> (Chapters 8 and 9): getting the data into the right shape, selecting the variables you need, filtering to the rows that are relevant, creating derived variables.</li>
 <li><strong>Descriptive statistics</strong> (Chapter 9): summarizing the data numerically, with <code>summary()</code>, <code>mean()</code>, <code>psych::describe()</code>, or a custom <code>summarize()</code> pipeline.</li>
-<li><strong>Data visualization</strong> (this chapter, conceptually; the next chapter, in code): communicating patterns visually.</li>
+<li><strong>Data visualization</strong> (this chapter, conceptually; Chapter 30 onwards, in code): communicating patterns visually.</li>
 </ol>
 <p>The order in practice is almost always: wrangle first (clean, filter, reshape), then describe (compute summaries to check what you have), then visualize (plot what looks important). Wrangling is usually the largest time investment and the least visible step in a finished paper. Descriptives are how you sanity-check the wrangling. Visualization is how you discover what is worth modeling and how you communicate the results once you have modeled them.</p>
 </section>
 <section id="looking-ahead" class="level2" data-number="10.7">
 <h2 data-number="10.7" class="anchored" data-anchor-id="looking-ahead"><span class="header-section-number">10.7</span> Looking ahead</h2>
-<p>The next chapter introduces <code>ggplot2</code>, the package that lets you implement the principles of this chapter in actual R code. <code>ggplot2</code> is the visualization component of the tidyverse you loaded in Chapter 9, so you do not need to install anything new. You will see how each of the three ingredients of the grammar of graphics (data, aesthetics, geometry) becomes a piece of code, and how the same dataset can be displayed in radically different and informative ways.</p>
+<p><code>ggplot2</code>, the R package that lets you implement the principles of this chapter in actual code, is introduced in Chapter 30 (in Section 5). It is the visualization component of the tidyverse you loaded in Chapter 9, so no new installation is required when you get there. You will see how each of the three ingredients of the grammar of graphics (data, aesthetics, geometry) becomes a piece of code, and how the same dataset can be displayed in radically different and informative ways.</p>
+<p>The chapters between this one and Chapter 30 will continue to use ggplot2 figures as illustrations, with the code kept hidden, so that you can focus on the substantive content before learning the package itself.</p>
 <p>For now, the principles in this chapter are the things to keep in mind. Good plots are not the result of decorative talent; they are the result of a small number of decisions made carefully.</p>
 </section>
 <section id="check-your-understanding" class="level2" data-number="10.8">

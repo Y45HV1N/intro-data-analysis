@@ -712,7 +712,7 @@ ul.task-list li input[type="checkbox"] {
 <p>The figure below makes this concrete using our running example. Suppose we want to test the null hypothesis that the population mean difference in aggression between the violent and neutral conditions of <code>vgames_study</code> is exactly zero. Strictly, any observed sample difference is consistent with the null, because sampling noise can produce any value. So nothing strictly refutes the null. But we <em>can</em> agree to treat observations that produce a t-statistic in the top or bottom 2.5% of the null distribution as inconsistent with the null. The grey curve is the null distribution of the t-statistic; the dark shaded tails are the region we agree to treat as inconsistent with the null.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-rejection-as-forbidden" class="quarto-float quarto-figure quarto-figure-center anchored" width="720" data-fig-align="center">
+<div id="fig-rejection-as-forbidden" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="720">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-rejection-as-forbidden-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="26-philosophy-of-np_files/figure-html/fig-rejection-as-forbidden-1.png" id="fig-rejection-as-forbidden" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="720">
@@ -742,7 +742,7 @@ Figure&nbsp;26.1
 <p>The figure below shows what the long-run calibration of a Neyman-Pearson procedure looks like in practice. It plots 100 simulated experiments in which we ran a one-sample t-test on a sample of 30 observations drawn from a population with mean exactly 0 (so the null hypothesis is in fact true). For each experiment, the dot is the sample mean and the horizontal line is the 95% confidence interval. By the duality between two-sided NP tests and 95% CIs (see Chapter 22), an experiment “rejects the null” whenever its CI does not contain zero. We have highlighted those wrongful rejections in dark red.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-long-run-calibration" class="quarto-float quarto-figure quarto-figure-center anchored" width="576" data-fig-align="center">
+<div id="fig-long-run-calibration" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="576">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-long-run-calibration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="26-philosophy-of-np_files/figure-html/fig-long-run-calibration-1.png" id="fig-long-run-calibration" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="576">
@@ -782,7 +782,7 @@ Figure&nbsp;26.2
 <p>The figure below recreates the three circles for our running example. Imagine we ran a study on <code>vgames_study</code> looking at the difference in mean aggression between the violent and neutral conditions. Three theories make three different predictions: the first predicts that the difference is <em>not exactly zero</em> (a standard two-sided nil-null test), the second predicts the difference is <em>positive</em> (a directional one-sided test), the third predicts the difference falls in a <em>specific narrow band</em> around 1.3 (a range prediction).</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-circles-of-falsifiability" class="quarto-float quarto-figure quarto-figure-center anchored" width="864" data-fig-align="center">
+<div id="fig-circles-of-falsifiability" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="864">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-circles-of-falsifiability-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="26-philosophy-of-np_files/figure-html/fig-circles-of-falsifiability-1.png" id="fig-circles-of-falsifiability" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="864">

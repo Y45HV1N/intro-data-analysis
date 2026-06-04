@@ -706,7 +706,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Throughout this chapter, the focal causal question is the same as the rest of Section 6: does playing the violent video game cause an increase in aggression? In a DAG, this is the arrow we want to estimate the magnitude of.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-focal" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="384">
+<div id="fig-focal" class="quarto-float quarto-figure quarto-figure-center anchored" width="384" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-focal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="43-confounders-mediators-colliders_files/figure-html/fig-focal-1.png" id="fig-focal" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="384">
@@ -726,7 +726,7 @@ Figure&nbsp;43.1
 <p>In our running example, a plausible confounder is <strong>trait hostility</strong>. Hostile people are more likely to choose (or to enjoy, or to play more of) violent games, and they are also more likely to score higher on aggression measures, independently of whatever the game does to them. Trait hostility has arrows pointing to both games and aggression.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-confounder" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="480">
+<div id="fig-confounder" class="quarto-float quarto-figure quarto-figure-center anchored" width="480" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-confounder-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="43-confounders-mediators-colliders_files/figure-html/fig-confounder-1.png" id="fig-confounder" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="480">
@@ -815,7 +815,7 @@ Controlling for trait hostility:</code></pre>
 <p>In <code>vgames_study</code>, a plausible mediator is <strong>physiological arousal</strong>. The violent game increases arousal, and arousal increases aggression. The total causal effect of the game on aggression is partly carried <em>through</em> arousal.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-mediator" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="576">
+<div id="fig-mediator" class="quarto-float quarto-figure quarto-figure-center anchored" width="576" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-mediator-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="43-confounders-mediators-colliders_files/figure-html/fig-mediator-1.png" id="fig-mediator" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="576">
@@ -865,7 +865,7 @@ Figure&nbsp;43.3
 <p>In <code>vgames_study</code>, a plausible collider is <strong>school disciplinary referral</strong>: a student gets referred to a school counselor for any number of reasons, but two relevant ones are (a) playing a lot of violent video games (which might raise concern), and (b) showing high aggression in school (which might prompt teachers to refer). Both heavy violent-game playing and high aggression independently raise the probability of being referred. Referral is caused by both.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-collider" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="480">
+<div id="fig-collider" class="quarto-float quarto-figure quarto-figure-center anchored" width="480" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-collider-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="43-confounders-mediators-colliders_files/figure-html/fig-collider-1.png" id="fig-collider" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="480">
@@ -934,7 +934,7 @@ Figure&nbsp;43.4
 <p>The figure below visualizes this. We plot games and aggression on two axes for the full population (left) and for only the referred sub-population (right). In the full population, the cloud of points has no tilt. In the referred sub-population, a clear tilt appears, even though the underlying causal structure has not changed.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-collider-bias" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="864">
+<div id="fig-collider-bias" class="quarto-float quarto-figure quarto-figure-center anchored" width="864" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-collider-bias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="43-confounders-mediators-colliders_files/figure-html/fig-collider-bias-1.png" id="fig-collider-bias" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="864">
@@ -954,7 +954,7 @@ Figure&nbsp;43.5
 <p>Confounders and colliders look strikingly similar in a diagram: both involve a third variable connected to <em>X</em> and <em>Y</em>. But the arrow directions are opposite. For a confounder, the arrows go out of the third variable toward <em>X</em> and <em>Y</em>. For a collider, the arrows come into the third variable from <em>X</em> and <em>Y</em>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-mirror" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="768">
+<div id="fig-mirror" class="quarto-float quarto-figure quarto-figure-center anchored" width="768" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-mirror-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="43-confounders-mediators-colliders_files/figure-html/fig-mirror-1.png" id="fig-mirror" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="768">
@@ -979,7 +979,7 @@ Figure&nbsp;43.6
 <p><strong>Causes of <em>Y</em> only (precision covariates).</strong> Suppose a third variable <em>Z</em> affects the outcome but is unrelated to the treatment. For example, in a randomized experiment, a participant’s baseline mood (before the experiment started) might affect their aggression scores at the end (Y) but, because the game (X) was randomly assigned, baseline mood is unrelated to which game they played.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-precision" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="480">
+<div id="fig-precision" class="quarto-float quarto-figure quarto-figure-center anchored" width="480" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-precision-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="43-confounders-mediators-colliders_files/figure-html/fig-precision-1.png" id="fig-precision" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="480">
@@ -995,7 +995,7 @@ Figure&nbsp;43.7
 <p><strong>Causes of <em>X</em> only.</strong> Suppose a third variable <em>Z</em> causes <em>X</em> but has no direct effect on <em>Y</em>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-instrument-style" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="480">
+<div id="fig-instrument-style" class="quarto-float quarto-figure quarto-figure-center anchored" width="480" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-instrument-style-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="43-confounders-mediators-colliders_files/figure-html/fig-instrument-style-1.png" id="fig-instrument-style" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="480">
