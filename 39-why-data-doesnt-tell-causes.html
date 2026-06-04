@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>39&nbsp; Why data alone does not tell us causes – Understanding and analyzing social and behavioral data</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./40-potential-outcomes.html" rel="next">
+<link href="./38-audience-targeted-reporting.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-d685995fa19fd69abfd2845f2861e92b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="include/webex.css">
+<link rel="stylesheet" href="include/custom.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./39-why-data-doesnt-tell-causes.html">Section 6: Causal Inference</a></li><li class="breadcrumb-item"><a href="./39-why-data-doesnt-tell-causes.html"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Why data alone does not tell us causes</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Understanding and analyzing social and behavioral data</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/Y45HV1N/intro-data-analysis" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 1: Getting Started Properly</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-basics-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What is R, and why use it?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-r-vs-rstudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R, RStudio, and how they relate</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-files-and-environment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Scripts, RData, projects, environments, and R Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-projects-and-sessions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Working with R projects and R sessions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-objects-and-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Objects and functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-operations-and-packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Basic operations, custom functions, and packages</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-recap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Recap and getting data into R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 2: Manipulating and Visualizing Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-data-wrangling-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data wrangling: basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-tidyverse-and-descriptives.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wrangling and describing data with the tidyverse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-data-visualization-principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">First principles of data visualization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-wrangling-for-psychology.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Wrangling for psychology research</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-advanced-wrangling-optional.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Advanced wrangling (optional)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 3: Statistical Modeling — Regressions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-data-and-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data and the idea of a statistical model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-mean-as-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The mean as a model: residuals, fit, and comparing models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-simple-linear-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">From the mean to the line: the simple linear model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-fitting-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Fitting and interpreting simple regression in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-multiple-and-categorical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Multiple regression and categorical predictors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-moderation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Moderation: when one predictor depends on another</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-bias-variance-assumptions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Bias, variance, and the assumptions of the linear model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-diagnostics-and-limits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Diagnostics, model fit, and the limits of your model</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 4: Statistical Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-why-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Why inference? Samples, populations, and the standard error</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-pvalues-fisher-neyman-pearson.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">P-values, Fisher, and Neyman-Pearson</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-test-statistics-and-df.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The inferential machinery: test statistics, z/t/F, and degrees of freedom</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24-decisions-errors-power-sesoi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and the SESOI</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25-two-roles-multiple-testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two roles, multiple testing, and pre-registration</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./26-philosophy-of-np.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">The philosophy of Neyman-Pearson: falsification, severity, and risky predictions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./27-fisher-estimation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Fisher, estimation, and the new statistics (optional)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./28-bayesian-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">A first look at Bayesian inference (optional)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./29-likelihoodism.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Likelihoodism, briefly (optional)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 5: Data Visualization in Practice and Communicating Findings</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./30-intro-ggplot2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Introduction to ggplot2: the grammar of graphics in practice</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./31-visualizing-means.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Visualizing averages, spread, and conditional means</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./32-count-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Visualizing count variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./33-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Visualizing distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./34-apa-tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Tables in APA 7 style</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./35-apa-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Proper APA reporting of statistical results</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./36-coefficient-plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Coefficient plots and forest plots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./37-dataviz-use-cases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Use cases: visualizations and tables for common analyses</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./38-audience-targeted-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Audience-targeted reporting: scientific vs lay communication</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 6: Causal Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./39-why-data-doesnt-tell-causes.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Why data alone does not tell us causes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./40-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">The potential outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./41-randomization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Randomization, the cleanest causal claim</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./42-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">DAGs: drawing your causal assumptions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./43-confounders-mediators-colliders.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Confounders, mediators, colliders</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./44-backdoor-criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">The backdoor criterion: what ‘controlling for’ actually does</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-question-many-studies-are-really-asking" id="toc-the-question-many-studies-are-really-asking" class="nav-link active" data-scroll-target="#the-question-many-studies-are-really-asking"><span class="header-section-number">39.1</span> The question many studies are really asking</a></li>
+  <li><a href="#the-aspirin-example" id="toc-the-aspirin-example" class="nav-link" data-scroll-target="#the-aspirin-example"><span class="header-section-number">39.2</span> The aspirin example</a></li>
+  <li><a href="#the-video-game-version" id="toc-the-video-game-version" class="nav-link" data-scroll-target="#the-video-game-version"><span class="header-section-number">39.3</span> The video game version</a></li>
+  <li><a href="#what-statistics-can-and-cannot-do" id="toc-what-statistics-can-and-cannot-do" class="nav-link" data-scroll-target="#what-statistics-can-and-cannot-do"><span class="header-section-number">39.4</span> What statistics can and cannot do</a></li>
+  <li><a href="#how-this-section-connects-to-what-you-already-know" id="toc-how-this-section-connects-to-what-you-already-know" class="nav-link" data-scroll-target="#how-this-section-connects-to-what-you-already-know"><span class="header-section-number">39.5</span> How this section connects to what you already know</a></li>
+  <li><a href="#roadmap" id="toc-roadmap" class="nav-link" data-scroll-target="#roadmap"><span class="header-section-number">39.6</span> Roadmap</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">39.7</span> Check your understanding</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">39.8</span> References</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/39-why-data-doesnt-tell-causes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./39-why-data-doesnt-tell-causes.html">Section 6: Causal Inference</a></li><li class="breadcrumb-item"><a href="./39-why-data-doesnt-tell-causes.html"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Why data alone does not tell us causes</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Why data alone does not tell us causes</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Sections 3 and 4 of this book taught you how to fit a linear model and how to make a calibrated inferential claim about a coefficient. Section 5 taught you how to visualize and report the result. Across all of those chapters, the example you have returned to most often is the comparison between aggression scores in the violent and neutral conditions of <code>vgames_study</code>. In Chapter 17, when we introduced categorical predictors in regression, we fitted the simple model</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>vgames <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/vgames_study.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model_cat <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> condition, <span class="at">data =</span> vgames)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_cat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = aggression ~ condition, data = vgames)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.3650 -0.9650 -0.0617  1.1000  3.0350 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)        4.2117     0.1890  22.288  &lt; 2e-16 ***
+conditionviolent   1.3533     0.2672   5.064 1.53e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.464 on 118 degrees of freedom
+Multiple R-squared:  0.1785,    Adjusted R-squared:  0.1716 
+F-statistic: 25.65 on 1 and 118 DF,  p-value: 1.53e-06</code></pre>
+</div>
+</div>
+<p>The row labeled <code>conditionviolent</code> has an <code>Estimate</code> of approximately 1.35 aggression scale points, with a 95% confidence interval that excludes zero. We have used this number throughout the book.</p>
+<p>The question this section asks is: what is that 1.35 actually telling us? More specifically: is it the <strong>causal effect</strong> of playing the violent video game on aggression? Or is it only an association, a difference in observed scores that has no particular causal meaning?</p>
+<p>This is one of the most important questions a quantitative researcher can ask, and it is also the most commonly mishandled. The answer is not given by the data themselves, and it is not given by any statistical procedure. It depends on the <strong>design</strong> of the study and on the <strong>causal reasoning</strong> that links the data to the world. Section 6 is about that reasoning. This chapter is the motivation: why “data alone” cannot tell us which arrows in nature point which way.</p>
+<section id="the-question-many-studies-are-really-asking" class="level2" data-number="39.1">
+<h2 data-number="39.1" class="anchored" data-anchor-id="the-question-many-studies-are-really-asking"><span class="header-section-number">39.1</span> The question many studies are really asking</h2>
+<p>In almost every published study you have ever read, the underlying question is some version of:</p>
+<blockquote class="blockquote">
+<p><em>Did X cause Y?</em></p>
+</blockquote>
+<p>A new medication is tested for whether it causes blood pressure to drop. A teaching method is tested for whether it causes students to learn more. A randomized control trial of a vaccine asks whether the vaccine causes fewer infections. In <code>vgames_study</code>, the underlying question is whether playing the violent video game causes increased aggression.</p>
+<p>Note the word “almost”. Not every research question is causal. Some studies are purely <strong>descriptive</strong>: they aim to characterize a population (how many young adults play violent games at all, what the distribution of trait hostility looks like in a community) without taking a stand on what causes what. Some studies are purely <strong>predictive</strong>: they aim to build a model that forecasts an outcome accurately (which patients will respond to a treatment, which students will drop out) without necessarily explaining why. Descriptive and predictive questions are entirely legitimate, and for many practical purposes they are the right questions. The framework developed in Section 6 is <em>not</em> needed if your goal is description or prediction. It is needed when your goal is <em>causal</em>: when you want to make a claim about what would change if we intervened.</p>
+<p>When the question <em>is</em> causal (and it often is, especially in psychology, medicine, and policy), we need not just statistical association but the additional reasoning that licenses calling that association a cause. If we want to act on a finding, prescribe a drug, adopt a curriculum, run a public-health campaign, ban or permit a video game, we need to know not just that two variables are associated but that one <em>causes</em> the other. An association is descriptive: people who play violent games happen to be more aggressive in our sample. A causal claim is interventional: if you put someone in front of a violent game, their aggression will go up.</p>
+<p>The uncomfortable truth, which Section 6 is built around, is that <strong>statistics by itself cannot answer the question “did X cause Y?”</strong> Statistics describes what is in the data. It tells you that two variables are correlated, that one group has a higher mean than another, that an effect is unlikely under the null hypothesis. None of that, on its own, licenses the causal conclusion. The bridge from “X and Y are associated” to “X caused Y” requires something more than statistics: it requires the right kind of design and the right kind of causal reasoning.</p>
+</section>
+<section id="the-aspirin-example" class="level2" data-number="39.2">
+<h2 data-number="39.2" class="anchored" data-anchor-id="the-aspirin-example"><span class="header-section-number">39.2</span> The aspirin example</h2>
+<p>A simple example makes the point. Imagine you have a headache. You take an aspirin. Twenty minutes later, your headache is gone. Did the aspirin cause the relief?</p>
+<p>You might think: obviously yes. But pause and consider what you would need to know to be sure. Your headache might have gone away on its own. You also drank a glass of water with the aspirin. You also lay down for a few minutes. You also stopped looking at the screen that may have been straining your eyes. The aspirin is <em>one</em> candidate explanation among several for why your headache went away.</p>
+<p>To know that the aspirin specifically caused the relief, you would need to compare:</p>
+<ul>
+<li><em>What happened.</em> You took aspirin and your headache went away.</li>
+<li><em>What would have happened otherwise.</em> What your headache would have done if you had not taken aspirin (but had still drunk water, lain down, and stopped using the screen).</li>
+</ul>
+<p>The second part is the tricky part. You cannot observe what would have happened otherwise, because you actually did take the aspirin. There is no version of the world where you simultaneously did and did not take it. This second thing, the thing that would have happened in the world where you made a different choice, is called the <strong>counterfactual</strong> (“contrary to fact”), and it is the missing ingredient that statistics by itself cannot give you.</p>
+<p>The figure below depicts the structure of the counterfactual. The timeline starts on the left with a single shared history: you have a headache. At the decision point, the timeline forks. Down one branch (the <strong>factual</strong> branch we actually lived through), you took the aspirin and your headache improved. Down the other branch (the <strong>counterfactual</strong> branch we did not live through), you did not take the aspirin, and what happened to your headache is unknown. We never get to see down both branches at once.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-counterfactual-fork" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="864">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-counterfactual-fork-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="39-why-data-doesnt-tell-causes_files/figure-html/fig-counterfactual-fork-1.png" id="fig-counterfactual-fork" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-counterfactual-fork-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;39.1
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Three features of the figure carry the central conceptual lesson. First, the two branches <em>share</em> a past: they both grow from the same single line. Counterfactuals are about <em>the same person</em> in <em>what-if</em> scenarios, not about two different people. Second, only one branch is solid (the factual branch we lived); the other is dashed (the counterfactual branch we did not live). The dashed branch is what we wish we knew but cannot directly observe. Third, the gap between the two endpoints (the double-headed arrow on the right) is the <strong>individual causal effect</strong> of the treatment. If the headache was going to clear up anyway, the gap is small. If the aspirin really did the work, the gap is large. We never directly see the gap, because we never see both endpoints for the same person.</p>
+<p>The aspirin example is small and trivial. The same logic scales up to any study you have ever run.</p>
+</section>
+<section id="the-video-game-version" class="level2" data-number="39.3">
+<h2 data-number="39.3" class="anchored" data-anchor-id="the-video-game-version"><span class="header-section-number">39.3</span> The video game version</h2>
+<p>Apply the same logic to <code>vgames_study</code>. We see that participants in the violent condition scored higher on aggression than participants in the neutral condition. We computed the difference as approximately 1.35 aggression-scale points. We tested it, we plotted it, we discussed effect sizes for it.</p>
+<p>Did the violent video game <em>cause</em> that 1.35-point difference?</p>
+<p>To know, we would need to compare:</p>
+<ul>
+<li><em>What happened.</em> Participants in the violent condition had a mean aggression of about 5.56.</li>
+<li><em>What would have happened otherwise.</em> What the aggression mean would have been for those same participants if they had played the neutral game instead.</li>
+</ul>
+<p>The second is the counterfactual, and we cannot observe it directly. We did not have the violent-condition participants also play the neutral game; we used different participants for each condition. The 1.35-point difference compares two groups, not one group under two conditions.</p>
+<p>This is where things become delicate. The two groups will only give us a clean answer to the causal question if they are <em>comparable</em> in every relevant way except for the game they played. If they differ on any other dimension that also affects aggression (trait hostility, baseline mood, age, prior gaming experience), then part of the 1.35-point gap could be due to those other differences rather than to the game itself. The data alone do not tell us how to disentangle the two.</p>
+<p>The figure below makes the worry concrete. The same observed group difference can arise from three completely different causal stories.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-three-stories" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="864">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-three-stories-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="39-why-data-doesnt-tell-causes_files/figure-html/fig-three-stories-1.png" id="fig-three-stories" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-three-stories-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;39.2
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>All three of these stories produce a positive association between game type and aggression scores. All three would show up in a <code>cor()</code> or <code>t.test()</code> or <code>lm()</code> output identically. The data cannot tell us which story is right because the data look the same regardless of where the arrows point.</p>
+<p>Story 1 is what we usually want to claim: the violent game makes people more aggressive. Story 2 is the classic confound: trait-hostile people choose the violent game <em>and</em> tend to score higher on aggression measures, so the two are correlated even without the game doing anything. Story 3 is reverse causation: people who are already feeling more aggressive that day choose the violent game. Each story implies a different action in the world (if you ban the game, only Story 1 predicts that aggression will go down).</p>
+<p>This is the heart of the matter. <em>The same <code>lm()</code> output is compatible with three completely different causal stories, and statistics alone cannot tell us which story is the right one.</em> The number 1.35 is the same in all three. The substantive meaning is different.</p>
+</section>
+<section id="what-statistics-can-and-cannot-do" class="level2" data-number="39.4">
+<h2 data-number="39.4" class="anchored" data-anchor-id="what-statistics-can-and-cannot-do"><span class="header-section-number">39.4</span> What statistics can and cannot do</h2>
+<p>The boundary is now precise. Statistics can do the following:</p>
+<ul>
+<li>Tell us whether two variables are associated and, if so, how strongly.</li>
+<li>Quantify our uncertainty about that association (standard errors, confidence intervals, p-values).</li>
+<li>Fit a model that <em>describes</em> the data using a specific functional form.</li>
+</ul>
+<p>Statistics cannot, by itself, do the following:</p>
+<ul>
+<li>Tell us whether one variable <em>causes</em> another.</li>
+<li>Distinguish among causal stories that produce the same observed associations.</li>
+<li>Tell us what would have happened in a counterfactual world that was not observed.</li>
+</ul>
+<p>The cannots are not failures of statistics. They are <em>outside</em> the domain of statistics. To answer them, we need a separate framework that lets us reason about causes, counterfactuals, and the structure of the world that generated the data. That framework is what this section is about.</p>
+<p>We will see that there are essentially two routes from the data to a causal claim:</p>
+<ol type="1">
+<li><em>By design.</em> If the treatment was randomly assigned, then the comparison of means is a causal estimate, because randomization rules out alternative causal stories at the level of the procedure. This is the route a randomized experiment takes.</li>
+<li><em>By assumption.</em> If randomization is not possible, we can sometimes recover the causal effect from observational data, but only by making explicit assumptions about which variables cause which others. Those assumptions are not derivable from the data; they come from theory, prior research, and domain knowledge.</li>
+</ol>
+<p>Section 6 develops both routes. Chapter 40 introduces the formal framework (potential outcomes). Chapter 41 develops the randomization route. Chapters 42, 43, and 44 develop the by-assumption route, using DAGs to make assumptions visible and the <strong>backdoor criterion</strong> to tell us when those assumptions license a causal interpretation.</p>
+</section>
+<section id="how-this-section-connects-to-what-you-already-know" class="level2" data-number="39.5">
+<h2 data-number="39.5" class="anchored" data-anchor-id="how-this-section-connects-to-what-you-already-know"><span class="header-section-number">39.5</span> How this section connects to what you already know</h2>
+<p>You already have most of the technical machinery you need. The <code>lm()</code> syntax from Section 3 will return in every chapter of this section, unchanged. The standard errors, confidence intervals, and effect sizes from Section 4 still apply. The visualization tools from Section 5 will be used to draw DAGs and to communicate causal claims clearly.</p>
+<p>What is new is the <em>interpretation</em> of what those tools produce. The same <code>lm()</code> output can carry a causal interpretation or a purely descriptive one, depending on the design and the reasoning behind it. The job of this section is to teach you to read the same number two different ways and to know which reading is appropriate when.</p>
+<p>A more pointed way to put it: the same regression <code>lm(aggression ~ condition)</code> from Chapter 17 is the regression we will look at in Chapter 41 as a causal estimate. We will not change the code. We will not refit anything. What changes is what we are entitled to <em>say</em> about the coefficient. In Chapter 41, with random assignment, the 1.35-point coefficient is the <strong>average treatment effect</strong>: the causal increment in aggression caused by playing the violent game rather than the neutral game. Without random assignment, the same number is just a descriptive comparison of two groups that may or may not have been comparable to begin with.</p>
+<p>This is the section’s main pedagogical move. The math does not change. The license to interpret it changes.</p>
+</section>
+<section id="roadmap" class="level2" data-number="39.6">
+<h2 data-number="39.6" class="anchored" data-anchor-id="roadmap"><span class="header-section-number">39.6</span> Roadmap</h2>
+<p>The remainder of Section 6 develops the framework step by step.</p>
+<ul>
+<li><p><strong>Chapter 40</strong> introduces the potential outcomes framework: the formal way to think about counterfactuals. We will define <em>Y</em>(1) and <em>Y</em>(0), the two parallel universes in which a person is or is not treated, and we will state the fundamental problem of causal inference (we can only ever observe one of these per person). We will then introduce the <strong>average treatment effect</strong> (ATE) as the achievable target.</p></li>
+<li><p><strong>Chapter 41</strong> develops randomization as the cleanest licensing mechanism. We will see why random assignment makes the treatment and control groups exchangeable, why this allows the comparison of group means to estimate the ATE, and how this licenses the regression coefficient we have already been computing in <code>lm(aggression ~ condition)</code>. We will distinguish <em>sampling uncertainty</em> (the topic of Section 4) from <em>causal uncertainty</em> (the topic of this section) and notice that the two stack.</p></li>
+<li><p><strong>Chapter 42</strong> introduces <strong>directed acyclic graphs</strong> (DAGs), the diagrammatic tool for drawing causal assumptions. We will see how nodes (variables) and arrows (causal claims) combine into paths and how those paths reveal which variables transmit causal effects and which transmit only spurious associations. The DAG is the central tool for the observational route to causal inference.</p></li>
+<li><p><strong>Chapter 43</strong> develops the three classic third-variable roles: <strong>confounders</strong>, <strong>mediators</strong>, and <strong>colliders</strong>. Each has a distinctive structure in a DAG, each has a distinctive rule about whether to include it as a control, and each comes with a worked <code>vgames_study</code> example. The mirror-image relationship between confounders and colliders is the conceptual punchline of the chapter.</p></li>
+<li><p><strong>Chapter 44</strong> states the <strong>backdoor criterion</strong>: the procedural rule that lets you choose the right control set given a DAG. We will discuss the <strong>Table 2 fallacy</strong> (the temptation to interpret every coefficient in a multiple regression as a causal effect) and close with the bigger message: <em>statistical control requires causal justification</em>. The mechanics of <code>lm()</code> do not change; what changes is what set of variables you put on the right-hand side and why.</p></li>
+</ul>
+<p>What we will <em>not</em> develop in detail in Section 6 are the analytical methods that specifically aim to identify causal effects from observational data (propensity score methods, instrumental variables, regression discontinuity, doubly robust estimation, etc.). These methods are built on top of the conceptual framework developed here, and they go beyond the scope of this book. Chapter 44 names them briefly and points to standard references where you can learn each of them in depth (Hernán &amp; Robins, <a href="https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/">2020</a>; Imbens &amp; Rubin, <a href="https://doi.org/10.1017/CBO9781139025751">2015</a>; Chatton &amp; Rohrer, <a href="https://doi.org/10.1177/25152459241236149">2024</a>). Without the framework Section 6 builds, those methods can look like a grab bag of statistical tricks; with the framework in place, they become natural extensions of the same logic.</p>
+<p>By the end of Section 6, you should be able to look at any quantitative claim in a paper and ask the right questions: was the treatment randomly assigned? If not, what causal structure does the author appear to be assuming? Are the right variables being controlled for, and the wrong ones left out? Is the headline claim a causal claim or only a descriptive one, and does the design support that reading?</p>
+<p>The data we have used throughout this book have not changed. What this section adds is the framework for reading those same data causally, in addition to the descriptive and inferential readings we have already developed.</p>
+</section>
+<section id="check-your-understanding" class="level2" data-number="39.7">
+<h2 data-number="39.7" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">39.7</span> Check your understanding</h2>
+<p><strong>1. What is the relationship between statistical analysis and causal claims?</strong></p>
+<div id="radio_WMQJKMAJGO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_WMQJKMAJGO" value=""> <span>Statistical analysis on a sample of data is sufficient to establish causal claims, because correlation coefficients and regression slopes directly measure causal effects whenever they reach statistical significance.</span></label><label><input type="radio" autocomplete="off" name="radio_WMQJKMAJGO" value="answer"> <span>Statistical analysis describes associations in the data but does not by itself license causal claims, because the same observed association can arise from several different causal structures (the cause directly producing the effect, a common cause producing both, reverse causation, etc.) and the data cannot distinguish among them.</span></label><label><input type="radio" autocomplete="off" name="radio_WMQJKMAJGO" value=""> <span>Statistical analysis cannot make causal claims under the frequentist framework but can under the Bayesian framework, because the Bayesian framework's use of prior information automatically rules out alternative causal explanations of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_WMQJKMAJGO" value=""> <span>Statistical analysis can establish causal claims only when applied to non-normal data, because Gaussian approximations smooth over the kind of skewed distributions in which causal effects become detectable.</span></label>
+</div>
+<p><strong>2. What is a counterfactual in the context of causal inference?</strong></p>
+<div id="radio_TDXIUIKGVH" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_TDXIUIKGVH" value=""> <span>A counterfactual is a hypothesis that the researcher rejects after observing the data, used in the frequentist framework to compute the long-run rejection rate of a statistical test.</span></label><label><input type="radio" autocomplete="off" name="radio_TDXIUIKGVH" value="answer"> <span>A counterfactual is a contrary-to-fact scenario describing what would have happened in a world where the cause of interest had taken a different value; it is the missing ingredient that ordinary statistical description cannot supply on its own.</span></label><label><input type="radio" autocomplete="off" name="radio_TDXIUIKGVH" value=""> <span>A counterfactual is a hypothetical sample of data drawn from a different population, used in meta-analysis to estimate the heterogeneity of effects across studies.</span></label><label><input type="radio" autocomplete="off" name="radio_TDXIUIKGVH" value=""> <span>A counterfactual is a regression coefficient computed from a transformed version of the outcome variable, designed to remove the influence of measurement error on the estimated effect.</span></label>
+</div>
+<p><strong>3. Why does observing a regression coefficient or correlation not by itself license a causal claim?</strong></p>
+<div id="radio_UCRUHQEKWP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_UCRUHQEKWP" value=""> <span>The same observed association between two variables can only arise from one specific causal structure, which can be identified by examining the shape of the joint distribution and the marginal distributions of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_UCRUHQEKWP" value="answer"> <span>The same observed association between two variables can arise from several different causal structures (a direct cause, a common cause producing both, reverse causation, or various combinations), and the data alone cannot distinguish among them without additional assumptions or design features.</span></label><label><input type="radio" autocomplete="off" name="radio_UCRUHQEKWP" value=""> <span>The same observed association between two variables can arise from multiple causal structures, but the structures can always be distinguished by computing higher-order moments of the joint distribution such as the kurtosis or skew of the residuals.</span></label><label><input type="radio" autocomplete="off" name="radio_UCRUHQEKWP" value=""> <span>The same observed association between two variables always implies a direct causal relationship, because in a correctly specified statistical model alternative causal structures would produce systematically different correlations from the observed one.</span></label>
+</div>
+<p><strong>4. What role does random assignment play in the interpretation of a regression coefficient?</strong></p>
+<div id="radio_WUTIPHCYUR" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_WUTIPHCYUR" value=""> <span>Random assignment of the treatment does not change the interpretation of a regression coefficient; the coefficient describes the same association regardless of how the treatment was delivered to participants.</span></label><label><input type="radio" autocomplete="off" name="radio_WUTIPHCYUR" value="answer"> <span>Random assignment of the treatment provides a design-based license for interpreting a regression coefficient causally, because randomization makes the treatment and control groups comparable on all other variables, so the difference in outcomes cannot be attributed to pre-existing differences between the groups.</span></label><label><input type="radio" autocomplete="off" name="radio_WUTIPHCYUR" value=""> <span>Random assignment of the treatment makes the regression coefficient mathematically larger than it would be without random assignment, by a factor that depends on the sample size and the alpha level chosen for the test.</span></label><label><input type="radio" autocomplete="off" name="radio_WUTIPHCYUR" value=""> <span>Random assignment of the treatment is required for the calculation of standard errors and p-values, because the frequentist sampling framework only applies when each participant has an equal probability of receiving each level of the treatment.</span></label>
+</div>
+<p><strong>5. How does Section 6 of this book relate to the statistical tools developed in earlier sections?</strong></p>
+<div id="radio_LIAIPVZOSC" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_LIAIPVZOSC" value=""> <span>Section 6 of this book will replace the lm() function with specialized causal-inference functions, because regression cannot be used for causal claims and a separate set of tools is required for this purpose.</span></label><label><input type="radio" autocomplete="off" name="radio_LIAIPVZOSC" value="answer"> <span>Section 6 of this book will continue to use the lm() function and other tools introduced in Sections 3, 4, and 5, but will develop the additional reasoning required to interpret the output of these tools causally rather than merely descriptively; what changes is the interpretation, not the math.</span></label><label><input type="radio" autocomplete="off" name="radio_LIAIPVZOSC" value=""> <span>Section 6 of this book will use specialized graphical software to draw causal diagrams that cannot be produced in R, because the standard plotting tools in ggplot2 are not designed for the kind of network visualization required for causal inference.</span></label><label><input type="radio" autocomplete="off" name="radio_LIAIPVZOSC" value=""> <span>Section 6 of this book will treat causal inference as fundamentally Bayesian and will require the reader to abandon the frequentist tools developed in Sections 3 and 4 in favor of a fully Bayesian approach to estimation.</span></label>
+</div>
+</section>
+<section id="references" class="level2" data-number="39.8">
+<h2 data-number="39.8" class="anchored" data-anchor-id="references"><span class="header-section-number">39.8</span> References</h2>
+<p>Grosz, M. P., Rohrer, J. M., &amp; Thoemmes, F. (2020). The taboo against explicit causal inference in nonexperimental psychology. <em>Perspectives on Psychological Science, 15</em>(5), 1243-1255. <a href="https://doi.org/10.1177/1745691620921521" class="uri">https://doi.org/10.1177/1745691620921521</a></p>
+<p>Pearl, J., &amp; Mackenzie, D. (2018). <em>The book of why: The new science of cause and effect</em>. Basic Books.</p>
+<p>Rohrer, J. M. (2018). Thinking clearly about correlations and causation: Graphical causal models for observational data. <em>Advances in Methods and Practices in Psychological Science, 1</em>(1), 27-42. <a href="https://doi.org/10.1177/2515245917745629" class="uri">https://doi.org/10.1177/2515245917745629</a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  var t = document.getElementsByClassName("webex-total_correct");
+  for (var i = 0; i < t.length; i++) {
+    p = t[i].parentElement;
+    var correct = p.getElementsByClassName("webex-correct").length;
+    var solvemes = p.getElementsByClassName("webex-solveme").length;
+    var radiogroups = p.getElementsByClassName("webex-radiogroup").length;
+    var selects = p.getElementsByClassName("webex-select").length;
+
+    t[i].innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* check answers */
+check_func = function() {
+  console.log("webex: check answers");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('unchecked')) {
+    cl.remove("unchecked");
+    this.innerHTML = "Hide Answers";
+  } else {
+    cl.add("unchecked");
+    this.innerHTML = "Show Answers";
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+
+  var cl = this.classList
+
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("webex onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  var check_sections = document.getElementsByClassName("webex-check");
+  console.log("check:", check_sections.length);
+  for (var i = 0; i < check_sections.length; i++) {
+    check_sections[i].classList.add("unchecked");
+
+    let btn = document.createElement("button");
+    btn.innerHTML = "Show Answers";
+    btn.classList.add("webex-check-button");
+    btn.onclick = check_func;
+    check_sections[i].appendChild(btn);
+
+    let spn = document.createElement("span");
+    spn.classList.add("webex-total_correct");
+    check_sections[i].appendChild(spn);
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+
+    solveme[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+  }
+
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+    selects[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+  }
+
+  update_total_correct();
+}
+
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./38-audience-targeted-reporting.html" class="pagination-link" aria-label="Audience-targeted reporting: scientific vs lay communication">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Audience-targeted reporting: scientific vs lay communication</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./40-potential-outcomes.html" class="pagination-link" aria-label="The potential outcomes framework">
+        <span class="nav-page-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">The potential outcomes framework</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/39-why-data-doesnt-tell-causes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

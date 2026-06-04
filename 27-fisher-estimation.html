@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>27&nbsp; Fisher, estimation, and the new statistics (optional) – Understanding and analyzing social and behavioral data</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./28-bayesian-basics.html" rel="next">
+<link href="./26-philosophy-of-np.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-d685995fa19fd69abfd2845f2861e92b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="include/webex.css">
+<link rel="stylesheet" href="include/custom.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21-why-inference.html">Section 4: Statistical Inference</a></li><li class="breadcrumb-item"><a href="./27-fisher-estimation.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Fisher, estimation, and the new statistics (optional)</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Understanding and analyzing social and behavioral data</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/Y45HV1N/intro-data-analysis" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 1: Getting Started Properly</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-basics-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What is R, and why use it?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-r-vs-rstudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R, RStudio, and how they relate</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-files-and-environment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Scripts, RData, projects, environments, and R Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-projects-and-sessions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Working with R projects and R sessions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-objects-and-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Objects and functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-operations-and-packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Basic operations, custom functions, and packages</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-recap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Recap and getting data into R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 2: Manipulating and Visualizing Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-data-wrangling-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data wrangling: basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-tidyverse-and-descriptives.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wrangling and describing data with the tidyverse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-data-visualization-principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">First principles of data visualization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-wrangling-for-psychology.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Wrangling for psychology research</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-advanced-wrangling-optional.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Advanced wrangling (optional)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 3: Statistical Modeling — Regressions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-data-and-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data and the idea of a statistical model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-mean-as-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The mean as a model: residuals, fit, and comparing models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-simple-linear-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">From the mean to the line: the simple linear model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-fitting-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Fitting and interpreting simple regression in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-multiple-and-categorical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Multiple regression and categorical predictors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-moderation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Moderation: when one predictor depends on another</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-bias-variance-assumptions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Bias, variance, and the assumptions of the linear model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-diagnostics-and-limits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Diagnostics, model fit, and the limits of your model</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 4: Statistical Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-why-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Why inference? Samples, populations, and the standard error</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-pvalues-fisher-neyman-pearson.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">P-values, Fisher, and Neyman-Pearson</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-test-statistics-and-df.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The inferential machinery: test statistics, z/t/F, and degrees of freedom</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24-decisions-errors-power-sesoi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and the SESOI</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25-two-roles-multiple-testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two roles, multiple testing, and pre-registration</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./26-philosophy-of-np.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">The philosophy of Neyman-Pearson: falsification, severity, and risky predictions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./27-fisher-estimation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Fisher, estimation, and the new statistics (optional)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./28-bayesian-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">A first look at Bayesian inference (optional)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./29-likelihoodism.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Likelihoodism, briefly (optional)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 5: Data Visualization in Practice and Communicating Findings</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./30-intro-ggplot2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Introduction to ggplot2: the grammar of graphics in practice</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./31-visualizing-means.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Visualizing averages, spread, and conditional means</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./32-count-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Visualizing count variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./33-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Visualizing distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./34-apa-tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Tables in APA 7 style</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./35-apa-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Proper APA reporting of statistical results</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./36-coefficient-plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Coefficient plots and forest plots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./37-dataviz-use-cases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Use cases: visualizations and tables for common analyses</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./38-audience-targeted-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Audience-targeted reporting: scientific vs lay communication</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 6: Causal Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./39-why-data-doesnt-tell-causes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Why data alone does not tell us causes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./40-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">The potential outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./41-randomization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Randomization, the cleanest causal claim</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./42-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">DAGs: drawing your causal assumptions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./43-confounders-mediators-colliders.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Confounders, mediators, colliders</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./44-backdoor-criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">The backdoor criterion: what ‘controlling for’ actually does</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#why-this-chapter-is-optional" id="toc-why-this-chapter-is-optional" class="nav-link active" data-scroll-target="#why-this-chapter-is-optional"><span class="header-section-number">27.1</span> Why this chapter is optional</a></li>
+  <li><a href="#fishers-reading-of-the-p-value" id="toc-fishers-reading-of-the-p-value" class="nav-link" data-scroll-target="#fishers-reading-of-the-p-value"><span class="header-section-number">27.2</span> Fisher’s reading of the p-value</a>
+  <ul class="collapse">
+  <li><a href="#the-fisher-np-hybrid-in-practice" id="toc-the-fisher-np-hybrid-in-practice" class="nav-link" data-scroll-target="#the-fisher-np-hybrid-in-practice"><span class="header-section-number">27.2.1</span> The Fisher-NP hybrid in practice</a></li>
+  </ul></li>
+  <li><a href="#the-dance-of-p-values" id="toc-the-dance-of-p-values" class="nav-link" data-scroll-target="#the-dance-of-p-values"><span class="header-section-number">27.3</span> The dance of p-values</a></li>
+  <li><a href="#the-estimation-alternative" id="toc-the-estimation-alternative" class="nav-link" data-scroll-target="#the-estimation-alternative"><span class="header-section-number">27.4</span> The estimation alternative</a></li>
+  <li><a href="#effect-sizes" id="toc-effect-sizes" class="nav-link" data-scroll-target="#effect-sizes"><span class="header-section-number">27.5</span> Effect sizes</a>
+  <ul class="collapse">
+  <li><a href="#pearsons-correlation-r" id="toc-pearsons-correlation-r" class="nav-link" data-scroll-target="#pearsons-correlation-r"><span class="header-section-number">27.5.1</span> Pearson’s correlation <em>r</em></a></li>
+  <li><a href="#regression-coefficients-unstandardized-b-and-standardized-β" id="toc-regression-coefficients-unstandardized-b-and-standardized-β" class="nav-link" data-scroll-target="#regression-coefficients-unstandardized-b-and-standardized-β"><span class="header-section-number">27.5.2</span> Regression coefficients: unstandardized <em>B</em> and standardized β</a></li>
+  <li><a href="#beyond-d-r-b-β-a-richer-effect-size-landscape" id="toc-beyond-d-r-b-β-a-richer-effect-size-landscape" class="nav-link" data-scroll-target="#beyond-d-r-b-β-a-richer-effect-size-landscape"><span class="header-section-number">27.5.3</span> Beyond <em>d</em>, <em>r</em>, <em>B</em>, β: a richer effect-size landscape</a></li>
+  </ul></li>
+  <li><a href="#confidence-intervals-meaning-and-interpretation" id="toc-confidence-intervals-meaning-and-interpretation" class="nav-link" data-scroll-target="#confidence-intervals-meaning-and-interpretation"><span class="header-section-number">27.6</span> Confidence intervals: meaning and interpretation</a>
+  <ul class="collapse">
+  <li><a href="#common-misconceptions-about-confidence-intervals" id="toc-common-misconceptions-about-confidence-intervals" class="nav-link" data-scroll-target="#common-misconceptions-about-confidence-intervals"><span class="header-section-number">27.6.1</span> Common misconceptions about confidence intervals</a></li>
+  </ul></li>
+  <li><a href="#precision-width-as-the-primary-output" id="toc-precision-width-as-the-primary-output" class="nav-link" data-scroll-target="#precision-width-as-the-primary-output"><span class="header-section-number">27.7</span> Precision: width as the primary output</a></li>
+  <li><a href="#meta-analytic-thinking" id="toc-meta-analytic-thinking" class="nav-link" data-scroll-target="#meta-analytic-thinking"><span class="header-section-number">27.8</span> Meta-analytic thinking</a></li>
+  <li><a href="#where-fisher-and-the-new-statistics-are-epistemologically-weaker-than-np" id="toc-where-fisher-and-the-new-statistics-are-epistemologically-weaker-than-np" class="nav-link" data-scroll-target="#where-fisher-and-the-new-statistics-are-epistemologically-weaker-than-np"><span class="header-section-number">27.9</span> Where Fisher and the new statistics are epistemologically weaker than NP</a></li>
+  <li><a href="#doing-it-in-r-a-worked-example" id="toc-doing-it-in-r-a-worked-example" class="nav-link" data-scroll-target="#doing-it-in-r-a-worked-example"><span class="header-section-number">27.10</span> Doing it in R: a worked example</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">27.11</span> Check your understanding</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">27.12</span> References</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/27-fisher-estimation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21-why-inference.html">Section 4: Statistical Inference</a></li><li class="breadcrumb-item"><a href="./27-fisher-estimation.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Fisher, estimation, and the new statistics (optional)</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Fisher, estimation, and the new statistics (optional)</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="why-this-chapter-is-optional" class="level2" data-number="27.1">
+<h2 data-number="27.1" class="anchored" data-anchor-id="why-this-chapter-is-optional"><span class="header-section-number">27.1</span> Why this chapter is optional</h2>
+<p>Section 4 has so far developed the Neyman-Pearson framework, the dominant logic for inference in psychology and most empirical sciences. Chapter 26 traced the philosophical commitments that hold the framework together: the objective long-run frequency interpretation of probability, the refusal to assign probabilities to hypotheses, the methodological-falsification stance, and the procedural rather than evidential interpretation of p-values.</p>
+<p>This chapter is optional because it takes a different path. A long line of statisticians and methodologists, most prominently Ronald Fisher in the first half of the 20th century and Geoff Cumming and colleagues in the present, have argued that the question we usually want to answer with statistics is not “should I act as if the null is rejected?” but something more like “how strong is the evidence?” or “how large is the effect, and how precisely have I estimated it?” These researchers have proposed alternatives. Fisher kept the p-value but read it evidentially. Cumming and others have advocated dropping the p-value entirely in favor of effect sizes, confidence intervals, and meta-analysis, a program that has come to be known as the <strong>new statistics</strong> (<a href="https://doi.org/10.1177/0956797613504966">Cumming, 2014</a>).</p>
+<p>This chapter develops both of these alternative threads. It does so in two halves. The first half (sections 27.2 to 27.3) covers Fisher’s evidential reading of the p-value and the empirical phenomenon, the “dance of p-values,” that puts that reading under serious pressure. The second half (sections 27.4 to 27.8) covers Cumming’s estimation program, the tools it relies on (effect sizes, confidence intervals, precision, and meta-analytic thinking), and how to do it in R. Section 27.9 is the honest counterweight: where Fisher and the new statistics are epistemologically weaker than NP. Section 27.10 walks through a worked R example on <code>vgames_study</code>. The chapter draws on Dienes (<a href="https://www.bloomsbury.com/uk/understanding-psychology-as-a-science-9780230542310/">2008</a>, Chapter 3), Cumming (<a href="https://www.routledge.com/Understanding-The-New-Statistics-Effect-Sizes-Confidence-Intervals-and-Meta-Analysis/Cumming/p/book/9780415879682">2012</a>, <a href="https://doi.org/10.1177/0956797613504966">2014</a>), and Lakens (<a href="https://lakens.github.io/statistical_inferences/">2022</a>, Chapters 6 and 7).</p>
+</section>
+<section id="fishers-reading-of-the-p-value" class="level2" data-number="27.2">
+<h2 data-number="27.2" class="anchored" data-anchor-id="fishers-reading-of-the-p-value"><span class="header-section-number">27.2</span> Fisher’s reading of the p-value</h2>
+<p>The p-value, as we have used it throughout Section 4, is a probability of data given a hypothesis, calibrated as a long-run frequency. In the strict Neyman-Pearson reading (Chapter 22), the p-value plays no evidential role on its own; it is simply compared to the pre-specified α to produce a “reject” or “do not reject” verdict. The procedure is calibrated; the verdict on any one experiment is not.</p>
+<p>Fisher saw the p-value differently. To Fisher, the p-value was a continuous measure of <em>strength of evidence against the null hypothesis</em>. Smaller p-values reflected heavier weight against the null, larger p-values reflected lighter weight. There was no fixed α to compare against, and no commitment to a binary decision rule. As Dienes (<a href="https://www.bloomsbury.com/uk/understanding-psychology-as-a-science-9780230542310/">2008</a>, p.&nbsp;70) summarizes Fisher’s view: “From a test of significance we have a genuine measure of the confidence with which any particular opinion may be held, in view of our particular data.”</p>
+<p>This is a fundamentally different conception of what the p-value is. To NP, the p-value is one input to a calibrated procedure whose long-run error rates we control. To Fisher, the p-value is a number we can read off any single experiment as a gauge of evidence in that single case. The figure below makes the difference concrete. Both panels show the same null distribution and the same observed t-statistic (t = 2.4). The left panel reads it the NP way: there are two sharply distinct zones, a rejection zone (in dark red, in both tails beyond the critical value) and a non-rejection zone (in pale grey, between the critical values). The observation falls in the rejection zone, so the verdict is “reject the null”; there is no further gradation. The right panel reads it the Fisher way: instead of two distinct zones, the area under the curve is shaded with a smooth gradient that gets darker as we move further from zero, representing the fact that observations further from zero carry more weight against the null on a continuous scale.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-fisher-vs-np" class="quarto-float quarto-figure quarto-figure-center anchored" width="864" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fisher-vs-np-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="27-fisher-estimation_files/figure-html/fig-fisher-vs-np-1.png" id="fig-fisher-vs-np" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-fisher-vs-np-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;27.1
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The left panel has a hard boundary: cross the critical line and the verdict flips from “do not reject” to “reject”, and that is the entire output. The right panel has no boundary at all: the intensity of the red shading varies smoothly from light grey near the center (very little evidence against the null) to deep red in the tails (strong evidence against the null), and the observed t-statistic corresponds to a specific point on that gradient. Both panels are computed from the same observed t = 2.4 and the same null distribution; the difference is what we are willing to say with the number. In Fisher’s reading, an observed p = 0.016 carries more weight against the null than an observed p = 0.04 would carry, and that difference is part of the inference. In the strict NP reading, both lead to the same verdict.</p>
+<p>Fisher was explicit about reading the p-value continuously, but he resisted attaching specific verbal categories to specific cutoffs. His actual view was that a smaller p reflects more evidence against the null than a larger p does, with no commitment to a particular cutoff and no automatic verdict. The very common categorical reading in which p = 0.04 is “significant”, p = 0.01 is “highly significant”, and p = 0.06 is “marginally significant” or “trending toward significance” is <em>not</em> Fisher’s view. It is what happens when researchers try to combine Fisher’s continuous reading with NP’s binary decision rule at the same time, the so-called Fisher-NP hybrid that is widely used in psychology in practice. The hybrid deserves a subsection of its own.</p>
+<p>This evidential reading has an obvious appeal. According to many researchers, it is what they seem to want from a statistical test. It is also, on its own terms, technically problematic; we will return to that issue in section 27.9. Before we get there, we need to look at an empirical demonstration that puts the evidential reading under pressure: the <strong>dance of p-values</strong>.</p>
+<section id="the-fisher-np-hybrid-in-practice" class="level3" data-number="27.2.1">
+<h3 data-number="27.2.1" class="anchored" data-anchor-id="the-fisher-np-hybrid-in-practice"><span class="header-section-number">27.2.1</span> The Fisher-NP hybrid in practice</h3>
+<p>Most published research in psychology does not use either Fisher’s framework cleanly or Neyman and Pearson’s framework cleanly. It uses an incoherent mixture of the two that statisticians have called the <strong>null hypothesis significance testing (NHST) hybrid</strong>. Gigerenzer (<a href="https://doi.org/10.4324/9780203772584">1993</a>) called it an “incoherent mishmash” and traced its dominance to a generation of textbook writers who blended the two traditions without acknowledging that they were incompatible. The hybrid is what you have probably been taught in introductory courses. It looks like this:</p>
+<ul>
+<li>Set α at 0.05 in advance, which is an NP move.</li>
+<li>Compute the p-value and compare it to α, which is an NP move.</li>
+<li>Report a binary verdict (reject or do not reject), which is an NP move.</li>
+<li>But then also report the exact p-value (for example, p = 0.034, p = 0.001) as if it carried evidential weight in its own right, which is a Fisher move.</li>
+<li>Attach verbal labels to ranges of p-values: “highly significant” for p &lt; 0.01, “significant” for p &lt; 0.05, “marginally significant” or “trending toward significance” for 0.05 ≤ p &lt; 0.10.</li>
+</ul>
+<p>This last set of labels is neither Fisher’s view nor NP’s. It is the most visible symptom of the hybrid’s incoherence.</p>
+<p>Fisher would have objected to the first three steps. Committing to α at 0.05 in advance and using a fixed cutoff misses the entire point of reading the p-value continuously. From Fisher’s point of view, α = 0.05 is one arbitrary reference point among many, useful as a rough guide but not as a decision rule.</p>
+<p>Neyman would have objected to the last two steps. Once you have committed to α and the procedure has produced its verdict, the further gradation of the p-value (p = 0.0001 versus p = 0.03 versus p = 0.04) is not meaningful in his framework. The procedure is calibrated to deliver a binary verdict at the chosen α; it does not become “more reliable” because the p-value happened to come out smaller than α. Reading p = 0.0001 as “highly significant” suggests an extra layer of confidence that the procedure has not actually delivered.</p>
+<p>The cost of the hybrid is real and practical. Researchers trained on it routinely attribute evidential weight to small p-values that the framework cannot license. They treat p = 0.06 as a near-miss that could be salvaged by collecting more data, when on NP’s terms it is simply a “do not reject” verdict. They report exact p-values as if those numbers were a stable feature of the experiment, when on NP’s terms only the binary verdict is calibrated and on Fisher’s terms even the continuous reading suffers from the dance we will see in section 27.3. The hybrid borrows the appearance of rigor from each tradition while abandoning the discipline that made either of them coherent on its own.</p>
+<p>A clean version of either approach is preferable to the hybrid. If you want NP, commit to the procedure: set α, run the test, report the verdict, and stop reporting exact p-values as graded evidence. If you want Fisher, drop α as a decision criterion and report the p-value as a continuous measure of evidence, with full awareness that this reading will run into the difficulties section 27.3 and section 27.9 will document. What you cannot coherently do is have both at once.</p>
+</section>
+</section>
+<section id="the-dance-of-p-values" class="level2" data-number="27.3">
+<h2 data-number="27.3" class="anchored" data-anchor-id="the-dance-of-p-values"><span class="header-section-number">27.3</span> The dance of p-values</h2>
+<p>If the p-value is a measure of evidence about an underlying truth, then a stable property of that truth should produce stable p-values across replications. If the truth changes very little but the p-value swings wildly, then the p-value is not measuring the truth; it is measuring something else.</p>
+<p>Cumming (<a href="https://doi.org/10.1111/j.1745-6924.2008.00079.x">2008</a>, <a href="https://doi.org/10.1177/0956797613504966">2014</a>) demonstrated this empirically with what he calls the <strong>dance of the p-values</strong>. The setup is simple. Pick a true population effect, pick a sample size, then run the same experiment many times by drawing fresh independent samples from the same population. Each replication produces its own p-value. Look at how those p-values are distributed.</p>
+<p>We can run this simulation ourselves. The figure below shows 25 simulated replications of an independent-samples comparison between two groups of n = 32 each, drawn from populations with means 0 and 0.5 and a common SD of 1 (so a true Cohen’s <em>d</em> of 0.5, a medium effect, with statistical power around 50% to detect it at α = .05). For each simulated experiment, the figure shows the observed mean difference (the dot), its 95% confidence interval (the horizontal bar), and the two-sided p-value. The underlying truth is exactly the same in every simulation: only the random sample differs.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-dance-of-pvalues" class="quarto-float quarto-figure quarto-figure-center anchored" width="720" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dance-of-pvalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="27-fisher-estimation_files/figure-html/fig-dance-of-pvalues-1.png" id="fig-dance-of-pvalues" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="720">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-dance-of-pvalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;27.2
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The dance is dramatic. Across 25 replications of an identical underlying truth, the observed p-values range from below 0.001 to above 0.9. Cumming (<a href="https://doi.org/10.1177/0956797613504966">2014</a>, p.&nbsp;13) noted that “the dance of the p values is astonishingly wide. You can see more about the dance at tiny.cc/dancepvals… vary the population ES and n, and you will find that even when power is high, in fact in virtually every situation, <em>p</em> varies dramatically.” There is nothing wrong with the simulation, nothing wrong with the procedure, and nothing wrong with the underlying truth. The dance is what the p-value naturally does under random sampling.</p>
+<p>This has an immediate consequence for Fisher’s reading of the p-value. If the same true effect produces p = 0.001 in one study and p = 0.4 in the next, and if Fisher would read those two values as “strong evidence” versus “no evidence” respectively, then what Fisher reads as evidence is mostly sampling noise rather than a stable feature of the data and the underlying effect. We will come back to this point in section 27.9.</p>
+<p>The dance also illustrates a more direct fact: a single p-value tells you very little about what the next replication will find. Cumming (<a href="https://doi.org/10.1177/0956797613504966">2014</a>, p.&nbsp;13) showed that if your first study yields p = 0.05 exactly, an 80% prediction interval for the next study’s one-tailed p runs from approximately 0.00008 to 0.44. The future p-value can be almost anything. The p-value, taken on its own, is a remarkably uninformative prediction of replication outcomes.</p>
+<p>If the p-value is doing so little, what should we report instead? This is where the estimation alternative comes in.</p>
+</section>
+<section id="the-estimation-alternative" class="level2" data-number="27.4">
+<h2 data-number="27.4" class="anchored" data-anchor-id="the-estimation-alternative"><span class="header-section-number">27.4</span> The estimation alternative</h2>
+<p>Geoff Cumming and a long line of methodologists have argued that statistical practice should shift away from null hypothesis significance testing entirely, toward what Cumming calls the <strong>new statistics</strong>: effect sizes, confidence intervals, and meta-analysis. The “new” is somewhat misleading: none of these tools is new, all three have been available for decades. What would be new for many fields is to make them the <em>primary</em> output of every study, with p-values and dichotomous decisions either de-emphasized or removed entirely.</p>
+<p>Cumming (<a href="https://doi.org/10.1177/0956797613504966">2014</a>, p.&nbsp;11) summarizes the program with an eight-step strategy. Reduced to its core:</p>
+<ol type="1">
+<li>Formulate your research question as an estimation question, not a yes/no question. Ask “how large is the effect?” rather than “is there an effect?”.</li>
+<li>Identify the effect size that best answers the question. If the question is about a difference between two means, the effect size is the difference, possibly standardized.</li>
+<li>Pre-specify the procedure (this is shared with NP).</li>
+<li>Compute point estimates and their 95% confidence intervals.</li>
+<li>Plot the estimates with CIs.</li>
+<li>Interpret the estimates and the CIs in context: discuss what the effect size implies in practical and theoretical terms, and what the CI width implies about the precision of your estimate.</li>
+<li>Use meta-analytic thinking throughout: treat your study as one contribution to an accumulating literature.</li>
+<li>Report everything in enough detail that future meta-analyses can include your study.</li>
+</ol>
+<p>The whole structure runs in a different direction from NP. There is no fixed α, no “reject” verdict, no calibrated long-run procedure as the primary output. The primary output is an estimate of an effect, with a quantification of its precision.</p>
+<p>The rest of this chapter walks through the three pillars of the estimation program: effect sizes, confidence intervals, and meta-analytic thinking. Section 27.7 develops precision-for-planning, which is Cumming’s proposed replacement for the power calculations of Chapter 24. Section 27.9 then steps back and asks where this program is epistemologically weaker than NP.</p>
+</section>
+<section id="effect-sizes" class="level2" data-number="27.5">
+<h2 data-number="27.5" class="anchored" data-anchor-id="effect-sizes"><span class="header-section-number">27.5</span> Effect sizes</h2>
+<p>An effect size, in Cumming’s framing, is “simply an amount of anything of interest” (<a href="https://doi.org/10.1027/0044-3409.217.1.15">Cumming &amp; Fidler, 2009</a>). Means, mean differences, correlations, regression slopes, and proportions are all effect sizes. The point of asking about effect size is to ask <em>how much</em> something is, not merely whether it is non-zero.</p>
+<p>For comparing two means, the most widely used effect size is <strong>Cohen’s <em>d</em></strong>, the standardized mean difference. The basic formula for two independent groups is</p>
+<p><span class="math display">\[
+d = \frac{M_1 - M_2}{s_p}
+\]</span></p>
+<p>where <span class="math inline">\(s_p\)</span> is a standardizer chosen to express the difference in standard-deviation units. As we have noted throughout Section 4, the recommended standardizer is the pooled within-group standard deviation when variances are roughly equal, the control-group standard deviation when the treatment is expected to change variability, or in repeated-measures designs the standard deviation of the difference scores. The choice of standardizer is consequential: the same raw mean difference can produce very different values of <em>d</em> depending on which SD we divide by.</p>
+<p>Cumming (<a href="https://www.routledge.com/Understanding-The-New-Statistics-Effect-Sizes-Confidence-Intervals-and-Meta-Analysis/Cumming/p/book/9780415879682">2012</a>, Chapter 11) draws the consequence sharply, with what he calls the <strong>rubber-ruler</strong> metaphor. Cohen’s <em>d</em> is the ratio of two estimated quantities: the original-units effect and the standardizer. If we replicate the study, both numerator and denominator will be different. The unit of measurement (the standardizer) is <em>stretching in and out</em> between studies. We therefore have to be careful when interpreting <em>d</em> and especially when comparing <em>d</em> values across conditions or studies. Do the raw effects differ, does the standardizer differ, or do both differ?</p>
+<p>Two examples from Lakens (<a href="https://lakens.github.io/statistical_inferences/06-effectsize.html#sec-facebook">2022</a>, section 6.2 and 6.3) sharpen the point. In 2014, Facebook published a study in which it manipulated the emotional content of about 700 000 users’ news feeds and measured the emotional valence of their subsequent posts. The reported effect of reducing positive posts on the percentage of positive words people produced was Cohen’s <em>d</em> = 0.02; the effect on negative words was <em>d</em> = 0.001. These effects were statistically significant because the sample was enormous, but practically negligible. Lakens notes that in the Facebook setting, <em>d</em> = 0.001 corresponds to a person needing to type roughly 20 000 words on Facebook before we would expect to observe one additional negative word compared to the control condition. A statistically significant non-zero effect does not entail a practically meaningful effect. Interpreting the effect size, not the p-value, is what tells us whether the result matters.</p>
+<p>The opposite problem is also instructive. Lakens (<a href="https://lakens.github.io/statistical_inferences/06-effectsize.html#sec-judges">2022</a>, section 6.3) discusses the much-cited “hungry judges” study in which judges’ parole decisions appeared to drop from about 65% to near 0% over the course of a day and then reset after a break. The reported effect corresponds to a Cohen’s <em>d</em> of approximately 2. Effects of this size are extraordinarily rare in psychology; almost nothing in the meta-meta-analysis by Richard, Bond, and Stokes-Zoota (2003) reaches that magnitude.</p>
+<p>Lakens’s point is worth unpacking carefully because the reasoning is a useful sanity check more generally. The argument runs like this. <em>d</em> = 2 is roughly the magnitude of the height difference between men and women: a difference so obvious that you do not need a study to convince anyone of it. Walk down any street, look at the people, and you will see the pattern immediately. Effects of this size, when they reflect a real underlying mechanism, are unmissable in everyday experience; that is what <em>d</em> = 2 looks like in the world. So if a psychological mechanism really produced an effect that large, every non-researcher with any exposure to the relevant context would already know about it without a study being run, just by living their daily life. We do not need an experiment to tell us that men are taller than women, that water is wetter than sand, or that running uphill is harder than running downhill: those are <em>d</em> = 2 phenomena, and they announce themselves. When a psychology paper reports <em>d</em> = 2 for a mechanism that is not already obvious to everyone (such as judges’ hunger affecting parole decisions), the size of the effect itself is a strong signal that something is wrong. In this specific case, the something was a confound: the cases that come up later in the day are systematically different from those that come up earlier (Weinshall-Margel &amp; Shapard, 2011). Effect sizes give us a sanity check that p-values do not, because effect sizes can be compared against everyday reality in a way that p-values cannot.</p>
+<p>The figure below illustrates what different values of Cohen’s <em>d</em> mean in terms of overlap between distributions. For each panel, two normal distributions are shown with mean separation equal to <em>d</em> (with both distributions having SD = 1). The vertical line is the midpoint. The shaded region is the overlap; the unshaded region is the part of one distribution that falls beyond the other.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-cohens-d-overlap" class="quarto-float quarto-figure quarto-figure-center anchored" width="864" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cohens-d-overlap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="27-fisher-estimation_files/figure-html/fig-cohens-d-overlap-1.png" id="fig-cohens-d-overlap" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-cohens-d-overlap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;27.3
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>For <em>d</em> = 0.001, the two distributions are visually identical; the difference is purely a population-level statistical fact with no observable individual-level consequence. For <em>d</em> = 0.5, the typical “medium” effect, the distributions are clearly distinguishable but heavily overlapping; about 38% of the area of one curve lies beyond the mean of the other. For <em>d</em> = 2.0, the kind of effect we see in physical-height comparisons, the distributions are clearly separated but still substantially overlapping; even with this enormous standardized effect, individuals from the smaller-mean distribution often exceed the mean of the larger-mean distribution. The lesson is that even large standardized effects do not imply that every individual in one group differs from every individual in the other.</p>
+<p>A further point about <em>d</em> is worth emphasizing. The sample <em>d</em> is a biased estimator of the population effect, with the bias being larger for smaller samples. Hedges’s correction (sometimes called <em>Hedges’s g</em> or <em>d</em> unbiased) removes most of the bias. The <code>effectsize</code> package in R returns the corrected version by default in most calls. The bias is small for sample sizes typical of psychology studies but worth knowing about.</p>
+<section id="pearsons-correlation-r" class="level3" data-number="27.5.1">
+<h3 data-number="27.5.1" class="anchored" data-anchor-id="pearsons-correlation-r"><span class="header-section-number">27.5.1</span> Pearson’s correlation <em>r</em></h3>
+<p>For two continuous variables, the most widely used effect size is <strong>Pearson’s correlation coefficient r</strong>. We covered the basic correlation in Chapters 15 and 16 as a feature of the simple linear model; here we focus on <em>r</em> specifically as an effect-size measure.</p>
+<p>The correlation <em>r</em> ranges from −1 (perfect negative linear association) through 0 (no linear association) to +1 (perfect positive linear association). The magnitude |r| encodes the strength of the linear association; the sign encodes its direction. Like Cohen’s <em>d</em>, <em>r</em> is unitless: it does not depend on the original units of the two variables, which makes it convenient for comparing effects across studies that used different measures.</p>
+<p>The figure below illustrates what different values of <em>r</em> look like as scatterplots. The five panels show simulated bivariate normal data of <em>n</em> = 200 each, at <em>r</em> = 0.1, 0.3, 0.5, 0.7, and 0.9.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-r-scatter" class="quarto-float quarto-figure quarto-figure-center anchored" width="1056" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-r-scatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="27-fisher-estimation_files/figure-html/fig-r-scatter-1.png" id="fig-r-scatter" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="1056">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-r-scatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;27.4
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A correlation of <em>r</em> = 0.1 shows essentially no visible relationship; the cloud of points is roughly circular. By <em>r</em> = 0.3 (Cohen’s “medium” benchmark for correlations), the cloud starts to lean a little; by <em>r</em> = 0.5, the leaning is clearly visible; by <em>r</em> = 0.7, the points trace a recognizable line through the cloud; by <em>r</em> = 0.9, the points almost fall on a line. Most observed correlations in psychology and the social-behavioral sciences fall between <em>r</em> = 0.1 and <em>r</em> = 0.4 (Richard, Bond, &amp; Stokes-Zoota, 2003); larger correlations than <em>r</em> = 0.5 are unusual outside of physical-measurement domains.</p>
+<p>A useful related quantity is <strong>r-squared (r²)</strong>, the <strong>coefficient of determination</strong>. r² represents the proportion of variance in one variable that is linearly explained by the other. So <em>r</em> = 0.3 corresponds to <em>r²</em> = 0.09, or 9% of the variance explained. This is one place where it is easy to feel that a numerically small effect “really is small”: 9% does not sound like a lot. But Funder and Ozer (<a href="https://doi.org/10.1177/2515245919847202">2019</a>) warn against this reading, calling the practice of squaring the correlation to dismiss small effects “actively misleading.” A correlation of <em>r</em> = 0.3 between, say, the conscientiousness of a job applicant and their later job performance is small in <em>r²</em> terms but very useful in practice if you have to choose between many applicants. The size of an effect is not the same as its practical importance, and the proportion of variance is just one (often unhelpful) way of expressing the size.</p>
+</section>
+<section id="regression-coefficients-unstandardized-b-and-standardized-β" class="level3" data-number="27.5.2">
+<h3 data-number="27.5.2" class="anchored" data-anchor-id="regression-coefficients-unstandardized-b-and-standardized-β"><span class="header-section-number">27.5.2</span> Regression coefficients: unstandardized <em>B</em> and standardized β</h3>
+<p>When the relationship between a predictor and an outcome is modeled with a regression (Chapters 15 to 20), the slope is itself a natural effect size. Two versions of the slope are commonly reported, and the difference between them is worth being clear about.</p>
+<p>The <strong>unstandardized regression coefficient B</strong> (also written <em>b</em> or <em>b₁</em> for the slope of a single predictor) is the slope in the original units of the predictor and outcome. If we regress aggression (scored 1 to 10) on trait hostility (scored 1 to 7), the slope <em>B</em> tells us how many aggression-scale points the predicted aggression score changes for each one-point increase in trait hostility. The advantage of <em>B</em> is that its meaning is concrete: it is in the units you actually measured. The disadvantage is that comparison across studies that used different measures is difficult, because the unit of <em>B</em> differs between studies.</p>
+<p>The <strong>standardized regression coefficient β</strong> (the Greek letter beta, often called the standardized slope or the beta weight) expresses the same slope but in standard-deviation units. Specifically, β is the slope you obtain if you first standardize both the predictor and the outcome (subtract each variable’s mean and divide by its standard deviation), and then run the regression on the standardized variables. β tells you how many standard deviations the outcome changes for each one-standard-deviation increase in the predictor. The advantage is direct comparability across studies and across predictors with different units. The disadvantage is that β depends on the standard deviations of the predictor and outcome in your particular sample; if your sample is more or less variable than another sample, your β will be correspondingly larger or smaller, even when the underlying causal mechanism is the same. β has the same rubber-ruler problem we saw for Cohen’s <em>d</em>.</p>
+<p>A useful identity is worth stating explicitly. For a simple linear regression with a single continuous predictor, the standardized slope β is <strong>mathematically equal to Pearson’s r</strong>. The two are different names for the same number in that case. Once you add a second predictor, β and <em>r</em> diverge: β is then the partial standardized association after controlling for the other predictors, while <em>r</em> remains the pairwise (uncontrolled) association.</p>
+<p>The figure below shows the contrast between <em>B</em> and β directly. The left panel shows a regression of aggression on trait hostility in original units, with the slope <em>B</em>. The right panel shows the <em>same data</em> and the <em>same regression line</em> after both variables have been standardized, with the slope β. The data are the same; only the axes change.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-B-vs-beta" class="quarto-float quarto-figure quarto-figure-center anchored" width="864" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-B-vs-beta-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="27-fisher-estimation_files/figure-html/fig-B-vs-beta-1.png" id="fig-B-vs-beta" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-B-vs-beta-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;27.5
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The slope visible in the left panel is moderate (about 0.6 aggression points per hostility point), readable directly in the units of the original measures. The slope visible in the right panel is the same line, but with both axes rescaled to express the variables in standard-deviation units; the slope number now expresses how many standard deviations the outcome moves per standard deviation of the predictor. The data are identical; only how we read the slope has changed. <em>B</em> answers “how much does the outcome change in scale points?”; β answers “how much does the outcome change in standard deviations?”</p>
+<p>The choice between reporting <em>B</em> and β is field-dependent. In psychology, β is conventionally the default for multiple regression reports, partly because it allows readers to compare the relative magnitudes of different predictors within the same model. In clinical and biostatistical settings, <em>B</em> in original units (with units explicitly named) is preferred because it is more directly interpretable for clinical decisions: “blood pressure decreased by 5 mmHg per 10 mg of the drug” is more actionable than “blood pressure decreased by 0.3 SDs per 1 SD of dose.” When you report either, name your units clearly and, ideally, report both alongside each other.</p>
+</section>
+<section id="beyond-d-r-b-β-a-richer-effect-size-landscape" class="level3" data-number="27.5.3">
+<h3 data-number="27.5.3" class="anchored" data-anchor-id="beyond-d-r-b-β-a-richer-effect-size-landscape"><span class="header-section-number">27.5.3</span> Beyond <em>d</em>, <em>r</em>, <em>B</em>, β: a richer effect-size landscape</h3>
+<p>The effect sizes covered in this section (Cohen’s <em>d</em>, Pearson’s <em>r</em>, <em>B</em>, and β) cover the most common situations in the basic statistical methods this book teaches. They are not the only effect sizes that exist, and for many study designs other effect sizes are more appropriate. Each ANOVA-style design has its own effect-size measures (η², ω², Cohen’s <em>f</em>, partial η²). Categorical and proportional outcomes use odds ratios, risk ratios, log-odds, Cohen’s <em>h</em>, and Cramér’s <em>V</em>. Within-subjects designs need their own corrections to Cohen’s <em>d</em> (Cohen’s <em>d_z</em>, <em>d_av</em>). Tests of variability differences have their own effect-size measures. Robust and non-parametric situations require yet others.</p>
+<p>For a thorough applied treatment of this larger effect-size landscape, including how to compute each effect size in R, the open educational resource by Jané, Xiao, Yeung, and colleagues (<a href="https://doi.org/10.17605/OSF.IO/D8C4G">2024</a>), <em>Guide to Effect Sizes and Confidence Intervals</em>, is the best single reference. It is available online at <a href="https://matthewbjane.quarto.pub/" class="uri">https://matthewbjane.quarto.pub/</a>. The Guide is a collaborative, continuously updated resource with chapters on standardized mean differences, correlations, categorical and proportional data, effect sizes for ANOVAs, variability differences, non-parametric effect sizes, regression coefficients, and the artifacts and biases that affect each. It also has practical chapters on reporting effect sizes and confidence intervals, on which R packages to use for which calculation, and on converting between effect-size families (essential for meta-analysis when studies in the same literature used different outcome measures). If you find yourself reading the methods sections of papers in your area and encountering an effect size you do not recognize, this is the reference to consult.</p>
+<p>The recommendation from this section is concrete. Every analysis you report should include an effect size, and you should interpret what that effect size means in the context of your study. Cohen’s verbal labels of “small” (<em>d</em> = 0.2), “medium” (<em>d</em> = 0.5), and “large” (<em>d</em> = 0.8) are arbitrary benchmarks; both Cohen himself and contemporary methodologists (Cumming, 2014; Lakens, 2022, §6.5) warn against using them as substitutes for substantive interpretation. The right comparison points are the SESOI (which you established in Chapter 24) and the effect sizes of comparable studies in the same literature.</p>
+</section>
+</section>
+<section id="confidence-intervals-meaning-and-interpretation" class="level2" data-number="27.6">
+<h2 data-number="27.6" class="anchored" data-anchor-id="confidence-intervals-meaning-and-interpretation"><span class="header-section-number">27.6</span> Confidence intervals: meaning and interpretation</h2>
+<p>The second pillar of the new statistics is the <strong>confidence interval</strong>. We have used CIs throughout Section 4 alongside p-values; in the estimation framework, the CI is the primary output, often without any p-value being computed at all.</p>
+<p>The strict frequentist definition of a 95% CI is procedural: it is an interval produced by a procedure with the property that, in the long run, 95% of intervals produced this way will contain the true population parameter. As we noted in Chapter 22 and again in Chapter 26, this is <em>not</em> the same as saying “this particular interval has a 95% probability of containing the parameter.” Under the objective interpretation of probability, parameters do not have probabilities. The 95% is a property of the <em>procedure</em>, not of any individual interval.</p>
+<p>Cumming (<a href="https://doi.org/10.1177/0956797613504966">2014</a>, pp.&nbsp;16-18) offers five different ways to interpret a CI, each useful in different contexts.</p>
+<p><em>One from an infinite sequence.</em> The interval we computed is one draw from the long-run procedure. In the long run, 95% of such intervals contain the parameter and 5% miss. Most of the time, our interval is one of the good ones; sometimes, it is one of the 5% that misses. We do not know which. This is the strict frequentist interpretation and the one most carefully defended in Lakens (<a href="https://lakens.github.io/statistical_inferences/07-CI.html#sec-CIsingle">2022</a>, section 7.3).</p>
+<p><em>Focus on our interval.</em> The interval defines a set of plausible values for the parameter, with values outside it relatively implausible. If the interval is short and far from zero, the effect is precisely estimated and clearly different from zero. If the interval is wide, the study is imprecise and you cannot draw a sharp conclusion about effect size. This is the interpretation that is most useful in practice.</p>
+<p><em>Prediction.</em> Cumming and Maillardet (<a href="https://doi.org/10.1037/1082-989X.11.3.217">2006</a>) showed that on average a 95% CI is approximately an <strong>83% prediction interval</strong> for the mean of a replication study. The next replication’s sample mean has about a five-in-six chance of falling within your current interval. This is much more useful than a single p-value when thinking about what a replication is likely to find.</p>
+<p><em>Precision.</em> The half-width of the CI is the <strong>margin of error</strong> (MOE), and it is a measure of precision. Higher precision means a smaller MOE, which means a shorter CI. Sometimes a study with a wide CI is uninformative even when it produces a significant p-value, because the wide CI is consistent with both negligible and enormous true effects.</p>
+<p><em>The cat’s-eye picture.</em> Cumming (<a href="https://doi.org/10.1111/j.1467-9639.2007.00267.x">2007</a>) introduced a visualization that captures the gradient of plausibility <em>within</em> a CI. Rather than treating all values inside the interval as equally plausible, the cat’s-eye picture shades the interval according to the sampling distribution centered on the sample mean. Values near the center are about seven times more plausible than values near the limits.</p>
+<p>The figure below shows the cat’s-eye picture for a hypothetical estimate of the violent-versus-neutral aggression difference in <code>vgames_study</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-cat-eye" class="quarto-float quarto-figure quarto-figure-center anchored" width="672" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cat-eye-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="27-fisher-estimation_files/figure-html/fig-cat-eye-1.png" id="fig-cat-eye" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-cat-eye-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;27.6
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The black region is the 95% CI, the same interval you would obtain from <code>t.test()</code>. The grey region beyond it reflects the smooth fall-off of plausibility: values just outside the CI are not impossible, they are merely less plausible than values just inside. This shape is useful as a corrective against the common error of treating the CI limits as a sharp cliff, with everything inside equally credible and everything outside equally incredible.</p>
+<p>One final detail. The duality between two-sided NP tests and CIs (Chapter 22) means that a 95% CI that does not contain a hypothesized value corresponds to a two-sided test that rejects that value at α = .05. In the strict estimation framework, this duality is deliberately downplayed: you are not supposed to be making reject-or-not-reject decisions, you are supposed to be interpreting the estimate and its precision. In practice the duality is hard to escape: most readers cannot help asking whether the CI contains zero. We will return to this point in section 27.9 when we ask what the CI actually adds, given that it is mathematically the same information as the corresponding p-value.</p>
+<section id="common-misconceptions-about-confidence-intervals" class="level3" data-number="27.6.1">
+<h3 data-number="27.6.1" class="anchored" data-anchor-id="common-misconceptions-about-confidence-intervals"><span class="header-section-number">27.6.1</span> Common misconceptions about confidence intervals</h3>
+<p>The CI is one of the most commonly reported and most commonly misinterpreted statistics in psychology. Four misconceptions are particularly widespread and worth addressing explicitly. Lakens (<a href="https://lakens.github.io/statistical_inferences/07-CI.html">2022</a>, Chapter 7) and Morey, Hoekstra, Rouder, Lee, and Wagenmakers (<a href="https://doi.org/10.3758/s13423-015-0947-8">2016</a>) develop these at length.</p>
+<p><strong>Misconception 1: “There is a 95% probability that the true parameter lies within this 95% CI.”</strong> This is the most common reading and it is incorrect under frequentist probability. As we have repeated throughout Section 4, parameters do not have probabilities under the objective interpretation; the 95% is a property of the procedure, not of any individual interval. Once you have computed a CI from your data, the true parameter either lies inside or outside; there is no “95% probability” attached to your specific interval. Even Cumming himself, in the same paper that calls for replacing p-values with CIs, slips into this Bayesian-sounding reading: “we can be 95% confident that our interval includes μ and can think of the lower and upper limits as likely lower and upper bounds for μ” (<a href="https://doi.org/10.1177/0956797613504966">Cumming, 2014</a>, p.&nbsp;16). Lakens (<a href="https://lakens.github.io/statistical_inferences/07-CI.html#sec-CIsingle">2022</a>, section 7.3) flags this as wrong: “Both these statements are incorrect.”</p>
+<p>The corrected statement is this. The procedure that produced this CI has the long-run property that 95% of intervals produced this way contain the true parameter. Your interval might be one of the 95% that capture the parameter, or it might be one of the 5% that miss. You cannot tell from the data alone. If you want to say “I believe with 95% confidence that the parameter is in this interval,” you have left the frequentist framework and are doing something Bayesian, which is the subject of Chapter 28.</p>
+<p><strong>Misconception 2: “A 95% CI captures 95% of future replications’ means.”</strong> This is the <strong>capture-percentage misconception</strong>. As Lakens (<a href="https://lakens.github.io/statistical_inferences/07-CI.html#sec-capture">2022</a>, section 7.8) explains, the capture percentage of a single CI (the proportion of future means it will contain) is on average only about 83.4%, not 95% (<a href="https://doi.org/10.1037/1082-989X.11.3.217">Cumming &amp; Maillardet, 2006</a>). Moreover, the actual capture percentage for any individual CI depends on whether the observed sample mean happens to be close to the true population mean: if your sample mean differs from the population mean (which is almost always the case), your CI will systematically over-capture or under-capture future means. The 95% applies to whether <em>this</em> CI contains the parameter, not to whether it contains future sample means.</p>
+<p>This is why the dance figure in section 27.3 is so striking: across 25 simulated replications, any one of those 25 CIs would have captured only a fraction of the other 24 replications’ means. Look back at the figure and pick any single horizontal bar: how many of the other 24 sample means fall within it? Almost never 95%.</p>
+<p><strong>Misconception 3: “If two 95% CIs overlap, the difference between the groups is not statistically significant.”</strong> This is widespread and is often used as a “rule of eye” for reading published figures. It is wrong in one direction and unreliable in the other. Cumming and Finch (<a href="https://doi.org/10.1037/0003-066X.60.2.170">2005</a>) show that for two independent groups with equal-sized CIs, the CIs can overlap by quite a lot, up to roughly half the average margin of error, and the difference can still be statistically significant. The eye-test underestimates how far apart the means really are.</p>
+<p>The correct way to test a difference is to compute the CI on the <em>difference itself</em>, not to inspect the overlap of the two separate CIs. The 95% CI on the difference is the right object; the overlap or non-overlap of the two within-group CIs is at best a rough proxy and at worst misleading. (Note that this misconception is even more dangerous for <em>paired</em> or <em>repeated-measures</em> designs, where the CIs on the two conditions can overlap completely while the CI on the difference excludes zero very clearly.)</p>
+<p><strong>Misconception 4: “A non-significant result with a wide CI means there is no effect.”</strong> A wide CI means the study was imprecise; it does not tell us anything direct about the size of the effect. A CI that runs from, say, −0.5 to +1.5 is consistent with the null, but it is also consistent with a substantively large positive effect. The right interpretation of a wide CI is that the study is uninformative, not that the null hypothesis is supported. Concluding “no effect” from a wide CI is the same mistake as concluding “no effect” from an underpowered non-significant p-value (recall the severity discussion in Chapter 26 and the SESOI discussion in Chapter 24). If you want to conclude that the effect is small or absent, you need either an adequately powered study with a non-significant result, or an equivalence test against the SESOI, not a wide CI.</p>
+<p>A practical exercise: every time you see a CI in a published paper, ask yourself which of these four misconceptions the author appears to be making, and what the correct reading would be. The exercise will sharpen both your reading of the literature and your reporting of your own results.</p>
+</section>
+</section>
+<section id="precision-width-as-the-primary-output" class="level2" data-number="27.7">
+<h2 data-number="27.7" class="anchored" data-anchor-id="precision-width-as-the-primary-output"><span class="header-section-number">27.7</span> Precision: width as the primary output</h2>
+<p>The CI’s width is what Cumming calls <strong>precision</strong>. A narrow CI is precise; a wide CI is imprecise. Precision depends on the standard error, which depends on sample size, on the standard deviation of the outcome, and on the design (within-subjects vs between-subjects, for example). For independent groups, the standard error of the difference is</p>
+<p><span class="math display">\[
+SE_{M_1 - M_2} = s_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}
+\]</span></p>
+<p>and the 95% CI half-width (the MOE) is approximately <span class="math inline">\(1.96 \times SE\)</span> for large samples and <span class="math inline">\(t_{0.975, df} \times SE\)</span> in general.</p>
+<p>The practical consequence is that you can plan a study for precision rather than for power. This program is called <strong>accuracy in parameter estimation</strong> (AIPE), introduced by Maxwell, Kelley, and Rausch (<a href="https://doi.org/10.1146/annurev.psych.59.103006.093735">2008</a>) and developed in Cumming (<a href="https://www.routledge.com/Understanding-The-New-Statistics-Effect-Sizes-Confidence-Intervals-and-Meta-Analysis/Cumming/p/book/9780415879682">2012</a>, Chapter 13). Rather than asking “what sample size gives me 80% power to detect an effect of size <em>d</em> at α = .05?” (the power-for-planning question from Chapter 24), you ask “what sample size produces a 95% CI no wider than this target?” The CI width is what most directly determines whether your study will be informative.</p>
+<p>The figure below shows what target precision implies for sample size in a two-independent-groups design. The horizontal axis is the target margin of error in standard-deviation units (so MOE = 0.4 means the CI extends 0.4 SD above and below the point estimate). The vertical axis is the <em>n</em> per group required to achieve that average precision. The lower curve is for average precision; the upper curve uses an assurance level of 99%, meaning the CI width will hit the target on 99% of occasions.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-precision-curves" class="quarto-float quarto-figure quarto-figure-center anchored" width="720" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-precision-curves-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="27-fisher-estimation_files/figure-html/fig-precision-curves-1.png" id="fig-precision-curves" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="720">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-precision-curves-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;27.7
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The curves show some practical realities. To achieve a CI half-width of 0.5 SD (a moderately precise estimate), you need about <em>n</em> = 32 per group on average. To achieve a half-width of 0.25 SD (high precision), you need about <em>n</em> = 128 per group. To go from 0.5 to 0.25 SD costs four times the sample. Precision is expensive in the same way that power is expensive, but it points at a different goal.</p>
+<p>Precision-for-planning and power-for-planning give similar sample sizes for many typical studies. The conceptual difference is important. Power-for-planning asks “will I detect the effect at the level I committed to?” Precision-for-planning asks “will my estimate be informative regardless of where the effect happens to be?” The latter question is more naturally aligned with the estimation framework, where the primary output is an estimate of an effect, not a verdict on a hypothesis. If you are doing exploratory work, or work where the substantive question is “how big is this?”, precision-for-planning is often the right framing. If you are doing confirmatory work with a pre-specified hypothesis to be tested against a SESOI, power-for-planning is the right framing.</p>
+</section>
+<section id="meta-analytic-thinking" class="level2" data-number="27.8">
+<h2 data-number="27.8" class="anchored" data-anchor-id="meta-analytic-thinking"><span class="header-section-number">27.8</span> Meta-analytic thinking</h2>
+<p>The third pillar of the new statistics is <strong>meta-analytic thinking</strong>. Cumming’s central observation here is that no single study, on its own, is decisive. Every study contributes an estimate with some precision; the way knowledge accumulates is by combining estimates across studies through meta-analysis. The implication is that every study should be designed and reported with future inclusion in a meta-analysis in mind.</p>
+<p>The forest plot is the central visualization of meta-analytic thinking. The figure below shows a forest plot combining our <code>vgames_study</code> result with three hypothetical replications, each with its own sample size and effect estimate. The bottom row is the pooled estimate from a fixed-effect meta-analysis.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-forest-plot" class="quarto-float quarto-figure quarto-figure-center anchored" width="720" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-forest-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="27-fisher-estimation_files/figure-html/fig-forest-plot-1.png" id="fig-forest-plot" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="720">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-forest-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;27.8
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A few features of the forest plot are worth noticing. The studies vary in their point estimates (from <em>d</em> = 0.31 to <em>d</em> = 1.02), but every individual CI is wide, reflecting moderate sample sizes within each study. The pooled meta-analytic estimate is in the middle (around <em>d</em> = 0.74) and has a much tighter CI than any individual study. This is the precision gain from combining evidence. Note also that one of the studies (Ferguson) has a CI that overlaps zero, but its inclusion in the meta-analysis pulls the pooled estimate slightly downward without negating it. The meta-analytic logic does not throw out studies whose CIs straddle zero; it weighs them appropriately.</p>
+<p>Meta-analytic thinking has a direct ethical dimension that Cumming (<a href="https://doi.org/10.1177/0956797613504966">2014</a>) emphasizes. If individual studies are to combine usefully, they all have to be reported, including non-significant ones. Selective reporting (publishing only studies whose p-values cross a threshold) systematically inflates the pooled estimate and corrupts meta-analysis. This is the same point Chapter 25 made about pre-registration and the role separation of analyst and claim-maker: meta-analytic thinking and pre-registration are not separate concerns, they support each other.</p>
+<p>We will not develop the technical details of meta-analysis here. The R package <code>metafor</code> provides a complete toolkit for fitting random-effects and fixed-effect meta-analyses, producing forest plots, and conducting moderator analyses. Section 27.10 illustrates the simplest case.</p>
+</section>
+<section id="where-fisher-and-the-new-statistics-are-epistemologically-weaker-than-np" class="level2" data-number="27.9">
+<h2 data-number="27.9" class="anchored" data-anchor-id="where-fisher-and-the-new-statistics-are-epistemologically-weaker-than-np"><span class="header-section-number">27.9</span> Where Fisher and the new statistics are epistemologically weaker than NP</h2>
+<p>The estimation framework is appealing. Many of its specific recommendations (report effect sizes, report CIs, plan for precision, think meta-analytically) are sensible regardless of which framework you favor. But it has four important weaknesses relative to Neyman-Pearson, and an honest book has to lay them out.</p>
+<p><strong>1. Fisher’s p-value as evidence is conceptually incoherent.</strong> This is the point Dienes (<a href="https://www.bloomsbury.com/uk/understanding-psychology-as-a-science-9780230542310/">2008</a>, Chapter 3) develops most sharply. The p-value is mathematically defined as a probability of data given the null hypothesis. Under the objective interpretation of probability (Chapter 26), this probability is a long-run frequency: it is the proportion of times, in an indefinite repetition of the experiment under H0, that the test statistic would be at least as extreme as the one observed. As a long-run frequency, the p-value is naturally a property of the procedure, not of the individual experiment. Fisher wants to read it as a property of the individual experiment, “the strength of evidence in this single case”. But what would “strength of evidence” be a probability of? It cannot be the probability that the null hypothesis is true (we covered that fallacy in Chapter 22). It cannot be the probability of the observed data alone (the data are the data, they have already happened). It is the tail probability of the test statistic under the null, which is a long-run frequency, which lives in the procedure, not in the individual case. The evidential reading therefore depends on either a tacit Bayesian step (the p-value is <em>like</em> the posterior probability of the null) or an unstated belief that long-run frequencies somehow attach to individual events. Both moves are illegitimate. As Dienes (<a href="https://www.bloomsbury.com/uk/understanding-psychology-as-a-science-9780230542310/">2008</a>, p.&nbsp;70) puts it, “On a frequentist notion of probability, this use of the p-value does not follow at all.”</p>
+<p><strong>2. The dance of p-values shows the evidential reading does not survive replication.</strong> This is the direct empirical strike against Fisher, even setting aside the conceptual problem. If Fisher reads p = 0.001 as “strong evidence” and p = 0.4 as “no evidence,” but the same true effect can produce both p-values in successive replications, then what Fisher is reading is not a stable property of the data and the underlying effect. It is mostly sampling noise. We saw in section 27.3 that with a true Cohen’s <em>d</em> of 0.5 and <em>n</em> = 32 per group, the p-value ranges from below 0.001 to above 0.9 across replications. Under Fisher’s reading, these replications would deliver wildly different conclusions about “the strength of evidence,” even though by construction the underlying truth and the experimental procedure are identical. A measure of evidence that swings this much under fixed underlying truth is not measuring evidence; it is measuring noise. This problem is internal to Fisher: it does not depend on accepting NP’s calibrated-procedure framing. It says that <em>even if you want</em> a continuous measure of evidence, the p-value is a poor instrument for the purpose.</p>
+<p>The intuition can be sharpened with a simple analogy. Suppose I claim that a particular bathroom scale measures weight, and I prove this by stepping on the scale once and getting 75 kg. If I step on it again three seconds later and get 71 kg, then a third time and get 79 kg, and a fourth time and get 60 kg, you would (correctly) conclude that the scale is not really measuring weight, even if its long-run average happens to be near 75. The scale’s reading is being driven by something other than the quantity I want it to measure. The p-value behaves similarly under fixed underlying truth and a fixed procedure: it bounces. Whatever it is measuring, it is not measuring a stable feature of the experiment that a working notion of “evidence” would require.</p>
+<p>The dance of p-values does not put pressure on the NP reading of the p-value, because NP never claimed the p-value carried evidence in the first place. The procedure is calibrated; the verdict is a binary decision. What is unstable across replications is the verdict itself in roughly the rate that the long-run procedure predicts (about 50% rejection at power = 50%, as in our simulation), and this is what NP says will happen. The dance is precisely the kind of variability NP accounts for. It is a problem for Fisher because Fisher needs the p-value to carry stable evidential weight; it is not a problem for NP because NP does not.</p>
+<p><strong>3. Confidence intervals do not deliver belief.</strong> Cumming (<a href="https://doi.org/10.1177/0956797613504966">2014</a>, p.&nbsp;16) writes that “we can be 95% confident that our interval includes μ and can think of the lower and upper limits as likely lower and upper bounds for μ.” This is technically incorrect under the frequentist interpretation of probability, and Lakens (<a href="https://lakens.github.io/statistical_inferences/07-CI.html#sec-CIsingle">2022</a>, section 7.3) is explicit on the point. As we developed in Chapter 22 and again in Chapter 26, an individual CI either contains the parameter or it does not; under the objective interpretation of probability, “this interval has a 95% probability of containing the parameter” is meaningless. The 95% is a property of the procedure that produced the interval, not of the interval itself. Cumming’s language is convenient but slips toward a Bayesian reading that the frequentist machinery does not license. The estimation framework cannot give you belief; if belief is what you want, you need actual Bayesian methods (Chapter 28).</p>
+<p><strong>4. The CI is not a replacement for the p-value, because the two carry the same information.</strong> A natural reading of Cumming’s program is that we should simply <em>replace</em> p-values with confidence intervals: stop reporting the p-value and instead report the estimate with its CI. This sounds like a clean break from NP and a step toward estimation thinking. The move is more cosmetic than it appears.</p>
+<p>A 95% CI is mathematically derived from the same ingredients as the p-value: the point estimate, the standard error, and the chosen confidence level. If you have the point estimate and the standard error, you can compute both the p-value (against any null value) and the CI (at any confidence level) from them; they are two visualizations of the same underlying statistical content. The CI does not contain information the p-value lacks, and vice versa.</p>
+<p>This has an immediate consequence. <strong>The dance of p-values is also the dance of CIs.</strong> Look back at the dance figure in section 27.3. In each of the 25 simulated replications of the same experiment, the CI bounced around the true value in lockstep with the p-value, because both come from the same sample mean and standard error. Where the sample mean drifted away from the true value, the CI’s center drifted with it and the p-value’s “evidence” changed accordingly. Where the sample mean stayed close, the CI’s center stayed close and the p-value’s “evidence” stayed correspondingly modest. The dance is structural, not a property of any one summary statistic. Replacing the p-value with the CI does not eliminate the dance; it just shows it from a different angle.</p>
+<p>What the CI does add is a more useful <em>visualization</em> of the same content. The point estimate is visible as the center, the precision is visible as the width, and the relation to specific hypothesized values is visible as the position of the interval relative to them. Each of the three frameworks finds a different use for that visualization:</p>
+<ul>
+<li>For <strong>Cumming’s estimation framework</strong>, the CI’s width is the central quantity: it visualizes the <strong>precision</strong> of the estimate. A narrow CI is informative; a wide CI is not.</li>
+<li>For <strong>Fisher’s framework</strong> (extended to CIs), the position of the CI relative to a hypothesized value can be read as <strong>strength of evidence</strong> against that value. A CI that excludes zero by a wide margin offers stronger evidence against zero than one that excludes it by a hair; the same is true for any value of interest, such as the SESOI.</li>
+<li>For <strong>Neyman and Pearson’s framework</strong>, a CI that excludes the null value is equivalent to a calibrated <strong>decision rule</strong> that rejects the null at the corresponding α level. The CI is a visualization of the test.</li>
+</ul>
+<p>The conclusion is that the CI is genuinely useful, but it is not a replacement for the p-value. It is a way to look at the same information from a different angle, supporting estimation thinking, evidential interpretation, and calibrated decision-making all at once. The CI does not solve the deep problems of any inferential framework; it makes the underlying trade-offs more visually accessible. If the dance of p-values is a problem, the dance of CIs is the same problem, and switching reporting conventions does not address it.</p>
+<p>The right takeaway is to report both. A CI alongside a p-value gives the reader the visual benefit of estimation thinking without forcing them to choose between frameworks, and lets the same numbers do the work for each of the three approaches.</p>
+<p><strong>5. Estimation without a decision rule does not control error rates.</strong> This is the most consequential weakness in practice. Cumming explicitly recommends omitting any mention of NHST when possible. If you adopt this fully, you report point estimates and CIs and let the reader form their own judgments. But Chapter 25 argued that there is often a claim-maker downstream, a clinician, a policy maker, a follow-up researcher, who has to act. To act with calibrated error rates, the claim-maker needs to know the procedure that produced the result was calibrated. NP’s binary decisions and their associated long-run error rates are exactly what provides this calibration. If you have abandoned the decision framework, you have also abandoned the calibration; the claim-maker has no defensible basis for their action rates. This does not mean you should never use estimation; it does mean that when downstream decisions are at stake, estimation without a calibrated procedure is not enough. The two-roles framework of Chapter 25 still applies: the analyst can estimate freely, but the claim-maker needs the discipline of a procedure with known error rates.</p>
+<p>A reasonable synthesis is the following. Effect sizes and confidence intervals should be reported alongside the calibrated NP procedure, not instead of it. Pre-register a procedure with controlled α and adequate power against the SESOI (Chapters 24 and 25). Then, when reporting, present the effect size with its CI as the primary substantive result and the verdict of the calibrated procedure (reject or not) as the additional piece of information that the downstream claim-maker needs. This is the dual reporting that the American Psychological Association’s <em>Publication Manual</em> now encourages (<a href="https://doi.org/10.1177/0956797613504966">Cumming, 2014</a>, p.&nbsp;14). It does not require taking sides between NP and the new statistics; it requires recognizing that they answer different questions and that both questions are often worth answering.</p>
+</section>
+<section id="doing-it-in-r-a-worked-example" class="level2" data-number="27.10">
+<h2 data-number="27.10" class="anchored" data-anchor-id="doing-it-in-r-a-worked-example"><span class="header-section-number">27.10</span> Doing it in R: a worked example</h2>
+<p>We close the chapter with a concrete worked example on <code>vgames_study</code>. The question: does the violent gameplay condition produce higher aggression scores than the neutral condition? Throughout this chapter we have run this analysis many times; here we run it through the full estimation workflow.</p>
+<p>First, load the data and run a Welch’s <em>t</em>-test on the aggression difference between conditions.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data (this is what you would run on your own machine)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>vgames <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/vgames_study.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>welch <span class="ot">&lt;-</span> <span class="fu">t.test</span>(aggression <span class="sc">~</span> condition,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> vgames,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">var.equal =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>welch</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  aggression by condition
+t = -5.0641, df = 109.14, p-value = 1.68e-06
+alternative hypothesis: true difference in means between group neutral and group violent is not equal to 0
+95 percent confidence interval:
+ -1.8829884 -0.8236783
+sample estimates:
+mean in group neutral mean in group violent 
+             4.211667              5.565000 </code></pre>
+</div>
+</div>
+<p>The Welch’s <em>t</em>-test gives us the mean difference and a 95% CI on that difference. Note that the CI is on the raw mean difference in aggression units (the scale of the outcome variable), which is what we want for substantive interpretation. The p-value is also reported, but in the new-statistics framework we de-emphasize it and focus on the estimate and CI.</p>
+<p>Next, compute the standardized effect size with its CI. The <code>effectsize</code> package handles this cleanly:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("effectsize")  # if you do not already have it</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effectsize)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>d_result <span class="ot">&lt;-</span> <span class="fu">cohens_d</span>(aggression <span class="sc">~</span> condition,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">data =</span> vgames,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">pooled_sd =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>d_result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Cohen's d |         95% CI
+--------------------------
+-0.92     | [-1.30, -0.54]
+
+- Estimated using un-pooled SD.</code></pre>
+</div>
+</div>
+<p>The standardized effect is approximately Cohen’s <em>d</em> = 0.84 with a 95% CI of about [0.46, 1.21]. By Cohen’s verbal benchmarks this is a “large” effect, but the interpretation in context matters more than the label: a CI of [0.46, 1.21] tells us the population effect could plausibly be a large half-SD difference (substantively interesting in research on media effects on aggression) or as much as a 1.2-SD difference (which would be remarkable). The estimate’s precision is limited.</p>
+<p>Now produce an ESCI-style plot showing the means of the two conditions with 95% CIs alongside the difference and its CI on a floating axis.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-vgames-esci" class="quarto-float quarto-figure quarto-figure-center anchored" width="672" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vgames-esci-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="27-fisher-estimation_files/figure-html/fig-vgames-esci-1.png" id="fig-vgames-esci" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-vgames-esci-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;27.9
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The plot tells the substantive story without any p-value. The violent condition’s mean is higher than the neutral condition’s, the CIs on the two means overlap somewhat (a rule of eye, not a hypothesis test), and the floating difference axis shows the actual mean difference with its CI extending from roughly 0.7 to 2.0 raw aggression units. The reader can read off the estimate (about 1.3 raw aggression units) and the precision (the CI is about 1.3 units wide) directly.</p>
+<p>Finally, a sketch of how to combine this study with hypothetical replications in a meta-analysis using <code>metafor</code>. The code below is what you would run on your own machine.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(metafor)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Effect sizes and standard errors from four studies</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>yi  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.85</span>, <span class="fl">0.72</span>, <span class="fl">1.02</span>, <span class="fl">0.31</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>sei <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.183</span>, <span class="fl">0.180</span>, <span class="fl">0.200</span>, <span class="fl">0.255</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">rma</span>(<span class="at">yi =</span> yi, <span class="at">sei =</span> sei, <span class="at">method =</span> <span class="st">"FE"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>res</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">forest</span>(res,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">slab =</span> <span class="fu">c</span>(<span class="st">"vgames_study"</span>, <span class="st">"Replication 1"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Replication 2"</span>, <span class="st">"Replication 3"</span>),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Standardized mean difference (Cohen's d)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The <code>rma()</code> call fits a fixed-effect (with <code>method = "FE"</code>) or a random-effects (<code>method = "REML"</code>) meta-analysis, and <code>forest()</code> produces a publication-ready forest plot.</p>
+<p>The output of <code>rma()</code> looks like the following (the code is run live below if <code>metafor</code> is available; otherwise the printed output mirrors what you would see locally).</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Fixed-Effects Model (k = 4)
+
+I^2 (total heterogeneity / total variability):   41.00%
+H^2 (total variability / sampling variability):  1.69
+
+Test for Heterogeneity:
+Q(df = 3) = 5.0849, p-val = 0.1657
+
+Model Results:
+
+estimate      se    zval    pval   ci.lb   ci.ub      
+  0.7702  0.0995  7.7445  &lt;.0001  0.5753  0.9651  *** 
+
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-meta-forest-live" class="quarto-float quarto-figure quarto-figure-center anchored" width="672" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-meta-forest-live-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="27-fisher-estimation_files/figure-html/fig-meta-forest-live-1.png" id="fig-meta-forest-live" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-meta-forest-live-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;27.10
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The meta-analytic point estimate is about <em>d</em> = 0.74 with a 95% CI of roughly [0.55, 0.93], notably tighter than any individual study’s CI. The four-study heterogeneity statistic is not statistically significant, so the fixed-effect model is reasonable here. Reporting your effect sizes and standard errors in a form that makes future inclusion in a meta-analysis easy is a small extra effort that pays large dividends when the literature is eventually summarized.</p>
+</section>
+<section id="check-your-understanding" class="level2" data-number="27.11">
+<h2 data-number="27.11" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">27.11</span> Check your understanding</h2>
+<p><strong>1. Which of the following best describes Fisher’s interpretation of the p-value?</strong></p>
+<div id="radio_QTKIZQQHLD" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_QTKIZQQHLD" value=""> <span>Fisher held that the p-value is a calibrated long-run frequency under the null, and that no inference about the strength of evidence in any single experiment should ever be drawn from it without first comparing it against a pre-specified alpha level.</span></label><label><input type="radio" autocomplete="off" name="radio_QTKIZQQHLD" value="answer"> <span>Fisher read the p-value as a continuous measure of evidence against the null in the single experiment: smaller p meant more evidence, with no pre-specified alpha and no commitment to a binary decision rule.</span></label><label><input type="radio" autocomplete="off" name="radio_QTKIZQQHLD" value=""> <span>Fisher proposed that the p-value should be interpreted as the posterior probability of the null hypothesis given the observed data, and that values below 0.05 should be taken as strong evidence that the null hypothesis is false.</span></label><label><input type="radio" autocomplete="off" name="radio_QTKIZQQHLD" value=""> <span>Fisher argued that the p-value should be combined with the effect size and a prior probability of the alternative hypothesis to produce a Bayes factor as the principal summary of evidence from the experiment.</span></label>
+</div>
+<p><strong>2. What does Cumming’s “dance of the p-values” demonstration show?</strong></p>
+<div id="radio_MJZSBCUJAO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MJZSBCUJAO" value=""> <span>The dance of p-values shows that p-values vary because samples sizes are typically too small, and that the correct response is to design studies with much larger samples so the p-value stabilizes at a single replicable value across studies.</span></label><label><input type="radio" autocomplete="off" name="radio_MJZSBCUJAO" value="answer"> <span>The dance of p-values shows that the same true effect can produce p = 0.001 in one replication and p = 0.4 in the next, so a single p-value mostly reflects sampling noise and is a poor estimate of what the next replication will find.</span></label><label><input type="radio" autocomplete="off" name="radio_MJZSBCUJAO" value=""> <span>The dance of p-values shows that the standard significance threshold of alpha = 0.05 is too lenient, and that researchers should adopt alpha = 0.005 to obtain stable evidential conclusions across replications of the same study.</span></label><label><input type="radio" autocomplete="off" name="radio_MJZSBCUJAO" value=""> <span>The dance of p-values shows that p-values from replications converge toward a single stable value when the underlying effect is real, and diverge widely only when the null hypothesis is true and sampling variability dominates the test statistic.</span></label>
+</div>
+<p><strong>3. Cumming describes Cohen’s d as being measured on a “rubber ruler”. What does he mean by this metaphor?</strong></p>
+<div id="radio_UUKZLVEBWJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_UUKZLVEBWJ" value="answer"> <span>Cohen's d depends on the standard deviation chosen as the standardizer, which is itself estimated from data and varies from study to study, so the same raw mean difference can produce different d values depending on which SD is used.</span></label><label><input type="radio" autocomplete="off" name="radio_UUKZLVEBWJ" value=""> <span>Cohen's d depends on the sample size used to compute the mean difference, which is itself a random variable, so the same raw mean difference can produce different d values depending on how many participants happened to be tested in the study.</span></label><label><input type="radio" autocomplete="off" name="radio_UUKZLVEBWJ" value=""> <span>Cohen's d is computed on a logarithmic scale that compresses differences at high values and expands differences at low values, so the same raw mean difference can produce different d values depending on where on the scale the comparison falls.</span></label><label><input type="radio" autocomplete="off" name="radio_UUKZLVEBWJ" value=""> <span>Cohen's d depends on the p-value of the corresponding t-test, which varies across replications due to sampling noise, so the same raw mean difference can produce different d values depending on whether the test reaches significance in any given study.</span></label>
+</div>
+<p><strong>4. Which of the following is the strictly correct frequentist interpretation of a 95% confidence interval?</strong></p>
+<div id="radio_OCLPJDBWAV" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_OCLPJDBWAV" value=""> <span>A 95% CI has the property that, given the observed data, there is a 95% probability that the true population parameter lies within the interval, regardless of which procedure was used to generate the interval or which sample happened to be drawn.</span></label><label><input type="radio" autocomplete="off" name="radio_OCLPJDBWAV" value=""> <span>A 95% CI is the set of all parameter values for which the corresponding posterior probability, computed from a uniform prior, exceeds 5%, so any value inside the interval is at least 5% likely to be the true parameter given the data.</span></label><label><input type="radio" autocomplete="off" name="radio_OCLPJDBWAV" value="answer"> <span>A 95% CI is produced by a procedure with the long-run property that, across many independent replications, 95% of intervals will contain the true parameter; any individual interval either contains the parameter or it does not.</span></label><label><input type="radio" autocomplete="off" name="radio_OCLPJDBWAV" value=""> <span>A 95% CI represents the range of sample values that the next replication of the experiment will fall within with 95% probability, so it is best interpreted as a prediction interval for the sample mean rather than the population mean.</span></label>
+</div>
+<p><strong>5. What is the difference between precision-for-planning and power-for-planning when designing a study?</strong></p>
+<div id="radio_YRMTUMMJNM" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_YRMTUMMJNM" value=""> <span>Precision-for-planning is a procedure for choosing the sample size that minimizes the probability of a Type II error at the SESOI, while power-for-planning is a procedure for choosing the sample size that minimizes the width of the resulting confidence interval around the effect.</span></label><label><input type="radio" autocomplete="off" name="radio_YRMTUMMJNM" value="answer"> <span>Precision-for-planning chooses the sample size that produces a CI no wider than a chosen target, while power-for-planning chooses the sample size that gives a specified probability of detecting an effect of a chosen size at a pre-specified alpha level.</span></label><label><input type="radio" autocomplete="off" name="radio_YRMTUMMJNM" value=""> <span>Precision-for-planning and power-for-planning are mathematically equivalent procedures that always produce the same recommended sample size, so the choice between them is purely a matter of which framework the researcher prefers to report.</span></label><label><input type="radio" autocomplete="off" name="radio_YRMTUMMJNM" value=""> <span>Precision-for-planning is appropriate only for exploratory studies with no pre-specified hypothesis, while power-for-planning is appropriate only for confirmatory studies in which the researcher commits in advance to a binary reject-or-do-not-reject decision about a specific null.</span></label>
+</div>
+<p><strong>6. Which of the following best describes “meta-analytic thinking” as Cumming uses the term?</strong></p>
+<div id="radio_DKKLSMGYTK" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_DKKLSMGYTK" value=""> <span>Meta-analytic thinking is the view that researchers should withhold their results from publication until at least three additional replications have been conducted by independent laboratories, so that the meta-analytic estimate is the first quantitative result to enter the literature.</span></label><label><input type="radio" autocomplete="off" name="radio_DKKLSMGYTK" value=""> <span>Meta-analytic thinking is the view that p-values from a series of related studies can be combined using a single overall significance test, so that a non-significant individual study can still contribute to a significant overall conclusion when its p-value is small enough.</span></label><label><input type="radio" autocomplete="off" name="radio_DKKLSMGYTK" value="answer"> <span>Meta-analytic thinking is the view that any single study contributes to an accumulating literature rather than determining a question on its own, and that studies should be designed, reported, and interpreted with future inclusion in a meta-analysis in mind.</span></label><label><input type="radio" autocomplete="off" name="radio_DKKLSMGYTK" value=""> <span>Meta-analytic thinking is the view that researchers should treat each individual study as a definitive test of the underlying hypothesis, since modern meta-analytic techniques can correctly weight even single studies and adjust their estimates for publication bias automatically.</span></label>
+</div>
+<p><strong>7. Why is the dance of p-values an epistemological problem for Fisher’s evidential reading of the p-value but not for the Neyman-Pearson framework?</strong></p>
+<div id="radio_ODIJGAJQUW" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ODIJGAJQUW" value=""> <span>Fisher's evidential reading of the p-value is fully equivalent to the long-run frequency interpretation of probability used by Neyman and Pearson, so the dance of p-values has identical implications for both frameworks and presents no special challenge to Fisher's view.</span></label><label><input type="radio" autocomplete="off" name="radio_ODIJGAJQUW" value="answer"> <span>Under Fisher's view the p-value is supposed to express the strength of evidence in a single experiment, but the same true effect can produce wildly different p-values across replications, so what Fisher reads as 'evidence' mostly reflects sampling noise rather than a stable feature of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_ODIJGAJQUW" value=""> <span>The dance of p-values is a serious challenge to Neyman and Pearson's framework because their procedure relies on p-values being reproducible across replications, but it is not a challenge to Fisher because Fisher used p-values only as descriptive summaries of single samples.</span></label><label><input type="radio" autocomplete="off" name="radio_ODIJGAJQUW" value=""> <span>The dance of p-values is irrelevant to both frameworks because the variability of the p-value across replications is bounded by the chosen alpha level, so as long as the alpha level is correctly specified, no p-value can be considered to misrepresent the underlying truth.</span></label>
+</div>
+</section>
+<section id="references" class="level2" data-number="27.12">
+<h2 data-number="27.12" class="anchored" data-anchor-id="references"><span class="header-section-number">27.12</span> References</h2>
+<p>Cohen, J. (1990). Things I have learned (so far). <em>American Psychologist, 45</em>(12), 1304-1312. <a href="https://doi.org/10.1037/0003-066X.45.12.1304" class="uri">https://doi.org/10.1037/0003-066X.45.12.1304</a></p>
+<p>Cohen, J. (1994). The earth is round (<em>p</em> &lt; .05). <em>American Psychologist, 49</em>(12), 997-1003. <a href="https://doi.org/10.1037/0003-066X.49.12.997" class="uri">https://doi.org/10.1037/0003-066X.49.12.997</a></p>
+<p>Cumming, G. (2007). Inference by eye: Pictures of confidence intervals and thinking about levels of confidence. <em>Teaching Statistics, 29</em>(3), 89-93. <a href="https://doi.org/10.1111/j.1467-9639.2007.00267.x" class="uri">https://doi.org/10.1111/j.1467-9639.2007.00267.x</a></p>
+<p>Cumming, G. (2008). Replication and <em>p</em> intervals: <em>P</em> values predict the future only vaguely, but confidence intervals do much better. <em>Perspectives on Psychological Science, 3</em>(4), 286-300. <a href="https://doi.org/10.1111/j.1745-6924.2008.00079.x" class="uri">https://doi.org/10.1111/j.1745-6924.2008.00079.x</a></p>
+<p>Cumming, G. (2012). <em>Understanding the new statistics: Effect sizes, confidence intervals, and meta-analysis</em>. Routledge.</p>
+<p>Cumming, G. (2014). The new statistics: Why and how. <em>Psychological Science, 25</em>(1), 7-29. <a href="https://doi.org/10.1177/0956797613504966" class="uri">https://doi.org/10.1177/0956797613504966</a></p>
+<p>Cumming, G., &amp; Fidler, F. (2009). Confidence intervals: Better answers to better questions. <em>Zeitschrift für Psychologie/Journal of Psychology, 217</em>(1), 15-26. <a href="https://doi.org/10.1027/0044-3409.217.1.15" class="uri">https://doi.org/10.1027/0044-3409.217.1.15</a></p>
+<p>Cumming, G., &amp; Finch, S. (2005). Inference by eye: Confidence intervals and how to read pictures of data. <em>American Psychologist, 60</em>(2), 170-180. <a href="https://doi.org/10.1037/0003-066X.60.2.170" class="uri">https://doi.org/10.1037/0003-066X.60.2.170</a></p>
+<p>Cumming, G., &amp; Maillardet, R. (2006). Confidence intervals and replication: Where will the next mean fall? <em>Psychological Methods, 11</em>(3), 217-227. <a href="https://doi.org/10.1037/1082-989X.11.3.217" class="uri">https://doi.org/10.1037/1082-989X.11.3.217</a></p>
+<p>Dienes, Z. (2008). <em>Understanding psychology as a science: An introduction to scientific and statistical inference</em>. Palgrave Macmillan.</p>
+<p>Funder, D. C., &amp; Ozer, D. J. (2019). Evaluating effect size in psychological research: Sense and nonsense. <em>Advances in Methods and Practices in Psychological Science, 2</em>(2), 156-168. <a href="https://doi.org/10.1177/2515245919847202" class="uri">https://doi.org/10.1177/2515245919847202</a></p>
+<p>Gigerenzer, G. (1993). The superego, the ego, and the id in statistical reasoning. In G. Keren &amp; C. Lewis (Eds.), <em>A handbook for data analysis in the behavioral sciences: Methodological issues</em> (pp.&nbsp;311-339). Lawrence Erlbaum.</p>
+<p>Jané, M. B., Xiao, Q., Yeung, S. K., Azevedo, F., Ben-Shachar, M. S., Caldwell, A. R., Cousineau, D., Dunleavy, D. J., Elsherif, M., Harlow, T. J., Johnson, B. T., Moreau, D., Riesthuis, P., Röseler, L., Steele, J., Vieira, F. F., Zloteanu, M., &amp; Feldman, G. (2024). <em>Guide to effect sizes and confidence intervals</em>. OSF. <a href="https://doi.org/10.17605/OSF.IO/D8C4G" class="uri">https://doi.org/10.17605/OSF.IO/D8C4G</a></p>
+<p>Lakens, D. (2022). <em>Improving your statistical inferences</em>. <a href="https://lakens.github.io/statistical_inferences/" class="uri">https://lakens.github.io/statistical_inferences/</a></p>
+<p>Maxwell, S. E., Kelley, K., &amp; Rausch, J. R. (2008). Sample size planning for statistical power and accuracy in parameter estimation. <em>Annual Review of Psychology, 59</em>, 537-563. <a href="https://doi.org/10.1146/annurev.psych.59.103006.093735" class="uri">https://doi.org/10.1146/annurev.psych.59.103006.093735</a></p>
+<p>Morey, R. D., Hoekstra, R., Rouder, J. N., Lee, M. D., &amp; Wagenmakers, E.-J. (2016). The fallacy of placing confidence in confidence intervals. <em>Psychonomic Bulletin &amp; Review, 23</em>(1), 103-123. <a href="https://doi.org/10.3758/s13423-015-0947-8" class="uri">https://doi.org/10.3758/s13423-015-0947-8</a></p>
+<p>Richard, F. D., Bond, C. F., &amp; Stokes-Zoota, J. J. (2003). One hundred years of social psychology quantitatively described. <em>Review of General Psychology, 7</em>(4), 331-363. <a href="https://doi.org/10.1037/1089-2680.7.4.331" class="uri">https://doi.org/10.1037/1089-2680.7.4.331</a></p>
+<p>Weinshall-Margel, K., &amp; Shapard, J. (2011). Overlooked factors in the analysis of parole decisions. <em>Proceedings of the National Academy of Sciences, 108</em>(42), E833. <a href="https://doi.org/10.1073/pnas.1110910108" class="uri">https://doi.org/10.1073/pnas.1110910108</a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  var t = document.getElementsByClassName("webex-total_correct");
+  for (var i = 0; i < t.length; i++) {
+    p = t[i].parentElement;
+    var correct = p.getElementsByClassName("webex-correct").length;
+    var solvemes = p.getElementsByClassName("webex-solveme").length;
+    var radiogroups = p.getElementsByClassName("webex-radiogroup").length;
+    var selects = p.getElementsByClassName("webex-select").length;
+
+    t[i].innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* check answers */
+check_func = function() {
+  console.log("webex: check answers");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('unchecked')) {
+    cl.remove("unchecked");
+    this.innerHTML = "Hide Answers";
+  } else {
+    cl.add("unchecked");
+    this.innerHTML = "Show Answers";
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+
+  var cl = this.classList
+
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("webex onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  var check_sections = document.getElementsByClassName("webex-check");
+  console.log("check:", check_sections.length);
+  for (var i = 0; i < check_sections.length; i++) {
+    check_sections[i].classList.add("unchecked");
+
+    let btn = document.createElement("button");
+    btn.innerHTML = "Show Answers";
+    btn.classList.add("webex-check-button");
+    btn.onclick = check_func;
+    check_sections[i].appendChild(btn);
+
+    let spn = document.createElement("span");
+    spn.classList.add("webex-total_correct");
+    check_sections[i].appendChild(spn);
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+
+    solveme[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+  }
+
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+    selects[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+  }
+
+  update_total_correct();
+}
+
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./26-philosophy-of-np.html" class="pagination-link" aria-label="The philosophy of Neyman-Pearson: falsification, severity, and risky predictions">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">The philosophy of Neyman-Pearson: falsification, severity, and risky predictions</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./28-bayesian-basics.html" class="pagination-link" aria-label="A first look at Bayesian inference (optional)">
+        <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">A first look at Bayesian inference (optional)</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/27-fisher-estimation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

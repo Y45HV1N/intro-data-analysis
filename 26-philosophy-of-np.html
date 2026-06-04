@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>26&nbsp; The philosophy of Neyman-Pearson: falsification, severity, and risky predictions – Understanding and analyzing social and behavioral data</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./27-fisher-estimation.html" rel="next">
+<link href="./25-two-roles-multiple-testing.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-d685995fa19fd69abfd2845f2861e92b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="include/webex.css">
+<link rel="stylesheet" href="include/custom.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21-why-inference.html">Section 4: Statistical Inference</a></li><li class="breadcrumb-item"><a href="./26-philosophy-of-np.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">The philosophy of Neyman-Pearson: falsification, severity, and risky predictions</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Understanding and analyzing social and behavioral data</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/Y45HV1N/intro-data-analysis" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 1: Getting Started Properly</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-basics-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What is R, and why use it?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-r-vs-rstudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R, RStudio, and how they relate</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-files-and-environment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Scripts, RData, projects, environments, and R Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-projects-and-sessions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Working with R projects and R sessions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-objects-and-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Objects and functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-operations-and-packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Basic operations, custom functions, and packages</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-recap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Recap and getting data into R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 2: Manipulating and Visualizing Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-data-wrangling-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data wrangling: basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-tidyverse-and-descriptives.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wrangling and describing data with the tidyverse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-data-visualization-principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">First principles of data visualization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-wrangling-for-psychology.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Wrangling for psychology research</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-advanced-wrangling-optional.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Advanced wrangling (optional)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 3: Statistical Modeling — Regressions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-data-and-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data and the idea of a statistical model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-mean-as-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The mean as a model: residuals, fit, and comparing models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-simple-linear-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">From the mean to the line: the simple linear model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-fitting-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Fitting and interpreting simple regression in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-multiple-and-categorical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Multiple regression and categorical predictors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-moderation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Moderation: when one predictor depends on another</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-bias-variance-assumptions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Bias, variance, and the assumptions of the linear model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-diagnostics-and-limits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Diagnostics, model fit, and the limits of your model</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 4: Statistical Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-why-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Why inference? Samples, populations, and the standard error</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-pvalues-fisher-neyman-pearson.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">P-values, Fisher, and Neyman-Pearson</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-test-statistics-and-df.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The inferential machinery: test statistics, z/t/F, and degrees of freedom</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24-decisions-errors-power-sesoi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and the SESOI</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25-two-roles-multiple-testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two roles, multiple testing, and pre-registration</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./26-philosophy-of-np.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">The philosophy of Neyman-Pearson: falsification, severity, and risky predictions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./27-fisher-estimation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Fisher, estimation, and the new statistics (optional)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./28-bayesian-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">A first look at Bayesian inference (optional)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./29-likelihoodism.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Likelihoodism, briefly (optional)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 5: Data Visualization in Practice and Communicating Findings</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./30-intro-ggplot2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Introduction to ggplot2: the grammar of graphics in practice</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./31-visualizing-means.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Visualizing averages, spread, and conditional means</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./32-count-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Visualizing count variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./33-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Visualizing distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./34-apa-tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Tables in APA 7 style</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./35-apa-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Proper APA reporting of statistical results</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./36-coefficient-plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Coefficient plots and forest plots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./37-dataviz-use-cases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Use cases: visualizations and tables for common analyses</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./38-audience-targeted-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Audience-targeted reporting: scientific vs lay communication</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 6: Causal Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./39-why-data-doesnt-tell-causes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Why data alone does not tell us causes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./40-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">The potential outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./41-randomization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Randomization, the cleanest causal claim</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./42-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">DAGs: drawing your causal assumptions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./43-confounders-mediators-colliders.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Confounders, mediators, colliders</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./44-backdoor-criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">The backdoor criterion: what ‘controlling for’ actually does</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#what-is-probability" id="toc-what-is-probability" class="nav-link active" data-scroll-target="#what-is-probability"><span class="header-section-number">26.1</span> What is probability?</a></li>
+  <li><a href="#inference-as-inductive-behavior" id="toc-inference-as-inductive-behavior" class="nav-link" data-scroll-target="#inference-as-inductive-behavior"><span class="header-section-number">26.2</span> Inference as inductive behavior</a></li>
+  <li><a href="#falsification-and-probabilistic-theories" id="toc-falsification-and-probabilistic-theories" class="nav-link" data-scroll-target="#falsification-and-probabilistic-theories"><span class="header-section-number">26.3</span> Falsification and probabilistic theories</a>
+  <ul class="collapse">
+  <li><a href="#three-versions-of-falsificationism" id="toc-three-versions-of-falsificationism" class="nav-link" data-scroll-target="#three-versions-of-falsificationism"><span class="header-section-number">26.3.1</span> Three versions of falsificationism</a></li>
+  <li><a href="#from-dogmatic-falsification-to-np-a-worked-example" id="toc-from-dogmatic-falsification-to-np-a-worked-example" class="nav-link" data-scroll-target="#from-dogmatic-falsification-to-np-a-worked-example"><span class="header-section-number">26.3.2</span> From dogmatic falsification to NP: a worked example</a></li>
+  <li><a href="#piles-in-the-swamp" id="toc-piles-in-the-swamp" class="nav-link" data-scroll-target="#piles-in-the-swamp"><span class="header-section-number">26.3.3</span> Piles in the swamp</a></li>
+  </ul></li>
+  <li><a href="#severe-tests" id="toc-severe-tests" class="nav-link" data-scroll-target="#severe-tests"><span class="header-section-number">26.4</span> Severe tests</a></li>
+  <li><a href="#risky-predictions" id="toc-risky-predictions" class="nav-link" data-scroll-target="#risky-predictions"><span class="header-section-number">26.5</span> Risky predictions</a></li>
+  <li><a href="#what-is-your-test-really-testing" id="toc-what-is-your-test-really-testing" class="nav-link" data-scroll-target="#what-is-your-test-really-testing"><span class="header-section-number">26.6</span> What is your test really testing?</a></li>
+  <li><a href="#where-neyman-pearson-is-silent-three-alternatives" id="toc-where-neyman-pearson-is-silent-three-alternatives" class="nav-link" data-scroll-target="#where-neyman-pearson-is-silent-three-alternatives"><span class="header-section-number">26.7</span> Where Neyman-Pearson is silent: three alternatives</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">26.8</span> Check your understanding</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">26.9</span> References</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/26-philosophy-of-np.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21-why-inference.html">Section 4: Statistical Inference</a></li><li class="breadcrumb-item"><a href="./26-philosophy-of-np.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">The philosophy of Neyman-Pearson: falsification, severity, and risky predictions</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">The philosophy of Neyman-Pearson: falsification, severity, and risky predictions</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The previous five chapters built up the machinery of the Neyman-Pearson framework: sampling distributions and standard errors (Chapter 21), the philosophical division between Fisher’s evidential p-value and Neyman-Pearson’s calibrated decision procedure (Chapter 22), the inferential machinery of test statistics and degrees of freedom (Chapter 23), errors, power, and the SESOI (Chapter 24), and the two-role distinction together with multiple testing and pre-registration (Chapter 25). We have, by this point, an extensive working knowledge of how Neyman-Pearson inference operates in practice.</p>
+<p>This chapter steps back and asks a different question. <em>Why</em> is Neyman-Pearson built the way it is? What philosophical assumptions force the framework to look like a procedure for behavioral decisions with controlled long-run error rates rather than, say, a procedure for updating beliefs or a procedure for measuring evidence? And how does that philosophical grounding shape what counts as good practice in research?</p>
+<p>This is a conceptual chapter. There is no new R code. The aim is to develop the reasoning that makes the Neyman-Pearson framework hang together, and then to use that reasoning to think more carefully about what makes a hypothesis test worth doing in the first place. The chapter draws on Dienes (<a href="https://www.bloomsbury.com/uk/understanding-psychology-as-a-science-9780230542310/">2008</a>, Chapter 3), Lakens (<a href="https://lakens.github.io/statistical_inferences/05-questions.html">2022</a>, Chapter 5), Mayo (<a href="https://www.cambridge.org/9781107054134">2018</a>), Meehl (<a href="https://doi.org/10.1086/288135">1967</a>, <a href="https://doi.org/10.2466/pr0.1990.66.1.195">1990</a>), Popper (<a href="https://doi.org/10.4324/9780203994627">1959</a>), Lakatos (<a href="https://doi.org/10.1017/CBO9780511621123">1978</a>), Hempel (<a href="https://philpapers.org/rec/HEMPON-2">1966</a>), and Royall (<a href="https://doi.org/10.1201/9780203738665">1997</a>).</p>
+<p>The chapter has six substantive sections. We start with the philosophy of probability that underwrites the framework. We then examine how Neyman-Pearson connects to Karl Popper’s idea of falsification, develop the related idea of severe tests from Deborah Mayo, work through the idea of risky predictions and what it implies for how we set up hypothesis tests, distinguish what the statistical test really tests from the substantive theory we care about, and end with a preview of three alternative frameworks (Fisher and estimation, Bayesian inference, and likelihoodism) that take the gaps Neyman-Pearson leaves open as their starting point. Each of those three alternatives is the subject of one of the optional chapters that follow.</p>
+<section id="what-is-probability" class="level2" data-number="26.1">
+<h2 data-number="26.1" class="anchored" data-anchor-id="what-is-probability"><span class="header-section-number">26.1</span> What is probability?</h2>
+<p>Every statistical framework rests on a particular interpretation of what a probability <em>is</em>. Two interpretations dominate the foundations of modern statistics, and the difference between them turns out to determine almost everything else.</p>
+<p>The first interpretation is the <strong>objective long-run relative frequency</strong> view, developed in its modern form by Richard von Mises in 1928. A probability is a property of a class of events, not of an individual event. To say “the probability of heads on this coin is 0.5” is shorthand for the claim that, over an indefinitely large hypothetical collection of tosses produced by the same physical mechanism (the coin, the tossing arm, the wind), the proportion of heads converges to 0.5. The hypothetical collection is called the <strong>reference class</strong> or the <strong>collective</strong>. The probability lives in the world, not in the mind: it is what it is regardless of what anyone knows or believes.</p>
+<p>A direct consequence of this interpretation is that <strong>single events do not have probabilities</strong> in any objective sense. The next coin toss is either heads or tails, full stop. The reference class has a probability of 0.5, but the individual toss is one event, not a collection. A second consequence is that <strong>hypotheses do not have probabilities</strong>. A hypothesis such as “the population mean blood pressure of patients given Drug A is 5 mmHg lower than the mean of those given placebo” is either true or false. It is not a collective. There is no reference class to which it belongs. As Dienes (2008, p.&nbsp;58) puts it, on the objective view “probabilities are to be discovered by examining the world, not by reflecting on what we know or on how much we believe.”</p>
+<p>The second interpretation is the <strong>subjective</strong> or <strong>personal</strong> view, which makes a probability a degree of belief. A statement of the form “I think there is a 70% probability the theory is true” is now a meaningful statement about your epistemic state. The subjective view will be developed in Chapter 28 when we look at Bayesian inference, which is the framework built on it.</p>
+<p>Neyman and Pearson committed to the objective interpretation. That single commitment forces almost the entire structure of the framework you have been learning. If probabilities apply only to collectives, then a statement like “this hypothesis is 95% likely to be true” is not a meaningful statistical statement at all. What we <em>can</em> meaningfully say is: “If we apply this procedure indefinitely, in the long run we will reach the wrong conclusion no more than 5% of the time when the null is true.” That is a statement about the long-run behavior of a procedure (a collective), not about the truth of a hypothesis (a single event). Everything that follows in the Neyman-Pearson framework, the fixed α level set in advance, the procedural rather than evidential interpretation of p-values, the dependence on stopping rules and on what other tests could have been run, the resolutely behavioral language of “accept” and “reject” rather than “believe more” or “believe less”, flows from this one foundational choice.</p>
+<p>This is why, as we saw in Chapter 22, the p-value in the Neyman-Pearson framework is <em>not</em> the probability that the null hypothesis is true, <em>not</em> the probability that the result is due to chance, and <em>not</em> a measure of how strongly the data favor the alternative. It cannot be any of those things because hypotheses do not have probabilities in the first place. The p-value is the probability of obtaining a test statistic at least as extreme as the one observed, computed under the assumption that the null is true. It is one ingredient in a calibrated procedure, no more.</p>
+</section>
+<section id="inference-as-inductive-behavior" class="level2" data-number="26.2">
+<h2 data-number="26.2" class="anchored" data-anchor-id="inference-as-inductive-behavior"><span class="header-section-number">26.2</span> Inference as inductive behavior</h2>
+<p>The objective probability commitment leads directly to a particular philosophy of what statistical inference <em>does</em>. According to Neyman, statistical inference is not the process of strengthening beliefs in hypotheses. It is the process of choosing actions that, in the long run, will not lead us astray too often. He gave it a deliberately unflattering name: <strong>inductive behavior</strong>. The phrase emphasizes that the framework licenses behavior (you act as if the null is rejected, or you act as if it is not rejected), not knowledge claims (you do not become <em>more confident</em> in any hypothesis).</p>
+<p>The contrast with Fisher (recall Chapter 22) is fundamental. Fisher wanted the p-value to carry a continuous, evidential message: the smaller the p-value, the stronger the reason to doubt the null. For Fisher, p = 0.0001 reflected more evidence against the null than p = 0.04, and p = 0.04 more than p = 0.06: the p-value was a continuous gauge of how much the data weighed against the null, with smaller values pulling more heavily. The familiar but problematic categorical reading in which p = 0.04 is “weakly significant” and p = 0.06 is “marginally suggestive” is <em>not</em> Fisher’s view as such, but a later hybrid that grafts the binary decision criterion of Neyman-Pearson onto Fisher’s continuous reading. To Neyman, even Fisher’s continuous reading was incoherent. If you committed in advance to α = 0.05, then p = 0.0001 and p = 0.04 are both simply “reject the null hypothesis”, and p = 0.06 is “do not reject the null hypothesis”; they do not differ in evidential weight because the procedure does not produce evidence at all, only decisions.</p>
+<p>Dienes (2008, p.&nbsp;70) summarizes this with a quote that captures the strict Neyman-Pearson attitude: “The Neyman-Pearson approach urges you to engage in a certain behavior: whatever your beliefs or degree of confidence, act as if you accept the null when the test statistic is outside the rejection region, and act as if you reject it if it is in the rejection region. Amazingly, the statistics tell you nothing about how confident you should be in a hypothesis nor what strength of evidence there is for different hypotheses.”</p>
+<p>Fisher found this philosophy irrelevant to actual scientific reasoning and never accepted it. Many practicing researchers, even today, find the behavioral-decision framing weird. According to him, the intuitive thing to want from a statistical analysis is a probability, a degree of confidence, a measure of evidence. The Neyman-Pearson approach does not provide any of these, and this restraint is principled. It is the consequence of taking the objective interpretation of probability seriously. If you want statistics to tell you how confident to be, then you are asking for something the Neyman-Pearson approach is not designed to give, and you should look at Bayesian inference (Chapter 28). If you want statistics to tell you how strongly the data support one hypothesis over another, you should look at likelihoodism (Chapter 29). The Neyman-Pearson approach does one thing: it provides a calibrated procedure whose long-run error rates are bounded.</p>
+<p>Behind this restraint lies a particular philosophical stance, one that Neyman and Pearson shared with the logical positivists of the 1920s and 1930s and that was crystallized most forcefully by Karl Popper. The stance can be stated quickly: scientific knowledge is never absolute, never final, never proven. What science gives us is a structure of tentative claims that have so far survived attempts at refutation. Truth in any final, mind-independent sense lies somewhere beyond what science can directly access. From inside this stance, statistical inference cannot deliver belief or proof, because both would presuppose access to absolute truth that we do not have. What statistical inference <em>can</em> deliver is a procedure for making decisions whose error rates we know and can keep within tolerable bounds. The next section develops this stance carefully, because it is what provides the deeper rationale for why Neyman and Pearson built the framework the way they did.</p>
+<p>This is the framework’s strength, and it is also why everything in the framework depends so tightly on the procedure being fully specified in advance (recall Chapter 25). The calibration claim attaches to the procedure, not to the data; if the procedure is ambiguous, undefined, or modified in light of the data, the calibration evaporates and no inference remains.</p>
+</section>
+<section id="falsification-and-probabilistic-theories" class="level2" data-number="26.3">
+<h2 data-number="26.3" class="anchored" data-anchor-id="falsification-and-probabilistic-theories"><span class="header-section-number">26.3</span> Falsification and probabilistic theories</h2>
+<p>The Neyman-Pearson framework solves a specific problem. It is the technical answer to a more general philosophical question: how can a probabilistic claim ever be tested against data? Without a careful procedural answer, probabilistic claims look unfalsifiable in any meaningful sense, and unfalsifiable claims, on a long tradition in philosophy of science, are not scientific claims at all.</p>
+<p>This tradition is most closely associated with <strong>Karl Popper</strong>, whose 1934 book <em>Logik der Forschung</em> (translated into English in 1959 as <em>The Logic of Scientific Discovery</em>) argued that science advances not by accumulating positive confirmations but by surviving attempts at refutation. A scientific theory, on Popper’s view, must forbid certain observable states of affairs. If the forbidden states are observed, the theory is falsified. If they are not observed, the theory is <em>corroborated</em>: not proven, but allowed to stand for the time being. Corroboration is therefore a much weaker notion than verification, and it never accumulates into certainty. A theory that has been corroborated many times is a theory we are entitled to keep using; it is not a theory we have proven true.</p>
+<p>This view has practical implications for how research is supposed to work. If the goal is corroboration through survival of refutation attempts, then a study is most informative when it gives a theory a real chance of failing. Confirming a prediction the theory was bound to make anyway tells us very little; confirming a prediction the theory could easily have gotten wrong tells us much more. We will return to this idea in the next two sections, on severe tests and risky predictions.</p>
+<section id="three-versions-of-falsificationism" class="level3" data-number="26.3.1">
+<h3 data-number="26.3.1" class="anchored" data-anchor-id="three-versions-of-falsificationism"><span class="header-section-number">26.3.1</span> Three versions of falsificationism</h3>
+<p>Lakens (<a href="https://lakens.github.io/statistical_inferences/05-questions.html#sec-falsification">2022</a>, section 5.6), following Lakatos, distinguishes three versions of falsificationism that are sometimes conflated. The differences matter because the simple version (“data falsify theories”) is widely thought to be Popper’s view, but it was the view Popper and Lakatos actually <em>opposed</em>.</p>
+<p><strong>Dogmatic falsificationism</strong> holds that the world hands us pure observational facts that can decisively refute theories. The classic illustration is the swan example. The theory “all swans are white” is universal: it claims that wherever and whenever you look, every swan you find will be white. By the rules of basic logic, observing a single black swan refutes the theory; one counterexample is sufficient. Dogmatic falsificationism takes this picture literally and treats the observation, “a black swan”, as a brute fact that can do the refuting on its own.</p>
+<p>The trouble is that observations are never brute facts. When we report seeing “a black swan”, we rely on background theories about which bird species count as swans, about how light interacts with feathers, about which lighting conditions make a color reading reliable, about whether our eyes and brain are functioning normally. None of these assumptions is itself observed; each is itself theoretical. Lakatos (<a href="https://doi.org/10.1017/CBO9780511621123">1978</a>, p.&nbsp;13) put the criticism succinctly: “there are and can be no sensations unimpregnated by expectation and therefore there is no natural (i.e.&nbsp;psychological) demarcation between observational and theoretical propositions.” Pure facts that could refute theories without any theoretical mediation simply do not exist.</p>
+<p><strong>Naive methodological falsificationism</strong> is the first attempt to fix this. It accepts that all observations are theory-laden, but proposes that we can <em>agree</em>, by methodological convention, to treat certain reports as “unproblematic” for the purpose of testing a specific theory. Consider a thermometer reading in a chemistry lab. The reading depends on theories of thermodynamics, on the calibration of the instrument, and on the operator’s skill at reading the scale. None of this is in dispute when we test whether a particular chemical reaction produces heat: we agree, by convention, to treat the thermometer reading as a reliable observation. We are not claiming the convention is infallible. We are setting these assumptions aside in order to focus on the theory under test. If a later study finds a systematic calibration error in the thermometer, the convention can be revised. The same logic applies in psychology: we agree, by convention, to treat self-report scores on a validated questionnaire as observations of an underlying attitude or trait, even though we know the connection between the score and the underlying construct relies on a lot of measurement theory.</p>
+<p><strong>Sophisticated methodological falsificationism</strong>, the position Popper and Lakatos ultimately defended, takes a further step. A theory is not tested in isolation but compared with rival theories across a <em>series</em> of experiments. The replacement of Ptolemaic geocentrism by heliocentrism illustrates the pattern. Ptolemaic geocentrism was not abandoned the first time it produced an inaccurate prediction; for centuries, awkward predictions were absorbed by adding epicycles, smaller circles riding on the main circles, that could in principle bend the model to fit almost any observation. Heliocentrism replaced geocentrism only when (1) it predicted new phenomena that geocentrism did not predict, such as the phases of Venus and, eventually, stellar parallax; (2) it could explain <em>why</em> geocentrism had appeared to work so well for so long; and (3) some of its novel predictions were observationally confirmed. Falsification on this view is a long-term comparative process across research programs, not a one-shot collision between a theory and a fact.</p>
+</section>
+<section id="from-dogmatic-falsification-to-np-a-worked-example" class="level3" data-number="26.3.2">
+<h3 data-number="26.3.2" class="anchored" data-anchor-id="from-dogmatic-falsification-to-np-a-worked-example"><span class="header-section-number">26.3.2</span> From dogmatic falsification to NP: a worked example</h3>
+<p>This three-way distinction matters for statistics because almost all the theories we test in psychology are <em>probabilistic</em>. A probabilistic theory does not forbid any single observation outright, and that is exactly the gap that dogmatic falsificationism cannot cross.</p>
+<p>Take the simplest possible probabilistic theory: “this coin is fair”, that is, P(heads) = 0.5. No finite sequence of outcomes can refute this theory strictly. Even observing 100 heads in 100 tosses is logically consistent with a fair coin; the fair-coin theory just assigns that sequence a very small probability (about 1 in 10²⁹). By the standards of dogmatic falsificationism, “this coin is fair” would not be a scientific claim, because no observation forbids it outright. That conclusion is plainly absurd: of course “this coin is fair” is a scientific claim, and of course we want a way to test it.</p>
+<p>Lakatos’s escape, and Popper’s own escape in his methodological version, is to make probabilistic theories falsifiable “by specifying certain rejection rules which may render statistically interpreted evidence ‘inconsistent’ with the probabilistic theory” (Lakatos, 1978, p.&nbsp;25). The idea is direct. We agree, by methodological convention, that observations whose probability under the theory falls below some threshold will be <em>treated as</em> inconsistent with the theory. With such a rule in place, the probabilistic theory becomes falsifiable in the methodological sense. We are not claiming that the rule is infallible; we are committing in advance to a calibration we know, and acting accordingly.</p>
+<p>The Neyman-Pearson framework is precisely this kind of rule, raised to a general technical procedure. The decision rule “reject the null whenever the test statistic exceeds the critical value at α” <em>just is</em> an agreed-upon methodological convention that defines what observations will be treated as inconsistent with the null. The α level sets the long-run rate at which the rule will mistakenly declare a true null inconsistent with the data; this is the <em>price</em> of having a workable falsification rule for probabilistic theories. There is no way to do methodological falsification of probabilistic claims without paying some such price.</p>
+<p>The figure below makes this concrete using our running example. Suppose we want to test the null hypothesis that the population mean difference in aggression between the violent and neutral conditions of <code>vgames_study</code> is exactly zero. Strictly, any observed sample difference is consistent with the null, because sampling noise can produce any value. So nothing strictly refutes the null. But we <em>can</em> agree to treat observations that produce a t-statistic in the top or bottom 2.5% of the null distribution as inconsistent with the null. The grey curve is the null distribution of the t-statistic; the dark shaded tails are the region we agree to treat as inconsistent with the null.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-rejection-as-forbidden" class="quarto-float quarto-figure quarto-figure-center anchored" width="720" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rejection-as-forbidden-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="26-philosophy-of-np_files/figure-html/fig-rejection-as-forbidden-1.png" id="fig-rejection-as-forbidden" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="720">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-rejection-as-forbidden-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;26.1
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The two dark tails are not strict refutations. A true null can produce a sample mean far enough from zero to land in the dark region; it just happens rarely, with total probability α = 0.05. We have <em>agreed</em> in advance to treat those rare outcomes as inconsistent with the null. The 5% wrongful-rejection rate is the calibration we accept as the cost of having a rule.</p>
+<p>This is what Popper and Lakatos’s methodological move looks like in statistical practice. The probabilistic claim “the population mean difference is exactly zero” has been made <em>methodologically falsifiable</em>: there is now a clear, pre-specified region of possible observations that will count as falsifying it, and we know the long-run rate at which the rule will get this wrong even when the null is true. The framework that lets us do this is the Neyman-Pearson framework.</p>
+</section>
+<section id="piles-in-the-swamp" class="level3" data-number="26.3.3">
+<h3 data-number="26.3.3" class="anchored" data-anchor-id="piles-in-the-swamp"><span class="header-section-number">26.3.3</span> Piles in the swamp</h3>
+<p>A famous passage from Popper expresses the spirit of this whole enterprise (Popper, <a href="https://doi.org/10.4324/9780203994627">2002</a>, p.&nbsp;94):</p>
+<blockquote class="blockquote">
+<p>Science does not rest upon solid bedrock. The bold structure of its theories rises, as it were, above a swamp. It is like a building erected on piles. The piles are driven down from above into the swamp, but not down to any natural or ‘given’ base; and if we stop driving the piles deeper, it is not because we have reached firm ground. We simply stop when we are satisfied that the piles are firm enough to carry the structure, at least for the time being.</p>
+</blockquote>
+<p>The image is worth unpacking carefully because it is doing a lot of philosophical work. The <em>swamp</em> is the underlying truth, which we never directly access. The <em>piles</em> are the methodological commitments we make, knowing they are not bedrock. The <em>structure</em> is the body of provisional scientific claims we build on top of the piles. The piles are not the truth, and they are not even certainties; they are firm-enough conventions that let us build, and that can be revised if later inquiry requires it.</p>
+<p>The methodological rules of Neyman-Pearson, the fixed α, the pre-specified procedure, the bounded error rates, are exactly these piles. They do not deliver certainty. They are themselves conventions, calibrated to long-run behavior, never reaching the swamp’s hidden bottom. They deliver a structure on which we can build provisional knowledge, knowing in advance what rate of error we are willing to accept.</p>
+<p>A few concrete examples make the metaphor less abstract.</p>
+<p><em>Clinical drug approval.</em> A regulator runs a randomized controlled trial of a new antihypertensive with α = 0.05 and 80% power to detect a clinically meaningful blood pressure reduction. If the trial yields a statistically significant improvement, the regulator approves the drug. The regulator is not claiming “we now know the drug works.” The regulator is saying “we have driven a calibrated pile into the swamp: if we applied this procedure across infinitely many such trials, we would wrongly approve an ineffective drug at most 5% of the time and would correctly detect a real clinically meaningful effect 80% of the time.” On that pile, society builds a structure: doctors prescribe the drug, patients use it, post-market surveillance accumulates, further trials run. The structure stands as long as further studies do not undermine the pile.</p>
+<p><em>A research literature on violent video games and aggression.</em> The empirical question that motivates our <code>vgames_study</code> example is not a single pile but many. Each study contributes its own NP procedure with its own α, its own design, its own auxiliary measurement assumptions. The body of literature taken together builds a tentative structure of claims, for instance, “there appears to be a small positive association between violent gameplay and short-term aggression measures in laboratory settings.” This structure is not bedrock. It is provisional knowledge, supported by piles whose calibration we know. New evidence might shift it. Meta-analyses can revise it. But while the piles hold, the structure is enough to inform theory, policy, and the next round of research.</p>
+<p><em>An individual decision.</em> Even a single statistical test in a single thesis chapter is, in miniature, a pile driven into the swamp. The student pre-specifies a procedure with chosen α and (ideally) chosen power. The test produces a verdict: reject or not. The student writes up a provisional claim. Whether the verdict reflects the actual truth, no one knows. What is known is the rate at which the procedure would be wrong in the long run. That is enough to build on for the next study.</p>
+<p>The figure below shows what the long-run calibration of a Neyman-Pearson procedure looks like in practice. It plots 100 simulated experiments in which we ran a one-sample t-test on a sample of 30 observations drawn from a population with mean exactly 0 (so the null hypothesis is in fact true). For each experiment, the dot is the sample mean and the horizontal line is the 95% confidence interval. By the duality between two-sided NP tests and 95% CIs (see Chapter 22), an experiment “rejects the null” whenever its CI does not contain zero. We have highlighted those wrongful rejections in dark red.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-long-run-calibration" class="quarto-float quarto-figure quarto-figure-center anchored" width="576" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-long-run-calibration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="26-philosophy-of-np_files/figure-html/fig-long-run-calibration-1.png" id="fig-long-run-calibration" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-long-run-calibration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;26.2
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Each of these 100 experiments is a separate “pile”. None of them has reached the truth on its own; we have <em>built in</em> a fixed long-run rate of wrongful rejection. The figure makes that rate visible: across the 100 experiments, the procedure rejected the null about 5 times, exactly as α = 0.05 implies. We did not know which individual experiments would do so. We did know the rate. That is the operational meaning of “the piles are firm enough to carry the structure, at least for the time being.” We act on each individual result not because the result is the truth, but because we have committed in advance to a calibration we are willing to live with.</p>
+</section>
+</section>
+<section id="severe-tests" class="level2" data-number="26.4">
+<h2 data-number="26.4" class="anchored" data-anchor-id="severe-tests"><span class="header-section-number">26.4</span> Severe tests</h2>
+<p>Falsification is the negative side of the picture: a theory must be falsifiable to be scientific. The positive side asks when a theory that has <em>not</em> been falsified should be taken seriously. <strong>Deborah Mayo</strong> (<a href="https://www.cambridge.org/9781107054134">2018</a>) articulated this with the concept of a <strong>severe test</strong>:</p>
+<blockquote class="blockquote">
+<p>A claim is severely tested to the extent it has been subjected to and passed a test that probably would have found flaws, were they present.</p>
+</blockquote>
+<p>Severity is a property of the test, not of the result. A test that passes a hypothesis only weakly tells you very little, even if the hypothesis is true. A test that <em>would have</em> probably caught a flaw, had one existed, tells you something substantial when it fails to catch any flaw. Pass a severe test, and the hypothesis has been corroborated in a meaningful sense. Pass an insevere test, and the result is, to use Mayo’s phrase, <strong>Bad Evidence, No Test (BENT)</strong>.</p>
+<p>A vivid illustration comes from Meehl (<a href="https://doi.org/10.2466/pr0.1990.66.1.195">1990</a>):</p>
+<blockquote class="blockquote">
+<p>A theory is corroborated to the extent that we have subjected it to such risky tests; the more dangerous tests it has survived, the better corroborated it is. If I tell you that Meehl’s theory of climate predicts that it will rain sometime next April, and this turns out to be the case, you will not be much impressed with my “predictive success.” Nor will you be impressed if I predict more rain in April than in May, even showing three asterisks (for <em>p</em> &lt; .001) in my <em>t</em>-test table. If I predict from my theory that it will rain on 7 of the 30 days of April, and it rains on exactly 7, you might perk up your ears a bit, but still you would be inclined to think of this as a “lucky coincidence.” But suppose that I specify which 7 days in April it will rain and ring the bell; then you will start getting seriously interested in Meehl’s meteorological conjectures.</p>
+</blockquote>
+<p>The point is that “the theory predicted something that happened” can mean very different things depending on how risky the prediction was. A non-risky prediction passing a non-severe test is not evidence for the theory, even when the prediction came out right.</p>
+<p>For our purposes, the severity concept also clarifies what statistical <strong>power</strong> really is. As you saw in Chapter 24, power is the probability of detecting an effect of a specified size if one exists. From a severity standpoint, power is the probability that the test would have <em>caught the flaw</em> (a real effect) had one been present. A test with high power is severe with respect to the alternative; a test with low power is not. This is why an underpowered null result tells you almost nothing: the test was not capable of catching the effect if it had been there, so the absence of a significant result is uninformative. We already saw this point in Chapter 24 in connection with the SESOI; the severity framework gives it a name and a philosophical home.</p>
+<p>The severity concept also lets us re-describe several failure modes from the previous chapters in a single language.</p>
+<p>HARKing, which we introduced in Chapter 25, is severity-destroying because the test was guaranteed to corroborate whatever hypothesis the researcher chose to write up. There is no way the test could have falsified the hypothesis, so passing it provides no information.</p>
+<p>P-hacking, the practice of trying many analyses until one is significant, destroys severity for the same reason. The procedure that actually produced the reported result was “try many things until one works,” and that procedure is almost certain to produce a significant result whether or not any real effect exists. The test cannot catch the flaw because the procedure is not designed to catch flaws at all.</p>
+<p>Underpowered confirmatory studies destroy severity in a different way: the procedure is honest and pre-specified, but the test simply was not capable of detecting the effect even if the effect was real. A “non-significant” result from such a study does not corroborate the null; it tells us only that the test was too weak to discriminate.</p>
+<p>The role separation from Chapter 25 (the analyst exploring vs the claim-maker committing) maps neatly onto severity as well. An exploratory analyst is not trying to subject a specific claim to a severe test; she is trying to find patterns in the data that might <em>later</em> be subjected to a severe test in a confirmatory follow-up. The exploratory result, on its own, has not been severely tested and should not be treated as corroborated, regardless of how small the p-value attached to it happens to be.</p>
+</section>
+<section id="risky-predictions" class="level2" data-number="26.5">
+<h2 data-number="26.5" class="anchored" data-anchor-id="risky-predictions"><span class="header-section-number">26.5</span> Risky predictions</h2>
+<p>The severity idea applies most powerfully when we think about <em>which</em> predictions a theory makes. A theory that forbids almost nothing can hardly be corroborated even when its predictions come true, because almost any data would have agreed. A theory that forbids a great deal is corroborated meaningfully when its narrow predictions are confirmed, because most data would have disconfirmed them. Lakens (<a href="https://lakens.github.io/statistical_inferences/05-questions.html#sec-risky">2022</a>, section 5.8) develops this idea with a useful visual metaphor: the <strong>circles of falsifiability</strong>. Each circle represents all possible outcomes of a study; the dark area is the region of outcomes the theory says cannot happen; the light area is the region of outcomes that count as corroborating the theory. The data point we actually observe lands somewhere on the circle, and whether that point falls in the light or the dark area determines whether the theory passes the test.</p>
+<p>The figure below recreates the three circles for our running example. Imagine we ran a study on <code>vgames_study</code> looking at the difference in mean aggression between the violent and neutral conditions. Three theories make three different predictions: the first predicts that the difference is <em>not exactly zero</em> (a standard two-sided nil-null test), the second predicts the difference is <em>positive</em> (a directional one-sided test), the third predicts the difference falls in a <em>specific narrow band</em> around 1.3 (a range prediction).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-circles-of-falsifiability" class="quarto-float quarto-figure quarto-figure-center anchored" width="864" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-circles-of-falsifiability-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="26-philosophy-of-np_files/figure-html/fig-circles-of-falsifiability-1.png" id="fig-circles-of-falsifiability" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-circles-of-falsifiability-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;26.3
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In each circle the dark region is what the theory says cannot happen, and the light region is what it says can. The blue arrow is the observed data point, landing in the light region in all three cases. So in all three cases the prediction is corroborated. But the three corroborations are not equally informative.</p>
+<p>The leftmost circle is the standard two-sided <strong>nil-null test</strong>. The theory (“the population mean difference is not exactly zero”) forbids only one point on the entire continuum of possible outcomes. Any non-zero difference, in either direction and of any magnitude, counts as corroboration. The test is almost guaranteed to pass: the dark region is vanishingly small, so almost any data would have landed in the light region. The theory has not been severely tested.</p>
+<p>The middle circle is a <strong>one-sided directional test</strong>. The theory (“the population mean difference is positive”) forbids half the continuum (all negative differences and zero). The data have a 50% prior chance of landing in the dark region by sheer noise, so corroboration here is a bit more informative than the two-sided test.</p>
+<p>The rightmost circle is a <strong>range prediction</strong>. The theory predicts the population mean difference falls in a specific band, say between 1.1 and 1.5 on the aggression scale. Roughly 95% of plausible outcomes lie outside that band, so the test is severe: most data would have falsified the prediction, but ours did not. This is the kind of test Meehl points to when he contrasts psychology with physics. Physicists routinely make point predictions of the form “the force will be 13 units down”; the test is severe because almost any data, given the precision of measurement, would have refuted the point. Psychologists more commonly state hypotheses of the form “there will be a difference between conditions,” which is the leftmost circle, the weakest possible directional commitment.</p>
+<p>This is the connection between severe tests and what Meehl (<a href="https://doi.org/10.1086/288135">1967</a>) called <strong>weak theorizing</strong>. The nil-null test is so easy to pass that any “soft” theory that predicts almost nothing specific can keep accumulating “corroborations” indefinitely. Recall from Chapter 22 the long list of psychological theories that yield apparent confirmations but never seem to settle into established knowledge; weak theorizing combined with weak hypothesis tests is a key driver of that pattern.</p>
+<p>Dienes (2008), drawing on Meehl, puts the consequence sharply: most point null hypotheses (“there is no effect” or “the correlation is exactly zero”) are virtually certain to be false. The question is not whether <em>some</em> effect exists, but how big it is and whether it falls within the range that the substantive theory predicts. A good theory predicts the <em>size</em> of an effect, not just that it differs from zero. As Meehl noted, this is a methodological maxim that should encourage researchers to develop more precise theories where they can.</p>
+<p>Chapter 24 already introduced two tools that make range predictions and severe tests possible: the SESOI, which lets you commit in advance to a smallest effect worth detecting, and the equivalence test, which lets you reject <em>not-zero</em> effects whose magnitude is smaller than the SESOI. Combined, they let you turn the rightmost circle from an abstract picture into a concrete statistical procedure. If you predict that the violent vs neutral aggression difference falls in the band [1.1, 1.5], you can perform an equivalence test against those bounds; if the data corroborate the prediction, you have passed a severe test.</p>
+<p>There is a final practical observation. Lakens (5.8) notes that Meehl himself did not reject nil-null tests outright. There are stages of research in which we genuinely do not yet know enough to specify a range prediction, and the question “is there <em>any</em> effect of meditation on mood?” is a sensible early-stage question. The nil-null test is appropriate when both candidate models, “no effect” and “some effect,” have non-trivial plausibility. As theories mature, the burden should shift toward more precise predictions and more severe tests.</p>
+</section>
+<section id="what-is-your-test-really-testing" class="level2" data-number="26.6">
+<h2 data-number="26.6" class="anchored" data-anchor-id="what-is-your-test-really-testing"><span class="header-section-number">26.6</span> What is your test really testing?</h2>
+<p>So far we have treated “the hypothesis” and “the statistical hypothesis” as if they were the same thing. They are not. A statistical hypothesis is a precise mathematical statement about a population parameter; a substantive theory is a much richer claim about psychological or behavioral mechanisms. The two are connected only through a chain of auxiliary assumptions about measurement, design, sampling, and inference. Meehl (<a href="https://doi.org/10.2466/pr0.1990.66.1.195">1990</a>) drew the distinction explicitly with the following structure, illustrated below.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="26-philosophy-of-np_files/figure-html/meehl-structure-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The Neyman-Pearson test operates <em>only</em> on the link between the statistical hypothesis H and the observations O. It tells you, in long-run frequency terms, how often a procedure mapping observations to decisions about H will reach the wrong decision. It is silent on whether H is the right statistical translation of the substantive theory T. The link from T to H is carried by <strong>auxiliary hypotheses</strong>: that the measurement instrument captures the construct of interest, that the manipulation actually produces the intended psychological state, that the participants are sampled from the population the theory is about, that confounders are controlled, that statistical assumptions (normality, independence, equal variances) hold well enough to interpret the test output.</p>
+<p>We already met the auxiliary-hypothesis problem in Chapter 22, where we cited Hempel (<a href="https://philpapers.org/rec/HEMPON-2">1966</a>) and the <strong>Duhem-Quine problem</strong>: a failed prediction can always in principle be blamed on the auxiliaries rather than on the theory itself. The same problem flows in the other direction. A successful prediction can be a successful test of the theory, but it can also be a successful test of the auxiliaries. If your manipulation didn’t work but your measure happens to be sensitive to a confound, you can get a “significant” result that reflects the confound rather than the theoretical mechanism.</p>
+<p>The practical upshot is that a statistically significant rejection of H₀ is <em>not</em> the same as a corroboration of the substantive theory T, and conversely a non-rejection of H₀ is not the same as a refutation of T. The statistical machinery delivers a verdict about H given O; what that verdict means for T depends on the strength of the chain of auxiliary assumptions.</p>
+<p>This connects to a further point raised by Meehl and developed by Lakens (<a href="https://lakens.github.io/statistical_inferences/05-questions.html#sec-reallytest">2022</a>, section 5.9). Sometimes the question we <em>think</em> the statistical test is answering is not the question the test actually answers. A null hypothesis test answers the question: given a pre-specified procedure, should we act as if the null is true or as if it is false, accepting some calibrated rate of error? It does not answer the question: what do I now believe about the substantive theory? It does not answer: how strong is the evidence that mechanism M is operating? It does not answer: what is the most likely value of the effect? If these are the questions you want to answer, you need a different statistical framework.</p>
+<p>One additional consideration belongs here. In many areas of psychology, the nil-null hypothesis (“there is exactly zero population difference”) is implausible on its face. Meehl (<a href="https://lakens.github.io/statistical_inferences/05-questions.html#sec-crud">1978</a>, section 5.11 in Lakens) coined the term <strong>crud factor</strong> to capture this. In any non-experimental study where variables are connected through a complex causal structure, “everything is correlated with everything.” Men are on average taller than women; height has tiny systematic effects on countless other behaviors; therefore the nil-null hypothesis of zero gender difference on most behavioral measures is almost certainly false at sufficient resolution. The question “is the effect exactly zero?” is, in such settings, uninteresting. The interesting question is whether the effect is large enough to matter, which again points toward range predictions, equivalence testing, and the SESOI rather than nil-null testing.</p>
+<p>The takeaway is twofold. First, even within the Neyman-Pearson framework, “rejecting the null” is not automatically a corroboration of your substantive theory; it is at most a step in the long chain that connects observations to theoretical claims. Second, when the nil-null is implausible <em>a priori</em>, the standard test is the wrong question to ask, and the framework has tools (equivalence tests, minimum-effect tests) that let you ask a more interesting one.</p>
+</section>
+<section id="where-neyman-pearson-is-silent-three-alternatives" class="level2" data-number="26.7">
+<h2 data-number="26.7" class="anchored" data-anchor-id="where-neyman-pearson-is-silent-three-alternatives"><span class="header-section-number">26.7</span> Where Neyman-Pearson is silent: three alternatives</h2>
+<p>We can now state, in light of the philosophy we have just developed, three specific things that the Neyman-Pearson framework deliberately does not provide. These three gaps motivate the three optional chapters that follow.</p>
+<p>First, Neyman-Pearson does not measure <strong>evidence</strong>. A small p-value is not strong evidence; a large p-value is not weak evidence. The p-value is one input to a binary decision procedure, calibrated for long-run error rates, and the philosophy of objective probability prohibits any evidential reading of the number. If you want a measure of how strongly the data support one hypothesis over another, you need a framework built around the <strong>likelihood</strong>. Chapter 29 introduces likelihoodism, originally developed from Fisher’s likelihood concept and articulated as a coherent inferential framework by Royall (<a href="https://doi.org/10.1201/9780203738665">1997</a>).</p>
+<p>Second, Neyman-Pearson does not give you <strong>belief</strong>. A 95% confidence interval is <em>not</em> a 95% probability interval for the parameter (we made this point already in Chapter 22). The procedure has a 95% long-run capture rate, but no individual interval has a 95% probability of containing the parameter, because parameters do not have probabilities under the objective interpretation. If you want a framework that does assign probabilities to hypotheses, that lets you say “given the data, I am now 95% confident the effect lies between these values,” you need the <strong>Bayesian</strong> framework. Chapter 28 introduces the basics: subjective probability, the prior, the posterior, credibility intervals, and Bayes factors.</p>
+<p>Third, Neyman-Pearson does not directly give you <strong>estimates with uncertainty</strong>. The framework is built around decisions, not around the description of effect sizes. Neyman himself developed the confidence interval as a tool within the framework, and we have used it throughout these chapters, but the focus has been on dichotomous decisions (reject or not) rather than on estimation as the primary output. A separate intellectual tradition, growing out of Fisher’s work on estimation and developed by Cumming (<a href="https://doi.org/10.1177/0956797613504966">2014</a>) and others as the <strong>new statistics</strong>, treats the effect size and its confidence interval as the primary product of any analysis, with NHST de-emphasized or removed entirely. Chapter 27 introduces this approach, including its motivations, its tools (effect sizes, confidence intervals, precision-for-planning, meta-analysis), and its philosophical and epistemological weaknesses.</p>
+<p>The three optional chapters do not replace what we have built in Section 4. The Neyman-Pearson framework is the lingua franca of statistical practice in psychology and most of the empirical sciences, and competent reading of the literature requires you to understand it well. The optional chapters give you the conceptual vocabulary to recognize, when the question you want to answer is <em>not</em> “should I act as if the null is rejected, with calibrated error rates”, what other framework might be the right tool for the question you actually have.</p>
+<p>It is worth ending this chapter with the formulation from Royall (<a href="https://doi.org/10.1201/9780203738665">1997</a>, p.&nbsp;4), which neatly organizes what each framework is for. Royall distinguished three questions one could ask in the light of data:</p>
+<ol type="1">
+<li><strong>What should I do now?</strong> This is the Neyman-Pearson question. The answer is a decision rule with calibrated long-run error rates.</li>
+<li><strong>What should I believe now?</strong> This is the Bayesian question. The answer is a posterior probability or credibility interval.</li>
+<li><strong>How should I treat these data as evidence for one hypothesis rather than another?</strong> This is the likelihoodist question. The answer is a likelihood ratio.</li>
+</ol>
+<p>These three questions are genuinely different, and they sometimes give different answers from the same data, as we will see in detail in the chapters that follow. The mistake is to assume that any one of them is “the” statistical question. The right question depends on what you are trying to do with the data: act, believe, or assess evidence. The right framework follows from the right question.</p>
+</section>
+<section id="check-your-understanding" class="level2" data-number="26.8">
+<h2 data-number="26.8" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">26.8</span> Check your understanding</h2>
+<p><strong>1. Which of the following best describes the philosophy of probability on which the Neyman-Pearson framework is built?</strong></p>
+<div id="radio_YCGNGWMEYI" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_YCGNGWMEYI" value=""> <span>The framework is built on the subjective interpretation of probability, where a probability represents a degree of belief in a hypothesis based on prior knowledge and the data.</span></label><label><input type="radio" autocomplete="off" name="radio_YCGNGWMEYI" value="answer"> <span>The framework is built on the objective long-run frequency interpretation of probability, under which hypotheses do not have probabilities and only procedures (collectives) do.</span></label><label><input type="radio" autocomplete="off" name="radio_YCGNGWMEYI" value=""> <span>The framework is built on the likelihood interpretation of probability, where the probability of a hypothesis is given by the likelihood of the data conditional on that hypothesis.</span></label><label><input type="radio" autocomplete="off" name="radio_YCGNGWMEYI" value=""> <span>The framework is built on the propensity interpretation of probability, where each hypothesis has an intrinsic propensity to be true that is updated as data accumulate.</span></label>
+</div>
+<p><strong>2. According to Mayo’s notion of severity, what does it mean for a hypothesis to have been severely tested?</strong></p>
+<div id="radio_KMELLXPOFN" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_KMELLXPOFN" value="answer"> <span>Severity is a property of the test, not of the data: a severely tested claim has been subjected to a test that probably would have caught flaws if any existed, so passing the test is informative about the claim.</span></label><label><input type="radio" autocomplete="off" name="radio_KMELLXPOFN" value=""> <span>Severity is a property of the p-value: the smaller the p-value, the more severely the alternative hypothesis has been tested, regardless of the design of the study or its statistical power.</span></label><label><input type="radio" autocomplete="off" name="radio_KMELLXPOFN" value=""> <span>Severity is a property of the dataset: a larger and cleaner dataset means the test is automatically more severe, even when the underlying procedure was data-dependent or under-specified.</span></label><label><input type="radio" autocomplete="off" name="radio_KMELLXPOFN" value=""> <span>Severity is a property of the researcher's confidence: a claim is severely tested when the researcher reports being highly confident in the result, supported by repeated successful predictions.</span></label>
+</div>
+<p><strong>3. Which of the following best illustrates what Popper, Lakatos, and Meehl would consider a risky (and therefore severe) test of a theoretical prediction?</strong></p>
+<div id="radio_XQWTEDPDUK" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_XQWTEDPDUK" value=""> <span>Falsifying the null hypothesis using nil-null testing on a single dataset, regardless of the size or direction of the predicted effect, since any rejection of zero counts as corroboration.</span></label><label><input type="radio" autocomplete="off" name="radio_XQWTEDPDUK" value=""> <span>Pre-registering a one-sided directional test and reporting a statistically significant result, regardless of whether the predicted effect size lies in any specific theoretically meaningful range.</span></label><label><input type="radio" autocomplete="off" name="radio_XQWTEDPDUK" value="answer"> <span>Predicting that the effect size will fall within a narrow range derived from theory and then performing an equivalence or interval test, so that the bulk of possible outcomes would have falsified the prediction.</span></label><label><input type="radio" autocomplete="off" name="radio_XQWTEDPDUK" value=""> <span>Conducting a high-powered exploratory analysis on a large dataset and reporting all effects that survive a multiple-testing correction, since the procedure controls the family-wise error rate.</span></label>
+</div>
+<p><strong>4. A researcher runs a study with low statistical power and reports a non-significant result. Why does this fail to provide a severe test of the null hypothesis?</strong></p>
+<div id="radio_CMPKNQKTOI" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_CMPKNQKTOI" value=""> <span>Because, in the Neyman-Pearson framework, a low-power study simply has a higher Type I error rate, and any Type I errors should automatically be discounted as uninformative regardless of the substantive conclusion.</span></label><label><input type="radio" autocomplete="off" name="radio_CMPKNQKTOI" value=""> <span>Because low-power studies tend to overestimate effect sizes due to publication bias, so a non-significant result should be treated as confirmation that the published effect was inflated and the null is true.</span></label><label><input type="radio" autocomplete="off" name="radio_CMPKNQKTOI" value="answer"> <span>Because the test had a low probability of catching a true effect at the SESOI even if the effect were real, so the absence of a significant result does not constitute a severe test of the hypothesis that the effect is absent.</span></label><label><input type="radio" autocomplete="off" name="radio_CMPKNQKTOI" value=""> <span>Because non-significant results are uninterpretable under the Neyman-Pearson framework, which only permits the conclusion that the null hypothesis is rejected or that the experiment must be repeated.</span></label>
+</div>
+<p><strong>5. Why is rejecting the null hypothesis H in a Neyman-Pearson test not the same as corroborating the substantive theory T from which H was derived?</strong></p>
+<div id="radio_NNDAYEVLXA" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_NNDAYEVLXA" value="answer"> <span>The statistical hypothesis is linked to the substantive theory only through a chain of auxiliary hypotheses about measurement, design, and sampling, so the verdict on H does not translate directly into a verdict on T.</span></label><label><input type="radio" autocomplete="off" name="radio_NNDAYEVLXA" value=""> <span>The statistical hypothesis and the substantive theory are essentially the same claim expressed in different vocabularies, so a rejection of H is always equivalent to a refutation of the substantive theory T.</span></label><label><input type="radio" autocomplete="off" name="radio_NNDAYEVLXA" value=""> <span>The statistical hypothesis is a deductive consequence of the substantive theory, so the auxiliary assumptions can be safely ignored when interpreting the result of a Neyman-Pearson test on H.</span></label><label><input type="radio" autocomplete="off" name="radio_NNDAYEVLXA" value=""> <span>The statistical hypothesis is independent of the substantive theory, and Neyman-Pearson tests can only ever be used to evaluate statistical claims rather than to inform substantive theoretical conclusions.</span></label>
+</div>
+<p><strong>6. Which of Royall’s three statistical questions does the Neyman-Pearson framework specifically aim to answer?</strong></p>
+<div id="radio_RWSLCUZADJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_RWSLCUZADJ" value=""> <span>Royall's likelihoodist question of 'how should I treat these data as evidence?', which is answered by reporting the likelihood ratio of one hypothesis against another rather than by computing a p-value.</span></label><label><input type="radio" autocomplete="off" name="radio_RWSLCUZADJ" value=""> <span>Royall's Bayesian question of 'what should I believe now?', which is answered by computing a posterior probability for each hypothesis given the data and a prior distribution.</span></label><label><input type="radio" autocomplete="off" name="radio_RWSLCUZADJ" value="answer"> <span>Royall's Neyman-Pearson question of 'what should I do now?', which is answered by a calibrated decision rule whose long-run error rates are bounded by the chosen α and β.</span></label><label><input type="radio" autocomplete="off" name="radio_RWSLCUZADJ" value=""> <span>Royall's Popperian question of 'has the theory been falsified?', which is answered by a binary verdict on whether the data are inconsistent with the deductive consequences of the substantive theory.</span></label>
+</div>
+<p><strong>7. What does Meehl mean by “the crud factor” and why does it matter for the interpretation of nil-null hypothesis tests in non-experimental research?</strong></p>
+<div id="radio_LOUCVEAXHJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_LOUCVEAXHJ" value=""> <span>The nil-null hypothesis is implausible because all published effect sizes are inflated, so any significant result against zero should automatically be reinterpreted as a non-result for theoretical purposes.</span></label><label><input type="radio" autocomplete="off" name="radio_LOUCVEAXHJ" value="answer"> <span>The nil-null hypothesis is often implausible because, in non-experimental research, variables are connected through complex causal structures that produce small but systematic non-zero population effects across nearly all measurable comparisons.</span></label><label><input type="radio" autocomplete="off" name="radio_LOUCVEAXHJ" value=""> <span>The nil-null hypothesis is implausible because the central limit theorem ensures that any sufficiently large sample will produce a non-zero mean difference between any two groups, even when the population means are equal.</span></label><label><input type="radio" autocomplete="off" name="radio_LOUCVEAXHJ" value=""> <span>The nil-null hypothesis is implausible because Neyman-Pearson tests are biased toward rejection, so the prior probability of a true null hypothesis is always smaller than the prior probability of the alternative.</span></label>
+</div>
+</section>
+<section id="references" class="level2" data-number="26.9">
+<h2 data-number="26.9" class="anchored" data-anchor-id="references"><span class="header-section-number">26.9</span> References</h2>
+<p>Cumming, G. (2014). The new statistics: Why and how. <em>Psychological Science, 25</em>(1), 7-29. <a href="https://doi.org/10.1177/0956797613504966" class="uri">https://doi.org/10.1177/0956797613504966</a></p>
+<p>Dienes, Z. (2008). <em>Understanding psychology as a science: An introduction to scientific and statistical inference</em>. Palgrave Macmillan.</p>
+<p>Hempel, C. G. (1966). <em>Philosophy of natural science</em>. Prentice-Hall.</p>
+<p>Lakatos, I. (1978). <em>The methodology of scientific research programmes: Philosophical papers, Volume 1</em>. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511621123" class="uri">https://doi.org/10.1017/CBO9780511621123</a></p>
+<p>Lakens, D. (2022). <em>Improving your statistical inferences</em>. <a href="https://lakens.github.io/statistical_inferences/" class="uri">https://lakens.github.io/statistical_inferences/</a></p>
+<p>Mayo, D. G. (2018). <em>Statistical inference as severe testing: How to get beyond the statistics wars</em>. Cambridge University Press.</p>
+<p>Meehl, P. E. (1967). Theory testing in psychology and physics: A methodological paradox. <em>Philosophy of Science, 34</em>(2), 103-115. <a href="https://doi.org/10.1086/288135" class="uri">https://doi.org/10.1086/288135</a></p>
+<p>Meehl, P. E. (1990). Appraising and amending theories: The strategy of Lakatosian defense and two principles that warrant it. <em>Psychological Inquiry, 1</em>(2), 108-141. <a href="https://doi.org/10.1207/s15327965pli0102_1" class="uri">https://doi.org/10.1207/s15327965pli0102_1</a></p>
+<p>Popper, K. R. (1959). <em>The logic of scientific discovery</em>. Hutchinson.</p>
+<p>Popper, K. R. (2002). <em>The logic of scientific discovery</em> (Routledge Classics edition). Routledge. <a href="https://doi.org/10.4324/9780203994627" class="uri">https://doi.org/10.4324/9780203994627</a></p>
+<p>Royall, R. (1997). <em>Statistical evidence: A likelihood paradigm</em>. Chapman &amp; Hall. <a href="https://doi.org/10.1201/9780203738665" class="uri">https://doi.org/10.1201/9780203738665</a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  var t = document.getElementsByClassName("webex-total_correct");
+  for (var i = 0; i < t.length; i++) {
+    p = t[i].parentElement;
+    var correct = p.getElementsByClassName("webex-correct").length;
+    var solvemes = p.getElementsByClassName("webex-solveme").length;
+    var radiogroups = p.getElementsByClassName("webex-radiogroup").length;
+    var selects = p.getElementsByClassName("webex-select").length;
+
+    t[i].innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* check answers */
+check_func = function() {
+  console.log("webex: check answers");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('unchecked')) {
+    cl.remove("unchecked");
+    this.innerHTML = "Hide Answers";
+  } else {
+    cl.add("unchecked");
+    this.innerHTML = "Show Answers";
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+
+  var cl = this.classList
+
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("webex onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  var check_sections = document.getElementsByClassName("webex-check");
+  console.log("check:", check_sections.length);
+  for (var i = 0; i < check_sections.length; i++) {
+    check_sections[i].classList.add("unchecked");
+
+    let btn = document.createElement("button");
+    btn.innerHTML = "Show Answers";
+    btn.classList.add("webex-check-button");
+    btn.onclick = check_func;
+    check_sections[i].appendChild(btn);
+
+    let spn = document.createElement("span");
+    spn.classList.add("webex-total_correct");
+    check_sections[i].appendChild(spn);
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+
+    solveme[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+  }
+
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+    selects[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+  }
+
+  update_total_correct();
+}
+
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./25-two-roles-multiple-testing.html" class="pagination-link" aria-label="Two roles, multiple testing, and pre-registration">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two roles, multiple testing, and pre-registration</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./27-fisher-estimation.html" class="pagination-link" aria-label="Fisher, estimation, and the new statistics (optional)">
+        <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Fisher, estimation, and the new statistics (optional)</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/26-philosophy-of-np.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>29&nbsp; Likelihoodism, briefly (optional) – Understanding and analyzing social and behavioral data</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./30-intro-ggplot2.html" rel="next">
+<link href="./28-bayesian-basics.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-d685995fa19fd69abfd2845f2861e92b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="include/webex.css">
+<link rel="stylesheet" href="include/custom.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21-why-inference.html">Section 4: Statistical Inference</a></li><li class="breadcrumb-item"><a href="./29-likelihoodism.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Likelihoodism, briefly (optional)</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Understanding and analyzing social and behavioral data</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/Y45HV1N/intro-data-analysis" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 1: Getting Started Properly</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-basics-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What is R, and why use it?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-r-vs-rstudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R, RStudio, and how they relate</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-files-and-environment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Scripts, RData, projects, environments, and R Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-projects-and-sessions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Working with R projects and R sessions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-objects-and-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Objects and functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-operations-and-packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Basic operations, custom functions, and packages</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-recap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Recap and getting data into R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 2: Manipulating and Visualizing Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-data-wrangling-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data wrangling: basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-tidyverse-and-descriptives.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wrangling and describing data with the tidyverse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-data-visualization-principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">First principles of data visualization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-wrangling-for-psychology.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Wrangling for psychology research</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-advanced-wrangling-optional.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Advanced wrangling (optional)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 3: Statistical Modeling — Regressions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-data-and-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data and the idea of a statistical model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-mean-as-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The mean as a model: residuals, fit, and comparing models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-simple-linear-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">From the mean to the line: the simple linear model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-fitting-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Fitting and interpreting simple regression in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-multiple-and-categorical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Multiple regression and categorical predictors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-moderation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Moderation: when one predictor depends on another</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-bias-variance-assumptions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Bias, variance, and the assumptions of the linear model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-diagnostics-and-limits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Diagnostics, model fit, and the limits of your model</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 4: Statistical Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-why-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Why inference? Samples, populations, and the standard error</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-pvalues-fisher-neyman-pearson.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">P-values, Fisher, and Neyman-Pearson</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-test-statistics-and-df.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The inferential machinery: test statistics, z/t/F, and degrees of freedom</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24-decisions-errors-power-sesoi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Decisions, errors, power, and the SESOI</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25-two-roles-multiple-testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two roles, multiple testing, and pre-registration</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./26-philosophy-of-np.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">The philosophy of Neyman-Pearson: falsification, severity, and risky predictions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./27-fisher-estimation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Fisher, estimation, and the new statistics (optional)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./28-bayesian-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">A first look at Bayesian inference (optional)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./29-likelihoodism.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Likelihoodism, briefly (optional)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 5: Data Visualization in Practice and Communicating Findings</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./30-intro-ggplot2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Introduction to ggplot2: the grammar of graphics in practice</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./31-visualizing-means.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Visualizing averages, spread, and conditional means</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./32-count-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Visualizing count variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./33-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Visualizing distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./34-apa-tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Tables in APA 7 style</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./35-apa-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Proper APA reporting of statistical results</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./36-coefficient-plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Coefficient plots and forest plots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./37-dataviz-use-cases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Use cases: visualizations and tables for common analyses</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./38-audience-targeted-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Audience-targeted reporting: scientific vs lay communication</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 6: Causal Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./39-why-data-doesnt-tell-causes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Why data alone does not tell us causes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./40-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">The potential outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./41-randomization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Randomization, the cleanest causal claim</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./42-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">DAGs: drawing your causal assumptions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./43-confounders-mediators-colliders.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Confounders, mediators, colliders</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./44-backdoor-criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">The backdoor criterion: what ‘controlling for’ actually does</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#why-this-chapter-is-optional" id="toc-why-this-chapter-is-optional" class="nav-link active" data-scroll-target="#why-this-chapter-is-optional"><span class="header-section-number">29.1</span> Why this chapter is optional</a></li>
+  <li><a href="#probability-and-likelihood-two-views-of-one-formula" id="toc-probability-and-likelihood-two-views-of-one-formula" class="nav-link" data-scroll-target="#probability-and-likelihood-two-views-of-one-formula"><span class="header-section-number">29.2</span> Probability and likelihood: two views of one formula</a></li>
+  <li><a href="#the-law-of-likelihood" id="toc-the-law-of-likelihood" class="nav-link" data-scroll-target="#the-law-of-likelihood"><span class="header-section-number">29.3</span> The law of likelihood</a></li>
+  <li><a href="#royalls-two-urn-intuition" id="toc-royalls-two-urn-intuition" class="nav-link" data-scroll-target="#royalls-two-urn-intuition"><span class="header-section-number">29.4</span> Royall’s two-urn intuition</a></li>
+  <li><a href="#the-likelihood-function-and-likelihood-intervals" id="toc-the-likelihood-function-and-likelihood-intervals" class="nav-link" data-scroll-target="#the-likelihood-function-and-likelihood-intervals"><span class="header-section-number">29.5</span> The likelihood function and likelihood intervals</a></li>
+  <li><a href="#what-makes-likelihoodism-attractive" id="toc-what-makes-likelihoodism-attractive" class="nav-link" data-scroll-target="#what-makes-likelihoodism-attractive"><span class="header-section-number">29.6</span> What makes likelihoodism attractive</a></li>
+  <li><a href="#weaknesses" id="toc-weaknesses" class="nav-link" data-scroll-target="#weaknesses"><span class="header-section-number">29.7</span> Weaknesses</a></li>
+  <li><a href="#doing-it-in-r-a-worked-example" id="toc-doing-it-in-r-a-worked-example" class="nav-link" data-scroll-target="#doing-it-in-r-a-worked-example"><span class="header-section-number">29.8</span> Doing it in R: a worked example</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">29.9</span> Check your understanding</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">29.10</span> References</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/29-likelihoodism.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21-why-inference.html">Section 4: Statistical Inference</a></li><li class="breadcrumb-item"><a href="./29-likelihoodism.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Likelihoodism, briefly (optional)</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Likelihoodism, briefly (optional)</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="why-this-chapter-is-optional" class="level2" data-number="29.1">
+<h2 data-number="29.1" class="anchored" data-anchor-id="why-this-chapter-is-optional"><span class="header-section-number">29.1</span> Why this chapter is optional</h2>
+<p>Chapters 26, 27, and 28 walked through the three big frameworks for statistical inference: Neyman-Pearson (calibrated decisions), Fisher and the new statistics (continuous evidence and estimation), and Bayesian inference (degrees of belief). There is a fourth framework that gets less attention in psychology but that some methodologists argue is the cleanest of the lot for a specific kind of question. It is called <strong>likelihoodism</strong>, sometimes the <strong>evidential approach</strong>, and Zloteanu (<a href="https://mzloteanu.substack.com/p/a-secret-third-way-likelihoodist">2024</a>) calls it “the secret third way” (with Bayesian inference as the much more familiar second way to NP’s first).</p>
+<p>This chapter is optional and deliberately brief. The goal is to give you enough vocabulary to recognize the approach when you encounter it in the literature, to understand what question it is built to answer, and to do a basic likelihood-ratio analysis in R. For a deeper treatment, see Royall (<a href="https://doi.org/10.1201/9780203738665">1997</a>), Dienes (<a href="https://www.bloomsbury.com/uk/understanding-psychology-as-a-science-9780230542310/">2008</a>, Chapter 5), and Lakens (<a href="https://lakens.github.io/statistical_inferences/03-likelihoods.html">2022</a>, Chapter 3). For a hands-on R-focused tutorial, the Zloteanu (2024) substack post walks through a worked example with the <code>likelihoodR</code> package.</p>
+<p>The chapter has seven substantive sections, plus the closing exercises. Section 29.2 distinguishes the likelihood from the probability. Section 29.3 introduces the law of likelihood. Section 29.4 develops Royall’s two-urn intuition for the likelihood ratio. Section 29.5 introduces the likelihood function and likelihood intervals. Section 29.6 catalogues what makes the likelihood approach attractive: insensitivity to stopping rules, multiple testing, and the planned-vs-post-hoc distinction. Section 29.7 catalogues the limitations. Section 29.8 walks through a basic R implementation using <code>likelihoodR</code>. Section 29.9 contains the MCQs.</p>
+</section>
+<section id="probability-and-likelihood-two-views-of-one-formula" class="level2" data-number="29.2">
+<h2 data-number="29.2" class="anchored" data-anchor-id="probability-and-likelihood-two-views-of-one-formula"><span class="header-section-number">29.2</span> Probability and likelihood: two views of one formula</h2>
+<p>The likelihood concept is built on a deceptively simple distinction that took statistics a long time to clarify. <strong>A probability and a likelihood are computed from the same formula, but they are read from different angles.</strong></p>
+<p>Consider a coin tossed 10 times. The probability of observing exactly <em>k</em> heads given that the underlying probability of heads is <em>p</em> is given by the binomial formula:</p>
+<p><span class="math display">\[
+P(k \mid p) = \binom{n}{k} \, p^k \, (1-p)^{n-k}
+\]</span></p>
+<p>We can read this formula in two completely different ways depending on what we treat as fixed.</p>
+<p><strong>Reading 1 (probability).</strong> Fix <em>p</em> (say, <em>p</em> = 0.5 for a fair coin). Then <em>P(k | p)</em> is the probability of each possible number of heads we might observe. It is a function of <em>k</em>, the data. Sum it across all possible values of <em>k</em> and you get 1.</p>
+<p><strong>Reading 2 (likelihood).</strong> Fix the observed data (say, 8 heads in 10 tosses). Then <em>P(k | p)</em> is no longer a probability of the data; the data is fixed. Instead, we now read the same formula as a function of <em>p</em>, asking: how likely was the observed data under each possible value of <em>p</em>? This is the <strong>likelihood function</strong>, written <em>L(p)</em>, and it does not sum to 1 across values of <em>p</em>. The likelihood is not a probability of <em>p</em>; it is the probability of the observed data, viewed as a function of <em>p</em>.</p>
+<p>The figure below makes the distinction visible. The same binomial formula is plotted twice. On the left, we fix <em>p</em> = 0.5 and plot <em>P(k | p)</em> as a function of <em>k</em> (the data). On the right, we fix <em>k</em> = 8 (observed heads) and <em>n</em> = 10 and plot <em>L(p) = P(k = 8 | p)</em> as a function of <em>p</em> (the parameter).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-prob-vs-like" class="quarto-float quarto-figure quarto-figure-center anchored" width="864" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-prob-vs-like-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="29-likelihoodism_files/figure-html/fig-prob-vs-like-1.png" id="fig-prob-vs-like" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-prob-vs-like-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.1
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The same formula generates both pictures. The two pictures answer different questions:</p>
+<ul>
+<li>The probability view answers: “Assuming the coin is fair, how often would I see each possible number of heads?” The data is the unknown.</li>
+<li>The likelihood view answers: “Having observed 8 heads in 10 tosses, how compatible is each possible underlying <em>p</em> with my observation?” The parameter is the unknown.</li>
+</ul>
+<p>A practical implication: the likelihood by itself has no absolute interpretation. The number <em>L(p = 0.8) = 0.30</em> in the right panel is not a probability of <em>p</em> = 0.8. It is the probability of the data, <em>given</em> that <em>p</em> = 0.8 were true. You cannot compare <em>L(p)</em> against an absolute scale and say “this is large” or “this is small.” You can only compare <em>L(p)</em> against <em>L</em> at other values of <em>p</em>. As Dienes (<a href="https://www.bloomsbury.com/uk/understanding-psychology-as-a-science-9780230542310/">2008</a>, pp.&nbsp;86-87) puts it, “the likelihood itself has no meaning in isolation.”</p>
+<p>This means that any inferential use of the likelihood involves comparing two likelihoods. That comparison is the likelihood ratio, and it is the central object of likelihoodism.</p>
+</section>
+<section id="the-law-of-likelihood" class="level2" data-number="29.3">
+<h2 data-number="29.3" class="anchored" data-anchor-id="the-law-of-likelihood"><span class="header-section-number">29.3</span> The law of likelihood</h2>
+<p>Likelihoodism is built on one principle, the <strong>law of likelihood</strong>, attributed to Ian Hacking (<a href="https://doi.org/10.1017/CBO9781316534960">1965</a>) and developed by Royall (<a href="https://doi.org/10.1201/9780203738665">1997</a>):</p>
+<blockquote class="blockquote">
+<p>The observed data favor one hypothesis over another to the extent that the likelihood of the data under the first hypothesis is greater than the likelihood of the data under the second.</p>
+</blockquote>
+<p>In symbols: the <strong>likelihood ratio</strong></p>
+<p><span class="math display">\[
+LR_{1 \text{ vs } 2} = \frac{L(H_1)}{L(H_2)} = \frac{P(D \mid H_1)}{P(D \mid H_2)}
+\]</span></p>
+<p>measures the relative strength of evidence the data provide for <span class="math inline">\(H_1\)</span> over <span class="math inline">\(H_2\)</span>. If <span class="math inline">\(LR = 1\)</span>, the data are equally compatible with both hypotheses; the data provide no evidence either way. If <span class="math inline">\(LR &gt; 1\)</span>, the data favor <span class="math inline">\(H_1\)</span>. If <span class="math inline">\(LR &lt; 1\)</span>, the data favor <span class="math inline">\(H_2\)</span>. The further <span class="math inline">\(LR\)</span> is from 1 (in either direction), the stronger the relative evidence.</p>
+<p>Three features of this definition are worth flagging.</p>
+<p><strong>It is relative.</strong> The likelihood ratio compares two specific hypotheses; it does not say either of them is true. Even a <span class="math inline">\(LR\)</span> of a million in favor of <span class="math inline">\(H_1\)</span> over <span class="math inline">\(H_2\)</span> leaves open the possibility that some <em>third</em> hypothesis <span class="math inline">\(H_3\)</span> would have made the data more likely still. Lakens (<a href="https://lakens.github.io/statistical_inferences/03-likelihoods.html#fig-like7">2022</a>, Figure 3.7) gives a vivid example: with 50 heads in 100 flips, the likelihood ratio for <span class="math inline">\(p = 0.3\)</span> over <span class="math inline">\(p = 0.8\)</span> is around 800 000, which sounds overwhelming, but <span class="math inline">\(p = 0.5\)</span> would have been even more compatible with the data. Always frame likelihood-ratio conclusions as “relative to” the specific alternatives being compared.</p>
+<p><strong>It is the same form as the Bayes factor without a prior.</strong> Recall from Chapter 28 that the Bayes factor was the ratio of marginal likelihoods of the data under two models. If both models are <em>point</em> hypotheses (no priors over parameters), the Bayes factor reduces to the likelihood ratio. The likelihoodist position is essentially: report the likelihood ratio (the evidence in the data) and let the reader bring their own prior. This is what makes likelihoodism a “third way”: it shares Bayesianism’s focus on relative evidence between specific hypotheses, but refuses to mix in a prior the way Bayesian inference does.</p>
+<p><strong>It is silent about decisions and beliefs.</strong> The law of likelihood is built to answer Royall’s third question, “how should I treat these data as evidence for one hypothesis over another?” It does not tell you what to <em>do</em> (the NP question) or what to <em>believe</em> (the Bayesian question). Whether to act on a particular <span class="math inline">\(LR\)</span>, and whether to believe a particular hypothesis after seeing a particular <span class="math inline">\(LR\)</span>, are separate steps that the framework does not provide. As the likelihoodists Taper and Lele (cited in Lakens 2022, §3) put it, “we do not care what you believe, we barely care what we believe; what we are interested in is what you can show.”</p>
+</section>
+<section id="royalls-two-urn-intuition" class="level2" data-number="29.4">
+<h2 data-number="29.4" class="anchored" data-anchor-id="royalls-two-urn-intuition"><span class="header-section-number">29.4</span> Royall’s two-urn intuition</h2>
+<p>Royall (<a href="https://doi.org/10.1201/9780203738665">1997</a>) gives a single example that does most of the conceptual work for the law of likelihood. It is worth working through carefully.</p>
+<p>Imagine two urns sitting side by side. Urn 1 contains only white balls. Urn 2 contains an equal mixture of white and black balls. One urn is chosen (say, by a coin toss) and a single ball is drawn from it. The ball is white. What does this observation tell us?</p>
+<p>Compute the likelihoods. The probability of drawing a white ball given that the urn is the pure-white urn is <span class="math inline">\(P(\text{white} \mid \text{Urn 1}) = 1\)</span>. The probability of drawing a white ball given that the urn is the mixed urn is <span class="math inline">\(P(\text{white} \mid \text{Urn 2}) = 0.5\)</span>. The likelihood ratio in favor of Urn 1 over Urn 2 is <span class="math inline">\(1 / 0.5 = 2\)</span>. The data favor Urn 1 by a factor of 2.</p>
+<p>A factor of 2 is weak evidence. We have one observation; the white ball is consistent with both urns; the urn we chose was equally likely to be either to start with; the verdict is appropriately mild. Now suppose we draw not one ball but three, all white. The likelihood under Urn 1 is <span class="math inline">\(1 \times 1 \times 1 = 1\)</span>. The likelihood under Urn 2 is <span class="math inline">\(0.5 \times 0.5 \times 0.5 = 0.125\)</span>. The likelihood ratio is <span class="math inline">\(1 / 0.125 = 8\)</span>. The data now favor Urn 1 by a factor of 8.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-urn" class="quarto-float quarto-figure quarto-figure-center anchored" width="768" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-urn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="29-likelihoodism_files/figure-html/fig-urn-1.png" id="fig-urn" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-urn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.2
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The intuition the figure provides is that each consecutive white ball doubles the evidence in favor of the pure-white urn. After 3 white balls in a row, we have <span class="math inline">\(LR = 8\)</span>; after 5 white balls, <span class="math inline">\(LR = 32\)</span>. Royall’s calibration is anchored on this intuition: if drawing 3 white balls in a row from the pure-white urn feels like “fairly strong” evidence that this is indeed the pure-white urn, then any <span class="math inline">\(LR = 8\)</span> in any context should feel similarly strong. Drawing 5 white balls in a row feels like “strong” evidence; that anchors <span class="math inline">\(LR = 32\)</span>. These benchmarks (<span class="math inline">\(LR = 8\)</span> for fairly strong, <span class="math inline">\(LR = 32\)</span> for strong) are the likelihoodist analogues of Cohen’s <em>d</em> benchmarks: useful as anchors, but not as decision rules.</p>
+<p>The two-urn example is small but it does several things at once. It shows that the likelihood ratio is naturally on a multiplicative scale: each new observation multiplies the existing <span class="math inline">\(LR\)</span>, so independent observations combine cleanly. It shows that the framework is naturally on a relative-evidence footing: we never claim “Urn 1 is the urn”; we only claim “the data favor Urn 1 over Urn 2 by a factor of X.” And it gives intuition for the relevant magnitudes: <span class="math inline">\(LR = 2\)</span> is barely worth mentioning, <span class="math inline">\(LR = 8\)</span> is fairly strong, <span class="math inline">\(LR = 32\)</span> is strong.</p>
+</section>
+<section id="the-likelihood-function-and-likelihood-intervals" class="level2" data-number="29.5">
+<h2 data-number="29.5" class="anchored" data-anchor-id="the-likelihood-function-and-likelihood-intervals"><span class="header-section-number">29.5</span> The likelihood function and likelihood intervals</h2>
+<p>The likelihood ratio compares two specific hypotheses. But often we want to ask not “is <em>p</em> = 0.5 or <em>p</em> = 0.8?” but rather “what is <em>p</em>, with what uncertainty?” The likelihoodist tool for this is the <strong>likelihood function</strong> (the right-hand panel of figure 29.1) together with the <strong>likelihood interval</strong>.</p>
+<p>A 1/8 likelihood interval is the set of all parameter values whose likelihood is at least 1/8 of the maximum. In words: the interval contains all parameter values for which no other value within it has more than fairly strong evidence (<span class="math inline">\(LR = 8\)</span>) against. Values outside the interval are at least 8 times less likely than the maximum-likelihood value. A 1/32 likelihood interval applies the same logic with strong evidence (<span class="math inline">\(LR = 32\)</span>) as the threshold.</p>
+<p>The figure below shows the likelihood function for 8 heads in 10 coin tosses, with the 1/8 and 1/32 likelihood intervals marked.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-likelihood-intervals" class="quarto-float quarto-figure quarto-figure-center anchored" width="720" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-likelihood-intervals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="29-likelihoodism_files/figure-html/fig-likelihood-intervals-1.png" id="fig-likelihood-intervals" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="720">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-likelihood-intervals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.3
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The 1/8 interval here runs from about <em>p</em> = 0.50 to <em>p</em> = 0.97 and the 1/32 interval from about <em>p</em> = 0.43 to <em>p</em> = 0.99. The interpretation is precise but unfamiliar. The 1/8 interval contains the values of <em>p</em> for which no other value within it is more than 8 times better supported by the data. Outside the interval, every value is at least 8 times less likely than the maximum. The interval is <em>not</em> a 95% confidence interval, <em>not</em> a 95% credible interval; it is its own kind of object, defined directly by the law of likelihood.</p>
+<p>A useful (and slightly surprising) numerical fact: for normally distributed data with known variance, the 1/8 likelihood interval coincides approximately with the uncorrected 96% confidence interval, and the 1/32 likelihood interval with the uncorrected 99% confidence interval (Dienes <a href="https://www.bloomsbury.com/uk/understanding-psychology-as-a-science-9780230542310/">2008</a>, p.&nbsp;131). The widths happen to agree, even though the interpretations are completely different.</p>
+</section>
+<section id="what-makes-likelihoodism-attractive" class="level2" data-number="29.6">
+<h2 data-number="29.6" class="anchored" data-anchor-id="what-makes-likelihoodism-attractive"><span class="header-section-number">29.6</span> What makes likelihoodism attractive</h2>
+<p>The most distinctive features of likelihoodism are its insensitivities. The likelihood ratio depends only on the observed data and the two hypotheses being compared. It does <em>not</em> depend on several things that the Neyman-Pearson framework cares deeply about. We catalogue them, because they are the practical attractions of the framework.</p>
+<p><strong>Insensitivity to stopping rules.</strong> Suppose two researchers run identical studies but have different stopping rules: one decides in advance to test exactly 30 patients, the other decides in advance to test until 6 patients improve. They end up with the same data: 6 improvements out of 30 patients. In the Neyman-Pearson framework, these two researchers should compute <em>different</em> p-values, because the reference distributions for their procedures differ; the data are the same but the inferential conclusions diverge (Chapter 25). In the likelihoodist framework, the likelihood ratio depends only on the actually observed data, not on the stopping rule that generated them. Both researchers get the same answer.</p>
+<p><strong>Insensitivity to multiple testing.</strong> Suppose you ran 20 t-tests in your study and the one comparing condition A to condition B yields a likelihood ratio of 10 in favor of an effect. In NP, you would need to correct the p-value for the family of 20 tests, possibly dropping the result below significance. In likelihoodism, the likelihood ratio for the specific A-versus-B comparison depends only on the A and B data and the two hypotheses; the fact that you ran 18 other unrelated tests does not change the evidence the A-versus-B data provide for that specific comparison.</p>
+<p><strong>Insensitivity to the planned/post-hoc distinction.</strong> A likelihood ratio computed on a post-hoc hypothesis is mathematically the same quantity as a likelihood ratio computed on a pre-specified one. The framework does not have a built-in penalty for HARKing in the way NP does. Whether this is a feature or a problem we discuss in the next section.</p>
+<p><strong>Independence of priors.</strong> Unlike Bayesian inference, likelihoodism does not require specifying a prior. The likelihood ratio is purely a function of the data and the two hypotheses. This makes it more “objective” in the colloquial sense; two analysts who agree on the data and the hypotheses must agree on the LR, where two Bayesians might disagree because their priors differ.</p>
+<p><strong>Bounded probability of misleading evidence.</strong> A classic result (Birnbaum 1962, cited in Dienes <a href="https://www.bloomsbury.com/uk/understanding-psychology-as-a-science-9780230542310/">2008</a>, p.&nbsp;129) shows that the probability of observing a likelihood ratio of <em>k</em> in favor of the wrong hypothesis is bounded above by <span class="math inline">\(1/k\)</span>, <em>even with an infinite number of observations</em>. If you commit to an evidence threshold of <span class="math inline">\(LR = 8\)</span>, the probability that you will ever see misleading evidence of that strength is at most <span class="math inline">\(1/8\)</span>. With normally distributed data this bound is much tighter still (about 0.02). This is a strong calibration claim that holds in the limit of infinite data, unlike NP’s α which is fixed regardless of sample size.</p>
+<p>The combination of these features makes the likelihoodist framework attractive to researchers who find the NP framework’s sensitivity to procedural details uncomfortable (Why should my conclusion depend on what I intended to do but did not?) and the Bayesian framework’s reliance on priors uncomfortable (Why should my conclusion depend on what someone else believed before the data?). The Zloteanu (<a href="https://mzloteanu.substack.com/p/a-secret-third-way-likelihoodist">2024</a>) post is unusually clear on this combination of advantages.</p>
+</section>
+<section id="weaknesses" class="level2" data-number="29.7">
+<h2 data-number="29.7" class="anchored" data-anchor-id="weaknesses"><span class="header-section-number">29.7</span> Weaknesses</h2>
+<p>The same insensitivities that make likelihoodism attractive also expose its limitations.</p>
+<p><strong>Likelihood ratios are always relative.</strong> The framework can tell you the relative evidence for <span class="math inline">\(H_1\)</span> over <span class="math inline">\(H_2\)</span>, but it cannot say anything about whether <span class="math inline">\(H_1\)</span> or <span class="math inline">\(H_2\)</span> is right in any absolute sense. Both could be wrong and a third hypothesis we did not consider could be the truth. The Lakens (<a href="https://lakens.github.io/statistical_inferences/03-likelihoods.html#fig-like7">2022</a>, section 3.1) example of <span class="math inline">\(LR \approx 800{,}000\)</span> for <span class="math inline">\(p = 0.3\)</span> over <span class="math inline">\(p = 0.8\)</span> when the data actually favor <span class="math inline">\(p = 0.5\)</span> is a sharp illustration: the LR was correctly reporting the relative evidence between the two specific hypotheses, but neither hypothesis was the best-supported value of <em>p</em>.</p>
+<p><strong>The framework does not control error rates in decisions.</strong> If you use a likelihood-ratio threshold (say <span class="math inline">\(LR \geq 8\)</span>) as a decision rule, the framework has no built-in calibration of the long-run rate at which the rule will misclassify hypotheses. The 1/k bound on misleading evidence is a different and weaker calibration than NP’s α. If you need decisions with strictly controlled long-run error rates (drug approval, regulatory decisions), the likelihoodist framework on its own is not the right tool.</p>
+<p><strong>The insensitivity to multiple testing is double-edged.</strong> It is attractive when you genuinely want to ask “what does the A-versus-B comparison tell me, regardless of how many other comparisons I ran?” It is dangerous when the practical effect is to legitimize cherry-picking. If you ran 20 comparisons and report only the one with the highest LR, you have selected on a quantity that varies with the data, and the LR’s interpretation as evidence for the specific comparison is undermined by the selection. The framework does not have a built-in correction; you have to commit not to cherry-pick by other means, such as pre-registration.</p>
+<p><strong>The insensitivity to planning and HARKing is also double-edged.</strong> A likelihood ratio computed on a pre-specified hypothesis is mathematically the same quantity as one computed post hoc, which is attractive for exploratory work but dangerous for the same reasons HARKing was dangerous in Chapter 25. The framework does not penalize hypothesis-fishing in the same way NP does.</p>
+<p><strong>Adoption is low.</strong> Compared to NP, Fisher, and Bayesian methods, likelihoodism is rarely seen in published psychology papers. Available R packages (<code>likelihoodR</code>, the Jamovi <code>jeva</code> module) cover only a small range of standard analyses. For complex designs (multilevel models, structural equation models), likelihoodist tools do not exist; you have to translate the analysis into a likelihood-ratio framework by hand or via custom code. Practical work in many areas of psychology is constrained by what software is available, and likelihoodism is not where the software effort has gone.</p>
+<p>A reasonable summary, consistent with the position taken throughout Section 4. Likelihoodism is the cleanest framework if your only question is “what does the data say about <span class="math inline">\(H_1\)</span> versus <span class="math inline">\(H_2\)</span>, treating these as the only two hypotheses?” If your question requires calibrated decisions (NP), or beliefs (Bayes), or careful handling of selection effects (any framework), the likelihoodist tools on their own are not enough. Most working researchers will not adopt likelihoodism as a primary framework, but recognizing the law of likelihood and being able to compute and interpret a likelihood ratio is a useful addition to your statistical vocabulary.</p>
+</section>
+<section id="doing-it-in-r-a-worked-example" class="level2" data-number="29.8">
+<h2 data-number="29.8" class="anchored" data-anchor-id="doing-it-in-r-a-worked-example"><span class="header-section-number">29.8</span> Doing it in R: a worked example</h2>
+<p>The <code>likelihoodR</code> package (<a href="https://doi.org/10.32614/RJ-2023-024">Cahusac, 2023</a>) provides likelihood-ratio versions of common tests. We illustrate it on the <code>vgames_study</code> aggression comparison we have used throughout Chapters 27 and 28.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>vgames <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/vgames_study.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>We can run a likelihoodist independent-samples t-test, specifying a single-value alternative hypothesis (here, <em>d</em> = 0.5, a moderate effect) and asking for the likelihood ratio against the null of zero difference.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(likelihoodR)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>violent_scores <span class="ot">&lt;-</span> vgames<span class="sc">$</span>aggression[vgames<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"violent"</span>]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>neutral_scores <span class="ot">&lt;-</span> vgames<span class="sc">$</span>aggression[vgames<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"neutral"</span>]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">L_ttest</span>(violent_scores, neutral_scores,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">null =</span> <span class="dv">0</span>,    <span class="co"># H0: zero population difference</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">d    =</span> <span class="fl">0.5</span>,  <span class="co"># H1: standardized effect of 0.5</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">L.int =</span> <span class="dv">2</span>,   <span class="co"># report the 1/e^2 = 1/7.39 ~ 1/8 interval</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">verb  =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="29-likelihoodism_files/figure-html/vgames-lik-render-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$obs.diff
+[1] -1.353333
+
+$df
+[1] 59
+
+$alt.H1
+[1] 0.9949647
+
+$alt.H2
+NULL
+
+$S_max
+[1] 11.56529
+
+$S_10
+[1] -14.90083
+
+$S_12
+NULL
+
+$S_20
+NULL
+
+$like.int
+[1] -1.8714420 -0.8352246
+
+$L.int.spec
+[1] 2
+
+$null.value
+[1] 0
+
+$t.val
+[1] 5.267963
+
+$p.val
+[1] 2.037545e-06
+
+$d.obs
+[1] -0.6800911</code></pre>
+</div>
+</div>
+<p>The output reports several quantities. The <em>maximum support</em> against the null is the log of the likelihood ratio comparing the MLE (the best-supported value, here the sample mean difference) against the null of zero. A maximum support of about 8 corresponds to a likelihood ratio of <span class="math inline">\(e^8 \approx 2{,}981\)</span>, which is well above Royall’s “strong” threshold of 32. The <em>support for d = 0.5</em> is the log of the likelihood ratio comparing the specified alternative (a moderate effect) against the null; a support of about 6 corresponds to <span class="math inline">\(LR \approx 403\)</span>, again above the “strong” threshold but less dramatic than the MLE-vs-null comparison. The <em>S-2 likelihood interval</em> (sometimes written 1/e^2 ≈ 1/7.4, close to Royall’s 1/8) gives the range of mean differences that are not more than ~7.4 times worse supported than the MLE; here, this is roughly 0.84 to 1.86 raw aggression units.</p>
+<p>The interpretation, in likelihoodist terms: the data provide very strong evidence for the violent-versus-neutral difference being non-zero, with the best-supported magnitude being around 1.3 to 1.4 aggression-scale points, and any value within roughly [0.84, 1.86] not more than fairly strong evidence away from the best-supported value. Note that the package also reports the conventional t-test result (with t, p, and Cohen’s <em>d</em>) for comparison, but the likelihoodist interpretation does not depend on the p-value.</p>
+<p>For sample-size planning in the likelihoodist framework, the package provides <code>L_t_test_sample_size()</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">L_t_test_sample_size</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">MW =</span> <span class="fl">0.20</span>,   <span class="co"># probability of misleading or weak evidence (~ Type II error analogue)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd =</span> <span class="dv">1</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">d  =</span> <span class="fl">0.5</span>,    <span class="co"># smallest effect size of interest</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">S  =</span> <span class="dv">2</span>       <span class="co"># support threshold (~ LR = e^2 = 7.4)</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+For independent samples t test with M1 + W1 probability of 0.2
+ Strength of evidence required is 2, and effect size of 0.5
+ Required total sample size (n1 + n2) = 76
+ Required total sample size:
+$N
+[1] 76
+
+$S
+[1] 2
+
+$sd
+[1] 1
+
+$d
+[1] 0.5
+
+$m1.w1
+[1] 0.2</code></pre>
+</div>
+</div>
+<p>The function returns the sample size needed for the desired probability of misleading-or-weak evidence (the likelihoodist analogue of statistical power). The Zloteanu (<a href="https://mzloteanu.substack.com/p/a-secret-third-way-likelihoodist">2024</a>) post discusses this in detail and provides a worked example with full pre-registration considerations.</p>
+<p>For most psychology applications, you will not start with <code>likelihoodR</code>. The framework is most useful as a complement to whatever primary analysis you are running: if you are reporting a t-test, computing the corresponding likelihood ratio adds the relative-evidence reading to your output, and the cost is minimal once the data are in R.</p>
+</section>
+<section id="check-your-understanding" class="level2" data-number="29.9">
+<h2 data-number="29.9" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">29.9</span> Check your understanding</h2>
+<p><strong>1. What is the relationship between a probability and a likelihood?</strong></p>
+<div id="radio_KKJDQYUVLC" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_KKJDQYUVLC" value=""> <span>The probability and the likelihood are computed from two completely different formulas, and confusing them leads to incorrect statistical inferences in both the frequentist and Bayesian frameworks.</span></label><label><input type="radio" autocomplete="off" name="radio_KKJDQYUVLC" value="answer"> <span>The probability and the likelihood are computed from the same formula, but the probability views the parameter as fixed and the data as variable, while the likelihood views the data as fixed and the parameter as variable.</span></label><label><input type="radio" autocomplete="off" name="radio_KKJDQYUVLC" value=""> <span>The probability and the likelihood are the same quantity, but the probability is reported on a linear scale while the likelihood is reported on a logarithmic scale for ease of comparison across hypotheses.</span></label><label><input type="radio" autocomplete="off" name="radio_KKJDQYUVLC" value=""> <span>The probability is always a number between 0 and 1, while the likelihood is always a number greater than or equal to 1, because it represents the relative compatibility of the data with the parameter.</span></label>
+</div>
+<p><strong>2. What does the law of likelihood state?</strong></p>
+<div id="radio_IZPFMGRICR" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_IZPFMGRICR" value=""> <span>The law of likelihood states that the data favor the hypothesis whose corresponding likelihood is closer to 1, because likelihoods closer to 1 indicate higher probability of the observed data under that hypothesis.</span></label><label><input type="radio" autocomplete="off" name="radio_IZPFMGRICR" value="answer"> <span>The law of likelihood states that the observed data favor one hypothesis over another to the extent that the likelihood of the data under the first hypothesis is greater than the likelihood under the second, with the likelihood ratio quantifying that relative evidence.</span></label><label><input type="radio" autocomplete="off" name="radio_IZPFMGRICR" value=""> <span>The law of likelihood states that the hypothesis with the highest absolute likelihood should be accepted as true, because the framework provides an objective scale on which absolute likelihoods can be compared across studies.</span></label><label><input type="radio" autocomplete="off" name="radio_IZPFMGRICR" value=""> <span>The law of likelihood states that the data favor the null hypothesis whenever the likelihood ratio in favor of the alternative falls below the conventional threshold of 0.05, paralleling the role of alpha in frequentist inference.</span></label>
+</div>
+<p><strong>3. In Royall’s two-urn intuition, what does a likelihood ratio of 8 in favor of H1 mean?</strong></p>
+<div id="radio_ULAPWKBINT" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ULAPWKBINT" value=""> <span>A likelihood ratio of 8 in favor of H1 means that the absolute probability of H1 is 8 times higher than the absolute probability of H0 after seeing the data, regardless of which other hypotheses might also be considered.</span></label><label><input type="radio" autocomplete="off" name="radio_ULAPWKBINT" value="answer"> <span>A likelihood ratio of 8 in favor of H1 means that the data are 8 times more probable under H1 than under H0, providing 'fairly strong' relative evidence in Royall's calibration, equivalent to drawing 3 white balls in a row from a pure-white urn rather than from a mixed urn.</span></label><label><input type="radio" autocomplete="off" name="radio_ULAPWKBINT" value=""> <span>A likelihood ratio of 8 in favor of H1 means that H1 has been falsified at the conventional alpha level of 0.05 in the long run, because the framework calibrates the likelihood ratio to long-run frequencies of correct decisions.</span></label><label><input type="radio" autocomplete="off" name="radio_ULAPWKBINT" value=""> <span>A likelihood ratio of 8 in favor of H1 means that H0 should be rejected with 8% probability of being wrong, because 1/8 = 0.125, which is below the conventional threshold for a Type I error rate.</span></label>
+</div>
+<p><strong>4. How should a 1/8 likelihood interval be interpreted?</strong></p>
+<div id="radio_WZXVQJROJA" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_WZXVQJROJA" value="answer"> <span>A 1/8 likelihood interval contains all parameter values whose likelihood is at least 1/8 of the maximum likelihood, so values outside the interval are at least 8 times worse supported by the data than the maximum-likelihood value.</span></label><label><input type="radio" autocomplete="off" name="radio_WZXVQJROJA" value=""> <span>A 1/8 likelihood interval is the range of parameter values for which the corresponding p-value is below 1/8 = 0.125, so values inside the interval would all be rejected at a conventional alpha level of 0.10.</span></label><label><input type="radio" autocomplete="off" name="radio_WZXVQJROJA" value=""> <span>A 1/8 likelihood interval is the range of parameter values that captures exactly 87.5% (1 - 1/8) of the posterior probability, given a flat prior, so any value inside the interval is at least 87.5% likely to be the true parameter.</span></label><label><input type="radio" autocomplete="off" name="radio_WZXVQJROJA" value=""> <span>A 1/8 likelihood interval is the range of parameter values within one standard error of the maximum-likelihood estimate, divided by a factor of 8 to give a more conservative bound around the estimate.</span></label>
+</div>
+<p><strong>5. How does the likelihood ratio respond to the experimenter’s stopping rule?</strong></p>
+<div id="radio_QKQWXFWNAE" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_QKQWXFWNAE" value=""> <span>Likelihood ratios depend on the stopping rule in the same way p-values do, because the likelihood function changes when the experimenter could in principle have stopped data collection at any point during the study.</span></label><label><input type="radio" autocomplete="off" name="radio_QKQWXFWNAE" value=""> <span>Likelihood ratios depend on the stopping rule only when the alternative hypothesis is composite, because composite hypotheses are sensitive to the boundaries of the parameter space that the stopping rule restricts the data to.</span></label><label><input type="radio" autocomplete="off" name="radio_QKQWXFWNAE" value="answer"> <span>Likelihood ratios do not depend on the stopping rule, because the likelihood of the observed data depends only on the data actually observed and the two hypotheses being compared, not on what the experimenter intended to do.</span></label><label><input type="radio" autocomplete="off" name="radio_QKQWXFWNAE" value=""> <span>Likelihood ratios depend on the stopping rule but only when the sample size is small, because for sufficiently large samples the central limit theorem ensures that the likelihood function becomes effectively independent of the stopping rule.</span></label>
+</div>
+<p><strong>6. How does the likelihoodist framework relate to the Bayesian and Neyman-Pearson frameworks in terms of the question it is designed to answer?</strong></p>
+<div id="radio_EDPDRIFVYP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_EDPDRIFVYP" value=""> <span>The likelihoodist framework, the Bayesian framework, and the Neyman-Pearson framework all answer the same question (the relative evidence for one hypothesis over another) but use different mathematical formalizations of that evidence.</span></label><label><input type="radio" autocomplete="off" name="radio_EDPDRIFVYP" value=""> <span>The likelihoodist framework answers Royall's first question (what should I do?), while the Bayesian framework answers the second (what should I believe?), and the Neyman-Pearson framework answers the third (how should I treat the data as evidence?).</span></label><label><input type="radio" autocomplete="off" name="radio_EDPDRIFVYP" value="answer"> <span>The likelihoodist framework answers Royall's third question (how should I treat the data as evidence?), the Bayesian framework answers the second (what should I believe?), and the Neyman-Pearson framework answers the first (what should I do, with calibrated error rates?).</span></label><label><input type="radio" autocomplete="off" name="radio_EDPDRIFVYP" value=""> <span>The likelihoodist framework is mathematically equivalent to the Bayesian framework with a flat prior, so any analysis performed in the likelihoodist framework is automatically also a Bayesian analysis with the same conclusions.</span></label>
+</div>
+<p><strong>7. What is one important weakness of the likelihoodist framework that researchers should be aware of?</strong></p>
+<div id="radio_TMWLEEGRDK" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_TMWLEEGRDK" value=""> <span>A weakness of the likelihoodist framework is that it cannot accommodate hypotheses about a continuous parameter, because likelihood ratios can only be computed for point hypotheses with no associated uncertainty about the parameter value.</span></label><label><input type="radio" autocomplete="off" name="radio_TMWLEEGRDK" value="answer"> <span>A weakness of the likelihoodist framework is that the likelihood ratio is always relative to the two specific hypotheses being compared, so even a very large LR in favor of H1 over H0 does not rule out the possibility that a third hypothesis H2 would have made the data even more likely.</span></label><label><input type="radio" autocomplete="off" name="radio_TMWLEEGRDK" value=""> <span>A weakness of the likelihoodist framework is that it requires specifying a prior distribution over the parameter space, just as the Bayesian framework does, but without the formal machinery of posterior updating that gives the Bayesian framework its interpretability.</span></label><label><input type="radio" autocomplete="off" name="radio_TMWLEEGRDK" value=""> <span>A weakness of the likelihoodist framework is that it cannot be applied to data with non-normal distributions, because the law of likelihood is mathematically defined only for the case of normally distributed observations.</span></label>
+</div>
+</section>
+<section id="references" class="level2" data-number="29.10">
+<h2 data-number="29.10" class="anchored" data-anchor-id="references"><span class="header-section-number">29.10</span> References</h2>
+<p>Birnbaum, A. (1962). On the foundations of statistical inference. <em>Journal of the American Statistical Association, 57</em>(298), 269-306. <a href="https://doi.org/10.1080/01621459.1962.10480660" class="uri">https://doi.org/10.1080/01621459.1962.10480660</a></p>
+<p>Cahusac, P. M. B. (2023). Log likelihood ratios for common statistical tests using the <code>likelihoodR</code> package. <em>The R Journal, 14</em>(3), 203-213. <a href="https://doi.org/10.32614/RJ-2023-024" class="uri">https://doi.org/10.32614/RJ-2023-024</a></p>
+<p>Dienes, Z. (2008). <em>Understanding psychology as a science: An introduction to scientific and statistical inference</em>. Palgrave Macmillan.</p>
+<p>Hacking, I. (1965). <em>Logic of statistical inference</em>. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9781316534960" class="uri">https://doi.org/10.1017/CBO9781316534960</a></p>
+<p>Lakens, D. (2022). <em>Improving your statistical inferences</em>. <a href="https://lakens.github.io/statistical_inferences/" class="uri">https://lakens.github.io/statistical_inferences/</a></p>
+<p>Royall, R. (1997). <em>Statistical evidence: A likelihood paradigm</em>. Chapman &amp; Hall. <a href="https://doi.org/10.1201/9780203738665" class="uri">https://doi.org/10.1201/9780203738665</a></p>
+<p>Zloteanu, M. (2024, July 3). A secret third way: Likelihoodist statistics. <em>Figuring Stuff Out</em>. <a href="https://mzloteanu.substack.com/p/a-secret-third-way-likelihoodist" class="uri">https://mzloteanu.substack.com/p/a-secret-third-way-likelihoodist</a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  var t = document.getElementsByClassName("webex-total_correct");
+  for (var i = 0; i < t.length; i++) {
+    p = t[i].parentElement;
+    var correct = p.getElementsByClassName("webex-correct").length;
+    var solvemes = p.getElementsByClassName("webex-solveme").length;
+    var radiogroups = p.getElementsByClassName("webex-radiogroup").length;
+    var selects = p.getElementsByClassName("webex-select").length;
+
+    t[i].innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* check answers */
+check_func = function() {
+  console.log("webex: check answers");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('unchecked')) {
+    cl.remove("unchecked");
+    this.innerHTML = "Hide Answers";
+  } else {
+    cl.add("unchecked");
+    this.innerHTML = "Show Answers";
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+
+  var cl = this.classList
+
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("webex onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  var check_sections = document.getElementsByClassName("webex-check");
+  console.log("check:", check_sections.length);
+  for (var i = 0; i < check_sections.length; i++) {
+    check_sections[i].classList.add("unchecked");
+
+    let btn = document.createElement("button");
+    btn.innerHTML = "Show Answers";
+    btn.classList.add("webex-check-button");
+    btn.onclick = check_func;
+    check_sections[i].appendChild(btn);
+
+    let spn = document.createElement("span");
+    spn.classList.add("webex-total_correct");
+    check_sections[i].appendChild(spn);
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+
+    solveme[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+  }
+
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+    selects[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+  }
+
+  update_total_correct();
+}
+
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./28-bayesian-basics.html" class="pagination-link" aria-label="A first look at Bayesian inference (optional)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">A first look at Bayesian inference (optional)</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./30-intro-ggplot2.html" class="pagination-link" aria-label="Introduction to ggplot2: the grammar of graphics in practice">
+        <span class="nav-page-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Introduction to ggplot2: the grammar of graphics in practice</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/29-likelihoodism.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
