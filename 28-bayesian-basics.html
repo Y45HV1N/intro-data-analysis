@@ -747,7 +747,7 @@ window.Quarto = {
 <p>The figure below contrasts the two interpretations on a simple example. Imagine we are uncertain about whether a coin is fair. The frequentist view describes the coin’s behavior across an infinite collection of tosses; we either know it is fair or we do not, and the probability statement applies to the long-run frequency, not to our uncertainty. The Bayesian view describes a personal degree of belief about whether the coin is fair; the probability lives in our head, and we can assign one even before tossing the coin at all.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-two-probabilities" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="864">
+<div id="fig-two-probabilities" class="quarto-float quarto-figure quarto-figure-center anchored" width="864" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-two-probabilities-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="28-bayesian-basics_files/figure-html/fig-two-probabilities-1.png" id="fig-two-probabilities" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="864">
@@ -796,7 +796,7 @@ P(H \mid D) = \frac{P(D \mid H) \cdot P(H)}{P(D)}
 <p>This formula does almost all the work of Bayesian inference. Everything else is either choosing a prior, computing a likelihood, or summarizing the posterior. The figure below makes the arithmetic visual. We are estimating an unknown probability <em>p</em> (say, the fraction of people who improve on a new treatment). The prior (grey) represents our belief before any data. The likelihood (blue, dashed) is the probability of observing the data we did, as a function of the unknown <em>p</em>. The posterior (red) is the product of these two, rescaled to integrate to 1.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-bayes-engine" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="768">
+<div id="fig-bayes-engine" class="quarto-float quarto-figure quarto-figure-center anchored" width="768" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-bayes-engine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="28-bayesian-basics_files/figure-html/fig-bayes-engine-1.png" id="fig-bayes-engine" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="768">
@@ -828,7 +828,7 @@ Figure&nbsp;28.2
 <p>The figure below shows what these three priors look like and what they imply for the same observed data (13 successes in 20 trials).</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-different-priors" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="912">
+<div id="fig-different-priors" class="quarto-float quarto-figure quarto-figure-center anchored" width="912" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-different-priors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="28-bayesian-basics_files/figure-html/fig-different-priors-1.png" id="fig-different-priors" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="912">
@@ -864,7 +864,7 @@ Figure&nbsp;28.3
 <p>Bayesian updating is also naturally <strong>sequential</strong>. Today’s posterior becomes tomorrow’s prior. If we observe new data tomorrow, we apply Bayes’ theorem again, using today’s posterior in place of the original prior. The figure below shows what this looks like as a coin is tossed one flip at a time. We start with a flat prior, then update after each flip. By the time 20 flips have happened, the posterior is sharply peaked around the true value (here, 0.65); the certainty grows as the data accumulate.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-sequential-updating" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="864">
+<div id="fig-sequential-updating" class="quarto-float quarto-figure quarto-figure-center anchored" width="864" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-sequential-updating-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="28-bayesian-basics_files/figure-html/fig-sequential-updating-1.png" id="fig-sequential-updating" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="864">
@@ -890,7 +890,7 @@ Figure&nbsp;28.4
 <p>The figure below shows a 95% credible interval on the posterior from our coin example. The interval is the range that captures the central 95% of the posterior mass, and the statement “I believe with 95% probability that the true <em>p</em> lies between these limits, given my prior and the 13/20 data” is a coherent Bayesian claim.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-credible-interval" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="672">
+<div id="fig-credible-interval" class="quarto-float quarto-figure quarto-figure-center anchored" width="672" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-credible-interval-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="28-bayesian-basics_files/figure-html/fig-credible-interval-1.png" id="fig-credible-interval" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="672">
@@ -1017,7 +1017,7 @@ Bayes factor type: BFindepSample, JZS</code></pre>
 <p>The figure below shows the posterior distribution of the standardized effect, with the credible interval shaded.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-vgames-posterior" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" width="672">
+<div id="fig-vgames-posterior" class="quarto-float quarto-figure quarto-figure-center anchored" width="672" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vgames-posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="28-bayesian-basics_files/figure-html/fig-vgames-posterior-1.png" id="fig-vgames-posterior" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" width="672">

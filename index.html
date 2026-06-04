@@ -633,6 +633,11 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#how-to-use-this-book" id="toc-how-to-use-this-book" class="nav-link" data-scroll-target="#how-to-use-this-book">How to use this book</a></li>
   <li><a href="#what-you-will-need" id="toc-what-you-will-need" class="nav-link" data-scroll-target="#what-you-will-need">What you will need</a></li>
+  <li><a href="#the-four-pillars" id="toc-the-four-pillars" class="nav-link" data-scroll-target="#the-four-pillars">The four pillars</a>
+  <ul class="collapse">
+  <li><a href="#why-this-framing-matters" id="toc-why-this-framing-matters" class="nav-link" data-scroll-target="#why-this-framing-matters">Why this framing matters</a></li>
+  <li><a href="#how-this-book-is-organized-around-the-four-pillars" id="toc-how-this-book-is-organized-around-the-four-pillars" class="nav-link" data-scroll-target="#how-this-book-is-organized-around-the-four-pillars">How this book is organized around the four pillars</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -695,8 +700,43 @@ ul.task-list li input[type="checkbox"] {
 <li>an internet connection to install additional R packages.</li>
 </ul>
 <p>The first chapters will guide you through the installation of these tools.</p>
+</section>
+<section id="the-four-pillars" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="the-four-pillars">The four pillars</h2>
+<p>Statistics, as it is used in empirical research, is not one skill. It is four. Most data-analysis training revolves around four broad activities, and the way a given researcher’s training combines them shapes everything: how they read papers, how they design studies, and how they report results. This book is organized around those four activities, which we will call the four pillars.</p>
+<p><strong>Pillar 1: Statistical modeling.</strong> A statistical model is a formal description of how the values of one variable depend on the values of others. Almost every analytical method you will hear about (linear regression, ANOVA, t-tests, generalized linear models, multilevel models, factor analysis, structural equation modeling) is at heart a statistical model. Learning the modeling pillar means learning to choose a model that matches the data and the question, to fit it in R, to interpret its coefficients, and to check whether its assumptions are reasonable. In this book, the modeling pillar is developed in Section 3 (Chapters 13 to 20).</p>
+<p><strong>Pillar 2: Statistical inference.</strong> Statistical inference is the step that turns the model fitted to your sample into a calibrated claim about a wider population. It is where p-values, confidence intervals, standard errors, power, equivalence tests, and the smallest effect size of interest live. The inference pillar is about quantifying and controlling the uncertainty that comes from working with a finite sample drawn from a larger population. In this book, the inference pillar is developed in Section 4 (Chapters 21 to 25) and the first part of Section 5 (Chapters 26 to 29).</p>
+<p><strong>Pillar 3: Causal inference.</strong> Causal inference is the step that takes a claim about an association and turns it, where possible, into a claim about a cause. Whether you can move from “X and Y are statistically related” to “X causes Y” depends on the study design and on the assumptions you are willing to defend. Random assignment in an experiment is the cleanest license for causal claims; observational data require more elaborate reasoning, usually expressed through directed acyclic graphs (DAGs). In this book, the causal inference pillar is developed in Section 6 (Chapters 39 to 44).</p>
+<p><strong>Pillar 4: Coding, programming, and communicating.</strong> Modeling, inference, and causal interpretation are intellectual activities. They become an analysis only when you carry them out on a computer, and they become a contribution to your field only when you communicate them clearly. The fourth pillar is the practical craft of writing R code that is correct and reproducible, organizing your work so that you (or anyone else) can re-run it months later, manipulating raw data files into something you can analyze, and producing figures, tables, and reports that say what they mean. In this book, the coding and communication pillar is developed in Section 1 (Chapters 1 to 7), Section 2 (Chapters 8 to 12), and most of Section 5 (Chapters 30 to 38).</p>
+<section id="why-this-framing-matters" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="why-this-framing-matters">Why this framing matters</h3>
+<p>The four-pillar framing is useful for three reasons.</p>
+<p><strong>It shows you what is actually different between methods.</strong> A new analytical strategy you encounter for the first time usually does not differ from familiar strategies on all four pillars at once. More often, it innovates on one pillar and keeps the other three the same. Multilevel modeling, for instance, is mostly a modeling innovation: it changes how the model is specified to handle clustered data, but the inferential machinery on top (p-values, confidence intervals, power analysis) is the same machinery you already know. Bayesian estimation, by contrast, is mostly an inferential innovation: the modeling targets can be the same as in frequentist work, but what you do with them and how you interpret them is different. Recognizing where the actual novelty lives means you do not have to learn a new method from scratch. You can connect it to what you already know and focus your effort on the pillar where it actually differs.</p>
+<p><strong>It reveals where fields and subfields actually diverge.</strong> Different research areas have, over decades, developed different cultures around the pillars. One subfield may be sophisticated about statistical modeling but treat inference informally; another may have a disciplined inference culture but use a small and rigid set of models; a third may be skilled at causal inference but report its results in ways that obscure them. The same statistical principles apply to all fields, but the local practice can look so different that it is tempting to conclude the fields are doing fundamentally different statistics. The four-pillar decomposition usually shows that they are not. Once you can locate which pillar a field’s distinctive practice belongs to, you can take the best of each tradition without having to adopt the rest. It also makes it easier to recognize when a tradition you are working within is behind the broader field on a specific pillar and worth updating.</p>
+<p><strong>The pillars cannot substitute for each other.</strong> This is the most important point and the easiest to miss. A weakness in one pillar cannot be repaired by strength in another. You cannot make a study more causally interpretable by tightening your inferential procedure. You cannot make a sample more representative by improving the model. You cannot make an exploratory analysis confirmatory by writing better code. The pillars are separate bodies of reasoning, each with its own conditions and its own conclusions, and confusing them generates some of the most persistent errors in applied statistics.</p>
+<p>A concrete example. I once heard a sentence delivered with confidence: “If you do an experiment, it is confirmatory and you can generalize the claim beyond your sample; if you do a correlational study, it is exploratory and you cannot generalize.” That sentence is wrong on all three of its claims, and the reason it is wrong is that it has collapsed three different pillars into one. <em>Confirmatory versus exploratory</em> is a Pillar 2 distinction about whether the analytical procedure was committed to in advance, independent of the data. <em>Experimental versus correlational</em> is a Pillar 3 distinction about whether random assignment licenses a causal interpretation. <em>Generalizing beyond the sample</em> is a Pillar 2 question about the sampling design and how representative the sample is of the population of interest. A pre-registered correlational study with a representative sample can be confirmatory and generalizable, but cannot, on its own, support a causal claim. A non-pre-registered experiment on a convenience sample can support a causal claim within the sample, but its confirmatory status and its generalizability both have to be argued for separately. None of these properties follows automatically from any of the others. Each pillar makes its own contribution and demands its own discipline.</p>
+</section>
+<section id="how-this-book-is-organized-around-the-four-pillars" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="how-this-book-is-organized-around-the-four-pillars">How this book is organized around the four pillars</h3>
+<p>The figure below shows which sections of the book develop each pillar.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-pillars" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pillars-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-pillars-1.png" class="img-fluid figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pillars-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The four pillars of data analysis and the sections of the book that develop each one.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The book does not develop the four pillars in strict order. Pillar 4 (coding, programming, and communicating) is partly developed at the start, with the foundational R skills in Section 1 and the data-manipulation skills in Section 2, and partly developed in the later chapters of Section 5 (Chapters 30 to 38), once you have something to communicate. Pillar 2 (statistical inference) starts in Section 4 with the standard frequentist machinery and continues into the first chapters of Section 5 (Chapters 26 to 29) with a deeper engagement with its philosophical alternatives. Section 5 is therefore split between Pillars 2 and 4. Section 6 (causal inference, Pillar 3) is placed last because the questions it asks make the most sense once the modeling and inferential machinery is already in place.</p>
 
 
+</section>
 </section>
 </section>
 

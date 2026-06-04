@@ -765,7 +765,7 @@ window.Quarto = {
 <li>why Neyman-Pearson’s calibrated error rate breaks the moment the procedure is shaped by the data,</li>
 <li>the math and the intuition of <strong>alpha inflation</strong> when many tests are run,</li>
 <li>three families of <strong>multiple-testing corrections</strong> (Bonferroni, Holm, Benjamini-Hochberg) and how to choose between them,</li>
-<li>the <strong>positive predictive value</strong> (PPV) framework introduced by Ioannidis, which gives a chilling answer to the question “what fraction of published positive findings are actually true,”</li>
+<li>the <strong>positive predictive value</strong> (PPV) framework introduced by Ioannidis, which gives an answer to the question “what fraction of published positive findings are actually true,”</li>
 <li>the difference between <strong>exploratory</strong> and <strong>confirmatory</strong> analysis when both are seen through the lens of the two roles,</li>
 <li><strong>pre-registration</strong> as the technology that lets researchers maintain both honestly,</li>
 <li>and the visible failure modes of misuse: <strong>p-hacking</strong>, <strong>HARKing</strong>, and the “garden of forking paths.”</li>
@@ -1118,7 +1118,7 @@ P(\text{at least one false positive}) = 1 - (1 - \alpha)^k.
 </ul>
 <p>To the reader, these four papers can look identical. There is no internal feature of the paper that distinguishes a calibrated procedure from an uncalibrated one. The reader who is about to act on the claim cannot tell which kind of evidence they are looking at.</p>
 <p><strong>This is the gap that pre-registration closes.</strong> A pre-registration is a public, time-stamped document showing exactly what procedure the researcher committed to before the data were collected. The reader can compare what was pre-registered against what is reported in the paper. Anything that matches the pre-registration is confirmatory: the calibration of the reported p-value is verified by external evidence. Anything that does not match is exploratory and should be labeled as such. Pre-registration is, in this sense, the technology that lets the <em>reader</em> apply the calibration of Dimension 1 correctly.</p>
-<p>Here is the crucial insight that follows. <strong>Because error control is a property of the procedure, not of the hypothesis content, what matters for a good pre-registration is the full procedure in unambiguous detail, not the verbal hypothesis.</strong></p>
+<p>The insight that follows is this: <strong>because error control is a property of the procedure, not of the hypothesis content, what matters for a good pre-registration is the full procedure in unambiguous detail, not the verbal hypothesis.</strong></p>
 <p>This is often misunderstood. Students new to pre-registration sometimes write something like “We hypothesize that violent video games will increase aggression” and consider the work done. That sentence is useful for Dimension 2 (it tells the reader what claim is at stake), but it does <em>nothing</em> for Dimension 1. The same verbal hypothesis is compatible with dozens of different statistical procedures, each of which would give a different p-value on the same data. Without a specification of the procedure, the verbal hypothesis cannot anchor any error-controlled inference.</p>
 <p>A good pre-registration, then, contains the full procedure, including all of the following:</p>
 <ul>

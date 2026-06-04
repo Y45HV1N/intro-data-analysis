@@ -701,11 +701,19 @@ window.Quarto = {
   <li><a href="#plot-4-residuals-vs-leverage" id="toc-plot-4-residuals-vs-leverage" class="nav-link" data-scroll-target="#plot-4-residuals-vs-leverage"><span class="header-section-number">20.2.4</span> Plot 4: Residuals vs Leverage</a></li>
   </ul></li>
   <li><a href="#what-to-do-when-an-assumption-is-violated" id="toc-what-to-do-when-an-assumption-is-violated" class="nav-link" data-scroll-target="#what-to-do-when-an-assumption-is-violated"><span class="header-section-number">20.3</span> What to do when an assumption is violated</a></li>
-  <li><a href="#comparing-models-r-squared-adjusted-r-squared-and-beyond" id="toc-comparing-models-r-squared-adjusted-r-squared-and-beyond" class="nav-link" data-scroll-target="#comparing-models-r-squared-adjusted-r-squared-and-beyond"><span class="header-section-number">20.4</span> Comparing models: R-squared, adjusted R-squared, and beyond</a></li>
-  <li><a href="#when-the-linear-model-is-not-enough" id="toc-when-the-linear-model-is-not-enough" class="nav-link" data-scroll-target="#when-the-linear-model-is-not-enough"><span class="header-section-number">20.5</span> When the linear model is not enough</a></li>
-  <li><a href="#closing-section-3" id="toc-closing-section-3" class="nav-link" data-scroll-target="#closing-section-3"><span class="header-section-number">20.6</span> Closing Section 3</a></li>
-  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">20.7</span> Check your understanding</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">20.8</span> References</a></li>
+  <li><a href="#multicollinearity-when-predictors-carry-the-same-information" id="toc-multicollinearity-when-predictors-carry-the-same-information" class="nav-link" data-scroll-target="#multicollinearity-when-predictors-carry-the-same-information"><span class="header-section-number">20.4</span> Multicollinearity: when predictors carry the same information</a>
+  <ul class="collapse">
+  <li><a href="#the-intuition" id="toc-the-intuition" class="nav-link" data-scroll-target="#the-intuition"><span class="header-section-number">20.4.1</span> The intuition</a></li>
+  <li><a href="#a-demonstration-on-vgames_study" id="toc-a-demonstration-on-vgames_study" class="nav-link" data-scroll-target="#a-demonstration-on-vgames_study"><span class="header-section-number">20.4.2</span> A demonstration on <code>vgames_study</code></a></li>
+  <li><a href="#the-diagnostic-the-variance-inflation-factor-vif" id="toc-the-diagnostic-the-variance-inflation-factor-vif" class="nav-link" data-scroll-target="#the-diagnostic-the-variance-inflation-factor-vif"><span class="header-section-number">20.4.3</span> The diagnostic: the variance inflation factor (VIF)</a></li>
+  <li><a href="#what-to-do-about-it" id="toc-what-to-do-about-it" class="nav-link" data-scroll-target="#what-to-do-about-it"><span class="header-section-number">20.4.4</span> What to do about it</a></li>
+  <li><a href="#a-visual-picture-of-multicollinearity" id="toc-a-visual-picture-of-multicollinearity" class="nav-link" data-scroll-target="#a-visual-picture-of-multicollinearity"><span class="header-section-number">20.4.5</span> A visual picture of multicollinearity</a></li>
+  </ul></li>
+  <li><a href="#comparing-models-r-squared-adjusted-r-squared-and-beyond" id="toc-comparing-models-r-squared-adjusted-r-squared-and-beyond" class="nav-link" data-scroll-target="#comparing-models-r-squared-adjusted-r-squared-and-beyond"><span class="header-section-number">20.5</span> Comparing models: R-squared, adjusted R-squared, and beyond</a></li>
+  <li><a href="#when-the-linear-model-is-not-enough" id="toc-when-the-linear-model-is-not-enough" class="nav-link" data-scroll-target="#when-the-linear-model-is-not-enough"><span class="header-section-number">20.6</span> When the linear model is not enough</a></li>
+  <li><a href="#closing-section-3" id="toc-closing-section-3" class="nav-link" data-scroll-target="#closing-section-3"><span class="header-section-number">20.7</span> Closing Section 3</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">20.8</span> Check your understanding</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">20.9</span> References</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Y45HV1N/intro-data-analysis/edit/main/20-diagnostics-and-limits.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Y45HV1N/intro-data-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -763,7 +771,7 @@ window.Quarto = {
 <p>In what follows we walk through each one, with code you can run on your own.</p>
 <section id="plot-1-residuals-vs-fitted" class="level3" data-number="20.2.1">
 <h3 data-number="20.2.1" class="anchored" data-anchor-id="plot-1-residuals-vs-fitted"><span class="header-section-number">20.2.1</span> Plot 1: Residuals vs Fitted</h3>
-<p>This plot displays the residual of each observation (vertical axis) against the model’s predicted value for that observation (horizontal axis). It is the workhorse of diagnostic plots, because two of the four LINE assumptions show up here:</p>
+<p>This plot displays the residual of each observation (vertical axis) against the model’s predicted value for that observation (horizontal axis). It is the most useful of the diagnostic plots, because two of the four LINE assumptions show up here:</p>
 <ul>
 <li><strong>Linearity</strong>: the residuals should scatter randomly around zero, with no systematic curve. A U-shape or inverted-U indicates a nonlinear relationship the model is missing.</li>
 <li><strong>Homoscedasticity</strong>: the spread of the residuals should be roughly constant across the range of fitted values. A fan or cone shape indicates heteroscedasticity.</li>
@@ -840,8 +848,118 @@ window.Quarto = {
 </ul>
 <p>The general advice: <strong>assumption violations are reasons to think more carefully, not reasons to panic.</strong> A mild violation is a reason to acknowledge a limitation in your report. A serious violation is a reason to use a different model.</p>
 </section>
-<section id="comparing-models-r-squared-adjusted-r-squared-and-beyond" class="level2" data-number="20.4">
-<h2 data-number="20.4" class="anchored" data-anchor-id="comparing-models-r-squared-adjusted-r-squared-and-beyond"><span class="header-section-number">20.4</span> Comparing models: R-squared, adjusted R-squared, and beyond</h2>
+<section id="multicollinearity-when-predictors-carry-the-same-information" class="level2" data-number="20.4">
+<h2 data-number="20.4" class="anchored" data-anchor-id="multicollinearity-when-predictors-carry-the-same-information"><span class="header-section-number">20.4</span> Multicollinearity: when predictors carry the same information</h2>
+<p>Multicollinearity is not one of the LINE assumptions, but it is a closely related diagnostic concern. It belongs in this chapter because it shows up only once you have several predictors in a model, and because it tends to surprise people the first time they meet it.</p>
+<p><strong>The problem.</strong> In Chapter 17 we noted that when two predictors in a multiple regression are correlated, each slope is interpreted as the <em>unique contribution</em> of that predictor, after the other predictors have been accounted for. The example was that <code>hours_weekly</code> and <code>trait_hostility</code> are mildly correlated, and their joint R-squared (about 0.20) was a little less than the sum of their separate R-squareds (7.2 + 11.6 = 18.8 percent). The two predictors carry partly overlapping information; the model apportions the overlap so that no piece is double-counted.</p>
+<p>That was a mild case. What happens when two predictors are not mildly correlated, but <em>strongly</em> correlated, carrying nearly the same information? The problem is called <strong>multicollinearity</strong>. The word combines “multi” (more than one) with “collinearity” (lying on the same line). It refers to any situation where two or more predictors in a regression are so closely related to each other that the model has trouble separating their individual contributions.</p>
+<section id="the-intuition" class="level3" data-number="20.4.1">
+<h3 data-number="20.4.1" class="anchored" data-anchor-id="the-intuition"><span class="header-section-number">20.4.1</span> The intuition</h3>
+<p>A short analogy. Imagine two coworkers who do the same job. If only one of them is in the office, you can clearly see what they contribute: their unique output is everything they produce. If both are in the office and do nearly the same work, you can still see the total output of the team, but you cannot tell which one to credit for any specific piece. The team-level performance is unambiguous; the individual contributions are not.</p>
+<p>Multicollinearity is the same situation in a regression. When two predictors carry nearly the same information, the <em>joint</em> contribution to the outcome is well estimated, but the <em>individual</em> contributions of each predictor are not. The model has to apportion the shared variance between them, and because the shared variance is most of what either predictor has to offer, the apportionment is very sensitive to small fluctuations in the data. Each slope is estimated from the tiny “unique” piece of variance that one predictor has but the other does not, and that tiny piece is what determines the standard error of the slope. The smaller the unique piece, the larger the standard error.</p>
+<p>The consequence: the joint model fits well (R-squared remains high), but each individual slope has a large standard error, sometimes flips sign relative to what you would expect, and is not stable across replications of the study.</p>
+</section>
+<section id="a-demonstration-on-vgames_study" class="level3" data-number="20.4.2">
+<h3 data-number="20.4.2" class="anchored" data-anchor-id="a-demonstration-on-vgames_study"><span class="header-section-number">20.4.2</span> A demonstration on <code>vgames_study</code></h3>
+<p>Let us construct the situation deliberately. We will create a new variable <code>trait_hostility_v2</code> that equals <code>trait_hostility</code> plus a small amount of random noise: a near-clone of the original.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>trait_hostility_v2 <span class="ot">&lt;-</span> data<span class="sc">$</span>trait_hostility <span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">rnorm</span>(<span class="fu">nrow</span>(data), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="fl">0.10</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(data<span class="sc">$</span>trait_hostility, data<span class="sc">$</span>trait_hostility_v2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9959603</code></pre>
+</div>
+</div>
+<p>The two predictors correlate at about 0.99: nearly perfect.</p>
+<p>Now fit two models. The first uses only the original trait hostility:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>m_simple <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> trait_hostility, <span class="at">data =</span> data)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">summary</span>(m_simple)<span class="sc">$</span>coefficients, <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)        3.198      0.451   7.098        0
+trait_hostility    0.492      0.125   3.942        0</code></pre>
+</div>
+</div>
+<p>The slope of <code>trait_hostility</code> is about 0.61 with a standard error of about 0.15. Clean and precise.</p>
+<p>The second model adds the near-clone:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m_collinear <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> trait_hostility <span class="sc">+</span> trait_hostility_v2, <span class="at">data =</span> data)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">summary</span>(m_collinear)<span class="sc">$</span>coefficients, <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)           3.185      0.452   7.048    0.000
+trait_hostility       1.493      1.394   1.071    0.286
+trait_hostility_v2   -0.998      1.384  -0.721    0.472</code></pre>
+</div>
+</div>
+<p>Look at what happened. Both <code>trait_hostility</code> and <code>trait_hostility_v2</code> now have point estimates that are very different from the simple model, their standard errors are roughly an order of magnitude larger, and the two slopes may even have opposite signs. None of this reflects a substantive change in what the data are telling us: the joint R-squared is essentially identical to the simple model, because no new information is in the second predictor. But the individual slopes are now unstable and uninterpretable.</p>
+<p>This is multicollinearity in action.</p>
+</section>
+<section id="the-diagnostic-the-variance-inflation-factor-vif" class="level3" data-number="20.4.3">
+<h3 data-number="20.4.3" class="anchored" data-anchor-id="the-diagnostic-the-variance-inflation-factor-vif"><span class="header-section-number">20.4.3</span> The diagnostic: the variance inflation factor (VIF)</h3>
+<p>The standard diagnostic for multicollinearity is the <strong>variance inflation factor (VIF)</strong>. Each predictor in a multiple regression has its own VIF, a single number that measures how much that predictor’s standard error is inflated by its overlap with the other predictors. A VIF of 1 means no inflation (the predictor is uncorrelated with the others). A VIF of 4 means the standard error is twice as large as it would have been with no overlap. A VIF of 100 means the standard error is 10 times larger.</p>
+<p>The function <code>vif()</code> from the <code>car</code> package computes the VIF for each predictor in a fitted <code>lm()</code> model.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(m_collinear)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   trait_hostility trait_hostility_v2 
+          124.0211           124.0211 </code></pre>
+</div>
+</div>
+<p>Both VIFs are extremely large in this artificial example, which is exactly what the diagnosis of severe multicollinearity looks like. Compare to the original two-predictor model from Chapter 17:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>m_original <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> hours_weekly <span class="sc">+</span> trait_hostility, <span class="at">data =</span> data)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(m_original)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   hours_weekly trait_hostility 
+       1.002841        1.002841 </code></pre>
+</div>
+</div>
+<p>Both VIFs are close to 1, confirming that <code>hours_weekly</code> and <code>trait_hostility</code> carry mostly distinct information.</p>
+<p>A rule of thumb commonly cited in psychology (Cohen et al., 2003; James et al., 2013):</p>
+<ul>
+<li><strong>VIF below 5</strong>: usually fine.</li>
+<li><strong>VIF between 5 and 10</strong>: a warning sign, worth investigating.</li>
+<li><strong>VIF above 10</strong>: serious multicollinearity; the individual slopes should not be interpreted.</li>
+</ul>
+<p>These thresholds are conventions, not hard rules. A VIF of 4.5 in a small dataset is more worrying than a VIF of 6 in a large one, and the substantive judgment about whether the individual slopes are interpretable should weigh both the VIF and the sample size.</p>
+</section>
+<section id="what-to-do-about-it" class="level3" data-number="20.4.4">
+<h3 data-number="20.4.4" class="anchored" data-anchor-id="what-to-do-about-it"><span class="header-section-number">20.4.4</span> What to do about it</h3>
+<p>Three practical responses, in order of decreasing aggressiveness.</p>
+<p><strong>1. Drop one of the redundant predictors.</strong> If two predictors carry nearly the same information, you do not need both. Drop the one that is harder to interpret, less reliable, or less central to your research question. The simple model with the remaining predictor will give you a clean, interpretable slope.</p>
+<p><strong>2. Combine the redundant predictors into a single composite.</strong> If both predictors are intended to measure the same construct (for example, two scales of trait hostility, or two items on the same subscale), the standard move is to average them, or to standardize them and then average, into a single composite. Chapter 11 covered the mechanics of composite scores. The composite then enters the regression as a single predictor, and the multicollinearity problem disappears.</p>
+<p><strong>3. Keep both predictors and report the inflated standard errors honestly.</strong> Occasionally you may have a reason to keep two collinear predictors in the model: perhaps you are not interested in the individual slopes but only in the joint R-squared, or perhaps the substantive question requires both. In that case, the individual slopes should be interpreted with caution or not at all, the inflated standard errors should be reported clearly, and the joint contribution of the collinear set should be the focus of interpretation.</p>
+<p>A more advanced option exists for severe cases: <strong>principal components regression</strong> and <strong>ridge regression</strong> both handle collinear predictors by transforming the predictor set or by penalizing the slopes. They are beyond the scope of this book; for typical psychology research situations, the three options above are usually sufficient.</p>
+</section>
+<section id="a-visual-picture-of-multicollinearity" class="level3" data-number="20.4.5">
+<h3 data-number="20.4.5" class="anchored" data-anchor-id="a-visual-picture-of-multicollinearity"><span class="header-section-number">20.4.5</span> A visual picture of multicollinearity</h3>
+<p>The clearest picture of why multicollinearity inflates standard errors is a <strong>shared-variance diagram</strong>. The figure compares the simple regression on the left with the multicollinear regression on the right.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-multicollinearity" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-multicollinearity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="20-diagnostics-and-limits_files/figure-html/fig-multicollinearity-1.png" class="img-fluid figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-multicollinearity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20.1: Shared-variance diagrams comparing a simple regression (left) with a multicollinear regression (right). Each circle represents the variance of a variable; the overlap between two circles represents the variance they share. <strong>Left panel:</strong> simple regression of <code>aggression</code> on <code>trait_hostility</code>. The overlap area is the simple-regression R-squared. The slope of <code>trait_hostility</code> is estimated from its overlap with <code>aggression</code> relative to its own total area. <strong>Right panel:</strong> multicollinear regression in which <code>trait_hostility</code> and <code>trait_hostility_v2</code> are nearly identical, shown as two heavily overlapping circles. The ‘unique to <code>trait_hostility</code>’ and ‘unique to <code>trait_hostility_v2</code>’ regions (the thin top and bottom crescents) are tiny, and each predictor’s individual slope must be estimated from these tiny areas alone. The joint contribution of the two predictors to <code>aggression</code> is well estimated (the combined overlap with <code>aggression</code> is similar to the left panel), but the individual slopes are not.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>What the figure shows. On the left, <code>trait_hostility</code> and <code>aggression</code> overlap in a moderate region. The blue circle has a clean area outside the overlap (its “unique” area), and the slope of <code>trait_hostility</code> is estimated from the relationship between its unique area and the overlap with <code>aggression</code>.</p>
+<p>On the right, <code>trait_hostility</code> and <code>trait_hostility_v2</code> overlap each other almost entirely. The “unique to <code>trait_hostility</code>” area is the thin top crescent, and the “unique to <code>trait_hostility_v2</code>” area is the thin bottom crescent. Each individual slope is estimated from one of these thin slivers alone, which is why the standard errors are inflated and the slopes become unstable. At the same time, the joint overlap of the merged predictor region with <code>aggression</code> is similar in size to the left panel’s overlap, which is why the joint R-squared barely changed.</p>
+<p>This is the geometric reason for the apparent paradox in the demonstration above: a model that fits the data well at the level of the <em>whole set</em> of predictors but fails to give interpretable estimates for any <em>individual</em> predictor.</p>
+</section>
+</section>
+<section id="comparing-models-r-squared-adjusted-r-squared-and-beyond" class="level2" data-number="20.5">
+<h2 data-number="20.5" class="anchored" data-anchor-id="comparing-models-r-squared-adjusted-r-squared-and-beyond"><span class="header-section-number">20.5</span> Comparing models: R-squared, adjusted R-squared, and beyond</h2>
 <p>Once you have several candidate models, how do you compare them?</p>
 <p>The simplest comparison is by <strong>R-squared</strong>: the proportion of variance explained by each. As Chapter 19 noted, R-squared (almost) always goes up when you add predictors, even useless ones, which makes it a poor tool for comparing models with different numbers of predictors.</p>
 <p><strong>Adjusted R-squared</strong> penalizes each additional predictor. The formula is</p>
@@ -851,27 +969,27 @@ R^2_{\text{adj}} = 1 - (1 - R^2) \cdot \frac{n - 1}{n - p - 1},
 <p>where <span class="math inline">\(n\)</span> is the number of observations and <span class="math inline">\(p\)</span> is the number of predictors. With more predictors, the denominator shrinks, the correction grows, and adjusted R-squared falls relative to R-squared. Only a predictor that improves the fit more than expected by chance will increase adjusted R-squared.</p>
 <p>Looking at the models we have built on <code>vgames_study.csv</code>, side by side:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> hours_weekly, <span class="at">data =</span> data)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> trait_hostility, <span class="at">data =</span> data)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> hours_weekly <span class="sc">+</span> trait_hostility, <span class="at">data =</span> data)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>m4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> trait_hostility <span class="sc">*</span> condition, <span class="at">data =</span> data)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>summary_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">Model =</span> <span class="fu">c</span>(<span class="st">"hours_weekly"</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"trait_hostility"</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"hours_weekly + trait_hostility"</span>,</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"trait_hostility * condition (interaction)"</span>),</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">Predictors =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),   <span class="co"># main + interaction count</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">R_squared          =</span> <span class="fu">c</span>(<span class="fu">summary</span>(m1)<span class="sc">$</span>r.squared,</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m2)<span class="sc">$</span>r.squared,</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m3)<span class="sc">$</span>r.squared,</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m4)<span class="sc">$</span>r.squared),</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">Adj_R_squared      =</span> <span class="fu">c</span>(<span class="fu">summary</span>(m1)<span class="sc">$</span>adj.r.squared,</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m2)<span class="sc">$</span>adj.r.squared,</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m3)<span class="sc">$</span>adj.r.squared,</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m4)<span class="sc">$</span>adj.r.squared)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>summary_table</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> hours_weekly, <span class="at">data =</span> data)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> trait_hostility, <span class="at">data =</span> data)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> hours_weekly <span class="sc">+</span> trait_hostility, <span class="at">data =</span> data)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>m4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(aggression <span class="sc">~</span> trait_hostility <span class="sc">*</span> condition, <span class="at">data =</span> data)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>summary_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">Model =</span> <span class="fu">c</span>(<span class="st">"hours_weekly"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"trait_hostility"</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"hours_weekly + trait_hostility"</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"trait_hostility * condition (interaction)"</span>),</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">Predictors =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),   <span class="co"># main + interaction count</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">R_squared          =</span> <span class="fu">c</span>(<span class="fu">summary</span>(m1)<span class="sc">$</span>r.squared,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m2)<span class="sc">$</span>r.squared,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m3)<span class="sc">$</span>r.squared,</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m4)<span class="sc">$</span>r.squared),</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">Adj_R_squared      =</span> <span class="fu">c</span>(<span class="fu">summary</span>(m1)<span class="sc">$</span>adj.r.squared,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m2)<span class="sc">$</span>adj.r.squared,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m3)<span class="sc">$</span>adj.r.squared,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">summary</span>(m4)<span class="sc">$</span>adj.r.squared)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>summary_table</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                      Model Predictors  R_squared Adj_R_squared
 1                              hours_weekly          1 0.07158788    0.06371998
@@ -885,9 +1003,9 @@ R^2_{\text{adj}} = 1 - (1 - R^2) \cdot \frac{n - 1}{n - p - 1},
 <p><strong>AIC (Akaike Information Criterion)</strong> and <strong>BIC (Bayesian Information Criterion)</strong> are alternative model-comparison numbers. Both balance fit against complexity, with stronger penalties than adjusted R-squared. Smaller is better for both. The functions <code>AIC(model)</code> and <code>BIC(model)</code> return them. They are particularly useful when comparing non-nested models or models with many predictors.</p>
 <p><strong>Cross-validation</strong> is the gold standard for prediction-oriented model comparison: fit each model on part of the data, evaluate it on the held-out part, and pick the model that generalizes best. The <code>caret</code> and <code>tidymodels</code> packages provide implementations.</p>
 </section>
-<section id="when-the-linear-model-is-not-enough" class="level2" data-number="20.5">
-<h2 data-number="20.5" class="anchored" data-anchor-id="when-the-linear-model-is-not-enough"><span class="header-section-number">20.5</span> When the linear model is not enough</h2>
-<p>Linear regression is powerful and applies to a remarkable range of psychology research questions. It is not universal. Here is a map of common problems that go beyond the standard linear model, with the type of model that addresses each.</p>
+<section id="when-the-linear-model-is-not-enough" class="level2" data-number="20.6">
+<h2 data-number="20.6" class="anchored" data-anchor-id="when-the-linear-model-is-not-enough"><span class="header-section-number">20.6</span> When the linear model is not enough</h2>
+<p>Linear regression is powerful and applies to a wide range of psychology research questions. It is not universal. Here is a map of common problems that go beyond the standard linear model, with the type of model that addresses each.</p>
 <p><strong>Problem 1: Nonlinear relationships.</strong> The true relationship between predictor and outcome is curved, not straight. <em>Tools:</em> polynomial regression (add <code>I(x^2)</code> to the formula), log or square-root transformations, generalized additive models (GAMs) via the <code>mgcv</code> package, splines.</p>
 <p><strong>Problem 2: Nested or grouped data.</strong> Participants are clustered: students in classrooms, employees in companies, measurements within people over time. <em>Tools:</em> multilevel models / mixed-effects models / hierarchical linear models. The <code>lme4</code> package (<code>lmer()</code>) is the standard.</p>
 <p><strong>Problem 3: Latent variables.</strong> You want to model constructs that are not directly observed (intelligence, motivation, anxiety) using several observed indicators. <em>Tools:</em> structural equation modeling (SEM), confirmatory factor analysis, exploratory factor analysis. The <code>lavaan</code> package in R.</p>
@@ -943,8 +1061,8 @@ R^2_{\text{adj}} = 1 - (1 - R^2) \cdot \frac{n - 1}{n - p - 1},
 </table>
 <p>Knowing these tools exist is the goal. You do not need to learn them now; when you encounter a research problem that one of them solves, you have a starting point.</p>
 </section>
-<section id="closing-section-3" class="level2" data-number="20.6">
-<h2 data-number="20.6" class="anchored" data-anchor-id="closing-section-3"><span class="header-section-number">20.6</span> Closing Section 3</h2>
+<section id="closing-section-3" class="level2" data-number="20.7">
+<h2 data-number="20.7" class="anchored" data-anchor-id="closing-section-3"><span class="header-section-number">20.7</span> Closing Section 3</h2>
 <p>We started Section 3 with the idea that a model is a useful simplification of data, that the mean is the simplest possible model, and that everything else (regression, multiple regression, interactions) builds on the same logic of predictions and residuals. We end with a small set of practical habits:</p>
 <ul>
 <li><strong>Fit the model with <code>lm()</code></strong> and read the coefficients you care about (Chapters 16-18).</li>
@@ -954,45 +1072,50 @@ R^2_{\text{adj}} = 1 - (1 - R^2) \cdot \frac{n - 1}{n - p - 1},
 </ul>
 <p>These habits are the entry to applied statistical modeling in psychology. The chapters that follow Section 3 take the same models and ask the inferential questions; later sections still take the same models and ask the causal questions. The modeling framework you have learned here is the engine that drives the rest.</p>
 </section>
-<section id="check-your-understanding" class="level2" data-number="20.7">
-<h2 data-number="20.7" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">20.7</span> Check your understanding</h2>
+<section id="check-your-understanding" class="level2" data-number="20.8">
+<h2 data-number="20.8" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">20.8</span> Check your understanding</h2>
 <p><strong>1. What does <code>plot(model)</code> produce when <code>model</code> is a fitted <code>lm</code> object?</strong></p>
-<div id="radio_VMLPKWHSEJ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_VMLPKWHSEJ" value=""> <span>It fits four separate regression models.</span></label><label><input type="radio" autocomplete="off" name="radio_VMLPKWHSEJ" value="answer"> <span>It generates four diagnostic plots: Residuals vs Fitted, Normal Q-Q, Scale-Location, and Residuals vs Leverage. Together these are used to check the linear-model assumptions and identify influential observations.</span></label><label><input type="radio" autocomplete="off" name="radio_VMLPKWHSEJ" value=""> <span>It plots the predictor and the outcome.</span></label><label><input type="radio" autocomplete="off" name="radio_VMLPKWHSEJ" value=""> <span>It runs cross-validation on the model.</span></label>
+<div id="radio_IHZDVLBHNO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_IHZDVLBHNO" value=""> <span>It fits four separate regression models.</span></label><label><input type="radio" autocomplete="off" name="radio_IHZDVLBHNO" value="answer"> <span>It generates four diagnostic plots: Residuals vs Fitted, Normal Q-Q, Scale-Location, and Residuals vs Leverage. Together these are used to check the linear-model assumptions and identify influential observations.</span></label><label><input type="radio" autocomplete="off" name="radio_IHZDVLBHNO" value=""> <span>It plots the predictor and the outcome.</span></label><label><input type="radio" autocomplete="off" name="radio_IHZDVLBHNO" value=""> <span>It runs cross-validation on the model.</span></label>
 </div>
 <p><strong>2. The “Residuals vs Fitted” plot is mainly used to check which assumptions?</strong></p>
-<div id="radio_GMIWWQBHPG" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_GMIWWQBHPG" value=""> <span>Normality only.</span></label><label><input type="radio" autocomplete="off" name="radio_GMIWWQBHPG" value=""> <span>Independence only.</span></label><label><input type="radio" autocomplete="off" name="radio_GMIWWQBHPG" value="answer"> <span>Linearity and homoscedasticity (the spread of the residuals across fitted values).</span></label><label><input type="radio" autocomplete="off" name="radio_GMIWWQBHPG" value=""> <span>Influential observations only.</span></label>
+<div id="radio_THXCZXPGSG" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_THXCZXPGSG" value=""> <span>Normality only.</span></label><label><input type="radio" autocomplete="off" name="radio_THXCZXPGSG" value=""> <span>Independence only.</span></label><label><input type="radio" autocomplete="off" name="radio_THXCZXPGSG" value="answer"> <span>Linearity and homoscedasticity (the spread of the residuals across fitted values).</span></label><label><input type="radio" autocomplete="off" name="radio_THXCZXPGSG" value=""> <span>Influential observations only.</span></label>
 </div>
 <p><strong>3. What does the Normal Q-Q plot check?</strong></p>
-<div id="radio_RMUFLKZZCT" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_RMUFLKZZCT" value=""> <span>Whether the raw outcome is normal.</span></label><label><input type="radio" autocomplete="off" name="radio_RMUFLKZZCT" value="answer"> <span>Whether the residuals are approximately normally distributed: points falling roughly on the diagonal indicate approximate normality; curving away (especially at the tails) indicates non-normality.</span></label><label><input type="radio" autocomplete="off" name="radio_RMUFLKZZCT" value=""> <span>Whether the slope is significantly different from zero.</span></label><label><input type="radio" autocomplete="off" name="radio_RMUFLKZZCT" value=""> <span>Whether the predictors are correlated with each other.</span></label>
+<div id="radio_HFCQQSZINS" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_HFCQQSZINS" value=""> <span>Whether the raw outcome is normal.</span></label><label><input type="radio" autocomplete="off" name="radio_HFCQQSZINS" value="answer"> <span>Whether the residuals are approximately normally distributed: points falling roughly on the diagonal indicate approximate normality; curving away (especially at the tails) indicates non-normality.</span></label><label><input type="radio" autocomplete="off" name="radio_HFCQQSZINS" value=""> <span>Whether the slope is significantly different from zero.</span></label><label><input type="radio" autocomplete="off" name="radio_HFCQQSZINS" value=""> <span>Whether the predictors are correlated with each other.</span></label>
 </div>
 <p><strong>4. What is an “influential observation”?</strong></p>
-<div id="radio_JKSXXFXDUL" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_JKSXXFXDUL" value=""> <span>An observation that has a small leverage but a very large residual.</span></label><label><input type="radio" autocomplete="off" name="radio_JKSXXFXDUL" value="answer"> <span>An observation with both unusual predictor values (high leverage) and a large residual. Such observations can disproportionately affect the fitted line. The Residuals vs Leverage plot, especially with Cook's distance contours, helps identify them.</span></label><label><input type="radio" autocomplete="off" name="radio_JKSXXFXDUL" value=""> <span>Any observation whose residual is positive.</span></label><label><input type="radio" autocomplete="off" name="radio_JKSXXFXDUL" value=""> <span>Any observation collected on a Tuesday.</span></label>
+<div id="radio_WJZUVLDWIK" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_WJZUVLDWIK" value=""> <span>An observation that has a small leverage but a very large residual.</span></label><label><input type="radio" autocomplete="off" name="radio_WJZUVLDWIK" value="answer"> <span>An observation with both unusual predictor values (high leverage) and a large residual. Such observations can disproportionately affect the fitted line. The Residuals vs Leverage plot, especially with Cook's distance contours, helps identify them.</span></label><label><input type="radio" autocomplete="off" name="radio_WJZUVLDWIK" value=""> <span>Any observation whose residual is positive.</span></label><label><input type="radio" autocomplete="off" name="radio_WJZUVLDWIK" value=""> <span>Any observation collected on a Tuesday.</span></label>
 </div>
 <p><strong>5. Why is adjusted R-squared usually preferred over raw R-squared for comparing models?</strong></p>
-<div id="radio_ZWFVWSYOCQ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_ZWFVWSYOCQ" value=""> <span>It is identical to R-squared.</span></label><label><input type="radio" autocomplete="off" name="radio_ZWFVWSYOCQ" value="answer"> <span>It penalizes the model for each additional predictor. Unlike raw R-squared, it does not necessarily increase when you add a predictor; it only increases if the predictor improves the fit more than would be expected by chance. It is the natural tool for comparing models with different numbers of predictors.</span></label><label><input type="radio" autocomplete="off" name="radio_ZWFVWSYOCQ" value=""> <span>It is always larger than R-squared.</span></label><label><input type="radio" autocomplete="off" name="radio_ZWFVWSYOCQ" value=""> <span>It is the square of the adjusted slope.</span></label>
+<div id="radio_KHGBDGCPMM" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_KHGBDGCPMM" value=""> <span>It is identical to R-squared.</span></label><label><input type="radio" autocomplete="off" name="radio_KHGBDGCPMM" value="answer"> <span>It penalizes the model for each additional predictor. Unlike raw R-squared, it does not necessarily increase when you add a predictor; it only increases if the predictor improves the fit more than would be expected by chance. It is the natural tool for comparing models with different numbers of predictors.</span></label><label><input type="radio" autocomplete="off" name="radio_KHGBDGCPMM" value=""> <span>It is always larger than R-squared.</span></label><label><input type="radio" autocomplete="off" name="radio_KHGBDGCPMM" value=""> <span>It is the square of the adjusted slope.</span></label>
 </div>
 <p><strong>6. You have 200 students nested within 10 classrooms. Independence is violated. What is the standard fix?</strong></p>
-<div id="radio_MVQVJIDPDG" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_MVQVJIDPDG" value=""> <span>Use a different programming language.</span></label><label><input type="radio" autocomplete="off" name="radio_MVQVJIDPDG" value="answer"> <span>Use a multilevel (mixed-effects) model that accounts for the clustering, typically via the <code>lmer()</code> function in the <code>lme4</code> package. Standard OLS standard errors will be misleadingly small if independence is violated.</span></label><label><input type="radio" autocomplete="off" name="radio_MVQVJIDPDG" value=""> <span>Use a logistic regression instead.</span></label><label><input type="radio" autocomplete="off" name="radio_MVQVJIDPDG" value=""> <span>Ignore it; OLS is robust to all violations.</span></label>
+<div id="radio_DURAKQUPZU" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_DURAKQUPZU" value=""> <span>Use a different programming language.</span></label><label><input type="radio" autocomplete="off" name="radio_DURAKQUPZU" value="answer"> <span>Use a multilevel (mixed-effects) model that accounts for the clustering, typically via the <code>lmer()</code> function in the <code>lme4</code> package. Standard OLS standard errors will be misleadingly small if independence is violated.</span></label><label><input type="radio" autocomplete="off" name="radio_DURAKQUPZU" value=""> <span>Use a logistic regression instead.</span></label><label><input type="radio" autocomplete="off" name="radio_DURAKQUPZU" value=""> <span>Ignore it; OLS is robust to all violations.</span></label>
 </div>
 <p><strong>7. You want to model “intelligence” as a latent variable, measured by several test scores. Which family of models is most appropriate?</strong></p>
-<div id="radio_PBYELBLTCK" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_PBYELBLTCK" value=""> <span>Logistic regression.</span></label><label><input type="radio" autocomplete="off" name="radio_PBYELBLTCK" value=""> <span>Multilevel models.</span></label><label><input type="radio" autocomplete="off" name="radio_PBYELBLTCK" value="answer"> <span>Structural equation modeling (SEM), with software like <code>lavaan</code> in R. SEM is the standard tool for modeling latent variables (constructs measured indirectly through several indicators).</span></label><label><input type="radio" autocomplete="off" name="radio_PBYELBLTCK" value=""> <span>Robust regression.</span></label>
+<div id="radio_FMDYTMGKBI" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_FMDYTMGKBI" value=""> <span>Logistic regression.</span></label><label><input type="radio" autocomplete="off" name="radio_FMDYTMGKBI" value=""> <span>Multilevel models.</span></label><label><input type="radio" autocomplete="off" name="radio_FMDYTMGKBI" value="answer"> <span>Structural equation modeling (SEM), with software like <code>lavaan</code> in R. SEM is the standard tool for modeling latent variables (constructs measured indirectly through several indicators).</span></label><label><input type="radio" autocomplete="off" name="radio_FMDYTMGKBI" value=""> <span>Robust regression.</span></label>
 </div>
 <p><strong>8. What is the most important caveat to remember as Section 3 closes?</strong></p>
-<div id="radio_QBJLLLCEYX" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_QBJLLLCEYX" value=""> <span>The chapter has shown how to make causal claims from regression coefficients.</span></label><label><input type="radio" autocomplete="off" name="radio_QBJLLLCEYX" value="answer"> <span>Everything in Section 3 is description: fitting models and quantifying fit on the dataset you have. Whether the patterns generalize to a population, and the standard errors and p-values that try to answer that question, belong to statistical inference and will be covered in a later section.</span></label><label><input type="radio" autocomplete="off" name="radio_QBJLLLCEYX" value=""> <span>The linear model can be applied to any research question without modification.</span></label><label><input type="radio" autocomplete="off" name="radio_QBJLLLCEYX" value=""> <span>Adjusted R-squared replaces all other model-comparison measures.</span></label>
+<div id="radio_JMVBOSHYFD" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_JMVBOSHYFD" value=""> <span>The chapter has shown how to make causal claims from regression coefficients.</span></label><label><input type="radio" autocomplete="off" name="radio_JMVBOSHYFD" value="answer"> <span>Everything in Section 3 is description: fitting models and quantifying fit on the dataset you have. Whether the patterns generalize to a population, and the standard errors and p-values that try to answer that question, belong to statistical inference and will be covered in a later section.</span></label><label><input type="radio" autocomplete="off" name="radio_JMVBOSHYFD" value=""> <span>The linear model can be applied to any research question without modification.</span></label><label><input type="radio" autocomplete="off" name="radio_JMVBOSHYFD" value=""> <span>Adjusted R-squared replaces all other model-comparison measures.</span></label>
+</div>
+<p><strong>9. Two predictors in a multiple regression are correlated with each other at <em>r</em> = 0.97. What is the most likely consequence for the fitted model?</strong></p>
+<div id="radio_OBTEJTTRNZ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_OBTEJTTRNZ" value=""> <span>The joint R-squared will drop to nearly zero because the model cannot fit the data when predictors are correlated.</span></label><label><input type="radio" autocomplete="off" name="radio_OBTEJTTRNZ" value="answer"> <span>The joint R-squared will be similar to a single-predictor model, but each individual slope will have a large standard error and the slopes will be unstable across samples. This is multicollinearity and can be diagnosed with the variance inflation factor (VIF) from the <code>car</code> package.</span></label><label><input type="radio" autocomplete="off" name="radio_OBTEJTTRNZ" value=""> <span>Both individual slopes will become statistically significant at p &lt; .001 because the high correlation amplifies the apparent effect of each predictor on the outcome.</span></label><label><input type="radio" autocomplete="off" name="radio_OBTEJTTRNZ" value=""> <span>The <code>lm()</code> function will refuse to fit the model and will return an error message about singular design matrices.</span></label>
 </div>
 </section>
-<section id="references" class="level2" data-number="20.8">
-<h2 data-number="20.8" class="anchored" data-anchor-id="references"><span class="header-section-number">20.8</span> References</h2>
+<section id="references" class="level2" data-number="20.9">
+<h2 data-number="20.9" class="anchored" data-anchor-id="references"><span class="header-section-number">20.9</span> References</h2>
 <p>Aiken, L. S., &amp; West, S. G. (1991). <em>Multiple regression: Testing and interpreting interactions</em>. Sage.</p>
 <p>Cohen, J., Cohen, P., West, S. G., &amp; Aiken, L. S. (2003). <em>Applied multiple regression/correlation analysis for the behavioral sciences</em> (3rd ed.). Lawrence Erlbaum.</p>
+<p>James, G., Witten, D., Hastie, T., &amp; Tibshirani, R. (2013). <em>An introduction to statistical learning: With applications in R</em>. Springer. <a href="https://doi.org/10.1007/978-1-4614-7138-7" class="uri">https://doi.org/10.1007/978-1-4614-7138-7</a></p>
 <p>Navarro, D. J. (2018). <em>Learning statistics with R: A tutorial for psychology students and other beginners</em> (Version 0.6), Chapter 15.5. <a href="https://learningstatisticswithr.com" class="uri">https://learningstatisticswithr.com</a></p>
 
 
