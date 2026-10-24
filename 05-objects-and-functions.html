@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -76,14 +79,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b626d73c4c936ccc3cb08be7d45d1df6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-d685995fa19fd69abfd2845f2861e92b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-1052e45d5bb5bba50a03655832ef5fe1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -917,36 +920,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="check-your-understanding" class="level2" data-number="5.9">
 <h2 data-number="5.9" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">5.9</span> Check your understanding</h2>
 <p><strong>1. What is a vector in R?</strong></p>
-<div id="radio_KYJKBVBCGX" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_KYJKBVBCGX" value=""> <span>A vector with mixed types: numbers, strings, and logicals together.</span></label><label><input type="radio" autocomplete="off" name="radio_KYJKBVBCGX" value=""> <span>Another name for the working directory.</span></label><label><input type="radio" autocomplete="off" name="radio_KYJKBVBCGX" value="answer"> <span>An ordered sequence of values of the same type, created with <code>c()</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_KYJKBVBCGX" value=""> <span>A built-in plotting function.</span></label>
+<div id="radio_MKHNYQFQVX" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MKHNYQFQVX" value=""> <span>A vector with mixed types: numbers, strings, and logicals together.</span></label><label><input type="radio" autocomplete="off" name="radio_MKHNYQFQVX" value=""> <span>Another name for the working directory.</span></label><label><input type="radio" autocomplete="off" name="radio_MKHNYQFQVX" value="answer"> <span>An ordered sequence of values of the same type, created with <code>c()</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_MKHNYQFQVX" value=""> <span>A built-in plotting function.</span></label>
 </div>
 <p><strong>2. At what index is the first element of a vector in R?</strong></p>
-<div id="radio_FXUWPDPTEY" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_FXUWPDPTEY" value=""> <span>Index 0.</span></label><label><input type="radio" autocomplete="off" name="radio_FXUWPDPTEY" value="answer"> <span>Index 1.</span></label><label><input type="radio" autocomplete="off" name="radio_FXUWPDPTEY" value=""> <span>Index -1.</span></label><label><input type="radio" autocomplete="off" name="radio_FXUWPDPTEY" value=""> <span>It depends on the operating system.</span></label>
+<div id="radio_FBVYPADJCO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_FBVYPADJCO" value=""> <span>Index 0.</span></label><label><input type="radio" autocomplete="off" name="radio_FBVYPADJCO" value="answer"> <span>Index 1.</span></label><label><input type="radio" autocomplete="off" name="radio_FBVYPADJCO" value=""> <span>Index -1.</span></label><label><input type="radio" autocomplete="off" name="radio_FBVYPADJCO" value=""> <span>It depends on the operating system.</span></label>
 </div>
 <p><strong>3. What is a data frame?</strong></p>
-<div id="radio_KWVEWKIHWD" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_KWVEWKIHWD" value=""> <span>A spreadsheet file saved in CSV format.</span></label><label><input type="radio" autocomplete="off" name="radio_KWVEWKIHWD" value="answer"> <span>A two-dimensional structure where rows are observations and columns are variables, holding vectors of equal length.</span></label><label><input type="radio" autocomplete="off" name="radio_KWVEWKIHWD" value=""> <span>A list of installed packages.</span></label><label><input type="radio" autocomplete="off" name="radio_KWVEWKIHWD" value=""> <span>A graphical representation of a dataset.</span></label>
+<div id="radio_ZCCVFPPFHV" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ZCCVFPPFHV" value=""> <span>A spreadsheet file saved in CSV format.</span></label><label><input type="radio" autocomplete="off" name="radio_ZCCVFPPFHV" value="answer"> <span>A two-dimensional structure where rows are observations and columns are variables, holding vectors of equal length.</span></label><label><input type="radio" autocomplete="off" name="radio_ZCCVFPPFHV" value=""> <span>A list of installed packages.</span></label><label><input type="radio" autocomplete="off" name="radio_ZCCVFPPFHV" value=""> <span>A graphical representation of a dataset.</span></label>
 </div>
 <p><strong>4. Which expression extracts the column <code>age</code> from a data frame called <code>participants_data</code>?</strong></p>
-<div id="radio_GAMYLXKBIA" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_GAMYLXKBIA" value=""> <span><code>participants_data[age]</code></span></label><label><input type="radio" autocomplete="off" name="radio_GAMYLXKBIA" value=""> <span><code>participants_data#age</code></span></label><label><input type="radio" autocomplete="off" name="radio_GAMYLXKBIA" value="answer"> <span><code>participants_data$age</code></span></label><label><input type="radio" autocomplete="off" name="radio_GAMYLXKBIA" value=""> <span><code>participants_data-&gt;age</code></span></label>
+<div id="radio_LDBSBGZINJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_LDBSBGZINJ" value=""> <span><code>participants_data[age]</code></span></label><label><input type="radio" autocomplete="off" name="radio_LDBSBGZINJ" value=""> <span><code>participants_data#age</code></span></label><label><input type="radio" autocomplete="off" name="radio_LDBSBGZINJ" value="answer"> <span><code>participants_data$age</code></span></label><label><input type="radio" autocomplete="off" name="radio_LDBSBGZINJ" value=""> <span><code>participants_data-&gt;age</code></span></label>
 </div>
 <p><strong>5. What is a function?</strong></p>
-<div id="radio_NCPEAEHMMS" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_NCPEAEHMMS" value=""> <span>A type of file used to save analyses.</span></label><label><input type="radio" autocomplete="off" name="radio_NCPEAEHMMS" value=""> <span>A panel in the RStudio interface.</span></label><label><input type="radio" autocomplete="off" name="radio_NCPEAEHMMS" value="answer"> <span>A piece of R that takes objects as input and produces a new object as output.</span></label><label><input type="radio" autocomplete="off" name="radio_NCPEAEHMMS" value=""> <span>A specific kind of vector.</span></label>
+<div id="radio_GQGKNSWVTJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_GQGKNSWVTJ" value=""> <span>A type of file used to save analyses.</span></label><label><input type="radio" autocomplete="off" name="radio_GQGKNSWVTJ" value=""> <span>A panel in the RStudio interface.</span></label><label><input type="radio" autocomplete="off" name="radio_GQGKNSWVTJ" value="answer"> <span>A piece of R that takes objects as input and produces a new object as output.</span></label><label><input type="radio" autocomplete="off" name="radio_GQGKNSWVTJ" value=""> <span>A specific kind of vector.</span></label>
 </div>
 <p><strong>6. What does <code>round(23.14286, digits = 2)</code> do?</strong></p>
-<div id="radio_KCKLZSYWOM" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_KCKLZSYWOM" value=""> <span>Add a new column called <code>digits</code> to the data frame.</span></label><label><input type="radio" autocomplete="off" name="radio_KCKLZSYWOM" value="answer"> <span>Round 23.14286 to two decimals, returning 23.14.</span></label><label><input type="radio" autocomplete="off" name="radio_KCKLZSYWOM" value=""> <span>Round 23.14286 to two significant figures, returning 23.</span></label><label><input type="radio" autocomplete="off" name="radio_KCKLZSYWOM" value=""> <span>Multiply 23.14286 by 2.</span></label>
+<div id="radio_GVXSDGJJFB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_GVXSDGJJFB" value=""> <span>Add a new column called <code>digits</code> to the data frame.</span></label><label><input type="radio" autocomplete="off" name="radio_GVXSDGJJFB" value="answer"> <span>Round 23.14286 to two decimals, returning 23.14.</span></label><label><input type="radio" autocomplete="off" name="radio_GVXSDGJJFB" value=""> <span>Round 23.14286 to two significant figures, returning 23.</span></label><label><input type="radio" autocomplete="off" name="radio_GVXSDGJJFB" value=""> <span>Multiply 23.14286 by 2.</span></label>
 </div>
 <p><strong>7. If <code>ages</code> is a vector of length 7, what does <code>length(ages)</code> return?</strong></p>
-<div id="radio_IVHTZLBUDU" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_IVHTZLBUDU" value=""> <span>It returns 0 because R indexes from 0.</span></label><label><input type="radio" autocomplete="off" name="radio_IVHTZLBUDU" value=""> <span>It returns 1 because there is one element.</span></label><label><input type="radio" autocomplete="off" name="radio_IVHTZLBUDU" value="answer"> <span>It returns 7, the length of the original vector.</span></label><label><input type="radio" autocomplete="off" name="radio_IVHTZLBUDU" value=""> <span>It causes an error.</span></label>
+<div id="radio_KYKBGCGSVJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_KYKBGCGSVJ" value=""> <span>It returns 0 because R indexes from 0.</span></label><label><input type="radio" autocomplete="off" name="radio_KYKBGCGSVJ" value=""> <span>It returns 1 because there is one element.</span></label><label><input type="radio" autocomplete="off" name="radio_KYKBGCGSVJ" value="answer"> <span>It returns 7, the length of the original vector.</span></label><label><input type="radio" autocomplete="off" name="radio_KYKBGCGSVJ" value=""> <span>It causes an error.</span></label>
 </div>
 <p><strong>8. What does typing <code>?mean</code> in the Console do?</strong></p>
-<div id="radio_DASLRMWWKQ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_DASLRMWWKQ" value=""> <span>Open the documentation for the <code>mean</code> package.</span></label><label><input type="radio" autocomplete="off" name="radio_DASLRMWWKQ" value="answer"> <span>Open the help page for the <code>mean</code> function, listing its arguments and examples.</span></label><label><input type="radio" autocomplete="off" name="radio_DASLRMWWKQ" value=""> <span>Calculate the mean of all objects in the environment.</span></label><label><input type="radio" autocomplete="off" name="radio_DASLRMWWKQ" value=""> <span>Print the source code of the <code>mean</code> function.</span></label>
+<div id="radio_LCALNGUHEY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_LCALNGUHEY" value=""> <span>Open the documentation for the <code>mean</code> package.</span></label><label><input type="radio" autocomplete="off" name="radio_LCALNGUHEY" value="answer"> <span>Open the help page for the <code>mean</code> function, listing its arguments and examples.</span></label><label><input type="radio" autocomplete="off" name="radio_LCALNGUHEY" value=""> <span>Calculate the mean of all objects in the environment.</span></label><label><input type="radio" autocomplete="off" name="radio_LCALNGUHEY" value=""> <span>Print the source code of the <code>mean</code> function.</span></label>
 </div>
 
 

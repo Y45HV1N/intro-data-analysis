@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -76,14 +79,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b626d73c4c936ccc3cb08be7d45d1df6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-d685995fa19fd69abfd2845f2861e92b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-d43978d6016da14795327a5bd638d710.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-1052e45d5bb5bba50a03655832ef5fe1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -113,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -1072,32 +1075,32 @@ window.Quarto = {
 <section id="check-your-understanding" class="level2" data-number="14.12">
 <h2 data-number="14.12" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">14.12</span> Check your understanding</h2>
 <p><strong>1. What is a residual?</strong></p>
-<div id="radio_SBVBZNYOZG" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_SBVBZNYOZG" value=""> <span>A typo, mistake, or error in the data.</span></label><label><input type="radio" autocomplete="off" name="radio_SBVBZNYOZG" value="answer"> <span>The difference between an observed value and the value the model predicted for that observation: <code>residual = observed - predicted</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_SBVBZNYOZG" value=""> <span>The mean of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_SBVBZNYOZG" value=""> <span>The slope of a regression line.</span></label>
+<div id="radio_EPQDFNAUQY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_EPQDFNAUQY" value=""> <span>A typo, mistake, or error in the data.</span></label><label><input type="radio" autocomplete="off" name="radio_EPQDFNAUQY" value="answer"> <span>The difference between an observed value and the value the model predicted for that observation: <code>residual = observed - predicted</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_EPQDFNAUQY" value=""> <span>The mean of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_EPQDFNAUQY" value=""> <span>The slope of a regression line.</span></label>
 </div>
 <p><strong>2. What does the sum of the residuals from the grand mean always equal?</strong></p>
-<div id="radio_HGASWYHZXU" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_HGASWYHZXU" value=""> <span>It is the variance of the dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_HGASWYHZXU" value=""> <span>It is the size of the dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_HGASWYHZXU" value="answer"> <span>Zero (exactly, up to floating-point rounding). The mean is the value at which positive and negative residuals exactly cancel.</span></label><label><input type="radio" autocomplete="off" name="radio_HGASWYHZXU" value=""> <span>It is positive if the mean is positive and negative if the mean is negative.</span></label>
+<div id="radio_RFVFHPLJSB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_RFVFHPLJSB" value=""> <span>It is the variance of the dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_RFVFHPLJSB" value=""> <span>It is the size of the dataset.</span></label><label><input type="radio" autocomplete="off" name="radio_RFVFHPLJSB" value="answer"> <span>Zero (exactly, up to floating-point rounding). The mean is the value at which positive and negative residuals exactly cancel.</span></label><label><input type="radio" autocomplete="off" name="radio_RFVFHPLJSB" value=""> <span>It is positive if the mean is positive and negative if the mean is negative.</span></label>
 </div>
 <p><strong>3. Why do we square the residuals before summing them to measure model fit?</strong></p>
-<div id="radio_OELLKWBHKM" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_OELLKWBHKM" value=""> <span>Because squaring is faster to compute than summing absolute values.</span></label><label><input type="radio" autocomplete="off" name="radio_OELLKWBHKM" value=""> <span>Because the squared values are always smaller than the original residuals.</span></label><label><input type="radio" autocomplete="off" name="radio_OELLKWBHKM" value="answer"> <span>Because the residuals sum to zero, summing them gives no information about the size of the errors. Squaring first removes the sign so positive and negative residuals do not cancel, and also penalizes large residuals more than small ones.</span></label><label><input type="radio" autocomplete="off" name="radio_OELLKWBHKM" value=""> <span>Because R cannot compute negative numbers.</span></label>
+<div id="radio_ZHMWEDBLZG" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ZHMWEDBLZG" value=""> <span>Because squaring is faster to compute than summing absolute values.</span></label><label><input type="radio" autocomplete="off" name="radio_ZHMWEDBLZG" value=""> <span>Because the squared values are always smaller than the original residuals.</span></label><label><input type="radio" autocomplete="off" name="radio_ZHMWEDBLZG" value="answer"> <span>Because the residuals sum to zero, summing them gives no information about the size of the errors. Squaring first removes the sign so positive and negative residuals do not cancel, and also penalizes large residuals more than small ones.</span></label><label><input type="radio" autocomplete="off" name="radio_ZHMWEDBLZG" value=""> <span>Because R cannot compute negative numbers.</span></label>
 </div>
 <p><strong>4. What is the relationship between <code>SS_grand</code> (sum of squared residuals from the grand mean) and <code>SS_group</code> (sum of squared residuals from the group means) on the same dataset?</strong></p>
-<div id="radio_DSWNJVNQJH" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_DSWNJVNQJH" value=""> <span>It is always larger than <code>SS_grand</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_DSWNJVNQJH" value=""> <span>It is exactly equal to <code>SS_grand</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_DSWNJVNQJH" value="answer"> <span>It is less than or equal to <code>SS_grand</code>. Using more information about each participant (their condition) cannot make the fit worse, only better or the same.</span></label><label><input type="radio" autocomplete="off" name="radio_DSWNJVNQJH" value=""> <span>It can be either smaller or larger than <code>SS_grand</code>, depending on the sample.</span></label>
+<div id="radio_CQEBIXLFQL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_CQEBIXLFQL" value=""> <span>It is always larger than <code>SS_grand</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_CQEBIXLFQL" value=""> <span>It is exactly equal to <code>SS_grand</code>.</span></label><label><input type="radio" autocomplete="off" name="radio_CQEBIXLFQL" value="answer"> <span>It is less than or equal to <code>SS_grand</code>. Using more information about each participant (their condition) cannot make the fit worse, only better or the same.</span></label><label><input type="radio" autocomplete="off" name="radio_CQEBIXLFQL" value=""> <span>It can be either smaller or larger than <code>SS_grand</code>, depending on the sample.</span></label>
 </div>
 <p><strong>5. What is the relationship between the variance, the standard deviation, and the residuals from the mean?</strong></p>
-<div id="radio_DSSTDEQIMD" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_DSSTDEQIMD" value=""> <span>Variance is the standard deviation divided by the mean.</span></label><label><input type="radio" autocomplete="off" name="radio_DSSTDEQIMD" value=""> <span>Variance is the same as the sum of squared residuals.</span></label><label><input type="radio" autocomplete="off" name="radio_DSSTDEQIMD" value="answer"> <span>Variance is the sum of squared residuals from the mean divided by <code>n - 1</code>. Standard deviation is the square root of the variance.</span></label><label><input type="radio" autocomplete="off" name="radio_DSSTDEQIMD" value=""> <span>Standard deviation has no relationship to residuals.</span></label>
+<div id="radio_CQAPUICIBL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_CQAPUICIBL" value=""> <span>Variance is the standard deviation divided by the mean.</span></label><label><input type="radio" autocomplete="off" name="radio_CQAPUICIBL" value=""> <span>Variance is the same as the sum of squared residuals.</span></label><label><input type="radio" autocomplete="off" name="radio_CQAPUICIBL" value="answer"> <span>Variance is the sum of squared residuals from the mean divided by <code>n - 1</code>. Standard deviation is the square root of the variance.</span></label><label><input type="radio" autocomplete="off" name="radio_CQAPUICIBL" value=""> <span>Standard deviation has no relationship to residuals.</span></label>
 </div>
 <p><strong>6. Why is a model that achieves <code>SS</code> = 0 by predicting each observation exactly (using one parameter per observation) not a desirable model?</strong></p>
-<div id="radio_VYDLQCNRNL" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_VYDLQCNRNL" value=""> <span>It is the ideal model and should be used whenever possible.</span></label><label><input type="radio" autocomplete="off" name="radio_VYDLQCNRNL" value="answer"> <span>It is not a useful model: it has one parameter per observation, does not simplify the data, and cannot generalize to new observations. Achieving zero error by predicting each observation exactly is a sign that the model has become the data, not a description of it.</span></label><label><input type="radio" autocomplete="off" name="radio_VYDLQCNRNL" value=""> <span>It is required by reproducibility guidelines.</span></label><label><input type="radio" autocomplete="off" name="radio_VYDLQCNRNL" value=""> <span>It only fails when there are very few observations.</span></label>
+<div id="radio_ODLAAISEYP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ODLAAISEYP" value=""> <span>It is the ideal model and should be used whenever possible.</span></label><label><input type="radio" autocomplete="off" name="radio_ODLAAISEYP" value="answer"> <span>It is not a useful model: it has one parameter per observation, does not simplify the data, and cannot generalize to new observations. Achieving zero error by predicting each observation exactly is a sign that the model has become the data, not a description of it.</span></label><label><input type="radio" autocomplete="off" name="radio_ODLAAISEYP" value=""> <span>It is required by reproducibility guidelines.</span></label><label><input type="radio" autocomplete="off" name="radio_ODLAAISEYP" value=""> <span>It only fails when there are very few observations.</span></label>
 </div>
 <p><strong>7. In this chapter’s Cyberball example, condition explained about 78.6% of the squared error. In Chapter 9, on the <code>vgames_study</code> data, condition explained about 20% of the squared error in aggression. Why is the proportion so different in the two examples?</strong></p>
-<div id="radio_SFQGWSBWKN" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_SFQGWSBWKN" value=""> <span>The dataset is much smaller in this chapter.</span></label><label><input type="radio" autocomplete="off" name="radio_SFQGWSBWKN" value=""> <span>Random sampling variability.</span></label><label><input type="radio" autocomplete="off" name="radio_SFQGWSBWKN" value="answer"> <span>The Cyberball example was constructed to have a strong condition effect, so a large fraction of the variability is between groups. In the <code>vgames_study</code> data, the condition effect on aggression is real but smaller relative to the within-condition variability, so the proportion explained by condition is smaller.</span></label><label><input type="radio" autocomplete="off" name="radio_SFQGWSBWKN" value=""> <span>The arithmetic is different in the two cases.</span></label>
+<div id="radio_XXYFSJMJVM" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_XXYFSJMJVM" value=""> <span>The dataset is much smaller in this chapter.</span></label><label><input type="radio" autocomplete="off" name="radio_XXYFSJMJVM" value=""> <span>Random sampling variability.</span></label><label><input type="radio" autocomplete="off" name="radio_XXYFSJMJVM" value="answer"> <span>The Cyberball example was constructed to have a strong condition effect, so a large fraction of the variability is between groups. In the <code>vgames_study</code> data, the condition effect on aggression is real but smaller relative to the within-condition variability, so the proportion explained by condition is smaller.</span></label><label><input type="radio" autocomplete="off" name="radio_XXYFSJMJVM" value=""> <span>The arithmetic is different in the two cases.</span></label>
 </div>
 </section>
 <section id="references" class="level2" data-number="14.13">
